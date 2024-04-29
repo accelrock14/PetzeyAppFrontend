@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
-import { IReport, Medicine, PrescribedMedicine, Symptom, Test } from '../../models/appoitment-models/Report';
+import { IReport } from '../../models/appoitment-models/Report';
+import { Test } from "../../models/appoitment-models/Test";
+import { Symptom } from "../../models/appoitment-models/Symptom";
+import { PrescribedMedicine } from "../../models/appoitment-models/PrescribedMedicine";
+import { Medicine } from "../../models/appoitment-models/Medicine";
 
 @Injectable({
   providedIn: 'root'

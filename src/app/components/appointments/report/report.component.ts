@@ -1,7 +1,11 @@
 import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { IReport, PrescribedMedicine, Test, Prescription, Symptom, ReportSymptom, ReportTest } from '../../../models/appoitment-models/Report';
+import { IReport } from '../../../models/appoitment-models/Report';
+import { ReportTest } from "../../../models/appoitment-models/ReportTest";
+import { Test } from "../../../models/appoitment-models/Test";
+import { ReportSymptom } from "../../../models/appoitment-models/ReportSymptom";
+import { Symptom } from "../../../models/appoitment-models/Symptom";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
