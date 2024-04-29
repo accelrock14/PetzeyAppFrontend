@@ -1,0 +1,78 @@
+*{
+  box-sizing: border-box;
+}
+
+.orange-color-bg{
+  background-color: #ff5500;
+  color: white;
+}
+
+.orange-color-bg:active{
+  background-color: #e7804d;
+  color: white;
+}
+
+.vitals{
+  height: 190px;
+}
+
+.symptoms,.tests,.precription{
+  height: 160px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.precription
+{
+  height: 555px;
+
+}
+
+.vitals .icons .icon-container i{
+font-size: 40px;
+}
+
+.vitals .icons .icon-container .icon-text{
+  font-size: 20px;
+  }
+  .fa-heart{
+    color: rgb(255, 0, 0);
+  }
+
+.fa-thermometer,.fa-lungs{
+  color: rgb(29, 58, 91);
+}
+
+.all-item-list{
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* "thin" or "auto" */
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0); /* thumb color and track color */
+}
+
+.all-item-list::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.all-item-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.all-item-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0); /* Color of the scrollbar track */
+}
+
+.capsule{
+  display: inline-block;
+  margin: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background-color: rgb(240, 211, 199);
+    color: #ff1100;
+}
+
+.medandid p
+{
+  margin: 0;
+}
