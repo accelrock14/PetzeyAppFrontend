@@ -41,7 +41,7 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number = 2): Observable<IPet[]> {
-    const apiUrlFilterPets = `${petsServiceUrl}/filters?page=${pageNumber}&size=${pageSize}`;
+    const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
   GetPetsByIDs(petIDs: number[]): Observable<IPet[]> {
