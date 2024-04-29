@@ -1,14 +1,47 @@
 <div class="appointment container" *ngIf="appointment">
-    <h2>Back to appointments</h2>
-    <div class="appointment-details row">
+  <span class="appointment-heading">
+  <i class="fas fa-arrow-left"></i>  
+
+  <h6 class="appointment-title">Back to appointments</h6>
+</span>
+    
       <div class="col-sm-6">
-        <span class="appointment-id">#{{ appointment.AppointmentID }}</span>
+        <span class="appointment-id">#ID - {{ appointment.AppointmentID }}</span>
       </div>
-      <div class="col-sm-6">
-        <span class="appointment-date">{{ appointment.ScheduleDate }}</span>
+      <div class="appointment-details row">
+        <div class="col-sm-6">
+          <span class="appointment-date">
+            <i class="far fa-calendar-alt"></i>
+            {{ appointment.ScheduleDate | date:'dd MMM, yyyy' }}
+          </span>
+          <span class="appointment-date">
+            <i class="far fa-clock"></i>
+            {{ appointment.ScheduleDate | date:'h:mm a' }}
+          </span>
+          <span class="appointment-actions"> 
+            <i class="fas fa-phone"></i> <i class="fas fa-video"></i> 
+          </span>
+          
+            <span class="appointment-buttons">
+              <button class="btn btn-sm btn-outline-primary">Cancel</button>
+              <button class="btn btn-sm btn-outline-warning">Edit</button>
+              <button class="btn btn-sm btn-outline-danger">Close Appointment</button>
+            </span>
+          
+        </div>
       </div>
-    </div>
-    <div class="appointment-actions row">
+      <!-- <div class="col-sm-2">
+        <span class="appointment-date">
+          
+          <i class="far fa-clock"></i>
+          {{ appointment.ScheduleDate | date:'h:mm a' }}
+        </span>
+      </div> -->
+   
+
+
+
+    <!-- <div class="appointment-actions row">
       <div class="col">
         <button class="btn btn-danger cancel-button">Cancel</button>
       </div>
@@ -18,7 +51,7 @@
       <div class="col">
         <button class="btn btn-secondary close-button">Close Appointment</button>
       </div>
-    </div>
+    </div> -->
     <div class="pet-issues">
       <h3>Pet Issues:</h3>
       <ul>
