@@ -5,7 +5,8 @@ export interface IVet{
     lname:string,
     fname:string,   
     phone:number,    
-    speciality:string 
+    speciality:string ,
+    photo: ArrayBuffer;
        
 
 }

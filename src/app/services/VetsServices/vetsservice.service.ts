@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { IPet } from '../../models/Pets/IPet';
 import { IVet } from '../../models/Vets/IVet';
-import { IVetIdNameDTO } from '../../models/Vets/IVetIdNameDTO';
+
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +42,9 @@ export class VetsserviceService {
     return this.http.patch<any>(url, status);
   }
 
-  getVetsByListOfIds(doctorIds: number[]): Observable<IVetIdNameDTO[]> {
+  getVetsByListOfIds(doctorIds: number[]): Observable<IVet[]> {
     const url = `${this.apiUrl}/VetDetails`;
-    return this.http.post<IVetIdNameDTO[]>(url, doctorIds);
+    return this.http.post<IVet[]>(url, doctorIds);
   }
 
   
