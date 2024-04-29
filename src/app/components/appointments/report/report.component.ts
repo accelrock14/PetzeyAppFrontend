@@ -1,8 +1,10 @@
 import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { Report, PrescribedMedicine, Test, Prescription, Symptom } from '../../../models/appoitment-models/Report';
+import { IReport, PrescribedMedicine, Test, Prescription, Symptom, ReportSymptom, ReportTest } from '../../../models/appoitment-models/Report';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ReportService } from '../../../services/appointment/report.service';
+import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 
 @Component({
   selector: 'app-report',
@@ -12,73 +14,73 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   styleUrl: './report.component.css'
 })
 export class ReportComponent implements OnInit {
-  report: Report = {
-    reportID: 1,
-    prescription: {
-      prescriptionID: 1,
-      prescribedMedicines: [
+  report: IReport = {
+    ReportID: 1,
+    Prescription: {
+      PrescriptionID: 1,
+      PrescribedMedicines: [
         {
-          prescribedMedicineID: 1,
-          medicineID: 1,
-          medicine: {
-            medicineID: 1,
-            medicineName: 'Crocin'
+          PrescribedMedicineID: 1,
+          MedicineID: 1,
+          Medicine: {
+            MedicineID: 1,
+            MedicineName: 'Crocin'
           },
-          numberOfDays: 10,
-          consume: false,
-          dosages: 1,
-          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
+          NumberOfDays: 10,
+          Consume: false,
+          Dosages: 1,
+          Comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
         },
         {
-          prescribedMedicineID: 1,
-          medicineID: 1,
-          medicine: {
-            medicineID: 1,
-            medicineName: 'Crocin'
+          PrescribedMedicineID: 1,
+          MedicineID: 1,
+          Medicine: {
+            MedicineID: 1,
+            MedicineName: 'Crocin'
           },
-          numberOfDays: 10,
-          consume: false,
-          dosages: 1,
-          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
+          NumberOfDays: 10,
+          Consume: false,
+          Dosages: 1,
+          Comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
         }
       ]
     },
-    symptoms: [{
-      symptomID: 1,
-      symptom: {
-        symptomID: 1,
-        symptomName: 'Stress'
+    Symptoms: [{
+      SymptomID: 1,
+      Symptom: {
+        SymptomID: 1,
+        SymptomName: 'Stress'
       },
-      reportSymptomID: 1
+      ReportSymptomID: 1
     },
     {
-      symptomID: 2,
-      symptom: {
-        symptomID: 2,
-        symptomName: 'ECG'
+      SymptomID: 2,
+      Symptom: {
+        SymptomID: 2,
+        SymptomName: 'ECG'
       },
-      reportSymptomID: 2
+      ReportSymptomID: 2
     }],
-    tests: [{
-      reportTestID: 1,
-      test: {
-        testID: 1,
-        testName: 'ECG'
+    Tests: [{
+      ReportTestID: 1,
+      Test: {
+        TestID: 1,
+        TestName: 'ECG'
       },
-      testID: 1
+      TestID: 1
     }, {
-      reportTestID: 2,
-      test: {
-        testID: 2,
-        testName: 'Excercise Stress Test'
+      ReportTestID: 2,
+      Test: {
+        TestID: 2,
+        TestName: 'Excercise Stress Test'
       },
-      testID: 2
+      TestID: 2
     }],
-    heartRate: 79,
-    temperature: 37,
-    oxygenLevel: 14,
-    recommendedDoctors: [],
-    comment: 'Patient has IBS. Food intake needs to me monitored'
+    HeartRate: 79,
+    Temperature: 37,
+    OxygenLevel: 14,
+    RecommendedDoctors: [],
+    Comment: 'Patient has IBS. Food intake needs to me monitored'
   }
   myForm!: FormGroup;
   disabled = false;
@@ -86,55 +88,52 @@ export class ReportComponent implements OnInit {
   limitSelection = false;
   symptoms: Symptom[] = []
   tests: Test[] = [];
-  selectedSymptoms: Symptom[] = [];
-  selectedTests: Test[] = []
+  selectedSymptoms: any[] = [];
+  selectedTests: any[] = []
   symptomSettings: any = {};
   testSettings: any = {}
 
 
   ngOnInit(): void {
-    this.symptomSettings = {
-      singleSelection: false,
-      idField: 'symptomID',
-      textField: 'symptomName',
-      enableCheckAll: false,
-      itemsShowLimit: 3,
-      allowSearchFilter: this.ShowFilter
-    };
-    this.testSettings = {
-      singleSelection: false,
-      idField: 'testID',
-      textField: 'testName',
-      enableCheckAll: false,
-      itemsShowLimit: 3,
-      allowSearchFilter: this.ShowFilter
-    }
+    this.reportService.getReport(1).subscribe(r => {
+      this.report = r
 
-    this.symptoms = [
-      { symptomID: 1, symptomName: "symptom 1" },
-      { symptomID: 2, symptomName: "symptom 2" },
-      { symptomID: 3, symptomName: "symptom 3" },
-      { symptomID: 4, symptomName: "symptom 4" },
-      { symptomID: 5, symptomName: "symptom 5" }
-    ]
-    this.tests = [
-      { testID: 1, testName: "test 1" },
-      { testID: 2, testName: "test 2" },
-      { testID: 3, testName: "test 3" },
-      { testID: 4, testName: "test 4" },
-      { testID: 5, testName: "test 5" }
-    ]
-    this.selectedSymptoms = this.report.symptoms.map(r => r.symptom)
-    this.selectedTests = this.report.tests.map(r => r.test)
-    console.log(this.selectedTests)
-    this.myForm = this.fb.group({
-      symptom: [this.selectedSymptoms],
-      test: [this.selectedTests]
-    });
+      this.symptomSettings = {
+        singleSelection: false,
+        idField: 'SymptomID',
+        textField: 'SymptomName',
+        enableCheckAll: false,
+        itemsShowLimit: 3,
+        allowSearchFilter: this.ShowFilter
+      };
+      this.testSettings = {
+        singleSelection: false,
+        idField: 'TestID',
+        textField: 'TestName',
+        enableCheckAll: false,
+        itemsShowLimit: 3,
+        allowSearchFilter: this.ShowFilter
+      }
+
+      this.reportService.getAllSymptoms().subscribe(s => {
+        this.symptoms = s
+      })
+
+      this.reportService.getAllTests().subscribe(t => {
+        this.tests = t
+      })
+      this.selectedSymptoms = this.report.Symptoms.map(r => r.Symptom)
+      this.selectedTests = this.report.Tests.map(r => r.Test)
+      console.log(this.selectedTests)
+      this.myForm = this.fb.group({
+        symptom: [this.selectedSymptoms],
+        test: [this.selectedTests]
+      });
+    })
   }
 
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private reportService: ReportService) { }
 
   isEditing = false;
 
@@ -143,8 +142,61 @@ export class ReportComponent implements OnInit {
   }
 
   save(): void {
-
     this.isEditing = false;
+    this.reportService.patchReport(1, this.report).subscribe(p => {
+      console.log(p)
+    })
+  }
+
+  onSelectSymptom(symptom: ListItem) {
+    let newSymptom: Symptom = symptom as unknown as Symptom
+    var reportSymptom: ReportSymptom = {
+      SymptomID: newSymptom.SymptomID,
+      ReportSymptomID: 1,
+      Symptom: null
+    }
+    this.report.Symptoms.push(reportSymptom)
+  }
+  onDeselectSymptom(symptom: ListItem) {
+    let newSymptom: Symptom = symptom as unknown as Symptom
+    let index: number = this.report.Symptoms.findIndex(s => s.SymptomID == newSymptom.SymptomID)
+    this.report.Symptoms.splice(index, 1);
+  }
+
+  onSelectTest(test: ListItem) {
+    let newTest: Test = test as unknown as Test
+    var reportTest: ReportTest = {
+      TestID: newTest.TestID,
+      ReportTestID: 1,
+      Test: null
+    }
+    this.report.Tests.push(reportTest)
+  }
+  onDeselectTest(test: ListItem) {
+    let newTest: Test = test as unknown as Test
+    let index: number = this.report.Tests.findIndex(t => t.TestID == newTest.TestID)
+    this.report.Tests.splice(index, 1);
+  }
+
+  getSymptomById(id: number): Symptom | undefined {
+    return this.symptoms.find((s) => {
+      if (s.SymptomID != null && s.SymptomID == id) {
+        return s
+      }
+      else {
+        return undefined
+      }
+    })
+  }
+  getTestById(id: number): Test | undefined {
+    return this.tests.find((t) => {
+      if (t.TestID != null && t.TestID == id) {
+        return t
+      }
+      else {
+        return undefined
+      }
+    })
   }
 
   validateNumber(event: KeyboardEvent): void {
