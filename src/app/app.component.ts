@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {  NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { NewAppointmentFormComponent } from "./new-appointment-form/new-appointment-form.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,RouterLink],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    standalone: true,
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    imports: [RouterOutlet, RouterLink, NewAppointmentFormComponent]
 })
 export class AppComponent implements OnInit{
   
