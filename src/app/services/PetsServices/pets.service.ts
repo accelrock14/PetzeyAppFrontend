@@ -4,10 +4,12 @@ import { IPet } from '../../models/Pets/IPet';
 import { IPetFilterParams } from '../../models/Pets/IPetFilterParams';
 import { HttpClient } from '@angular/common/http';
 import { NumberSymbol } from '@angular/common';
+import { petsServiceUrl } from '../../Shared/apiUrls';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
   FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
+  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number): Observable<IPet[]>;
   GetPetsByIDs(petIDs:number[]):Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
   GetMorePets(pageNumber:number):Observable<IPet[]>;
@@ -28,14 +30,18 @@ export class PetsService implements IPetsService{
 
   constructor(private apiService:HttpClient) {
 
-   }
+  }
 
   GetAllPets(): Observable<IPet[]> {
-    const apiUrlGetAllPets = "https://localhost:44374/api/Pets";
+    const apiUrlGetAllPets = `${petsServiceUrl}`;
     return this.apiService.get<IPet[]>(apiUrlGetAllPets);
   }
   FilterPets(petfilters: IPetFilterParams): Observable<IPet[]> {
-    const apiUrlFilterPets = "https://localhost:44374/api/pets/filter";
+    const apiUrlFilterPets = `${petsServiceUrl}/filter`;
+    return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
+  }
+  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number = 2): Observable<IPet[]> {
+    const apiUrlFilterPets = `${petsServiceUrl}/filters?page=${pageNumber}&size=${pageSize}`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
   GetPetsByIDs(petIDs: number[]): Observable<IPet[]> {
