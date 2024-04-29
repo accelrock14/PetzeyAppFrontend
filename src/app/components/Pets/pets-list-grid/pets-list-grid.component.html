@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+  <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+</svg>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg>
+
+
+
+
+
+
+<!-- <div class="input-group">
+  <input type="text" class="form-control" placeholder="Search">
+  <button class="btn" type="button">
+    <i class="fas fa-search"></i>
+  </button>
+</div> -->
+
+<select class="form-control ms-2" [(ngModel)]="petsFilter.Species" (ngModelChange)="searchPets()">
+  <option value="">All Species</option>
+  <option *ngFor="let species of speciesOptions" [value]="'{{species}}'">{{ species }}</option>
+</select>
+
+<br>
+<br>
+
+
+<input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets"  (ngModelChange)="searchPets()">
+
+<hr>
+
+<div class="container">
+  <div class="row">
+    @for(pet of pets; track $index){
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+
+
+      <div class="card ">
+        <div class="d-flex align-items-center">
+          <div class="col-5 px-0 py-3 d-flex justify-content-center align-items-center">
+            <img src="https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_640.jpg" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="pet image">
+          </div>
+          <div class="col-7 px-1 py-3">
+              <h6 class="card-title mb-0">{{pet.PetName}}</h6>
+              <p class="card-text mb-2"><small class="text-muted">{{pet.Gender}}, {{pet.Age}} years</small></p>
+              <p class="card-text"><small class="text-muted">Owner: {{pet.PetParentId}}</small></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  </div>
+</div>
