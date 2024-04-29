@@ -1,0 +1,204 @@
+<div class="appointmentDetailspage ps-3 p-5">
+  <div class="d-flex justify-content-between align-items-center">
+    <h5>Appointment Report</h5>
+    <div>
+      <button
+        *ngIf="!isEditing"
+        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold"
+      >
+        <i class="fa-solid fa-download me-2"></i>Report
+      </button>
+      <button
+        *ngIf="!isEditing"
+        class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+        (click)="enableEdit()"
+      >
+        <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+      </button>
+      <button
+        *ngIf="isEditing"
+        class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+        (click)="save()"
+      >
+        <i class="fa-solid fa-floppy-disk me-2"></i>Save
+      </button>
+    </div>
+  </div>
+
+  <div class="report mt-3 mb-0">
+    <hr class="mt-0" />
+
+    <div class="report-body">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 mx-auto left-part">
+          <div class="precription border shadow p-3 rounded-3">
+            <div class="precription-heading d-flex justify-content-between">
+              <h4>Precription</h4>
+              <button
+                *ngIf="isEditing"
+                class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+                (click)="save()"
+              >
+                <i class="fa-solid fa-plus me-2"></i>Medicine
+              </button>
+            </div>
+            <div class="all-item-list p-3">
+              @for (prescription of report.prescription.prescribedMedicines;
+              track $index) {
+              <div class="precription-item border rounded-3 shadow-sm mt-2 p-3">
+                <div class="medicine-name d-flex justify-content-between">
+                  <h6>1. {{ prescription.medicine.medicineName }}</h6>
+
+                  <div *ngIf="isEditing">
+                    <button class="btn">
+                      <i class="fa-solid fa-pencil fw-bold orange-color"></i>
+                    </button>
+                    <button class="btn">
+                      <i class="fa-solid fa-x fw-bold orange-color"></i>
+                    </button>
+                  </div>
+                </div>
+                <small>Days: {{ prescription.numberOfDays }}</small>
+                <div class="d-flex justify-content-between">
+                  <small class="my-auto">{{ prescription.comment }}</small>
+                  <div class="capsule2">after-food</div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center mt-2">
+                  <div class="circular-div"></div>
+                  <div class="line"></div>
+                  <div class="circular-div ticked">
+                    <span class="tick-mark">&#10003;</span>
+                  </div>
+                  <div class="line"></div>
+                  <div class="circular-div ticked">
+                    <span class="tick-mark">&#10003;</span>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-0 rounded-3">
+            <h4>Recommended Doctor's</h4>
+            <div *ngIf="isEditing" class="search-box ps-3 mt-2">
+              <input type="text" placeholder="Search..." />
+              <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="all-item-list mt-4 ps-3">
+              @for (doctors of report.recommendedDoctors; track $index) {
+              <div class="capsule">{{ doctors.doctorID }}</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 mx-auto right-part">
+          <div class="vitals border shadow mb-4 p-3 pe-0 rounded-3">
+            <h4>Vitals</h4>
+            <div class="icons mt-4 ps-3">
+              <div class="icon-container me-5 d-inline-block">
+                <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
+                <span class="icon-text">
+                  <b *ngIf="!isEditing">{{ report.heartRate }}</b>
+                  <input
+                    *ngIf="isEditing"
+                    type="text"
+                    [(ngModel)]="report.heartRate"
+                    (keypress)="validateNumber($event)"
+                    class="underline-input"
+                    required
+                  />
+                  HR</span
+                >
+              </div>
+
+              <div class="icon-container me-5 d-inline-block">
+                <div class="mb-2">
+                  <i class="fa-solid fa-thermometer icon"></i>
+                </div>
+                <span class="icon-text">
+                  <b *ngIf="!isEditing">{{ report.temperature }}</b>
+                  <input
+                    *ngIf="isEditing"
+                    type="text"
+                    [(ngModel)]="report.temperature"
+                    (keypress)="validateNumber($event)"
+                    class="underline-input"
+                    required
+                  />
+
+                  &deg;C</span
+                >
+              </div>
+
+              <div class="icon-container d-inline-block">
+                <div class="mb-2"><i class="fa-solid fa-lungs icon"></i></div>
+                <span class="icon-text">
+                  <b *ngIf="!isEditing">{{ report.oxygenLevel }}</b>
+                  <input
+                    *ngIf="isEditing"
+                    type="text"
+                    [(ngModel)]="report.oxygenLevel"
+                    (keypress)="validateNumber($event)"
+                    class="underline-input"
+                    required
+                  />
+
+                  BPM</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="symptoms border shadow mb-4 p-3 pe-0 rounded-3">
+            <h4>Symptoms</h4>
+            <div *ngIf="isEditing" class="search-box ps-3 mt-2">
+              <input type="text" placeholder="Search..." />
+              <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="all-item-list mt-4 ps-3">
+              @for (symptoms of report.symptoms; track $index) {
+              <div class="capsule">{{ symptoms.symptom.symptomName }}</div>
+              }
+            </div>
+          </div>
+          <div class="tests border shadow mb-4 p-3 pe-0 rounded-3">
+            <h4>Tests</h4>
+            <div *ngIf="isEditing" class="search-box ps-3 mt-2">
+              <input type="text" placeholder="Search..." />
+              <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="all-item-list mt-4 ps-3">
+              @for (tests of report.test; track $index) {
+              <div class="capsule">{{ tests.test.testName }}</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 mx-auto bottom-part">
+          <div
+            class="commentsbydoctor col-lg-12 col-md-12 border shadow p-3 rounded-3"
+          >
+            <h4>Comments</h4>
+
+            <div *ngIf="!isEditing" class="comment-body mt-3 ms-2 d-flex">
+              <img src="" alt="" />
+              <div class="comment-info ms-3">
+                <p class="m-0 d-inline-block fw-bolder">Dr. Pal Manikam</p>
+                <small class="ms-2">10 hr ago</small>
+                <p>{{ report.comment }}</p>
+              </div>
+            </div>
+            <input
+              class="comment-input mt-4"
+              *ngIf="isEditing"
+              type="text"
+              [(ngModel)]="report.comment"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
