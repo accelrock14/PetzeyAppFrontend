@@ -27,15 +27,15 @@ export let petToken = new InjectionToken<IPetsService>('IPetsToken')
 export class PetsService implements IPetsService{
 
   constructor(private apiService:HttpClient) {
-    
+
    }
 
   GetAllPets(): Observable<IPet[]> {
-    const apiUrlGetAllPets = "";
+    const apiUrlGetAllPets = "https://localhost:44374/api/Pets";
     return this.apiService.get<IPet[]>(apiUrlGetAllPets);
   }
   FilterPets(petfilters: IPetFilterParams): Observable<IPet[]> {
-    const apiUrlFilterPets = "";
+    const apiUrlFilterPets = "https://localhost:44374/api/pets/filter";
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
   GetPetsByIDs(petIDs: number[]): Observable<IPet[]> {
