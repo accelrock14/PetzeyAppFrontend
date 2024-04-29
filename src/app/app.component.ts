@@ -10,4 +10,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'PetzeyAppFrontend';
+
+  expand: boolean = false;
+
+  onExpand() {
+    this.expand = !this.expand;
+  }
 }
