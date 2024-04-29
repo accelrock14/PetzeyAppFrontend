@@ -21,6 +21,10 @@
     display: flex;
     flex-direction: column;
   }
+
+  .symptoms, .tests{
+    overflow: visible;
+  }
   
   .precription
   {

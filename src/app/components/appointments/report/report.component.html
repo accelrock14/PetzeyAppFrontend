@@ -153,10 +153,19 @@
           <div class="symptoms border shadow mb-4 p-3 pe-0 rounded-3">
             <h4>Symptoms</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
-              <input type="text" placeholder="Search..." />
-              <i class="fas fa-search search-icon"></i>
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="symptom"
+                  [settings]="symptomSettings"
+                  [placeholder]="'Select Symptoms'"
+                  [data]="symptoms"
+                  formControlName="symptom"
+                  [disabled]="disabled"
+                >
+                </ng-multiselect-dropdown>
+              </form>
             </div>
-            <div class="all-item-list mt-4 ps-3">
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
               @for (symptoms of report.symptoms; track $index) {
               <div class="capsule">{{ symptoms.symptom.symptomName }}</div>
               }
@@ -165,11 +174,20 @@
           <div class="tests border shadow mb-4 p-3 pe-0 rounded-3">
             <h4>Tests</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
-              <input type="text" placeholder="Search..." />
-              <i class="fas fa-search search-icon"></i>
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="test"
+                  [settings]="testSettings"
+                  [placeholder]="'Select Tests'"
+                  [data]="tests"
+                  formControlName="test"
+                  [disabled]="disabled"
+                >
+                </ng-multiselect-dropdown>
+              </form>
             </div>
-            <div class="all-item-list mt-4 ps-3">
-              @for (tests of report.test; track $index) {
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
+              @for (tests of report.tests; track $index) {
               <div class="capsule">{{ tests.test.testName }}</div>
               }
             </div>

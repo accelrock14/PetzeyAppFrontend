@@ -49,7 +49,7 @@ export interface Report {
     reportID: number
     prescription: Prescription
     symptoms: ReportSymptom[]
-    test: ReportTest[]
+    tests: ReportTest[]
     heartRate: number
     temperature: number
     oxygenLevel: number
