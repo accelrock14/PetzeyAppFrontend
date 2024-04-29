@@ -27,6 +27,10 @@
     flex-direction: column;
   }
 
+  .symptoms, .tests{
+    overflow: visible;
+  }
+
   .precription
   {
     height: 427px;

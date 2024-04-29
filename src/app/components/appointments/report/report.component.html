@@ -106,11 +106,11 @@
               </button>
             </div>
             <div class="all-item-list p-3">
-              @for (prescription of report.prescription.prescribedMedicines;
+              @for (prescription of report.Prescription.PrescribedMedicines;
               track $index) {
               <div class="precription-item border rounded-3 shadow-sm mt-2 p-3">
                 <div class="medicine-name d-flex justify-content-between">
-                  <h6>1. {{ prescription.medicine.medicineName }}</h6>
+                  <h6>1. {{ prescription.Medicine.MedicineName }}</h6>
 
                   <div *ngIf="isEditing">
                     <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
@@ -121,9 +121,9 @@
                     </button>
                   </div>
                 </div>
-                <small>Days: {{ prescription.numberOfDays }}</small>
+                <small>Days: {{ prescription.NumberOfDays }}</small>
                 <div class="d-flex justify-content-between">
-                  <small class="my-auto">{{ prescription.comment }}</small>
+                  <small class="my-auto">{{ prescription.Comment }}</small>
                   <div class="capsule2">after-food</div>
                 </div>
                 <div class="d-flex justify-content-end align-items-center mt-2">
@@ -149,8 +149,8 @@
               <i class="fas fa-search search-icon"></i>
             </div>
             <div class="all-item-list mt-4 ps-3">
-              @for (doctors of report.recommendedDoctors; track $index) {
-              <div class="capsule">{{ doctors.doctorID }}</div>
+              @for (doctors of report.RecommendedDoctors; track $index) {
+              <div class="capsule">{{ doctors.DoctorID }}</div>
               }
             </div>
           </div>
@@ -163,11 +163,11 @@
               <div class="icon-container me-5 d-inline-block">
                 <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.heartRate }}</b>
+                  <b *ngIf="!isEditing">{{ report.HeartRate }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
-                    [(ngModel)]="report.heartRate"
+                    [(ngModel)]="report.HeartRate"
                     (keypress)="validateNumber($event)"
                     class="underline-input"
                     required
@@ -181,11 +181,11 @@
                   <i class="fa-solid fa-thermometer icon"></i>
                 </div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.temperature }}</b>
+                  <b *ngIf="!isEditing">{{ report.Temperature }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
-                    [(ngModel)]="report.temperature"
+                    [(ngModel)]="report.Temperature"
                     (keypress)="validateNumber($event)"
                     class="underline-input"
                     required
@@ -198,11 +198,11 @@
               <div class="icon-container d-inline-block">
                 <div class="mb-2"><i class="fa-solid fa-lungs icon"></i></div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.oxygenLevel }}</b>
+                  <b *ngIf="!isEditing">{{ report.OxygenLevel }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
-                    [(ngModel)]="report.oxygenLevel"
+                    [(ngModel)]="report.OxygenLevel"
                     (keypress)="validateNumber($event)"
                     class="underline-input"
                     required
@@ -216,24 +216,50 @@
           <div class="symptoms border shadow mb-4 p-3 pe-0 rounded-3">
             <h4>Symptoms</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
-              <input type="text" placeholder="Search..." />
-              <i class="fas fa-search search-icon"></i>
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="symptom"
+                  [settings]="symptomSettings"
+                  [placeholder]="'Select Symptoms'"
+                  [data]="symptoms"
+                  formControlName="symptom"
+                  [disabled]="disabled"
+                  (onSelect)="onSelectSymptom($event)"
+                  (onDeSelect)="onDeselectSymptom($event)"
+                >
+                </ng-multiselect-dropdown>
+              </form>
             </div>
-            <div class="all-item-list mt-4 ps-3">
-              @for (symptoms of report.symptoms; track $index) {
-              <div class="capsule">{{ symptoms.symptom.symptomName }}</div>
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
+              @for (symptoms of report.Symptoms; track $index) {
+              <div class="capsule">
+                {{ getSymptomById(symptoms.SymptomID)?.SymptomName }}
+              </div>
               }
             </div>
           </div>
           <div class="tests border shadow mb-4 p-3 pe-0 rounded-3">
             <h4>Tests</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
-              <input type="text" placeholder="Search..." />
-              <i class="fas fa-search search-icon"></i>
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="test"
+                  [settings]="testSettings"
+                  [placeholder]="'Select Tests'"
+                  [data]="tests"
+                  formControlName="test"
+                  [disabled]="disabled"
+                  (onSelect)="onSelectTest($event)"
+                  (onDeSelect)="onDeselectTest($event)"
+                >
+                </ng-multiselect-dropdown>
+              </form>
             </div>
-            <div class="all-item-list mt-4 ps-3">
-              @for (tests of report.test; track $index) {
-              <div class="capsule">{{ tests.test.testName }}</div>
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
+              @for (tests of report.Tests; track $index) {
+              <div class="capsule">
+                {{ getTestById(tests.TestID)?.TestName }}
+              </div>
               }
             </div>
           </div>
@@ -250,14 +276,14 @@
               <div class="comment-info ms-3">
                 <p class="m-0 d-inline-block fw-bolder">Dr. Pal Manikam</p>
                 <small class="ms-2">10 hr ago</small>
-                <p>{{ report.comment }}</p>
+                <p>{{ report.Comment }}</p>
               </div>
             </div>
             <input
               class="comment-input mt-4"
               *ngIf="isEditing"
               type="text"
-              [(ngModel)]="report.comment"
+              [(ngModel)]="report.Comment"
             />
           </div>
         </div>
