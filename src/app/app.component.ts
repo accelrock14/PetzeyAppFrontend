@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CreateOrEditPetComponent } from './components/Pets/create-or-edit-pet/create-or-edit-pet.component';
+import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CreateOrEditPetComponent],
+  imports: [RouterOutlet,CreateOrEditPetComponent,CreatePetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
