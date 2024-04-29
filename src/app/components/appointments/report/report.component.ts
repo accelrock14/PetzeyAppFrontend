@@ -1,15 +1,35 @@
-import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { Report, PrescribedMedicine, Test, Prescription } from '../../../models/appoitment-models/Report';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NgModel,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  Report,
+  PrescribedMedicine,
+  Test,
+  Prescription,
+} from '../../../models/appoitment-models/Report';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { Block } from '@angular/compiler';
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [NgIf, FormsModule, FormsModule, ReactiveFormsModule, NgMultiSelectDropDownModule],
+  imports: [
+    NgIf,
+    FormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
+    NgClass,
+    CommonModule,
+  ],
   templateUrl: './report.component.html',
-  styleUrl: './report.component.css'
+  styleUrl: './report.component.css',
 })
 export class ReportComponent {
   report: Report = {
@@ -22,67 +42,71 @@ export class ReportComponent {
           medicineID: 1,
           medicine: {
             medicineID: 1,
-            medicineName: 'Crocin'
+            medicineName: 'Crocin',
           },
           numberOfDays: 10,
           consume: false,
           dosages: 1,
-          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
+          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter',
         },
         {
           prescribedMedicineID: 1,
           medicineID: 1,
           medicine: {
             medicineID: 1,
-            medicineName: 'Crocin'
+            medicineName: 'Crocin',
           },
           numberOfDays: 10,
           consume: false,
           dosages: 1,
-          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter'
-        }
-      ]
+          comment: 'dont sadtfy asdiaasdas asdsad asd trtm sssot worter',
+        },
+      ],
     },
-    symptoms: [{
-      symptomID: 1,
-      symptom: {
+    symptoms: [
+      {
         symptomID: 1,
-        symptomName: 'Stress'
+        symptom: {
+          symptomID: 1,
+          symptomName: 'Stress',
+        },
+        reportSymptomID: 1,
       },
-      reportSymptomID: 1
-    },
-    {
-      symptomID: 2,
-      symptom: {
+      {
         symptomID: 2,
-        symptomName: 'ECG'
+        symptom: {
+          symptomID: 2,
+          symptomName: 'ECG',
+        },
+        reportSymptomID: 2,
       },
-      reportSymptomID: 2
-    }],
-    test: [{
-      reportTestID: 1,
-      test: {
+    ],
+    test: [
+      {
+        reportTestID: 1,
+        test: {
+          testID: 1,
+          testName: 'ECG',
+        },
         testID: 1,
-        testName: 'ECG'
       },
-      testID: 1
-    }, {
-      reportTestID: 2,
-      test: {
+      {
+        reportTestID: 2,
+        test: {
+          testID: 2,
+          testName: 'Excercise Stress Test',
+        },
         testID: 2,
-        testName: 'Excercise Stress Test'
       },
-      testID: 2
-    }],
+    ],
     heartRate: 79,
     temperature: 37,
     oxygenLevel: 14,
     recommendedDoctors: [],
-    comment: 'Patient has IBS. Food intake needs to me monitored'
-  }
+    comment: 'Patient has IBS. Food intake needs to me monitored',
+  };
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isEditing = false;
 
@@ -91,7 +115,6 @@ export class ReportComponent {
   }
 
   save(): void {
-
     this.isEditing = false;
   }
 
