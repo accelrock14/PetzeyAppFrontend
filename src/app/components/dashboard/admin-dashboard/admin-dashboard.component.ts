@@ -21,8 +21,8 @@ export class AdminDashboardComponent implements OnInit {
   selectedDoctor!: number;
   filters: FilterParamsDto = {
     ScheduleDate: null,
-    Status: "Confirmed",
-    DoctorID: 1
+    Status: "",
+    DoctorID: null
   };
 
   constructor(private service: DashboardService) {}
@@ -35,7 +35,12 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onDateStatusDoctorChange() {
-    //!!!
-    
+    this.filters.DoctorID = this.selectedDoctor;
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+      this.appointmentCards = data;
+      console.log(this.appointmentCards);
+    })
   }
 }

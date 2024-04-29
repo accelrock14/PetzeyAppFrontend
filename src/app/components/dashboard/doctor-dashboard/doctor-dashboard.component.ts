@@ -43,8 +43,12 @@ export class DoctorDashboardComponent implements OnInit {
   }
 
   onDateStatusChange() {
-    //!!!
-    throw new Error('Method not implemented.');
+    
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
   }
 
 }

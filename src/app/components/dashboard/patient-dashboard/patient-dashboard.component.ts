@@ -23,10 +23,6 @@ export class PatientDashboardComponent implements OnInit {
   offset : number = 0;
   selectedStatus: string = "";
   selectedDate!: Date;
-  onDateStatusChange() {
-    //!!!
-    throw new Error('Method not implemented.');
-  }
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
@@ -34,5 +30,12 @@ export class PatientDashboardComponent implements OnInit {
       this.appointmentCards = data;
     })
   }
-
+  onDateStatusChange() {
+    
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
+  }
 }
