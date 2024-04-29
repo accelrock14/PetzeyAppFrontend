@@ -33,8 +33,8 @@ export class ReportService {
   patchReport(id: number, report: IReport) {
     return this.http.patch(this.reportURL + "report/" + id, report)
   }
-  UpdatePrescription(report: IReport) {
-    return this.http.put(this.reportURL + "report", report)
+  UpdatePrescription(id: number, PrescribedMedicine: PrescribedMedicine) {
+    return this.http.patch(this.reportURL + "prescription/" + id, PrescribedMedicine)
   }
   AddPrescription(prescriptionID: number, prescription: PrescribedMedicine) {
     return this.http.post(this.reportURL + "prescription/" + prescriptionID, prescription)
