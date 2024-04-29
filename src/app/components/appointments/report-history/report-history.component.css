@@ -2,11 +2,21 @@
   box-sizing: border-box;
 }
 
+.orange-color-bg{
+  background-color: #ff5500;
+  color: white;
+}
+
+.orange-color-bg:active{
+  background-color: #e7804d;
+  color: white;
+}
+
 .vitals{
   height: 190px;
 }
 
-.symptoms,.tests{
+.symptoms,.tests,.precription{
   height: 160px;
   overflow: hidden;
   display: flex;
@@ -16,6 +26,7 @@
 .precription
 {
   height: 555px;
+
 }
 
 .vitals .icons .icon-container i{
@@ -25,9 +36,9 @@ font-size: 40px;
 .vitals .icons .icon-container .icon-text{
   font-size: 20px;
   }
-.fa-heart{
-  color: rgb(202, 81, 81);
-}
+  .fa-heart{
+    color: rgb(255, 0, 0);
+  }
 
 .fa-thermometer,.fa-lungs{
   color: rgb(29, 58, 91);
@@ -58,7 +69,7 @@ font-size: 40px;
   padding: 2px 8px;
   border-radius: 20px;
   background-color: rgb(240, 211, 199);
-  color: rgb(193, 8, 8);
+    color: #ff1100;
 }
 
 .medandid p
