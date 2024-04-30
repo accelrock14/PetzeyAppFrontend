@@ -1,90 +1,12 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-  Launch demo modal
-</button>
+<!-- vet-cards.component.html -->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="border-radius: 20%;">
-  <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-          <div class="row">
-              <h5 class="modal-title" id="exampleModalLongTitle">Edit Pet Profile</h5>
-          </div>
-          <div class="row">
-            <h6 class="text-muted mt-2" style="font-size: small;">Update Pet Details</h6>
-          </div>
-          <div class="row mt-3">
-              <div class="col-5 ms-3">
-                  <img src="https://t3.ftcdn.net/jpg/06/10/71/64/360_F_610716498_li6BIgt75TXw8B4W89pbf3VtKgHNQkXo.jpg" class="img-fluid rounded-circle-img">
-              </div>
-              <div class="col-6">
-                  <div class="row">
-                      <h6 class="text-muted" style="font-size:small">Name</h6>
-                  </div>
-                  <div class="row ms-1 me-3 ">
-                      <input type="text" class="text-box" placeholder="Enter Name">
-                  </div>
-              </div>
-          </div>
-          <div class="row mt-3 ms-2">
-              <h6 class="text-muted" style="font-size: small;">Species</h6>
-          </div>
-          <div class="row ms-2">
-              <div class="col-2 form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="option1">
-                  <label class="form-check-label" style="font-size: small;" for="radio1">Dog</label>
-              </div>
-              <div class="col-2 form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="option2">
-                  <label class="form-check-label" style="font-size: small;" for="radio2">Cat</label>
-              </div>
-              <div class="col-2 form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="radioGroup" id="radio3" value="option3">
-                  <label class="form-check-label" style="font-size: small;" for="radio3">Reptile</label>
-              </div>
-              <div class="col-2 form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="radioGroup" id="radio4" value="option4">
-                  <label class="form-check-label" style="font-size: small;" for="radio4">Other</label>
-              </div>
-          </div>
-          <div class="row ms-2 mt-3">
-              <h6 class="text-muted" style="font-size: small;">Breed</h6>
-          </div>
-          <div class="row ms-3">
-              <input type="text" class="text-box-end">
-          </div>
-          <div class="row mt-3 ms-2">
-              <div class="col-5">
-                  <h6 class="text-muted" style="font-size: small;">Date of Birth</h6>
-              </div>
-              <div class="col-5 ms-4">
-                  <h6 class="text-muted" style="font-size: small;">Age</h6>
-              </div>
-          </div>
-          <div class="row ms-2 mt-0 ">
-              <div class="col-5">
-                  <input type="date" class="text-box">  
-              </div>
-              <div class="col-5 ms-4">
-                  <input class="text-box">
-              </div>                
-          </div>
-          <div class="row mt-3 ms-2">
-              <h6 class="text-muted" style="font-size: small;">Blood Group</h6>
-          </div>
-          <div class="row ms-3">
-              <input type="text" class="text-box">
-          </div>
-          <div class="row ms-2 mt-3">
-              <h6 class="text-muted" style="font-size: small;">Allergies</h6>
-          </div>
-          <input type="text" class="text-box-end ms-3">
-      </div>
-      <div class="modal-footer justify-content-center ">
-        <button type="button" class="btn btn-outline-secondary col-5" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn orange-color-bg col-5 ">Save changes</button>
+<div class="card-container">
+    <div *ngFor="let vet of vets" class="card">
+      <!-- <img [src]="vet.photo" alt="Vet Photo"> -->
+      <div class="card-body">
+        <h5 class="card-title">{{ vet.name }}</h5>
+        <p class="card-text">{{ vet.speciality }}</p>
       </div>
     </div>
   </div>
-</div>
+  
