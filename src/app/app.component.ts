@@ -6,7 +6,7 @@ import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboar
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, RouterLink, DoctorDashboardComponent, RouterLinkActive],
-  templateUrl: './app.component.html',
+  templateUrl:'./app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
