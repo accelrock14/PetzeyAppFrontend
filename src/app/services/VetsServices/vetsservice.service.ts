@@ -32,7 +32,7 @@ export class VetsserviceService {
 
   updateVet(id: number, vet: IVet): Observable<IVet> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put<IVet>(url, vet);
+    return this.http.patch<IVet>(url, vet);
   }
 
   deleteVet(id: number): Observable<IVet> {
@@ -50,7 +50,13 @@ export class VetsserviceService {
     return this.http.post<IVetIdNameDTO[]>(url, doctorIds);
   }
 
-  
+  getFullVetById(id:number){
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<IVet>(url);
+  }
 
+  getTopRatedVets(){
+    return this.http.get<IVetCardDTO[]>(this.apiUrl+"/topRatedVets");
+  }
 
 }

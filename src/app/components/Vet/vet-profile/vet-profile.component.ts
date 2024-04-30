@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
@@ -6,6 +6,8 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditModalComponent } from '../edit-modal/edit-modal.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IVet } from '../../../models/Vets/IVet';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-vet-profile',
@@ -15,6 +17,35 @@ import { CommonModule } from '@angular/common';
   styleUrl: './vet-profile.component.css'
 })
 export class VetProfileComponent implements OnInit {
+
+  @ViewChild('successMessage') successMessage!: ElementRef;
+
+  actualVet?:IVet;
+// updateVet(vetid: number,vetPro: IVetProfileDTO) {
+//   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
+//   fullVet.subscribe(vet=>{this.actualVet=fullVet});
+//   this.vetService.updateVet(vetid,fullVet).subscribe();
+// }
+updateVet(vetid: number, vetPro: IVetProfileDTO) {
+  // Fetch the full vet profile
+  this.vetService.getFullVetById(vetid).subscribe((fullVet: IVet) => {
+    // Update the matching attributes with values from vetPro
+    Object.keys(vetPro).forEach(key => {
+      if (fullVet.hasOwnProperty(key)) {
+        // Type assertion to inform TypeScript about the types
+        (fullVet as any)[key] = vetPro[key];
+      }
+    });
+
+    // Pass the updated vet profile to the updateVet function
+    this.vetService.updateVet(vetid, fullVet).subscribe(() => {
+      // Optionally, you can perform any post-update actions here
+      alert("Successfully Saved the Changes");
+    });
+  });
+}
+
+
 editVetProfile() {
 throw new Error('Method not implemented.');
 }
