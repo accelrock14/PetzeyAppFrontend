@@ -23,7 +23,15 @@ import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [NgIf, FormsModule, FormsModule, ReactiveFormsModule, NgMultiSelectDropDownModule, NgClass, CommonModule],
+  imports: [
+    NgIf,
+    FormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
+    NgClass,
+    CommonModule,
+  ],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css',
 })
@@ -107,8 +115,8 @@ export class ReportComponent implements OnInit {
     days: 0,
     consume: '',
     dosage: [false, false, false],
-    comment: ''
-  }
+    comment: '',
+  };
   myForm!: FormGroup;
   ShowFilter = true;
   limitSelection = false;
@@ -276,39 +284,68 @@ export class ReportComponent implements OnInit {
   }
 
   confirmDeleteMedicine() {
-    this.reportService.DeletePrescription(this.deletePrescribedMedicineID).subscribe(
-      p => {
-        this.reportService.getReport(1).subscribe(r => {
-          this.report = r
-        })
-      }
-    )
+    this.reportService
+      .DeletePrescription(this.deletePrescribedMedicineID)
+      .subscribe((p) => {
+        this.reportService.getReport(1).subscribe((r) => {
+          this.report = r;
+        });
+      });
   }
 
   activatePrescriptionModal(id: number) {
     if (id == 0) {
-      this.prescriptionForm.prescribedMedicineID = 0
-      this.prescriptionForm.medicine = 0
-      this.prescriptionForm.days = 0
-      this.prescriptionForm.dosage = [false, false, false]
-      this.prescriptionForm.consume = ''
-      this.prescriptionForm.comment = ''
-    }
-    else {
-      let prescribedMedicine: PrescribedMedicine | undefined = this.report.Prescription.PrescribedMedicines.find(p => p.PrescribedMedicineID == id)
+      this.prescriptionForm.prescribedMedicineID = 0;
+      this.prescriptionForm.medicine = 0;
+      this.prescriptionForm.days = 0;
+      this.prescriptionForm.dosage = [false, false, false];
+      this.prescriptionForm.consume = '';
+      this.prescriptionForm.comment = '';
+    } else {
+      let prescribedMedicine: PrescribedMedicine | undefined =
+        this.report.Prescription.PrescribedMedicines.find(
+          (p) => p.PrescribedMedicineID == id
+        );
       if (prescribedMedicine != undefined) {
-        this.prescriptionForm.prescribedMedicineID = prescribedMedicine?.PrescribedMedicineID
-        this.prescriptionForm.medicine = prescribedMedicine.MedicineID
-        this.prescriptionForm.days = prescribedMedicine.NumberOfDays
-        this.prescriptionForm.dosage = [false, false, false]
+        this.prescriptionForm.prescribedMedicineID =
+          prescribedMedicine?.PrescribedMedicineID;
+        this.prescriptionForm.medicine = prescribedMedicine.MedicineID;
+        this.prescriptionForm.days = prescribedMedicine.NumberOfDays;
+        this.prescriptionForm.dosage = [false, false, false];
+        //morning
+        if (
+          prescribedMedicine.Dosages == 0 ||
+          prescribedMedicine.Dosages == 3 ||
+          prescribedMedicine.Dosages == 4 ||
+          prescribedMedicine.Dosages == 6
+        ) {
+          this.prescriptionForm.dosage[0] = true;
+        }
+        //  afternoon
+        if (
+          prescribedMedicine.Dosages == 1 ||
+          prescribedMedicine.Dosages == 3 ||
+          prescribedMedicine.Dosages == 5 ||
+          prescribedMedicine.Dosages == 6
+        ) {
+          this.prescriptionForm.dosage[1] = true;
+        }
+        //  night
+        if (
+          prescribedMedicine.Dosages == 2 ||
+          prescribedMedicine.Dosages == 4 ||
+          prescribedMedicine.Dosages == 5 ||
+          prescribedMedicine.Dosages == 6
+        ) {
+          this.prescriptionForm.dosage[2] = true;
+        }
 
         if (prescribedMedicine.Consume) {
-          this.prescriptionForm.consume = 'before'
+          this.prescriptionForm.consume = 'before';
+        } else {
+          this.prescriptionForm.consume = 'after';
         }
-        else {
-          this.prescriptionForm.consume = 'after'
-        }
-        this.prescriptionForm.comment = prescribedMedicine.Comment
+        this.prescriptionForm.comment = prescribedMedicine.Comment;
       }
     }
   }
@@ -320,29 +357,58 @@ export class ReportComponent implements OnInit {
       NumberOfDays: this.prescriptionForm.days,
       Consume: false,
       Dosages: 0,
-      Comment: this.prescriptionForm.comment
-    }
+      Comment: this.prescriptionForm.comment,
+    };
 
     if (this.prescriptionForm.consume == 'before') {
-      prescribedMedicine.Consume = true
+      prescribedMedicine.Consume = true;
     }
+
+    // dosage
+    if (this.prescriptionForm.dosage[0]) {
+      prescribedMedicine.Dosages = 0;
+      if (this.prescriptionForm.dosage[1] && this.prescriptionForm.dosage[2]) {
+        prescribedMedicine.Dosages = 6;
+      } else if (this.prescriptionForm.dosage[1]) {
+        prescribedMedicine.Dosages = 3;
+      } else {
+        prescribedMedicine.Dosages = 4;
+      }
+    } else if (this.prescriptionForm.dosage[1]) {
+      prescribedMedicine.Dosages = 1;
+      if (this.prescriptionForm.dosage[2]) {
+        prescribedMedicine.Dosages = 5;
+      }
+    } else {
+      prescribedMedicine.Dosages = 2;
+    }
+
     if (this.prescriptionForm.prescribedMedicineID == 0) {
-      this.reportService.AddPrescription(this.report.Prescription.PrescriptionID, prescribedMedicine).subscribe(p => {
-        prescribedMedicine.PrescribedMedicineID = parseInt(p.toString())
-        this.report.Prescription.PrescribedMedicines.push(prescribedMedicine)
-      })
-    }
-    else {
-      this.reportService.UpdatePrescription(this.prescriptionForm.prescribedMedicineID, prescribedMedicine).subscribe(p => {
-        this.reportService.getReport(1).subscribe(r => {
-          this.report = r
-        })
-      })
+      this.reportService
+        .AddPrescription(
+          this.report.Prescription.PrescriptionID,
+          prescribedMedicine
+        )
+        .subscribe((p) => {
+          prescribedMedicine.PrescribedMedicineID = parseInt(p.toString());
+          this.report.Prescription.PrescribedMedicines.push(prescribedMedicine);
+        });
+    } else {
+      this.reportService
+        .UpdatePrescription(
+          this.prescriptionForm.prescribedMedicineID,
+          prescribedMedicine
+        )
+        .subscribe((p) => {
+          this.reportService.getReport(1).subscribe((r) => {
+            this.report = r;
+          });
+        });
     }
   }
 
   selectMedicine(medicine: ListItem) {
     let selectMed: Medicine = medicine as unknown as Medicine;
-    this.prescriptionForm.medicine = selectMed.MedicineID
+    this.prescriptionForm.medicine = selectMed.MedicineID;
   }
 }
