@@ -23,7 +23,7 @@ export class AppointmentPetProfileComponent {
     Gender: 'Female',
     DateOfBirth: new Date(),
     Allergies: '',
-    LastAppointmentdate: new Date()
+    LastAppointmentDate: new Date()
   }
 
   Owner = {

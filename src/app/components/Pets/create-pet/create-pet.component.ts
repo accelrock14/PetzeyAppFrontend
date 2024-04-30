@@ -61,7 +61,10 @@ export class CreatePetComponent {
     Gender: '',
     DateOfBirth: new Date(),
     Allergies: '',
-    LastAppointmentdate: new Date(),
-  };
-  tempFile?:File;
+    LastAppointmentDate: new Date()
+
+  }
+
+
+
 }

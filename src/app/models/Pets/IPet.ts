@@ -9,5 +9,5 @@ export interface IPet {
     Gender:string,
     DateOfBirth:Date,
     Allergies:string,
-    LastAppointmentdate:Date
+    LastAppointmentDate:Date
 }
