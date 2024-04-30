@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-appointment-card/doctor-appointment-card.component';
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
+import { PetAppointmentCardComponent } from '../../appointment-cards/pet-appointment-card/pet-appointment-card.component';
 
 @Component({
   selector: 'app-doctor-dashboard',
   standalone: true,
-  imports: [FormsModule, CommonModule, DoctorAppointmentCardComponent],
+  imports: [FormsModule, CommonModule, PetAppointmentCardComponent],
   templateUrl: './doctor-dashboard.component.html',
   styleUrl: './doctor-dashboard.component.css'
 })
@@ -31,6 +32,7 @@ export class DoctorDashboardComponent implements OnInit {
     Total: 0,
     Closed: 0
   }
+  page:number = 1;
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
@@ -51,4 +53,22 @@ export class DoctorDashboardComponent implements OnInit {
     })
   }
 
+  pageClick(pageInput:number) {
+    this.offset = (pageInput-1)*3;
+    if(pageInput == this.page - 1){
+      this.page--;
+    }
+    else if(pageInput == this.page + 1) {
+      this.page++;
+    }
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
+  }
+
+  isPreviousPageDisabled() {
+    return this.page === 1;
+  }
 }

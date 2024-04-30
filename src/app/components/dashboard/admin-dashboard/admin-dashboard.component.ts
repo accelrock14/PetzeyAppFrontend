@@ -24,6 +24,7 @@ export class AdminDashboardComponent implements OnInit {
     Status: "",
     DoctorID: null
   };
+  page:number = 1;
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
@@ -43,4 +44,27 @@ export class AdminDashboardComponent implements OnInit {
       console.log(this.appointmentCards);
     })
   }
+
+  pageClick(pageInput:number) {
+    this.offset = (pageInput-1)*3;
+    if(pageInput == this.page - 1){
+      this.page--;
+    }
+    else if(pageInput == this.page + 1) {
+      this.page++;
+    }
+    this.filters.DoctorID = this.selectedDoctor;
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+      this.appointmentCards = data;
+      console.log(this.appointmentCards);
+    })
+  }
+
+  isPreviousPageDisabled() {
+    return this.page === 1;
+  }
+
+
 }

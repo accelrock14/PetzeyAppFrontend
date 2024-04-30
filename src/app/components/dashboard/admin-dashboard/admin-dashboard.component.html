@@ -48,3 +48,16 @@
         </div>
     </div>
 </div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" tabindex="-1" (click)="pageClick(page-1)" [class.disabled]="isPreviousPageDisabled()" style="cursor: pointer;">&laquo;</a>
+      </li>
+      <li class="page-item"><a class="page-link" (click)="pageClick(page)" style="cursor: pointer;">{{page}}</a></li>
+
+      <li class="page-item">
+        <a class="page-link" (click)="pageClick(page+1)" style="cursor: pointer;">&raquo;</a>
+      </li>
+    </ul>
+</nav>
