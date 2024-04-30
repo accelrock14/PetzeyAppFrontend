@@ -19,7 +19,7 @@
                     <div style="position: relative; display: inline-block;">
                         <img src="https://t3.ftcdn.net/jpg/06/10/71/64/360_F_610716498_li6BIgt75TXw8B4W89pbf3VtKgHNQkXo.jpg" class="img-fluid rounded-circle-img" style="position: relative; z-index: 1;">
                         <div class="custom-file" style="position: absolute; bottom: 0; right: 0; z-index: 2;">
-                            <input type="file" id="inputGroupFile" onchange="handleFile(this.files)" accept=".jpeg, .jpg" style="opacity: 0; width: 100%; height: 100%;">
+                            <input type="file" id="inputGroupFile" accept=".jpeg, .jpg" [(ngModel)]="tempFile" style="opacity: 0; width: 100%; height: 100%;">
                             <button class="btn orange-color-bg p-1" style="border-radius: 50%; position: absolute; bottom: 0; right: 0;" onclick="document.getElementById('inputGroupFile').click()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16" style="display: block; margin: auto;">
                                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -96,7 +96,7 @@
         </div>
         <div class="modal-footer justify-content-center ">
           <button type="button" class="btn btn-outline-secondary col-5" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn orange-color-bg col-5 " (onClick)="CreateNewPet()">Confirm</button>
+          <button type="button" class="btn orange-color-bg col-5 " (click)="CreateNewPet()" >Confirm</button>
         </div>
       </div>
     </div>
