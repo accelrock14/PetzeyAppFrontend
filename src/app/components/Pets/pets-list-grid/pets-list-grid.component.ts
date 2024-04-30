@@ -15,31 +15,40 @@ import { CommonModule } from '@angular/common';
 export class PetsListGridComponent implements OnInit{
 
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
+  errorMessage: string ='';
 
 searchPets() {
-  this.petsService.FilterPets(this.petsFilter).subscribe(pets => {
-    this.pets=pets;
+  this.petsService.FilterPets(this.petsFilter)
+  .subscribe(pets => {
+    this.pets = pets;
+    console.log('Original pets:',this.pets);
+
+    this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,2);
+    console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+
+    this.errorMessage = ''; // Clear error message on successful retrieval
+   },
+   error => {
+     if (error.status === 404) {
+       this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+     } else {
+       this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+     }
    })
 }
 
   constructor(private petsService: PetsService){}
-
-
-
-
   ngOnInit(): void {
-   this.petsService.FilterPets(this.petsFilter).subscribe(pets => {
-
-    this.pets=pets;
-   })
+    this.searchPets();
   }
 
   pets : IPet[] =[]
+  recentlyConsultedPets : IPet[] =[]
   petsFilter : IPetFilterParams ={
   PetName:"",
   Species:"",
   PetIDs:[]
-
   };
+
 
 }

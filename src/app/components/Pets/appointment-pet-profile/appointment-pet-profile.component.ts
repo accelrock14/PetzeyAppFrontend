@@ -22,7 +22,7 @@ export class AppointmentPetProfileComponent {
     DateOfBirth: new Date(),
     Age: 4,
     Allergies: '',
-    LastAppointmentdate: ''
+    LastAppointmentDate: new Date(),
   }
 
   Owner = {
