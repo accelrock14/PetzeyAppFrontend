@@ -1,14 +1,14 @@
-<!-- vet-cards.component.html -->
-
-<div class="card-container">
+<div class="container mt-5">
   <div class="row">
-    <div class="col-3">
-      <div *ngFor="let vet of vets" class="card">
-        <img [src]="vet.Photo" alt="Vet Photo">
-        <div class="card-body">
+    <!-- Repeat this block for each profile -->
+
+    <div *ngFor="let vet of vets" class="col-md-3 col-sm-6 mb-4">
+      <div class="card">
+        <img [src]="vet.Photo" class="card-img-top" alt="Not found" />
+        <div class="card-body text-center">
           <h5 class="card-title">{{ vet.Name }}</h5>
           <p class="card-text">{{ vet.Speciality }}</p>
-          <p class="card-text">{{vet.PhoneNumber}}</p>
+          <p class="card-text">{{ vet.PhoneNumber }}</p>
         </div>
       </div>
     </div>

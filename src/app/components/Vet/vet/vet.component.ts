@@ -32,6 +32,19 @@ export class VetComponent {
         }
       );
   }
+  getVetProfile(): void {
+    this.vetService.()
+      .subscribe(
+        (vets: IVetCardDTO[]) => {
+          this.vets = vets;
+          console.log(this.vets)
+        },
+        error => {
+          console.error('Error fetching vets:', error);
+        }
+      );
+  }
+
 
 
 
