@@ -15,7 +15,7 @@ export const routes: Routes = [
     },
 
     {
-      path:'pets', component:PetsListGridComponent
+      path:'pets-list', component:PetsListGridComponent
     },
     {
       path:'pets-profile/:id', component:PetProfileComponent
