@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppointmentFormService } from '../Appointment_Form_Services/appointment-form.service';
-import { GeneralPetIssue } from '../models/GeneralPetIssue';
-import { Veterinarian } from '../models/Veterinarian';
-import { PetParent } from '../models/PetParent';
-import { Pet } from '../models/Pet';
-import { AppointmentDetail } from '../models/AppointmentDetail';
-import { Status } from '../models/Status';
-import { PetIssue } from "../models/PetIssue"
+import { GeneralPetIssue } from '../../models/GeneralPetIssue';
+import { Veterinarian } from '../../models/Veterinarian';
+import { PetParent } from '../../models/PetParent';
+import { Pet } from '../../models/Pet';
+import { AppointmentDetail } from '../../models/AppointmentDetail';
+import { Status } from '../../models/Status';
+import { PetIssue } from "../../models/PetIssue"
+import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 
+declare var window:any;
 @Component({
   selector: 'app-new-appointment-form',
   standalone: true,
@@ -18,6 +19,9 @@ import { PetIssue } from "../models/PetIssue"
   styleUrl: './new-appointment-form.component.css'
 })
 export class NewAppointmentFormComponent implements OnInit {
+
+  formModal:any;
+  cancelAptModal:any;
 
   appointmentDetail:AppointmentDetail={
     AppointmentID: 0,
@@ -30,7 +34,7 @@ export class NewAppointmentFormComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: null
+    PetIssues:[]
   };
   slotStatuses:boolean[]=[];
   selectedScheduleDate:Date=new Date();
@@ -63,6 +67,12 @@ export class NewAppointmentFormComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // modal popup code 
+    this.formModal= new window.bootstrap.Modal(
+      document.getElementById("exampleModal")
+    );
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    //
     this.selectedScheduleDate=new Date();
     // this is the method to getGeneralPetIssues from backend server
     this.aptService.getGeneralPetIssues().subscribe({
@@ -108,7 +118,20 @@ export class NewAppointmentFormComponent implements OnInit {
     });
 
   }
-
+// modal popup code for submission
+openModal(){
+  this.formModal.show();
+}
+closeModal(){
+  this.formModal.hide();
+}
+// cancel model
+openCancelModal() {
+  this.cancelAptModal.show();
+}
+closeCancelModal(){
+  this.cancelAptModal.hide();
+}
 
   filterPetIssues(): void {
     if (!this.petIssueSearchText.length) {
@@ -242,12 +265,18 @@ export class NewAppointmentFormComponent implements OnInit {
     this.appointmentDetail.ReasonForVisit = reasonforvisit;
     this.appointmentDetail.Status=Status.Pending;
     this.appointmentDetail.Report=null;
-    alert("inside booking");
+    // alert("inside booking");
     // finally call the service post method.
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
       next:(response)=>{console.log("successposting",response);},
       error:(err)=>{console.log("got error while posting",err);}
     });
+  }
+
+  isSubmitDisabled: boolean = true;
+
+  toggleDisabled(): void {
+    this.isSubmitDisabled = !this.isSubmitDisabled;
   }
 
 }
