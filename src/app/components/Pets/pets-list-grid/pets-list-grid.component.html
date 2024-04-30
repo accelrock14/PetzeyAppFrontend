@@ -46,21 +46,9 @@
 <div *ngIf="errorMessage==''">
   <div class="row">
     @for(pet of recentlyConsultedPets; track $index){
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 
-      <div class="card shadow">
-        <div class="d-flex align-items-center">
-          <div class="col-5 px-0 py-3 d-flex justify-content-center align-items-center">
-            <img src="https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_640.jpg" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="pet image">
-          </div>
-          <div class="col-7 px-1 py-3">
-              <h6 class="card-title mb-0">{{pet.PetName}}</h6>
-              <p class="card-text mb-2"><small class="text-muted">{{pet.Gender}}, {{pet.Age}} years</small></p>
-              <p class="card-text"><small class="text-muted">Owner: {{pet.PetParentId}}</small></p>
-          </div>
-        </div>
-      </div>
-
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4" >
+      <app-pet-card [pet]="pet"></app-pet-card>
     </div>
   }
     </div>
@@ -82,18 +70,7 @@
     @for(pet of pets; track $index){
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 
-      <div class="card ">
-        <div class="d-flex align-items-center">
-          <div class="col-5 px-0 py-3 d-flex justify-content-center align-items-center">
-            <img src="https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_640.jpg" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="pet image">
-          </div>
-          <div class="col-7 px-1 py-3">
-              <h6 class="card-title mb-0">{{pet.PetName}}</h6>
-              <p class="card-text mb-2"><small class="text-muted">{{pet.Gender}}, {{pet.DateOfBirth | age}} years</small></p>
-              <p class="card-text"><small class="text-muted">Owner: {{pet.PetParentId}}</small></p>
-          </div>
-        </div>
-      </div>
+     <app-pet-card [pet]="pet"></app-pet-card>
 
     </div>
   }

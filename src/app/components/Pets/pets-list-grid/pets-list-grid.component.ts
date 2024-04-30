@@ -5,15 +5,24 @@ import { IPetFilterParams } from '../../../models/Pets/IPetFilterParams';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
+import { PetCardComponent } from "../pet-card/pet-card.component";
 
 @Component({
     selector: 'app-pets-list-grid',
     standalone: true,
     templateUrl: './pets-list-grid.component.html',
     styleUrl: './pets-list-grid.component.css',
-    imports: [FormsModule, CommonModule, AgePipe]
+    imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
 })
 export class PetsListGridComponent implements OnInit{
+
+  pets : IPet[] =[]
+  recentlyConsultedPets : IPet[] =[]
+  petsFilter : IPetFilterParams ={
+    PetName:"",
+    Species:"",
+    PetIDs:[]
+   };
 
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
   errorMessage: string ='';
@@ -40,16 +49,14 @@ searchPets() {
 
   constructor(private petsService: PetsService){}
   ngOnInit(): void {
+
+   // get pet IDs for doctors flow
+    const petIds=[1,2];
+    this.petsFilter.PetIDs=petIds;
+
     this.searchPets();
   }
 
-  pets : IPet[] =[]
-  recentlyConsultedPets : IPet[] =[]
-  petsFilter : IPetFilterParams ={
-  PetName:"",
-  Species:"",
-  PetIDs:[]
-  };
 
 
 }
