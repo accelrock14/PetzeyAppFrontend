@@ -150,3 +150,21 @@
     border: 1px solid rgb(207, 203, 203);
     border-radius: 4px;
 }
+
+/* modal popup related code */
+.modal-body {
+    display: flex;        /* Enable Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center;  /* Center children horizontally in the cross axis */
+    justify-content: center; /* Center children vertically in the main axis (optional) */
+    text-align: center;   /* Center the text of each child */
+}
+
+.modal-footer{
+    display: flex;        /* Enable Flexbox */
+    /* flex-direction: column;  */
+    align-items: center;  /* Center children horizontally in the cross axis */
+    justify-content: center; /* Center children vertically in the main axis (optional) */
+    text-align: center;   /* Center the text of each child */
+}
+  

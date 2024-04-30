@@ -95,15 +95,83 @@
 
     <br>
     <h6>Reason for Visit</h6>
-    <textarea name="reasonforvisit" id="reasonforvisit" cols="50" rows="2" class="reasonforvisit" #reasonforvisit></textarea>
+    <textarea name="reasonforvisit" id="reasonforvisit" cols="50" rows="2" class="reasonforvisit" #reasonforvisit [(ngModel)]="appointmentDetail.ReasonForVisit" ></textarea>
     <br>
     <br>
     <div>
-        <button class="btn btn-secondary cancel">Cancel</button>
-        <button class="btn btn-primary bookappointment" (click)="onBook(reasonforvisit.value)" >Book Appointment</button>
+        <button class="btn btn-secondary cancel" (click)="openCancelModal()">Cancel</button>
+        <!-- (click)="onBook(reasonforvisit.value)" -->
+        <!-- [disabled]="isSubmitDisabled" -->
+        <button class="btn btn-primary bookappointment" (click)="openModal()">Book Appointment</button>
     </div>
 </div>
 <hr>
+
+
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||
+modal popup code for confirmation
+-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Book Appointment</h4>
+            <p>Do you want to book appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBook(reasonforvisit.value)">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- modal popup code for cancel confirmation -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeCancelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Discard Changes</h4>
+            <p>Are you sure you want to discard changes?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
+          <!-- later add a method here to navigate to the previous window -->
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" >Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+
+
+
+
+
+
+
 
 <!--  .pre {
     display: inline;
