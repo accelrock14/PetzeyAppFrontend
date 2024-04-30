@@ -4,7 +4,6 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 import { CommonModule } from '@angular/common';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
-import { VetProfileModalComponent } from '../vet-profile-modal/vet-profile-modal.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,11 +36,10 @@ export class VetComponent {
       );
   }
   openVetProfile(id: number): void {
-    // Fetch vet profile details by ID
-    this.vetService.getVetById(id).subscribe(profile => {
+    
       this.router.navigate(['/vet-profile', id]);
      
       
-    });
+    }
   }
-}
+
