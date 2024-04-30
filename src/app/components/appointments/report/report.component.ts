@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+
 import {
   FormBuilder,
   FormGroup,
@@ -17,6 +17,7 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-report',
