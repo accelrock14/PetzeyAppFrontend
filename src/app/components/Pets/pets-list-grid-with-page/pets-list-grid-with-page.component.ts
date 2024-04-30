@@ -90,6 +90,7 @@ export class PetsListGridWithPagesComponent implements OnInit {
         this.updateRoute(nextPage);
       }
     });
+    console.log(this.pets)
   }
 
   updateRoute(page: number): void {
