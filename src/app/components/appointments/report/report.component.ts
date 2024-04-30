@@ -237,7 +237,13 @@ export class ReportComponent implements OnInit {
   }
 
   confirmDeleteMedicine() {
-    console.log(this.deletePrescribedMedicineID);
+    this.reportService.DeletePrescription(this.deletePrescribedMedicineID).subscribe(
+      p => {
+        this.reportService.getReport(1).subscribe(r => {
+          this.report = r
+        })
+      }
+    )
   }
 
   activatePrescriptionModal(id: number) {
@@ -256,7 +262,13 @@ export class ReportComponent implements OnInit {
         this.prescriptionForm.medicine = prescribedMedicine.MedicineID
         this.prescriptionForm.days = prescribedMedicine.NumberOfDays
         this.prescriptionForm.dosage = [false, false, false]
-        this.prescriptionForm.consume = 'before'
+
+        if (prescribedMedicine.Consume) {
+          this.prescriptionForm.consume = 'before'
+        }
+        else {
+          this.prescriptionForm.consume = 'after'
+        }
         this.prescriptionForm.comment = prescribedMedicine.Comment
       }
     }

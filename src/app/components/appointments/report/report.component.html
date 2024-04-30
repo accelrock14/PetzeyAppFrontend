@@ -239,7 +239,12 @@
                 <small>Days: {{ prescription.NumberOfDays }}</small>
                 <div class="d-flex justify-content-between">
                   <small class="my-auto">{{ prescription.Comment }}</small>
-                  <div class="capsule2">after-food</div>
+                  <div *ngIf="prescription.Consume" class="capsule2">
+                    before-food
+                  </div>
+                  <div *ngIf="!prescription.Consume" class="capsule2">
+                    after-food
+                  </div>
                 </div>
                 <div class="d-flex justify-content-end align-items-center mt-2">
                   <div class="circular-div"></div>
