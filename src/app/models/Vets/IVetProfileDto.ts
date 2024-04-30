@@ -1,8 +1,9 @@
 export interface IVetProfileDTO {
-    name: string;
-    npiNumber: string;
-    speciality: string;
-    email: string;
-    phoneNumber: string;
-    photo: ArrayBuffer;
+    VetId:number,
+    Name: string;
+    NpiNumber: string;
+    Speciality: string;
+    Email: string;
+    PhoneNumber: string;
+    Photo: ArrayBuffer;
   }

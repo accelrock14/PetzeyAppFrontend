@@ -3,8 +3,8 @@
     <!-- Repeat this block for each profile -->
 
     <div *ngFor="let vet of vets" class="col-md-3 col-sm-6 mb-4">
-      <div class="card">
-        <img [src]="vet.Photo" class="card-img-top" alt="Not found" />
+      <div class="card" (click)="openVetProfile(vet.VetId)">
+        <!-- <img [src]="vet.Photo" class="card-img-top" alt="Not found" /> -->
         <div class="card-body text-center">
           <h5 class="card-title">{{ vet.Name }}</h5>
           <p class="card-text">{{ vet.Speciality }}</p>
