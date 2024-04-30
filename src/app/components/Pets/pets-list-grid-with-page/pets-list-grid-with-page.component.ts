@@ -5,13 +5,14 @@ import { PetsService } from './../../../services/PetsServices/pets.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AgePipe } from "../../../pipes/Age/age.pipe";
 
 @Component({
-  selector: 'app-pets-list-grid',
-  templateUrl: './pets-list-grid-with-page.component.html',
-  styleUrls: ['./pets-list-grid-with-page.component.css'],
-  imports: [CommonModule, FormsModule],
-  standalone: true
+    selector: 'app-pets-list-grid-with-page',
+    templateUrl: './pets-list-grid-with-page.component.html',
+    styleUrls: ['./pets-list-grid-with-page.component.css'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AgePipe]
 })
 export class PetsListGridWithPagesComponent implements OnInit {
 

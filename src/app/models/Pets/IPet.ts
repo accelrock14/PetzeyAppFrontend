@@ -7,7 +7,6 @@ export interface IPet {
     Breed:string,
     Gender:string,
     DateOfBirth:Date,
-    Age:number,
     Allergies:string,
     LastAppointmentdate:string
 }
