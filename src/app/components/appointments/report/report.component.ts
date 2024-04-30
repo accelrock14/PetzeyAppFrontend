@@ -16,6 +16,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
+import { Medicine } from '../../../models/appoitment-models/Medicine';
 
 @Component({
   selector: 'app-report',
@@ -107,15 +108,16 @@ export class ReportComponent implements OnInit {
     comment: ''
   }
   myForm!: FormGroup;
-  disabled = false;
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
   tests: Test[] = [];
+  medicines: Medicine[] = []
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
   symptomSettings: any = {};
   testSettings: any = {};
+  medicineSettings: any = {}
   deletePrescribedMedicineID: number = 0;
 
   ngOnInit(): void {
@@ -138,6 +140,14 @@ export class ReportComponent implements OnInit {
         itemsShowLimit: 3,
         allowSearchFilter: this.ShowFilter,
       };
+      this.medicineSettings = {
+        singleSelection: true,
+        idField: 'MedicineID',
+        textField: 'MedicineName',
+        enableCheckAll: false,
+        itemsShowLimit: 3,
+        allowSearchFilter: this.ShowFilter,
+      };
 
       this.reportService.getAllSymptoms().subscribe((s) => {
         this.symptoms = s;
@@ -146,12 +156,16 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllTests().subscribe((t) => {
         this.tests = t;
       });
+      this.reportService.getAllMedicines().subscribe((m) => {
+        this.medicines = m
+      })
       this.selectedSymptoms = this.report.Symptoms.map((r) => r.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
-      console.log(this.selectedTests);
+
       this.myForm = this.fb.group({
         symptom: [this.selectedSymptoms],
         test: [this.selectedTests],
+        medicine: []
       });
     });
   }
@@ -224,6 +238,16 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  getMedicineById(id: number): Medicine | undefined {
+    return this.medicines.find((m) => {
+      if (m.MedicineID != null && m.MedicineID == id) {
+        return m;
+      } else {
+        return undefined;
+      }
+    });
+  }
+
   validateNumber(event: KeyboardEvent): void {
     const key = event.key;
     // Allow only numbers and backspace
@@ -274,6 +298,36 @@ export class ReportComponent implements OnInit {
     }
   }
   updatePrescription() {
+    let prescribedMedicine: PrescribedMedicine = {
+      PrescribedMedicineID: 0,
+      MedicineID: this.prescriptionForm.medicine,
+      Medicine: null,
+      NumberOfDays: this.prescriptionForm.days,
+      Consume: false,
+      Dosages: 0,
+      Comment: this.prescriptionForm.comment
+    }
 
+    if (this.prescriptionForm.consume == 'before') {
+      prescribedMedicine.Consume = true
+    }
+    if (this.prescriptionForm.prescribedMedicineID == 0) {
+      this.reportService.AddPrescription(this.report.Prescription.PrescriptionID, prescribedMedicine).subscribe(p => {
+        prescribedMedicine.PrescribedMedicineID = parseInt(p.toString())
+        this.report.Prescription.PrescribedMedicines.push(prescribedMedicine)
+      })
+    }
+    else {
+      this.reportService.UpdatePrescription(this.prescriptionForm.prescribedMedicineID, prescribedMedicine).subscribe(p => {
+        this.reportService.getReport(1).subscribe(r => {
+          this.report = r
+        })
+      })
+    }
+  }
+
+  selectMedicine(medicine: ListItem) {
+    let selectMed: Medicine = medicine as unknown as Medicine;
+    this.prescriptionForm.medicine = selectMed.MedicineID
   }
 }

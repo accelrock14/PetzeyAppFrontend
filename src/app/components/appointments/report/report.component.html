@@ -19,9 +19,18 @@
         </div>
         <div class="medicine-name">
           <label class="fw-bold">Medicine Name</label>
-          <div class="search-box mt-2 mb-3">
-            <input type="text" placeholder="Search..." />
-            <i class="fas fa-search search-icon"></i>
+          <div class="search-box">
+            <form [formGroup]="myForm">
+              <ng-multiselect-dropdown
+                name="symptom"
+                [settings]="medicineSettings"
+                [placeholder]="'Select Medicine'"
+                [data]="medicines"
+                formControlName="medicine"
+                (onSelect)="selectMedicine($event)"
+              >
+              </ng-multiselect-dropdown>
+            </form>
           </div>
         </div>
 
@@ -207,7 +216,10 @@
                 <div class="medicine-name d-flex justify-content-between">
                   <h6>
                     {{
-                      $index + 1 + ". " + prescription.Medicine?.MedicineName
+                      $index +
+                        1 +
+                        ". " +
+                        getMedicineById(prescription.MedicineID)?.MedicineName
                     }}
                   </h6>
 
@@ -248,26 +260,26 @@
                 </div>
                 <div class="d-flex justify-content-end align-items-center mt-2">
                   <div class="circular-div">
-                    @if(prescription.Dosages==0 || prescription.Dosages==3 || prescription.Dosages==4 || prescription.Dosages==6)
-                    {
+                    @if(prescription.Dosages==0 || prescription.Dosages==3 ||
+                    prescription.Dosages==4 || prescription.Dosages==6) {
 
-                      <span class="tick-mark">&#10003;</span>
+                    <span class="tick-mark">&#10003;</span>
                     }
                   </div>
                   <div class="line"></div>
                   <div class="circular-div">
-                    @if(prescription.Dosages==1 || prescription.Dosages==3 || prescription.Dosages==5 || prescription.Dosages==6)
-                    {
+                    @if(prescription.Dosages==1 || prescription.Dosages==3 ||
+                    prescription.Dosages==5 || prescription.Dosages==6) {
 
-                      <span class="tick-mark">&#10003;</span>
+                    <span class="tick-mark">&#10003;</span>
                     }
                   </div>
                   <div class="line"></div>
                   <div class="circular-div">
-                    @if(prescription.Dosages==2 || prescription.Dosages==4 || prescription.Dosages==5 || prescription.Dosages==6)
-                    {
+                    @if(prescription.Dosages==2 || prescription.Dosages==4 ||
+                    prescription.Dosages==5 || prescription.Dosages==6) {
 
-                      <span class="tick-mark">&#10003;</span>
+                    <span class="tick-mark">&#10003;</span>
                     }
                   </div>
                 </div>
@@ -357,7 +369,6 @@
                   [placeholder]="'Select Symptoms'"
                   [data]="symptoms"
                   formControlName="symptom"
-                  [disabled]="disabled"
                   (onSelect)="onSelectSymptom($event)"
                   (onDeSelect)="onDeselectSymptom($event)"
                 >
@@ -382,7 +393,6 @@
                   [placeholder]="'Select Tests'"
                   [data]="tests"
                   formControlName="test"
-                  [disabled]="disabled"
                   (onSelect)="onSelectTest($event)"
                   (onDeSelect)="onDeselectTest($event)"
                 >
