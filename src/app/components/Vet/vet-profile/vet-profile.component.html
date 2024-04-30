@@ -1,2 +1,17 @@
-<p>vet-profile works!</p>
-{{vetProfile?.Name}}
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <img [src]="vetProfile?.Photo" class="card-img-top" alt="Not found" />
+          <div class="card-body">
+            <h5 class="card-title">{{ vetProfile?.Name }}</h5>
+            <p class="card-text"><strong>NPI Number:</strong> {{ vetProfile?.NpiNumber }}</p>
+            <p class="card-text"><strong>Speciality:</strong> {{ vetProfile?.Speciality }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ vetProfile?.Email }}</p>
+            <p class="card-text"><strong>Phone Number:</strong> {{ vetProfile?.PhoneNumber }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

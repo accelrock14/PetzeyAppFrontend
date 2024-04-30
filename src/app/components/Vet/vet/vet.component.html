@@ -1,16 +1,26 @@
+<style>
+  .card-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit text color */
+  }
+</style>
+
 <div class="container mt-5">
+  <input type="text" class="form-control mb-3 col-4" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterVets()">
+  
   <div class="row">
     <!-- Repeat this block for each profile -->
-
-    <div *ngFor="let vet of vets" class="col-md-3 col-sm-6 mb-4">
-      <div class="card" (click)="openVetProfile(vet.VetId)">
-        <!-- <img [src]="vet.Photo" class="card-img-top" alt="Not found" /> -->
-        <div class="card-body text-center">
-          <h5 class="card-title">{{ vet.Name }}</h5>
-          <p class="card-text">{{ vet.Speciality }}</p>
-          <p class="card-text">{{ vet.PhoneNumber }}</p>
+    <div *ngFor="let vet of filteredVets" class="col-md-3 col-sm-6 mb-4">
+      <a href="javascript:void(0);" class="card-link" (click)="openVetProfile(vet.VetId)">
+        <div class="card">
+          <!-- <img [src]="vet.Photo" class="card-img-top" alt="Not found" /> -->
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ vet.Name }}</h5>
+            <p class="card-text">{{ vet.Speciality }}</p>
+            <p class="card-text">{{ vet.PhoneNumber }}</p>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
