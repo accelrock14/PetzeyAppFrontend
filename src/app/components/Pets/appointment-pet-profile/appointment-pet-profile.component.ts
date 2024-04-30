@@ -15,14 +15,15 @@ export class AppointmentPetProfileComponent {
     PetID: 0,
     PetParentId: 5,
     PetName: 'Doggo',
-    PetImage: 'arraybuffer',
+    PetImage: new Uint8Array(),
     Species: 'Dog',
+    BloodGroup: "O+ve",
     Breed: 'Afghan Hound',
     Gender: 'Female',
     DateOfBirth: new Date(),
     Age: 4,
     Allergies: '',
-    LastAppointmentdate: ''
+    LastAppointmentdate: new Date()
   }
 
   Owner = {
