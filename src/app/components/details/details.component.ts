@@ -20,7 +20,7 @@ export class DetailsComponent implements OnInit {
   constructor(private appointmentDetailsService: AppointmentDetailsService) {}
   ngOnInit(): void {
     
-   this.appointmentDetailsService.GetAppointmentDetail(10)
+   this.appointmentDetailsService.GetAppointmentDetail(13)
    .subscribe((appointment: any) => this.appointment = appointment);
 
    
@@ -52,8 +52,9 @@ export class DetailsComponent implements OnInit {
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
           this.closeModal();
-          localStorage.setItem('confirmedAppointmentId', this.appointment.AppointmentID);
-          
+         
+          this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe(updatedAppointment => this.appointment = updatedAppointment);
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
@@ -67,11 +68,11 @@ export class DetailsComponent implements OnInit {
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
           this.closeModal2();
-          localStorage.setItem('confirmedAppointmentId', this.appointment.AppointmentID);
+          
           // this.confirmed=true;
 
-          // this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
-          //   .subscribe(updatedAppointment => this.appointment = updatedAppointment);
+          this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe(updatedAppointment => this.appointment = updatedAppointment);
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
