@@ -6,7 +6,14 @@
 </style>
 
 <div class="container mt-5">
-  <input type="text" class="form-control mb-3 col-4" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterVets()">
+  <div class="row">
+    <div class="col-4">
+      <div class="icon-input">
+        <input class="icon-input__text-field" type="text">
+        <i class="icon-input__icon material-icons">search</i>
+      </div>
+    </div>
+    
   
   <div class="row">
     <!-- Repeat this block for each profile -->

@@ -1,19 +1,84 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="card position-relative">
-        <!-- Edit button -->
-        <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 edit-button" (click)="editVetProfile()">Edit</button>
-        
-        <img [src]="vetProfile?.Photo" class="card-img-top" alt="Not found" />
-        <div class="card-body">
-          <h5 class="card-title">{{ vetProfile?.Name }}</h5>
-          <p class="card-text"><strong>NPI Number:</strong> {{ vetProfile?.NpiNumber }}</p>
-          <p class="card-text"><strong>Speciality:</strong> {{ vetProfile?.Speciality }}</p>
-          <p class="card-text"><strong>Email:</strong> {{ vetProfile?.Email }}</p>
-          <p class="card-text"><strong>Phone Number:</strong> {{ vetProfile?.PhoneNumber }}</p>
+<body>
+  <div class="container mt-4">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div class="row">
+          <h5 class="m-0">Account Details</h5>
+          <p class="text-muted">Manage your account details here</p>
         </div>
+        <button class="btn btn-edit col-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+      </div>
+      <div class="card-body pb-5">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <img src={{vetProfile?.Photo}} alt="Vet Photo" class="img-fluid rounded-circle" style="width: 120px; height: 120px;">
+            </div>
+            <div class="col-md-4">
+                <div class="info">
+                    <p class="text-muted">Name  &nbsp;: &nbsp;{{vetProfile?.Name}} </p>
+                    <p class="text-muted">NPI Number &nbsp;: &nbsp;{{vetProfile?.NpiNumber}} </p>
+                    <p class="text-muted">Speciality  &nbsp;:&nbsp; {{vetProfile?.Speciality}} </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info">
+                  <p class="text-muted">Mobile &nbsp;:&nbsp;{{vetProfile?.PhoneNumber}}</p> 
+                  <p class="text-muted">Email &nbsp;:&nbsp;{{vetProfile?.Email}} </p> 
+              </div>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <div class="form-group">
+              <!-- Existing Profile Image -->
+              <img src="{{ vetProfile!.Photo }}" alt="Dr. John Doe" class="img-thumbnail mb-3" style="width: 100px; height: auto;">
+            
+              <!-- File Input for New Image -->
+              <input type="file" id="profileImage" (change)="onImageSelected($event)" class="form-control-file">
+            
+              <!-- Preview of New Image -->
+              <img [src]="imageSrc" *ngIf="imageSrc" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
+            </div>
+            
+        </div>       
+           <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" [(ngModel)]="vetProfile!.Name" name="name">
+          </div>
+          <div class="mb-3">
+            <label for="speciality" class="form-label">Speciality</label>
+            <input type="text" class="form-control" id="speciality" [(ngModel)]="vetProfile!.Speciality" name="speciality">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="vetProfile!.Email" name="email">
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" [(ngModel)]="vetProfile!.PhoneNumber" name="phone">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-edit">Confirm</button>
       </div>
     </div>
   </div>
 </div>
+</body>
