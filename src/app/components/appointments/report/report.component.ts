@@ -15,6 +15,7 @@ import { Symptom } from '../../../models/appoitment-models/Symptom';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
+import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 
 @Component({
   selector: 'app-report',
@@ -97,6 +98,14 @@ export class ReportComponent implements OnInit {
     RecommendedDoctors: [],
     Comment: 'Patient has IBS. Food intake needs to me monitored',
   };
+  prescriptionForm = {
+    prescribedMedicineID: 0,
+    medicine: 0,
+    days: 0,
+    consume: '',
+    dosage: [false, false, false],
+    comment: ''
+  }
   myForm!: FormGroup;
   disabled = false;
   ShowFilter = true;
@@ -220,5 +229,30 @@ export class ReportComponent implements OnInit {
     if (!(key >= '0' && key <= '9') && key !== 'Backspace') {
       event.preventDefault();
     }
+  }
+
+  activatePrescriptionModal(id: number) {
+    if (id == 0) {
+      this.prescriptionForm.prescribedMedicineID = 0
+      this.prescriptionForm.medicine = 0
+      this.prescriptionForm.days = 0
+      this.prescriptionForm.dosage = [false, false, false]
+      this.prescriptionForm.consume = ''
+      this.prescriptionForm.comment = ''
+    }
+    else {
+      let prescribedMedicine: PrescribedMedicine | undefined = this.report.Prescription.PrescribedMedicines.find(p => p.PrescribedMedicineID == id)
+      if (prescribedMedicine != undefined) {
+        this.prescriptionForm.prescribedMedicineID = prescribedMedicine?.PrescribedMedicineID
+        this.prescriptionForm.medicine = prescribedMedicine.MedicineID
+        this.prescriptionForm.days = prescribedMedicine.NumberOfDays
+        this.prescriptionForm.dosage = [false, false, false]
+        this.prescriptionForm.consume = 'before'
+        this.prescriptionForm.comment = prescribedMedicine.Comment
+      }
+    }
+  }
+  updatePrescription() {
+
   }
 }

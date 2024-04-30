@@ -1,14 +1,21 @@
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
-    <div class="modal-content  rounded-4 p-2">
+    <div class="modal-content rounded-4 p-2">
       <div class="ms-2 medicinebox">
         <i class="fa-solid fa-prescription-bottle-medical"></i>
       </div>
       <div class="modal-body ms-2 pt-0">
         <div class="heading mb-2">
-        <h4 class="mb-0 pb-0">Medicine</h4>
-        <small>Enter Details of Medicine</small>
+          <h4 class="mb-0 pb-0">Medicine</h4>
+          <small>Enter Details of Medicine</small>
         </div>
         <div class="medicine-name">
           <label class="fw-bold">Medicine Name</label>
@@ -18,48 +25,93 @@
           </div>
         </div>
 
-
         <div class="daysANDconsume d-flex row">
-         <div class="days col-2">
-          <p class="fw-bold">Days</p>
-          <input class="daysinput" type="text">
-         </div>
+          <div class="days col-2">
+            <p class="fw-bold">Days</p>
+            <input
+              class="daysinput"
+              [(ngModel)]="prescriptionForm.days"
+              type="text"
+            />
+          </div>
 
-         <div class="consume col-9 ms-3">
-          <p class="fw-bold mb-0 pb-0">Consume</p>
-          <input type="radio" name="consume" id="">
-          <label for="">Before Food</label>
-          <input type="radio" name="consume" id=""  class="ms-3">
-          <label for="">After Food</label>
-
-         </div>
+          <div class="consume col-9 ms-3">
+            <p class="fw-bold mb-0 pb-0">Consume</p>
+            <input
+              type="radio"
+              name="consume"
+              id=""
+              value="before"
+              [(ngModel)]="prescriptionForm.consume"
+            />
+            <label for="">Before Food</label>
+            <input
+              type="radio"
+              name="consume"
+              id=""
+              class="ms-3"
+              value="after"
+              [(ngModel)]="prescriptionForm.consume"
+            />
+            <label for="">After Food</label>
+          </div>
         </div>
 
         <div class="dosage mb-3">
           <p class="fw-bold mb-0 pb-0">Dosage</p>
-          <input type="checkbox" name="dosage" id="">
+          <input
+            type="checkbox"
+            [(ngModel)]="prescriptionForm.dosage[0]"
+            name="dosage"
+            id=""
+          />
           <label class="me-3">Morning</label>
-          <input type="checkbox" name="dosage" id="">
+          <input
+            type="checkbox"
+            [(ngModel)]="prescriptionForm.dosage[1]"
+            name="dosage"
+            id=""
+          />
           <label class="me-3">Afternoon</label>
-          <input type="checkbox" name="dosage" id="">
+          <input
+            type="checkbox"
+            [(ngModel)]="prescriptionForm.dosage[2]"
+            name="dosage"
+            id=""
+          />
           <label>Night</label>
         </div>
         <div class="comment">
           <label class="fw-bold">Other Comments</label>
-          <textarea class="commenttextarea" name="" id="" cols="35" rows="3"></textarea>
+          <textarea
+            class="commenttextarea"
+            name=""
+            id=""
+            cols="35"
+            rows="3"
+            [(ngModel)]="prescriptionForm.comment"
+          ></textarea>
         </div>
-
       </div>
       <!-- modal footer -->
-        <div class="d-flex justify-content-around ">
-          <button class="btn btn-light border p-2 ps-3 pe-3"  data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg">Confirm</button>
-       </div>
+      <div class="d-flex justify-content-around">
+        <button
+          class="btn btn-light border p-2 ps-3 pe-3"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          data-bs-dismiss="modal"
+          class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+          (click)="updatePrescription()"
+        >
+          Confirm
+        </button>
+      </div>
     </div>
   </div>
 </div>
-
-
 
 <div class="appointmentDetailspage ps-3 p-5">
   <div class="d-flex justify-content-between align-items-center">
@@ -100,7 +152,9 @@
               <button
                 *ngIf="isEditing"
                 class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
-                 data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
+                (click)="activatePrescriptionModal(0)"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModalCenter"
               >
                 <i class="fa-solid fa-plus me-2"></i>Medicine
               </button>
@@ -110,10 +164,23 @@
               track $index) {
               <div class="precription-item border rounded-3 shadow-sm mt-2 p-3">
                 <div class="medicine-name d-flex justify-content-between">
-                  <h6>1. {{ prescription.Medicine.MedicineName }}</h6>
+                  <h6>
+                    {{
+                      $index + 1 + ". " + prescription.Medicine?.MedicineName
+                    }}
+                  </h6>
 
                   <div *ngIf="isEditing">
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                    <button
+                      class="btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalCenter"
+                      (click)="
+                        activatePrescriptionModal(
+                          prescription.PrescribedMedicineID
+                        )
+                      "
+                    >
                       <i class="fa-solid fa-pencil fw-bold orange-color"></i>
                     </button>
                     <button class="btn">
@@ -291,8 +358,5 @@
     </div>
   </div>
 </div>
-
-
-
 
 <!-- modal -->
