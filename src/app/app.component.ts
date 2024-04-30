@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { NewAppointmentFormComponent } from "./components/new-appointment-form/new-appointment-form.component";
+
 import { EditAppointmentFormComponent } from "./components/edit-appointment-form/edit-appointment-form.component";
 
 @Component({
@@ -8,7 +8,7 @@ import { EditAppointmentFormComponent } from "./components/edit-appointment-form
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, RouterLink, NewAppointmentFormComponent, EditAppointmentFormComponent]
+    imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, EditAppointmentFormComponent]
 })
 export class AppComponent implements OnInit{
   
