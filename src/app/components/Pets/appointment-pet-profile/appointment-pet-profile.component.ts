@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { IPet } from '../../../models/Pets/IPet';
+import { AgePipe } from "../../../pipes/Age/age.pipe";
 
 @Component({
-  selector: 'app-appointment-pet-profile',
-  standalone: true,
-  imports: [],
-  templateUrl: './appointment-pet-profile.component.html',
-  styleUrl: './appointment-pet-profile.component.css'
+    selector: 'app-appointment-pet-profile',
+    standalone: true,
+    templateUrl: './appointment-pet-profile.component.html',
+    styleUrl: './appointment-pet-profile.component.css',
+    imports: [AgePipe]
 })
 export class AppointmentPetProfileComponent {
 
@@ -15,14 +16,14 @@ export class AppointmentPetProfileComponent {
     PetID: 0,
     PetParentId: 5,
     PetName: 'Doggo',
-    PetImage: 'arraybuffer',
+    PetImage: new Uint8Array(),
     Species: 'Dog',
+    BloodGroup: "O+ve",
     Breed: 'Afghan Hound',
     Gender: 'Female',
     DateOfBirth: new Date(),
-    Age: 4,
     Allergies: '',
-    LastAppointmentDate: new Date(),
+    LastAppointmentDate: new Date()
   }
 
   Owner = {
