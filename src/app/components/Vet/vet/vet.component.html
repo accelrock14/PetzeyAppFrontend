@@ -1,12 +1,15 @@
 <!-- vet-cards.component.html -->
 
 <div class="card-container">
-    <div *ngFor="let vet of vets" class="card">
-      <!-- <img [src]="vet.photo" alt="Vet Photo"> -->
-      <div class="card-body">
-        <h5 class="card-title">{{ vet.name }}</h5>
-        <p class="card-text">{{ vet.speciality }}</p>
+  <div class="row">
+    <div class="col-3">
+      <div *ngFor="let vet of vets" class="card">
+        <img [src]="vet.Photo" alt="Vet Photo">
+        <div class="card-body">
+          <h5 class="card-title">{{ vet.Name }}</h5>
+          <p class="card-text">{{ vet.Speciality }}</p>
+        </div>
       </div>
     </div>
   </div>
-  
+</div>

@@ -1,6 +1,6 @@
 export interface IVetCardDTO {
-    name: string;
-    phoneNumber: string;
-    speciality: string;
-    photo: ArrayBuffer;
+    Name: string;
+    PhoneNumber: string;
+    Speciality: string;
+    Photo: ArrayBuffer;
   }
