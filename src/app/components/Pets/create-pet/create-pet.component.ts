@@ -31,7 +31,6 @@ CreateNewPet() {
     BloodGroup:'',
     Gender: '',
     DateOfBirth: new Date(),
-    Age: 0,
     Allergies: '',
     LastAppointmentdate: new Date()
 
