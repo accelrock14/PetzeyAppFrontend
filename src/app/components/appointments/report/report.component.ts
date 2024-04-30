@@ -19,15 +19,7 @@ import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [
-    NgIf,
-    FormsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgMultiSelectDropDownModule,
-    NgClass,
-    CommonModule,
-  ],
+  imports: [NgIf, FormsModule, FormsModule, ReactiveFormsModule, NgMultiSelectDropDownModule, NgClass, CommonModule],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css',
 })
@@ -155,7 +147,7 @@ export class ReportComponent implements OnInit {
     });
   }
 
-  constructor(private fb: FormBuilder, private reportService: ReportService) {}
+  constructor(private fb: FormBuilder, private reportService: ReportService) { }
 
   isEditing = false;
 

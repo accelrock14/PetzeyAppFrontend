@@ -1,0 +1,4 @@
+.container-box {
+    border: 1px solid transparent; /* Invisible border */
+    padding: 5px;
+}

@@ -1,0 +1,30 @@
+<!-- doctor-appointment-card.html -->
+<div class="card shadow mt-3">
+    <div class="row ms-1">
+        <div class="col-md-4 col-12 d-flex align-items-center justify-content-center">
+            <img [src]="" class="card-img-top rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="...">
+        </div>
+        <div class="col-md-8 col-12">
+            <div class="card-body">
+                <h5 class="card-title card-content">{{ appointmentcard.DoctorName }}</h5>
+                <p class="text-muted card-content">{{ appointmentcard.VetSpecialization }}</p>
+                <p class="text-muted card-text card-content">Pet:{{ appointmentcard.PetName }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 ms-1 me-1">
+        <div class="col-md-6 col-12 px-1">
+            <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate| date: 'mediumDate' }}</h6>
+            <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate | date: 'hh:mm:a'}}</h6>
+        </div>
+        <div class=" container-box col-md-6 col-12 d-flex align-items-center justify-content-between">
+            <i class="far fa-comment" style="color: orange;"></i>
+            <i class="fas fa-phone" style="color: orange;"></i>
+            <i class="fas fa-video" style="color: orange;"></i>
+        </div>
+    </div>                
+    <div class="card-body">
+        <a href="#" class="btn col-md-6 col-12">Details</a>
+        <a href="#" class="btn col-md-6 col-12">Feedback</a>
+    </div>
+</div> 
