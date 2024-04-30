@@ -17,6 +17,8 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
+import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
+import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
 
 @Component({
   selector: 'app-report',
@@ -113,11 +115,14 @@ export class ReportComponent implements OnInit {
   symptoms: Symptom[] = [];
   tests: Test[] = [];
   medicines: Medicine[] = []
+  doctors: DoctorDTO[] = []
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
+  selectedDoctors: any[] = []
   symptomSettings: any = {};
   testSettings: any = {};
   medicineSettings: any = {}
+  doctorSettings: any = {}
   deletePrescribedMedicineID: number = 0;
 
   ngOnInit(): void {
@@ -148,6 +153,14 @@ export class ReportComponent implements OnInit {
         itemsShowLimit: 3,
         allowSearchFilter: this.ShowFilter,
       };
+      this.doctorSettings = {
+        singleSelection: false,
+        idField: 'DoctorID',
+        textField: 'DoctorName',
+        enableCheckAll: false,
+        itemsShowLimit: 3,
+        allowSearchFilter: this.ShowFilter,
+      };
 
       this.reportService.getAllSymptoms().subscribe((s) => {
         this.symptoms = s;
@@ -159,13 +172,15 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllMedicines().subscribe((m) => {
         this.medicines = m
       })
-      this.selectedSymptoms = this.report.Symptoms.map((r) => r.Symptom);
+      this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
+      this.selectedDoctors = this.report.RecommendedDoctors.map(d => d.DoctorID);
 
       this.myForm = this.fb.group({
         symptom: [this.selectedSymptoms],
         test: [this.selectedTests],
-        medicine: []
+        medicine: [],
+        doctor: [this.selectedDoctors]
       });
     });
   }
