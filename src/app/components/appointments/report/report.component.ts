@@ -116,6 +116,7 @@ export class ReportComponent implements OnInit {
   selectedTests: any[] = [];
   symptomSettings: any = {};
   testSettings: any = {};
+  deleteMedicineID: number = 0;
 
   ngOnInit(): void {
     this.reportService.getReport(1).subscribe((r) => {
@@ -229,6 +230,14 @@ export class ReportComponent implements OnInit {
     if (!(key >= '0' && key <= '9') && key !== 'Backspace') {
       event.preventDefault();
     }
+  }
+
+  setDeleteMedicineID(medicineID: number) {
+    this.deleteMedicineID = medicineID;
+  }
+
+  confirmDeleteMedicine() {
+    console.log(this.deleteMedicineID);
   }
 
   activatePrescriptionModal(id: number) {
