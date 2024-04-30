@@ -32,7 +32,7 @@ CreateNewPet() {
     Gender: '',
     DateOfBirth: new Date(),
     Allergies: '',
-    LastAppointmentdate: new Date()
+    LastAppointmentDate: new Date()
 
   }
 
