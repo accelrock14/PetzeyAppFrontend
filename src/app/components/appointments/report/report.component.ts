@@ -35,6 +35,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
+  @Input() reportId: number = 1;
+
   report: IReport = {
     ReportID: 1,
     Prescription: {
@@ -122,15 +124,18 @@ export class ReportComponent implements OnInit {
   symptoms: Symptom[] = [];
   tests: Test[] = [];
   medicines: Medicine[] = [];
+  doctors: DoctorDTO[] = [];
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
+  selectedDoctors: any[] = [];
   symptomSettings: any = {};
   testSettings: any = {};
   medicineSettings: any = {};
+  doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
 
   ngOnInit(): void {
-    this.reportService.getReport(1).subscribe((r) => {
+    this.reportService.getReport(this.reportId).subscribe((r) => {
       this.report = r;
 
       this.symptomSettings = {
@@ -157,6 +162,14 @@ export class ReportComponent implements OnInit {
         itemsShowLimit: 3,
         allowSearchFilter: this.ShowFilter,
       };
+      this.doctorSettings = {
+        singleSelection: false,
+        idField: 'DoctorID',
+        textField: 'DoctorName',
+        enableCheckAll: false,
+        itemsShowLimit: 3,
+        allowSearchFilter: this.ShowFilter,
+      };
 
       this.reportService.getAllSymptoms().subscribe((s) => {
         this.symptoms = s;
@@ -168,13 +181,17 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllMedicines().subscribe((m) => {
         this.medicines = m;
       });
-      this.selectedSymptoms = this.report.Symptoms.map((r) => r.Symptom);
+      this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
+      this.selectedDoctors = this.report.RecommendedDoctors.map(
+        (d) => d.DoctorID
+      );
 
       this.myForm = this.fb.group({
         symptom: [this.selectedSymptoms],
         test: [this.selectedTests],
         medicine: [],
+        doctor: [this.selectedDoctors],
       });
     });
   }
@@ -228,6 +245,22 @@ export class ReportComponent implements OnInit {
     this.report.Tests.splice(index, 1);
   }
 
+  onSelectDoctor(doctor: ListItem) {
+    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    var recommendedDoctor: RecommendedDoctor = {
+      DoctorID: newDoctor.DoctorID,
+      ID: 1,
+    };
+    this.report.RecommendedDoctors.push(recommendedDoctor);
+  }
+  onDeselectDoctor(doctor: ListItem) {
+    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    let index: number = this.report.RecommendedDoctors.findIndex(
+      (d) => d.DoctorID == newDoctor.DoctorID
+    );
+    this.report.RecommendedDoctors.splice(index, 1);
+  }
+
   getSymptomById(id: number): Symptom | undefined {
     return this.symptoms.find((s) => {
       if (s.SymptomID != null && s.SymptomID == id) {
@@ -273,13 +306,14 @@ export class ReportComponent implements OnInit {
     this.reportService
       .DeletePrescription(this.deletePrescribedMedicineID)
       .subscribe((p) => {
-        this.reportService.getReport(1).subscribe((r) => {
+        this.reportService.getReport(this.reportId).subscribe((r) => {
           this.report = r;
         });
       });
   }
 
   activatePrescriptionModal(id: number) {
+    this.myForm.get('medicine')?.reset();
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
       this.prescriptionForm.medicine = 0;
@@ -386,7 +420,7 @@ export class ReportComponent implements OnInit {
           prescribedMedicine
         )
         .subscribe((p) => {
-          this.reportService.getReport(1).subscribe((r) => {
+          this.reportService.getReport(this.reportId).subscribe((r) => {
             this.report = r;
           });
         });

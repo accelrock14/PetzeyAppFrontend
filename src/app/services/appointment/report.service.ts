@@ -6,6 +6,7 @@ import { Test } from "../../models/appoitment-models/Test";
 import { Symptom } from "../../models/appoitment-models/Symptom";
 import { PrescribedMedicine } from "../../models/appoitment-models/PrescribedMedicine";
 import { Medicine } from "../../models/appoitment-models/Medicine";
+import { ReportHistoryDTO } from '../../models/appoitment-models/ReportHistoryDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class ReportService {
   }
   getAllMedicines(): Observable<Medicine[]> {
     return this.http.get<Medicine[]>(this.reportURL + "medicines")
+  }
+
+  getPetHistory(PetID: number): Observable<ReportHistoryDTO> {
+    return this.http.get<ReportHistoryDTO>(this.reportURL + "reporthistory/" + PetID)
   }
 
   patchReport(id: number, report: IReport) {
