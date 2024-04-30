@@ -38,6 +38,7 @@ export class PetsListGridWithPagesComponent implements OnInit {
     this.route.params.subscribe(params => {
       const pageNumber = +params['page'];
       if (!isNaN(pageNumber) && pageNumber > 0) {
+        this.currentPage = pageNumber;
         this.filterPetsPerPage(pageNumber);
       } else {
         this.filterPetsPerPage(1);
@@ -46,10 +47,16 @@ export class PetsListGridWithPagesComponent implements OnInit {
   }
 
   filterPetsPerPage(page: number): void {
-    this.petsService.FilterPetsPerPage(this.petsFilter, page).subscribe(pets => {
+    this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage).subscribe(pets => {
       this.pets = pets;
       this.currentPage = page;
-      this.totalPages = Math.ceil(this.pets.length / this.itemsPerPage);
+      this.calculateTotalPages();
+    });
+  }
+
+  calculateTotalPages(): void {
+    this.petsService.GetPetsCount(this.petsFilter).subscribe(count => {
+      this.totalPages = Math.ceil(count / this.itemsPerPage);
       this.generatePageNumbers();
     });
   }
@@ -76,7 +83,7 @@ export class PetsListGridWithPagesComponent implements OnInit {
 
   nextPage(): void {
     const nextPage = this.currentPage + 1;
-    this.petsService.FilterPetsPerPage(this.petsFilter, nextPage).subscribe(pets => {
+    this.petsService.FilterPetsPerPage(this.petsFilter, nextPage, this.itemsPerPage).subscribe(pets => {
       if (pets.length > 0) {
         this.filterPetsPerPage(nextPage);
         this.updateRoute(nextPage);

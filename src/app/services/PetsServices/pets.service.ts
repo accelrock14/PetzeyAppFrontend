@@ -9,7 +9,7 @@ import { petsServiceUrl } from '../../Shared/apiUrls';
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
   FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
-  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number): Observable<IPet[]>;
+  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetsByIDs(petIDs:number[]):Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
   GetMorePets(pageNumber:number):Observable<IPet[]>;
@@ -19,6 +19,7 @@ export interface IPetsService{
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):Observable<object>;
+  GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
 }
 export let petToken = new InjectionToken<IPetsService>('IPetsToken')
 
@@ -40,7 +41,7 @@ export class PetsService implements IPetsService{
     const apiUrlFilterPets = `${petsServiceUrl}/filter`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
-  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number = 2): Observable<IPet[]> {
+  FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
@@ -79,5 +80,10 @@ export class PetsService implements IPetsService{
   AddLastAppointmentDate(ID: number, date: Date): Observable<object> {
     const apiUrlAddLastAppointmentDate="";
     return this.apiService.put(apiUrlAddLastAppointmentDate,date)
+  }
+
+  GetPetsCount(petsFilter: IPetFilterParams): Observable<number>{
+    const apiUrl = `${petsServiceUrl}/filters/count`;
+    return this.apiService.post<number>(apiUrl,petsFilter)
   }
 }
