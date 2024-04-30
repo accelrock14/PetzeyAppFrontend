@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { IPet } from '../../../models/Pets/IPet';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-pet',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './create-pet.component.html',
   styleUrl: './create-pet.component.css'
 })
@@ -20,7 +21,20 @@ CreateNewPet() {
 
   }
 
-  NewPet?:IPet;
+  NewPet:IPet={
+    PetID: 0,
+    PetParentId: 0,
+    PetName: '',
+    PetImage: new Uint8Array(0), 
+    Species: '',
+    Breed: '',
+    BloodGroup:'',
+    Gender: '',
+    DateOfBirth: new Date(),
+    Allergies: '',
+    LastAppointmentdate: new Date()
+
+  }
 
 
 

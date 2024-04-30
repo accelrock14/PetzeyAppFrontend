@@ -34,7 +34,7 @@
                         <h6 class="text-muted ms-1" style="font-size:small">Name</h6>
                     </div>
                     <div class="row ms-1 me-3 ">
-                        <input type="text" class="text-box" placeholder="Enter Name">
+                        <input type="text" class="text-box" [(ngModel)]="NewPet.PetName" placeholder="Enter Name">
                     </div>
                 </div>
             </div>
@@ -43,15 +43,15 @@
             </div>
             <div class="row ms-4">
                 <div class="col-2 form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="option1">
+                    <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="Dog">
                     <label class="form-check-label" style="font-size: small;" for="radio1">Dog</label>
                 </div>
                 <div class="col-2 form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="option2">
+                    <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="Cat">
                     <label class="form-check-label" style="font-size: small;" for="radio2">Cat</label>
                 </div>
                 <div class="col-2 form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="radioGroup" id="radio3" value="option3">
+                    <input class="form-check-input" type="radio" name="radioGroup" id="radio3" value="Reptile">
                     <label class="form-check-label" style="font-size: small;" for="radio3">Reptile</label>
                 </div>
                 <div class="col-2 form-check form-check-inline">
@@ -63,7 +63,7 @@
                 <h6 class="text-muted" style="font-size: small;">Breed</h6>
             </div>
             <div class="row ms-3">
-                <input type="text" class="text-box-end" placeholder ="Enter Breed of Pet">
+                <input type="text" class="text-box-end" placeholder ="Enter Breed of Pet" [(ngModel)]="NewPet.Breed">
             </div>
             <div class="row mt-3 ms-2">
                 <div class="col-5">
@@ -75,7 +75,7 @@
             </div>
             <div class="row ms-2 mt-0 ">
                 <div class="col-5">
-                    <input type="date" class="text-box">  
+                    <input type="date" class="text-box" [(ngModel)]="NewPet.DateOfBirth">  
                 </div>
                 <div class="col-5 ms-4">
                     <input type="text" class="text-box" placeholder ="Age of the Pet in years">
@@ -85,13 +85,13 @@
                 <h6 class="text-muted" style="font-size: small;">Blood Group</h6>
             </div>
             <div class="row ms-3">
-                <input type="text" class="text-box" placeholder ="Blood Group of the Pet">
+                <input type="text" class="text-box" placeholder ="Blood Group of the Pet" [(ngModel)]="NewPet.BloodGroup">
             </div>
             <div class="row ms-2 mt-3">
                 <h6 class="text-muted" style="font-size: small;">Allergies</h6>
             </div>
             <div class="row ms-3">
-                <input type="text" class="text-box-end" placeholder ="Allergies related to the pet">
+                <input type="text" class="text-box-end" placeholder ="Allergies related to the pet" [(ngModel)]="NewPet.Allergies">
             </div>
         </div>
         <div class="modal-footer justify-content-center ">
