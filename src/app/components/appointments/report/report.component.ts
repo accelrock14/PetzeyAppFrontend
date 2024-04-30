@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -242,6 +242,22 @@ export class ReportComponent implements OnInit {
     this.report.Tests.splice(index, 1);
   }
 
+  onSelectDoctor(doctor: ListItem) {
+    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    var recommendedDoctor: RecommendedDoctor = {
+      DoctorID: newDoctor.DoctorID,
+      ID: 1,
+    };
+    this.report.RecommendedDoctors.push(recommendedDoctor);
+  }
+  onDeselectDoctor(doctor: ListItem) {
+    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    let index: number = this.report.RecommendedDoctors.findIndex(
+      (d) => d.DoctorID == newDoctor.DoctorID
+    );
+    this.report.RecommendedDoctors.splice(index, 1);
+  }
+
   getSymptomById(id: number): Symptom | undefined {
     return this.symptoms.find((s) => {
       if (s.SymptomID != null && s.SymptomID == id) {
@@ -294,6 +310,7 @@ export class ReportComponent implements OnInit {
   }
 
   activatePrescriptionModal(id: number) {
+    this.myForm.get('medicine')?.reset()
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
       this.prescriptionForm.medicine = 0;

@@ -289,12 +289,22 @@
           </div>
 
           <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-0 rounded-3">
-            <h4>Recommended Doctor's</h4>
+            <h4>Recommended Doctors</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
-              <input type="text" placeholder="Search..." />
-              <i class="fas fa-search search-icon"></i>
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="doctor"
+                  [settings]="doctorSettings"
+                  [placeholder]="'Select Doctors'"
+                  [data]="doctors"
+                  formControlName="doctor"
+                  (onSelect)="onSelectDoctor($event)"
+                  (onDeSelect)="onDeselectDoctor($event)"
+                >
+                </ng-multiselect-dropdown>
+              </form>
             </div>
-            <div class="all-item-list mt-4 ps-3">
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
               @for (doctors of report.RecommendedDoctors; track $index) {
               <div class="capsule">{{ doctors.DoctorID }}</div>
               }
