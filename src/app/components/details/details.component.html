@@ -1,68 +1,103 @@
 <div class="appointment container" *ngIf="appointment">
-  <span class="appointment-heading">
+  <span class="appointment-heading" [routerLink]="''">
   <i class="fas fa-arrow-left"></i>  
 
-  <h6 class="appointment-title">Back to appointments</h6>
+  <h6 class="appointment-title" >Back to appointments</h6>
 </span>
     
       <div class="col-sm-6">
         <span class="appointment-id">#ID - {{ appointment.AppointmentID }}</span>
       </div>
+
+
       <div class="appointment-details row">
-        <div class="col-sm-6">
-          <span class="appointment-date">
-            <i class="far fa-calendar-alt"></i>
-            {{ appointment.ScheduleDate | date:'dd MMM, yyyy' }}
-          </span>
-          <span class="appointment-date">
-            <i class="far fa-clock"></i>
-            {{ appointment.ScheduleDate | date:'h:mm a' }}
-          </span>
-          <span class="appointment-actions"> 
-            <i class="fas fa-phone"></i> <i class="fas fa-video"></i> 
-          </span>
-          
-            <span class="appointment-buttons">
-              <button class="btn btn-sm btn-outline-primary">Cancel</button>
-              <button class="btn btn-sm btn-outline-warning">Edit</button>
-              <button class="btn btn-sm btn-outline-danger">Close Appointment</button>
+        <div class="col-sm-4">
+            <span class="appointment-date">
+              <i class="far fa-calendar-alt"></i>
+              {{ appointment.ScheduleDate | date:'dd MMM, yyyy' }}
             </span>
-          
+            <span class="appointment-date">
+              <i class="far fa-clock"></i>
+              {{ appointment.ScheduleDate | date:'h:mm a' }}
+            </span>
+          </div>
+          <div class="col-sm-2">
+            <span class="appointment-actions d-flex justify-content-end"> 
+              <i class="fas fa-phone" style="color: rgb(255, 111, 0);"></i> 
+            </span>
+            <span class="appointment-actions d-flex justify-content-end"> 
+            
+            <i class="fas fa-video" style="color: rgb(255, 111, 0);"></i>
+            </span>
+          </div>
+          <div class="col-sm-6">
+            <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status!=2 && appointment.Status!=3">
+              <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
+              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="''" >Edit</button>
+              <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
+              
+            </span>
+          </div>
         </div>
-      </div>
-      <!-- <div class="col-sm-2">
-        <span class="appointment-date">
-          
-          <i class="far fa-clock"></i>
-          {{ appointment.ScheduleDate | date:'h:mm a' }}
-        </span>
-      </div> -->
-   
-
-
-
-    <!-- <div class="appointment-actions row">
-      <div class="col">
-        <button class="btn btn-danger cancel-button">Cancel</button>
-      </div>
-      <div class="col">
-        <button class="btn btn-warning edit-button">Edit</button>
-      </div>
-      <div class="col">
-        <button class="btn btn-secondary close-button">Close Appointment</button>
-      </div>
-    </div> -->
-    <div class="pet-issues">
-      <h3>Pet Issues:</h3>
-      <ul>
-        <li *ngFor="let issue of appointment.PetIssues">{{ issue.IssueName }}</li>
-      </ul>
-    </div>
-    <div class="reasons-for-visit">
-      <h3>Reasons for visit:</h3>
+      
+        <div class="pet-issues d-flex flex-wrap">
+          <p>Pet Issues:</p>
+          <ul class="list-unstyled d-flex flex-wrap">
+            <li class="capsule" *ngFor="let issue of appointment.PetIssues">{{ issue.IssueName }}</li>
+          </ul>
+        </div>
+    <div class="reasons-for-visit d-flex flex-wrap">
+      <h6>Reasons for visit:</h6>
       <p>{{ appointment.ReasonForVisit }}</p>
     </div>
     <div class="confirmed-by">
-      <p>Confirmed by Jane Doe</p>
+      <p style="color:gray;">Confirmed by Jane Doe</p>
     </div>
   </div>
+
+
+
+
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">  <div class="alert alert"> <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h4>Close Appointment</h4>
+          <p>Are you sure you want to close this appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="closeAppointment()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+   
+  <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">  <div class="alert alert"> <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h4>Cancel Appointment</h4>
+          <p>Are you sure you want to cancel this appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal2()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="cancelAppointment()" >Confirm</button>   
+          <!--  -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+ 

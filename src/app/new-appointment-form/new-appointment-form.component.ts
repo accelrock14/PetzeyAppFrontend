@@ -30,7 +30,7 @@ export class NewAppointmentFormComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: null
+    PetIssues: []
   };
   slotStatuses:boolean[]=[];
   selectedScheduleDate:Date=new Date();
