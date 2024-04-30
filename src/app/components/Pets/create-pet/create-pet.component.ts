@@ -64,6 +64,7 @@ export class CreatePetComponent {
     LastAppointmentDate: new Date()
 
   }
+  tempFile?:File;
 
 
 
