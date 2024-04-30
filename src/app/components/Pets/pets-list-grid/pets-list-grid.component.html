@@ -1,0 +1,84 @@
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+  <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+</svg> -->
+
+
+
+
+
+
+
+
+<br>
+<div class="row">
+  <div class="col-7">
+    <h4>All Pets</h4>
+  </div>
+  <div class="col-2">
+    <div class="dropdown">
+      <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+          <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+        </svg>
+      </button> -->
+      <select class="form-control ms-2" id="filterBySpecies" [(ngModel)]="petsFilter.Species" (ngModelChange)="searchPets()">
+        <option value=""> <i class="bi bi-filter"></i> All Species</option>
+        <option *ngFor="let species of speciesOptions" [value]="species">{{ species }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="input-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+      </svg>
+      <input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets" (ngModelChange)="searchPets()">
+    </div>
+  </div>
+</div>
+<hr>
+<br>
+
+<div clas="row">
+ <h5 class="text-muted">Recently Consulted</h5>
+</div>
+<hr>
+<div *ngIf="errorMessage==''">
+  <div class="row">
+    @for(pet of recentlyConsultedPets; track $index){
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4" >
+      <app-pet-card [pet]="pet"></app-pet-card>
+    </div>
+  }
+    </div>
+  </div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+
+<div clas="row">
+  <h5 class="text-muted">All Pets</h5>
+ </div>
+ <hr>
+
+<div class="container">
+  <div *ngIf="errorMessage==''">
+  <div class="row">
+    @for(pet of pets; track $index){
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+
+     <app-pet-card [pet]="pet"></app-pet-card>
+
+    </div>
+  }
+    </div>
+  </div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+</div>
