@@ -307,7 +307,14 @@ export class EditAppointmentFormComponent implements OnInit {
   }
 
   isDisabled(index: number): boolean {
-    return this.slotStatuses[index];
+    // console.log("here "+index+" , "+this.appointmentDetail.ScheduleTimeSlot);
+    if(index===this.appointmentDetail.ScheduleTimeSlot)
+      {
+        // console.log("logging the indexxxxxxx",index,this.appointmentDetail.ScheduleTimeSlot);
+        return false;
+      }
+    else 
+      return this.slotStatuses[index];
   }
 
   onSlotClick(slot: string, index: number,): void {
