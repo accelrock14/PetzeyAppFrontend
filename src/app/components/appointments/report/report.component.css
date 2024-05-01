@@ -27,6 +27,11 @@
   flex-direction: column;
 }
 
+  .comment-info {
+    flex: 1;
+    word-break: break-word;
+  }
+
 .symptoms, .tests, .recommendeddr{
   overflow: visible;
 }
@@ -267,4 +272,61 @@ width: 353px;
 .commenttextarea{
   outline: none;
 
-    }
+      }
+
+
+
+      @media (max-width: 566px) {
+        #commentANDconsume {
+          display: block !important;
+        }
+
+        .consumediv{
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        #dosagediv{
+          justify-content: center !important;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        #reportheading{
+          display: block !important;
+          text-align: center;
+
+        }
+
+        .vitals .icons .icon-container i{
+          font-size: 30px;
+          }
+
+          .vitals .icons .icon-container .icon-text{
+            font-size: 15px;
+            }
+
+      }
+
+
+      @media (max-width: 380px) {
+
+        #precriptionHeading{
+          display: block !important;
+          text-align: center;
+        }
+
+        #medicineHeading{
+          display: block !important;
+          text-align: center;
+        }
+/*
+        .icons .icon-container{
+          display: block;
+          width: 100%;
+        }
+
+        .icons{
+          text-align: center;
+        } */
+      }
