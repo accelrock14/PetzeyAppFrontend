@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FeedbackService } from '../../../services/feedback.service';
-import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-doctor-appointment-card',
@@ -15,10 +14,16 @@ import { RouterLink } from '@angular/router';
 })
 export class DoctorAppointmentCardComponent {
 openPopup(arg0: string) {
-  alert("This service will be available soon")
+  // alert("This service will be available soon")
+  this.snackBar.open(`${arg0} service will be available soon`, "Close", {
+    verticalPosition: 'bottom'
+  })
 }
   @Input()
   appointmentcard!: AppointmentCardDto;
+
+  constructor(private snackBar: MatSnackBar){}
+
 //   feedbackDetails: any[]=[];
 //   constructor(private service :FeedbackService){}
 //   feedbackquestions!: FeedbackQuestion[];

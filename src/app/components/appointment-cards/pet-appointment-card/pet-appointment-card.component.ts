@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { FeedbackService } from '../../../services/feedback.service';
-import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,11 +13,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './pet-appointment-card.component.css'
 })
 export class PetAppointmentCardComponent {
-openPopup(arg0: string) {
-  alert("This service will be available soon")
-}
+  openPopup(arg0: string) {
+    // alert("This service will be available soon")
+    this.snackBar.open(`${arg0} service will be available soon`, "Close", {
+      verticalPosition: 'bottom'
+    })
+  }
   @Input()
   appointmentcard!: AppointmentCardDto;
+
+  constructor(private snackBar: MatSnackBar){}
 //   clicked(obj: number) {
 //     this.feedback.AppointmentId = obj;
 //  }
