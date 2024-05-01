@@ -85,6 +85,12 @@ export class UserProfileComponent implements OnInit{
       editModal.style.display = 'none'; // Hide the modal
     }
   }
+
+  preventCardClick(event: MouseEvent) {
+    event.stopPropagation();
+    console.log("hi");
+    }
+
   OnLogout() {
     this.auth.logOut()
     this.router.navigate(['/signin']);

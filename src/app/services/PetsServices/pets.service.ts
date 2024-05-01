@@ -58,15 +58,15 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlGetMorePets,pageNumber);
   }
   AddPet(petToBeAdded: IPet): Observable<IPet> {
-    const apiUrlAddPet="";
+    const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
   }
   EditPet(petToBeEdited: IPet): Observable<IPet> {
-    const apiUrlPetToBeEdited = "";
+    const apiUrlPetToBeEdited = ``;
     return this.apiService.put<IPet>(apiUrlPetToBeEdited,petToBeEdited);
   }
   GetPetsByParentID(petParentID: number): Observable<IPet[]> {
-    const apiUrlGetPetsbyParentId = "";
+    const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/1`;
     return this.apiService.get<IPet[]>(apiUrlGetPetsbyParentId)
   }
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>{
@@ -74,7 +74,7 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlGetPetsInDTO,petIDs)
   }
   DeletePetByPetID(petID: number): Observable<object> {
-    const apiUrlDeletePetbyID="";
+    const apiUrlDeletePetbyID=`${petsServiceUrl}/${petID}`;
     return this.apiService.delete(apiUrlDeletePetbyID)
   }
   AddLastAppointmentDate(ID: number, date: Date): Observable<object> {
