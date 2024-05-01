@@ -18,14 +18,15 @@
             <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate | date: 'hh:mm:a'}}</h6>
         </div>
         <div class=" container-box col-md-6 col-12 d-flex align-items-center justify-content-between">
-            <i class="far fa-comment" style="color: orange;"></i>
-            <i class="fas fa-phone" style="color: orange;"></i>
-            <i class="fas fa-video" style="color: orange;"></i>
+                <button class="btn" (click)="openPopup('comment')"><i class="far fa-comment" style="color: orange;"></i></button>
+                <button class="btn" (click)="openPopup('phone')"><i class="fas fa-phone" style="color: orange;"></i></button>
+                <button class="btn" (click)="openPopup('video')"><i class="fas fa-video" style="color: orange;"></i></button>
+            
         </div>
     </div>                
     <div class="card-body">
-        <a [routerLink]="'/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <a class="btn btn-primary col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#exampleModal">Feedback</a> 
+        <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
+        <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#exampleModal">Feedback</a> 
         
     </div>
 </div> 
