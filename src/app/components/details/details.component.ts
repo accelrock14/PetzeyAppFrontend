@@ -9,7 +9,7 @@ declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent],
+  imports: [NgIf, NgFor, DatePipe, RouterLink, ReportComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
@@ -21,7 +21,7 @@ export class DetailsComponent implements OnInit {
   constructor(private appointmentDetailsService: AppointmentDetailsService) { }
   ngOnInit(): void {
 
-    this.appointmentDetailsService.GetAppointmentDetail(51)
+    this.appointmentDetailsService.GetAppointmentDetail(1)
       .subscribe((appointment: any) => this.appointment = appointment);
 
 
@@ -55,12 +55,13 @@ export class DetailsComponent implements OnInit {
           this.closeModal();
 
           this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
-            .subscribe(updatedAppointment =>{ this.appointment = updatedAppointment
-        console.log(this.appointment);
+            .subscribe(updatedAppointment => {
+              this.appointment = updatedAppointment
+              console.log(this.appointment);
 
             });
-            
-            
+
+
         },
         (error) => {
           // Handle error scenario (e.g., show error message)

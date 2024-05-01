@@ -40,7 +40,7 @@ import html2canvas from 'html2canvas';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
-  @Input() reportId: number = 3;
+  @Input() reportId: number = 1;
 
   report: IReport = {
     ReportID: 1,
@@ -205,7 +205,7 @@ export class ReportComponent implements OnInit {
     private fb: FormBuilder,
     private reportService: ReportService,
     private elementRef: ElementRef
-  ) {}
+  ) { }
 
   isEditing = false;
 
