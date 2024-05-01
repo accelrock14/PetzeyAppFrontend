@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { EditModalComponent } from '../edit-modal/edit-modal.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IVet } from '../../../models/Vets/IVet';
