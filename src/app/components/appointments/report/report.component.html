@@ -163,13 +163,13 @@
   </div>
 </div>
 
-<div class="appointmentDetailspage ps-3 p-5" #elementToExport>
+<div class="appointmentDetailspage ps-3 p-5" id="elementToExport" #elementToExport #elementsContainer>
   <div class="d-flex justify-content-between align-items-center" id="reportheading">
     <h5>Appointment Report</h5>
     <div>
       <button
         *ngIf="!isEditing"
-        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold" (click)="exportToPDF(elementToExport)"
+        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold" (click)="exportToPDF()"
       >
         <i class="fa-solid fa-download me-2"></i>Report
       </button>
@@ -195,7 +195,7 @@
 
     <div class="report-body">
       <div class="row">
-        <div class="col-lg-6 col-md-12 mx-auto left-part">
+        <div class="col-lg-6 col-md-12 mx-auto left-part capture-section">
           <div class="precription border shadow p-3 rounded-3">
             <div class="precription-heading d-flex justify-content-between" id="precriptionHeading">
               <h4>Precription</h4>
@@ -312,7 +312,7 @@
           </div>
         </div>
 
-        <div class="col-lg-6 col-md-12 mx-auto right-part">
+        <div class="col-lg-6 col-md-12 mx-auto right-part capture-section">
           <div class="vitals border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Vitals</h4>
             <div class="icons mt-4 ps-3">
@@ -369,6 +369,7 @@
               </div>
             </div>
           </div>
+
           <div class="symptoms border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Symptoms</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
@@ -393,6 +394,7 @@
               }
             </div>
           </div>
+
           <div class="tests border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Tests</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
@@ -421,7 +423,7 @@
 
         <div class=" mx-auto bottom-part">
           <div
-            class="commentsbydoctor  border shadow p-3 rounded-3 "
+            class="commentsbydoctor  border shadow p-3 rounded-3 capture-section"
           >
             <h4>Comments</h4>
 
