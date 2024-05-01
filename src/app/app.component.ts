@@ -1,16 +1,34 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboard/doctor-dashboard.component';
+import { Component, OnInit } from '@angular/core';
+import {  NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+
+import { EditAppointmentFormComponent } from "./components/edit-appointment-form/edit-appointment-form.component";
+import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
 import { VetComponent } from './components/Vet/vet/vet.component';
+import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboard/doctor-dashboard.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, DoctorDashboardComponent, RouterLinkActive,RouterLink,VetComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    standalone: true,
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent, DoctorDashboardComponent,VetComponent]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+  
+  selectedLink: string = ''; 
+  constructor(private router: Router) { // Inject Router here
+  }
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const url = event.urlAfterRedirects;
+        this.selectedLink = this.getLinkFromUrl(url); // Define function to extract link from URL
+      }
+    });
+  }
+  getLinkFromUrl(url: string): string {
+    return url.split('/')[1]; // Assuming links are in format "/link-identifier"
+  }
   title = 'PetzeyAppFrontend';
 
   expand: boolean = false;
@@ -18,4 +36,7 @@ export class AppComponent {
   onExpand() {
     this.expand = !this.expand;
   }
+  isSelected(link: string): boolean {
+    return this.selectedLink === link;
+}
 }

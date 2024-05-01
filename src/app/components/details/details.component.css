@@ -1,0 +1,173 @@
+/* @import "~bootstrap/dist/css/bootstrap.min.css"; */
+
+.appointment {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.appointment-details {
+  display: flex;
+  /* flex-wrap: nowrap; Disable wrapping for cleaner layout */
+  /* justify-content: space-between;  */
+  /* Distribute elements horizontally */
+  align-items: center;
+  /* margin-bottom: 10px; */
+}
+.appointment-actions i {
+  margin-right: 50px; /* Adjust spacing between icons as needed */
+  
+}
+.appointment-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.appointment-buttons button {
+  margin-right: 15px;
+  margin-bottom: 5px; /* Add bottom margin to create space between buttons */
+  padding: 5px 15px;
+  border: 1px solid #ddd;;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.appointment-title {
+  margin-left: 10px;
+  margin-top: 4px;
+  color: #4f4d4d;
+}
+
+.appointment-heading {
+  display: inline-flex;
+  align-items: center;
+}
+
+.appointment-id {
+  font-weight: bold;
+  font-size: 1.7rem;
+}
+
+.appointment-date {
+  /* font-weight: bold; */
+  margin-right: 12px;
+  /* margin-left: 2px; */
+  display: flex; /* Optional for vertical alignment (icons and text) */
+  align-items: center;
+}
+.appointment-date i {
+  margin-right: 3px;
+}
+
+.appointment-actions {
+  /* justify-content: flex-end;  /* Uncomment if needed for right alignment */
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* .appointment-actions i,
+.appointment-buttons button {
+  margin-right: 10px; 
+} */
+
+.appointment-actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* .cancel-button {
+  background-color: #f00;
+  color: #fff;
+}
+
+.edit-button {
+  background-color: rgb(153, 225, 38);
+  color: #000;
+}
+*/
+.close-button {
+  background-color: #fff;
+  color: rgb(255, 111, 0);
+
+} 
+
+.pet-issues,
+.reasons-for-visit,
+.confirmed-by {
+  margin-bottom: 10px;
+}
+.pet-issues p {
+  margin-right: 10px; /* Optional: Add spacing between label and list */
+}
+.capsule {
+  display: flex; /* Enable flexbox for alignment */
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content (optional) */
+  margin: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background-color: rgb(240, 211, 199);
+  color: #ff1100;
+}
+
+.pet-issues ul {
+  display: flex; /* Enable flexbox for wrapping */
+  flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+}
+.pet-issues p
+ {
+  font-weight: bold;
+  margin-top: 6px;
+  margin-bottom: 5px;
+}
+.reasons-for-visit h6 {
+  font-weight: bold;
+  margin-top: 2px;
+  margin-right: 9px;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .appointment-details {
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+    align-items: flex-start;
+  }
+
+  .appointment-id,
+  .appointment-date {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+.appointment h2 {
+  margin-bottom: 10px;
+}
+
+.pet-issues ul,
+.reasons-for-visit p {
+  list-style: none;
+  padding: 0;
+}
+
+/* New styles for desired layout within appointment-details */
+
+.appointment-details .col-sm-4,
+.appointment-details .col-sm-2,
+.appointment-details .col-sm-6 {
+  padding: 10px; /* Remove padding for tighter layout */
+  
+}
+
+.appointment-details .col-sm-4,
+.appointment-details .col-sm-2 {
+  display: flex;
+  align-items: center; /* Vertically align elements within these columns */
+}
+ 
