@@ -19,13 +19,29 @@ export class VetComponent implements OnInit{
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
   searchQuery: string = '';
+  topRatedVets:IVetCardDTO[]=[];
   specialties: string[] = [];
   selectedSpecialties: string[] = [];
   fVets: any[] = [];
   constructor(private vetService: VetsserviceService,private router: Router) { }
 
   ngOnInit(): void {
+    this.getTopRated();
     this.getAllVets();
+    
+  }
+
+  getTopRated(): void {
+    this.vetService.getTopRatedVets()
+      .subscribe(
+        (vets: IVetCardDTO[]) => {
+          this.topRatedVets = vets;
+          console.log(this.topRatedVets)
+        },
+        error => {
+          console.error('Error fetching vets:', error);
+        }
+      );
     this.sFilterVet();
   }
 

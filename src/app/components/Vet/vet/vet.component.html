@@ -59,8 +59,26 @@
             (click)="openVetProfile(vet.VetId)"
           >
             <div class="card contact-card">
-              <div class="card-body">
-                <div class="row">
+            <div class="card-body">
+                <h1>Top Rated Doctors</h1>
+  <div class="row">
+    <!-- Repeat this block for each profile -->
+    <div *ngFor="let vet of topRatedVets" class="col-md-3 col-sm-6 mb-4">
+      <a href="javascript:void(0);" class="card-link" (click)="openVetProfile(vet.VetId)">
+        <div class="card">
+          <!-- <img [src]="vet.Photo" class="card-img-top" alt="Not found" /> -->
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ vet.Name}}</h5>
+            <p class="card-text">{{ vet.Speciality }}</p>
+            <p class="card-text">{{ vet.PhoneNumber }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+  <hr>
+  <div class="row">
                   <div class="col-4 text-center">
                     <img
                       src="{{ vet.Photo }}"

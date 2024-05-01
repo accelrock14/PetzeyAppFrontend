@@ -1,9 +1,11 @@
 export interface IVetProfileDTO {
+  [key: string]: any;
     VetId:number,
-    Name: string;
+    LName: string;
+    FName:string;
     NpiNumber: string;
     Speciality: string;
     Email: string;
-    PhoneNumber: string;
+    Phone: string;
     Photo: string;
   }
