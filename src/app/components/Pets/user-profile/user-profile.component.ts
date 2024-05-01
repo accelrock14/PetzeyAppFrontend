@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent implements OnInit{
+
+
   // user!: User ;
   pets: IPet[] = [];
   petToDelete!: IPet;
@@ -77,6 +79,12 @@ export class UserProfileComponent implements OnInit{
       editModal.style.display = 'none'; // Hide the modal
     }
   }
+
+  preventCardClick(event: MouseEvent) {
+    event.stopPropagation();
+    console.log("hi");
+    }
   
+    
 }
 
