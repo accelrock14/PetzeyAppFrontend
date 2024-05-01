@@ -11,4 +11,6 @@ export interface AppointmentCardDto {
     VetSpecialization: string;
     DoctorPhoto: string;
     ScheduleDate: Date;
+    //added status for filtering in UI rather than backend
+    Status: string;
 }

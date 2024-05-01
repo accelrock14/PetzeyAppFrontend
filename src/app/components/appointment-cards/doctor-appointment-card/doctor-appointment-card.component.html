@@ -2,7 +2,7 @@
 <div class="card shadow mt-3">
     <div class="row ms-1">
         <div class="col-md-4 col-12 d-flex align-items-center justify-content-center">
-            <img [src]="" class="card-img-top rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="...">
+            <img src="https://i.pinimg.com/736x/74/aa/64/74aa642acd710c7ad1bfee1e3d3cfea8.jpg" class="card-img-top rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="...">
         </div>
         <div class="col-md-8 col-12">
             <div class="card-body">
@@ -24,7 +24,66 @@
         </div>
     </div>                
     <div class="card-body">
-        <a href="#" class="btn col-md-6 col-12">Details</a>
-        <a href="#" class="btn col-md-6 col-12">Feedback</a>
+        <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
+        <a class="btn btn-primary col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#exampleModal">Feedback</a> 
+        
     </div>
 </div> 
+
+
+  
+  
+  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <h2>View Feedback</h2>
+          
+            <div *ngFor="let detail of feedbackDetails" class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">{{ detail.QuestionName }}</h5>
+                <div class="star-rating">
+                  <span *ngFor="let rating of [1, 2, 3, 4, 5]" [ngClass]="{'filled': rating <= detail.Rating}" class="star">★</span>
+                </div>
+              </div>
+            </div>
+          
+            <hr>
+          
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Recommendation</h5>
+                    <p class="card-text">{{ feedback.Recommendation }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Comments</h5>
+                    <p class="card-text">{{ feedback.Comments }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+        </div>
+      </div>
+    </div>
+  </div>  -->
+      
+  
