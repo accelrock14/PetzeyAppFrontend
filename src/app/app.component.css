@@ -98,6 +98,10 @@ a.sidebar-link {
 }
 
 
+.currentpage{
+    border-left: 3px solid #3b7ddd;
+}
+
 
 a.sidebar-link:hover {
    

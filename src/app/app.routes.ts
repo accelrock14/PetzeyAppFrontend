@@ -16,7 +16,8 @@ import { UserProfileComponent } from './components/Pets/user-profile/user-profil
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+    { path: '',redirectTo:'home', pathMatch:'full' },
     { path: 'details', component: DetailsComponent},
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
