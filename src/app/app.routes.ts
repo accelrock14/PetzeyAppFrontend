@@ -19,8 +19,9 @@ import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.co
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'details/:id', component: DetailsComponent },
+  { path: 'home', component: HomeComponent },
+    { path: '',redirectTo:'home', pathMatch:'full' },
+    { path: 'details/:id', component: DetailsComponent},
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
   {
