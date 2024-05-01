@@ -40,4 +40,14 @@ export class DashboardService {
     return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/vets/${vetid}`)
   }
 
+  //service for pets team (appointment history)
+  GetAllClosedAppointmentByPetID(petid: number): Observable<AppointmentCardDto[]> {
+    return this.http.get<AppointmentCardDto[]>(`https://localhost:44327/api/AppointmentDetails/allappointmentsbypetid/${petid}}`);
+  }
+
+  //service for doctor team (appointment history)
+  GetAllClosedAppointmentByVetID(vetid: number): Observable<AppointmentCardDto[]> {
+    return this.http.get<AppointmentCardDto[]>(`https://localhost:44327/api/AppointmentDetails/allappointmentsbyvetid/${vetid}}`);
+  }
+
 }
