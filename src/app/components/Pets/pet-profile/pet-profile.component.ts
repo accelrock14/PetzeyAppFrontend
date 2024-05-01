@@ -35,7 +35,7 @@ export class PetProfileComponent implements OnInit {
 
   }
 
-  Pet:IPet = {} as IPet;
+  pet:IPet = {} as IPet;
 
   Owner = {
     ownerName: "Jack Hall",
