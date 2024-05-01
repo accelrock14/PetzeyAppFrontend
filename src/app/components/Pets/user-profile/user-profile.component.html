@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="user-profile.component.css">
+</head>
+
+<body>
+  <header class="container-fluid">
+    <div class="row justify-content-end align-items-center px-3 py-2">
+      <div class="col-auto">
+        <span class="user-name">John Doe</span>
+        <br>
+        <span class="user-info">
+          <a href="#" class="logout-link">Logout</a>
+        </span>
+      </div>
+      <div class="col-auto">
+        <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="User Profile Image" class="img-fluid rounded-circle user-image">
+      </div>
+    </div>
+  </header>
+  
+  
+  
+  
+  
+  
+  
+  
+  <main class="container-fluid py-4">
+    <section class="user-info">
+      <div class="row heading-and-button">
+        <div class="col-9">
+          <h2>Account Details</h2>
+        </div>
+        <div class="col-3 text-right">
+          <a href="#" class="btn btn-primary edit-btn">Edit</a>
+        </div>
+      </div>
+      <div class="details">
+        <div class="row">
+          <div class="col-4 ">
+            <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="Profile Image" class="img-fluid rounded-circle">
+          </div>
+          <div class="col-8">
+            <ul>
+              <li>Name: <strong>Jhonny Depp</strong></li>
+              <li>Mobile: <strong>+4750293457</strong></li>
+              <li>Location: <strong>Los Angeles, USA</strong></li>
+            </ul>
+          </div>
+        </div>          
+      </div>
+    </section>
+
+    <section class="user-info">
+      <div class="row heading-and-button">
+        <div class="col-10">
+          <h2>Pet Details</h2>
+        </div>
+        <div class="col-2">
+          <a href="#" class="btn btn-primary edit-btn">+ Add Pet</a>
+        </div>
+      </div>
+      <div class="pet-cards">
+        <ng-container *ngFor="let pet of pets; let i = index">
+          <section class="pet-card col-lg-3 col-md-5 col-sm-6 col-12 p-0 " (click)="testClick()">
+            <div class="dropdown d-inline mt-0 ">
+              <div class="dropdown-wrapper threedot d-flex justify-content-end " (click)="toggleDropdown($event)">
+                <button class="border-0 bg-white" style="width: auto;" type="button"
+                  id="dropdownMenuButton{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  &#8942;
+                </button>
+              </div>
+              <div class="dropdown-menu dropdown-menu-right" [attr.aria-labelledby]="'dropdownMenuButton' + i">
+                <button type="button" class="btn btn-light border-0 " data-bs-toggle="modal"
+                  [attr.data-bs-target]="'#mymodal_' + i" (click)="setPetToDelete(pet, $event)">Delete</button>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+            <div class="details">
+              <div>
+                <img [src]="pet.PetImage" alt="Pet Image" class="img-fluid rounded-circle">
+              </div>
+              <div>
+                <ul>
+                  <li><strong>{{pet.PetName}}</strong></li>
+                  <li>{{pet.Gender}}, {{pet.DateOfBirth}} years</li>
+                </ul>
+              </div>
+              
+            </div>
+
+          </section>
+
+          <!-- Modal for deleting -->
+          <div class="modal" [id]="'mymodal_' + i" tabindex="-1" role="dialog" aria-labelledby="mymodal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="row">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+                  </div>
+                  <div class="row">
+                    <p class="mt-2">Are you sure you want to delete {{pet.PetName}}?</p>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-secondary col-5" data-bs-dismiss="modal"
+                    (click)="closeDeleteModal($event)">Cancel</button>
+                  <button type="button" class="btn btn-danger col-5"
+                    (click)="deleteConfirmedPet($event)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+      
+    </section>
+  </main>
+
+  
+  
+
+</body>
+
+</html>
+<p>user-profile works!</p>

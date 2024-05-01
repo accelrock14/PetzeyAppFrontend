@@ -1,0 +1,144 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+  } */
+
+  .user-info {
+    display: inline-block;
+    margin-right: 20px; /* Adjust as needed */
+    width: 100%;
+  }
+  
+  .user-name {
+    font-weight: bold;
+  }
+  
+  .logout-link {
+    color: #dc3545; /* Bootstrap's danger color */
+  }
+  
+  .user-image {
+    width: 40px; 
+    height: 40px; 
+    margin-left: 10px; 
+  }
+  
+  
+  
+  header h1 {
+    margin-bottom: 0;
+  }
+  
+  header a {
+    color: #000;
+    text-decoration: none;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  section h2 {
+    margin-bottom: 10px;
+  }
+  
+  section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  section li {
+    margin-bottom: 5px;
+  }
+
+  .user-info {
+    position: relative;
+  }
+
+  .heading-and-button {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ccc; /* Add a thin line below the heading */
+    padding-bottom: 5px; /* Optional: Add some space between the heading and the line */
+  }
+
+  .user-info .details {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-info img {
+    width: 80px; /* Set the width of the image */
+    height: 80px; /* Set the height of the image */
+    border-radius: 50%; /* Make the image round */
+    margin-right: 50px; /* Add some space between the image and the text */
+    
+  }
+
+  .user-info ul {
+    list-style: none; /* Remove the bullet points */
+    padding: 0;
+    margin: 0;
+  }
+
+  .user-info li {
+    margin-bottom: 5px; /* Optional: Add some space between list items */
+  } 
+  
+  .user-info .pet-cards {
+    display: flex;
+    flex-direction: row; /* Align pet cards horizontally */
+    flex-wrap: wrap; /* Allow cards to wrap to the next line */
+    gap: 2px; /*Add some space between cards*/
+  }
+
+  .pet-card img {
+    width: 60px; /* Set the width of the image */
+    height: 60px; /* Set the height of the image */
+    border-radius: 50%; /* Make the image round */
+    margin-right: 10px; /* Add some space between the image and the text */
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 9999;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  .blur-background {
+    filter: blur(5px); /* Adjust the blur amount as needed */
+  }
+  
+  .modal.show {
+    display: block;
+  }
+  

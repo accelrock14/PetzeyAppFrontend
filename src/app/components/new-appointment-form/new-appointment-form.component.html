@@ -1,0 +1,280 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- this above is the cloudflare link for search icon magnifying glass -->
+<div class="new-appointment-form">
+    <div class="back btn">
+        <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
+            alt="experimental-left-serif" />
+        <pre class="pre"> Back to Appointments</pre>
+    </div>
+    <h1>New Appointment</h1>
+    <hr>
+    <h6>Veternarian Details</h6>
+
+    <div class="vet-cal-slots">
+        <div class="search-box">
+            <div class="input-wrapper">
+                <label for="vet">Veternarian</label>
+                <input type="text" name="vet" placeholder="Search..." [(ngModel)]="veternarianSearchText"
+                    #inputForSelectingVet="ngModel" (input)="filterVeternarians()">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="dropdown-container" *ngIf="inputForSelectingVet.value.length>0">
+                <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.id,vet.name)" class="vetdiv">
+                    {{vet.name}}
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length">
+            <div class="mydate-picker">
+                <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()">
+            </div>
+            <div class="myslots">
+                <div class="time-slots">
+                    <div class="row" *ngFor="let slots of timeSlotRows; let rowIndex = index">
+                        <div class="slot btn" *ngFor="let slot of slots; let slotIndex = index" id="slot-{{ rowIndex * slots.length + slotIndex }}" [class.disabled]="isDisabled(rowIndex * slots.length + slotIndex)" [class.selected]="isSelected(rowIndex * slots.length + slotIndex)" (click)="!isDisabled(rowIndex * slots.length + slotIndex) && onSlotClick(slot, rowIndex * slots.length + slotIndex)">
+                            <span>{{ slot }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end of slots displayer -->
+    <br>
+
+    <h6>Patient Details</h6>
+
+    <div class="search-box">
+        <div class="input-wrapper">
+            <label for="petparent">Pet Parent</label>
+            <input type="text" name="petparent" placeholder="Search..." [(ngModel)]="petParentSearchText"
+                #inputForSelectingPetParent (input)="filterPetParents()">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPetParent.value.length
+        ">
+            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.id,pp.name)" class="petparentdiv">
+                {{pp.name}}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="search-box">
+        <div class="input-wrapper">
+            <label for="petname">Pet Name</label>
+            <input type="text" name="petname" placeholder="Search..." [(ngModel)]="petSearchText" (input)="filterPets()" #inputForSelectingPet >
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPet.value.length">
+            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.id,pet.name)"
+            class="petdiv">
+            {{pet.name}}
+        </div>
+        </div>
+    </div>
+    <br>
+    <h6>Other Details</h6>
+    <div class="search-box">
+        <div class="input-wrapper">
+
+            <label for="petissue">Pet Issues</label>
+            <input type="text" name="petissue" placeholder="Search..." [(ngModel)]="petIssueSearchText"
+                (input)="filterPetIssues()" #inputForSelectingPetIssues="ngModel">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length">
+            <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"
+                class="petissuediv">
+                {{petissue.IssueName}}
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <h6>Reason for Visit</h6>
+    <textarea name="reasonforvisit" id="reasonforvisit" cols="50" rows="2" class="reasonforvisit" #reasonforvisit [(ngModel)]="appointmentDetail.ReasonForVisit" ></textarea>
+    <br>
+    <br>
+    <div>
+        <button class="btn btn-secondary cancel" (click)="openCancelModal()">Cancel</button>
+        <!-- (click)="onBook(reasonforvisit.value)" -->
+        <!-- [disabled]="isSubmitDisabled" -->
+        <button class="btn btn-primary bookappointment" (click)="openModal()">Book Appointment</button>
+    </div>
+</div>
+<hr>
+
+
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||
+modal popup code for confirmation
+-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Book Appointment</h4>
+            <p>Do you want to book appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBook(reasonforvisit.value)">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- modal popup code for cancel confirmation -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeCancelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Discard Changes</h4>
+            <p>Are you sure you want to discard changes?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
+          <!-- later add a method here to navigate to the previous window -->
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" >Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+
+
+
+
+
+
+
+
+<!--  .pre {
+    display: inline;
+}
+
+/* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\ */
+/* search */
+.search-box {
+    position: relative;
+    /* Allows absolute positioning of the icon inside */
+    width: 300px;
+    /* or any width as per your design */
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px 40px 8px 8px;
+    /* Right padding is larger to accommodate the icon */
+    border: none;
+    /* Remove borders */
+    border-bottom: 2px solid gray;
+    /* Only bottom border */
+    outline: none;
+    /* Removes the highlight around the input on focus */
+    font-size: 16px;
+    /* Adjust as needed */
+}
+
+.search-box .search-icon {
+    position: absolute;
+    right: 10px;
+    /* Distance from right, adjust as needed */
+    top: 50%;
+    /* Center vertically */
+    transform: translateY(20%);
+    /* Precise centering */
+    cursor: pointer;
+    /* Indicates that the icon is interactive */
+    color: gray;
+    /* Icon color, change as needed */
+    font-size: 20px;
+    /* Icon size, adjust based on the icon used */
+}
+
+/* book appointment button */
+.bookappointment {
+    background-color: rgb(233, 56, 11);
+}
+
+
+
+
+/* ||||||||||||||||||||||||||||||||||||||||||| */
+.cal-icon {
+    border: 1px solid black;
+}
+
+.fas.fa-calendar {
+    color: #292a2b;
+    /* Bootstrap primary blue */
+
+    font-size: 16px;
+}
+
+/* ||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+.myslots {
+    display: flex;
+    justify-content: center;
+    /* Center the `.time-slots` horizontally */
+    width: 100%;
+    /* Ensures `.myslots` takes full width of its parent */
+}
+
+.time-slots {
+    width: 35%;
+    /* Sets width of time slots to 35% of its container `.myslots` */
+    display: flex;
+    flex-direction: column;
+    /* Aligns rows in a column */
+    padding: 10px;
+    /* Optional: Adds some padding inside the time slots container */
+}
+
+.row {
+    width: 100%;
+    /* Each row will take the full width of `.time-slots` */
+    display: flex;
+    justify-content: space-between;
+    /* Distributes slots evenly */
+    margin-bottom: 10px;
+    /* Adds space between rows */
+}
+
+.slot {
+    flex: 0 0 16%;
+    /* Makes each slot take approximately 16% of the `.row` width */
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+input[type="date"] {
+    position: absolute;
+    left: -9999px;
+}  -->

@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Remove the 2 lines below if it breaks the ui design */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
 .selected-item{
     background: rgb(240, 211, 199) !important;
     align-items: center !important;
