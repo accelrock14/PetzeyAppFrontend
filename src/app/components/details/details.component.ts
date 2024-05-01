@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 declare var window:any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf,NgFor,DatePipe,RouterLink],
+  imports: [FormsModule,CommonModule,DatePipe,RouterLink],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
@@ -20,7 +21,7 @@ export class DetailsComponent implements OnInit {
   constructor(private appointmentDetailsService: AppointmentDetailsService) {}
   ngOnInit(): void {
     
-   this.appointmentDetailsService.GetAppointmentDetail(13)
+   this.appointmentDetailsService.GetAppointmentDetail(1)
    .subscribe((appointment: any) => this.appointment = appointment);
 
    

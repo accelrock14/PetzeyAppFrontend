@@ -9,7 +9,7 @@
         <pre class="pre"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
-    <hr>
+    <hr> {{this.appointmentDetail.ScheduleTimeSlot}}
     <h6>Veternarian Details</h6>
 
     <div class="vet-cal-slots">
@@ -27,6 +27,7 @@
             </div>
         </div>
         <br>
+        <p>your currently selected schedule date is {{appointmentDetail.ScheduleDate | date}} select another to change</p>
         <div class="cal-slots-displayer">
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
@@ -86,11 +87,16 @@
                 (input)="filterPetIssues()" #inputForSelectingPetIssues="ngModel">
             <i class="fas fa-search search-icon"></i>
         </div>
-        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length && inputForSelectingPetIssues.touched">
+        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length">
             <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"
                 class="petissuediv">
                 {{petissue.IssueName}}
             </div>
+        </div>
+    </div>
+    <div class="dycapsules">
+        <div *ngFor="let pi of appointmentDetail.PetIssues" class="capsule">{{pi.IssueName}}
+            <i class="fas fa-times" (click)="onDisSelectPetIssue(pi)" ></i>
         </div>
     </div>
 
@@ -132,7 +138,7 @@ modal popup code for confirmation
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBook(reasonforvisit.value)" >Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBookEditBooking(reasonforvisit.value)" >Confirm</button>
         </div>
       </div>
     </div>
