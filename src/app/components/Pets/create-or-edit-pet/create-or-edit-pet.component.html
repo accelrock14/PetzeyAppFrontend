@@ -22,7 +22,7 @@
   <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form [formGroup]="petDetailsForm" (ngSubmit)="onSumbit()">
+        <form [formGroup]="petDetailsForm" (ngSubmit)="onSubmit()">
           <div class="row">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Edit Pet Profile
@@ -37,7 +37,7 @@
             <div class="col-5 ms-3">
               <div style="position: relative; display: inline-block">
                 <img
-                  src="https://t3.ftcdn.net/jpg/06/10/71/64/360_F_610716498_li6BIgt75TXw8B4W89pbf3VtKgHNQkXo.jpg"
+                  src="{{imageUrl}}"
                   class="img-fluid rounded-circle-img"
                   style="position: relative; z-index: 1"
                 />
@@ -49,9 +49,8 @@
                   <input
                     type="file"
                     id="inputGroupFile"
-                    onchange="handleFile(this.files)"
+                    (change)="handleFile($event)"
                     accept=".jpeg, .jpg"
-                    formControlName="petImage"
                     style="opacity: 0; width: 100%; height: 100%"
                   />
                   <button
@@ -91,7 +90,7 @@
                 <input
                   type="text"
                   class="text-box"
-                  formControlName="petName"
+                  formControlName="PetName"
                   placeholder="Enter Name"
                 />
               </div>
@@ -105,9 +104,9 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petSpecies"
+                name="Species"
                 id="radio1"
-                formControlName="petSpecies"
+                formControlName="Species"
                 value="Dog"
               />
               <label
@@ -121,8 +120,8 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petSpecies"
-                formControlName="petSpecies"
+                name="Species"
+                formControlName="Species"
                 id="radio2"
                 value="Cat"
               />
@@ -137,8 +136,8 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petSpecies"
-                formControlName="petSpecies"
+                name="Species"
+                formControlName="Species"
                 id="radio3"
                 value="Reptile"
               />
@@ -153,8 +152,8 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petSpecies"
-                formControlName="petSpecies"
+                name="Species"
+                formControlName="Species"
                 id="radio4"
                 value="Other"
               />
@@ -173,7 +172,7 @@
             <input
               type="text"
               class="text-box-end"
-              formControlName="petBreed"
+              formControlName="Breed"
               placeholder="Enter Breed of Pet"
             />
           </div>
@@ -185,9 +184,9 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petGender"
+                name="Gender"
                 id="radiomale"
-                formControlName="petGender"
+                formControlName="Gender"
                 value="Male"
               />
               <label
@@ -201,8 +200,8 @@
               <input
                 class="form-check-input"
                 type="radio"
-                name="petGender"
-                formControlName="petGender"
+                name="Gender"
+                formControlName="Gender"
                 id="radiofemale"
                 value="Female"
               />
@@ -217,13 +216,13 @@
               <input
                 type="checkbox"
                 class="form-check-input"
-                id="neutered"
-                formControlName="petNeutered"
+                id="Neutered"
+                formControlName="Neutered"
               />
               <label 
                 class="form-check-label"
                 style="font-size: small"
-                for="neutered"
+                for="Neutered"
                 >Neutered</label
               >
             </div>
@@ -240,7 +239,7 @@
             <div class="col-5">
               <input
                 type="date"
-                formControlName="petDateOfBirth"
+                formControlName="DateOfBirth"
                 class="text-box"
               />
             </div>
@@ -248,7 +247,7 @@
               <input
                 type="text"
                 class="text-box"
-                formControlName="petAge"
+                
                 placeholder="Age of the Pet in years"
               />
             </div>
@@ -260,7 +259,7 @@
             <input
               type="text"
               class="text-box"
-              formControlName="petBloodGroup"
+              formControlName="BloodGroup"
               placeholder="Blood Group of the Pet"
             />
           </div>
@@ -270,6 +269,7 @@
           <input
             type="text"
             class="text-box-end ms-3 mb-2"
+            formControlName="Allergies"
             placeholder="Allergies related to the pet"
           />
 
@@ -293,4 +293,9 @@
     </div>
   </div>
   <div>
+    <div class="row justify-content-center">
+      <div class="col-9 text-light all-over w-30 m-3 justify-content-center ">
+        {{ petDetailsForm.value | json }}
+      </div>
+    </div>
 </div>
