@@ -26,6 +26,9 @@
 .text-box:focus {
     border-bottom-color: #b84f17; /* Change border color when focused */
 }
+.text-box-end:focus {
+  border-bottom-color: #b84f17; /* Change border color when focused */
+}
 .rounded-circle-img {
     width: 100px; /* Maximum width for the image */
     height: 100px; /* Maximum height for the image */

@@ -1,4 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Remove the 2 lines below if it breaks the ui design */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.selected-item{
+    background: rgb(240, 211, 199) !important;
+    align-items: center !important;
+    border-color: white !important;
+    color: #ff1100 !important;
+    margin: 5px;
+    padding: 2px 8px;
+    border-radius: 20px !important;
+    background-color: rgb(240, 211, 199);
+    display: flex !important;
+  white-space: nowrap !important;
+  }
+
+  .selected-item a{
+    margin-left: 2px !important;
+    margin-bottom: 2px !important;
+    margin-right: 2px !important;
+    font-size: 18px;
+color: #ff1100 !important;
+  }
+
+  .multiselect-item-checkbox div{
+     color: #ff1100 !important;
+  }
+
+  .multiselect-dropdown .dropdown-btn{
+    margin-top: 2px !important;
+    border-top: 1px !important;
+    border-right: 1px !important;
+    border-left: 1px !important;
+    border-color: black !important;
+  }
+
+ 

@@ -1,0 +1,28 @@
+.container-box {
+    border: 1px solid transparent; /* Invisible border */
+    padding: 5px;
+    border-radius: 5px;
+    /* Add any other styles you want for the box */
+  }
+.card-content {
+    text-align: left;
+  }
+
+  /* Media query for small screens */
+  @media (max-width: 767px) {
+    .card-content {
+      text-align: center;
+    }
+}
+
+.star-rating {
+  font-size: 24px;
+}
+
+.star {
+  cursor: pointer;
+}
+
+.filled {
+  color: gold;
+}
