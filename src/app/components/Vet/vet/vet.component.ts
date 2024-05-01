@@ -4,7 +4,7 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 import { CommonModule } from '@angular/common';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
