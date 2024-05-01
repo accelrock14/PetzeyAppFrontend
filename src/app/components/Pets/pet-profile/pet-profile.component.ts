@@ -4,13 +4,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { ReportHistoryComponent } from '../../appointments/report-history/report-history.component';
+import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
 
 @Component({
     selector: 'app-pet-profile',
     standalone: true,
     templateUrl: './pet-profile.component.html',
     styleUrl: './pet-profile.component.css',
-    imports: [AgePipe, ReportHistoryComponent]
+    imports: [AgePipe, ReportHistoryComponent, PetAppointmentsListComponent]
 })
 export class PetProfileComponent implements OnInit {
 

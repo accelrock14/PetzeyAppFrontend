@@ -1,2 +1,8 @@
-<p>pet-appointments-list works!</p>
-<app-doctor-dashboard></app-doctor-dashboard>
+<div class="container my-4">
+    <h2 class="mb-3">Appointment History</h2>
+    <div class="scrolling-wrapper">
+        @for (appointment of appointmentcard; track $index) {
+            <app-doctor-appointment-card [appointmentcard]="appointment"></app-doctor-appointment-card>
+        }
+    </div>
+</div>
