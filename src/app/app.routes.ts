@@ -11,9 +11,9 @@ import { PatientDashboardComponent } from './components/dashboard/patient-dashbo
 import { AppointmentPetProfileComponent } from './components/Pets/appointment-pet-profile/appointment-pet-profile.component';
 import { CreateOrEditPetComponent } from './components/Pets/create-or-edit-pet/create-or-edit-pet.component';
 import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-list-grid.component';
-import { PetsListGridWithPagesComponent } from './components/Pets/pets-list-grid-with-page/pets-list-grid-with-page.component';
 import { UserProfileComponent } from './components/Pets/user-profile/user-profile.component';
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
+import { PetsListGridPagedComponent } from './components/Pets/pets-list-grid-paged/pets-list-grid-paged.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -48,7 +48,7 @@ export const routes: Routes = [
     path: 'pets-profile/:id',
     component: PetProfileComponent,
   },
-  { path: 'pets/:page', component: PetsListGridWithPagesComponent }, // Route for the component with page number parameter
+  { path: 'pets/:page', component: PetsListGridPagedComponent }, // Route for the component with page number parameter
 
   { path: 'appointmentPetDetails', component: AppointmentPetProfileComponent },
 

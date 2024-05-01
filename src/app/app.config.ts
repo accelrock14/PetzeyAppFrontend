@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { DashboardService } from './services/DashboardServices/dashboard.service';
 
 
+
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
