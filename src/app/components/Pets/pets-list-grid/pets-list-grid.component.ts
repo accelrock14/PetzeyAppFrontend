@@ -33,7 +33,7 @@ searchPets() {
     this.pets = pets;
     console.log('Original pets:',this.pets);
 
-    this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,2);
+    this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,4);
     console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
     this.errorMessage = ''; // Clear error message on successful retrieval
@@ -57,6 +57,10 @@ searchPets() {
     this.searchPets();
   }
 
+  selectSpecies(species: string) {
+    this.petsFilter.Species = species; // Update the selected species in the filter
+    this.searchPets(); // Call the searchPets method to perform filtering based on the selected species
+  }
 
 
 }
