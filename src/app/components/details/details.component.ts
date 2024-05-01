@@ -2,17 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
 import { NgFor, NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
 import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/appointment-pet-profile.component';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
+import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-appt.component';
 
 declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent, AppointmentPetProfileComponent],
+  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent, AppointmentPetProfileComponent,VetProfileApptComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
@@ -33,10 +34,10 @@ export class DetailsComponent implements OnInit {
   }
   formModal: any;
   formModal2: any;
-  constructor(private appointmentDetailsService: AppointmentDetailsService) { }
+  constructor(private appointmentDetailsService: AppointmentDetailsService,private route: ActivatedRoute) { }
   ngOnInit(): void {
-
-    this.appointmentDetailsService.GetAppointmentDetail(51)
+    const ID :any =this.route.snapshot.paramMap.get('id');
+    this.appointmentDetailsService.GetAppointmentDetail(ID)
       .subscribe((appointment: any) => this.appointment = appointment);
 
 

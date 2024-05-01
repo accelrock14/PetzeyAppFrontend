@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IPet } from '../../../models/Pets/IPet';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -12,15 +14,19 @@ import { CommonModule } from '@angular/common';
 })
 export class UserProfileComponent implements OnInit{
 
-
   // user!: User ;
   pets: IPet[] = [];
   petToDelete!: IPet;
+  user!: any;
 
-  constructor(private petsService: PetsService) { }
+  constructor(private petsService: PetsService, private auth:AuthService, private router:Router) { }
 
   ngOnInit(): void {
     console.log("ngOnInit() is called");
+
+    if(this.auth.isLoggedIn()){
+      this.user = this.auth.getLoggedInUserObject()
+    }
 
     // this.petsService.getUser().subscribe((data) => {
     //   this.user = data;
@@ -42,13 +48,13 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     if(this.petToDelete){
       this.petsService.DeletePetByPetID(this.petToDelete.PetID).subscribe(() => {
-        
+
       });
     }
     this.closeDeleteModal(event);
   }
 
-  
+
 
   testClick() {
     alert("Pet Card clicked");
@@ -64,14 +70,14 @@ export class UserProfileComponent implements OnInit{
       }
     }
   }
-  
+
   openDeleteModal() {
     const editModal: HTMLElement | null = document.querySelector('.modal'); // Get reference to the modal
     if (editModal) {
       editModal.style.display = 'block'; // Show the modal
     }
   }
-   
+
   closeDeleteModal(event: MouseEvent) {
     event.stopPropagation();
     const editModal: HTMLElement | null = document.querySelector('.modal');
@@ -84,7 +90,11 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     console.log("hi");
     }
-  
-    
+
+  OnLogout() {
+    this.auth.logOut()
+    this.router.navigate(['/signin']);
+    }
+
 }
 
