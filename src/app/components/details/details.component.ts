@@ -21,7 +21,7 @@ export class DetailsComponent implements OnInit {
   constructor(private appointmentDetailsService: AppointmentDetailsService) { }
   ngOnInit(): void {
 
-    this.appointmentDetailsService.GetAppointmentDetail(51)
+    this.appointmentDetailsService.GetAppointmentDetail(52)
       .subscribe((appointment: any) => this.appointment = appointment);
 
 

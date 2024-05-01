@@ -1,12 +1,10 @@
-<p>edit-appointment-form works!</p>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <!-- this above is the cloudflare link for search icon magnifying glass -->
 <div class="new-appointment-form">
     <div class="back btn">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <pre class="pre"> Back to Appointments</pre>
+        <pre class="pre" [routerLink]="'/details'"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
     <hr> {{this.appointmentDetail.ScheduleTimeSlot}}

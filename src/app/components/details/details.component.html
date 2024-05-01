@@ -33,7 +33,7 @@
           <div class="col-sm-6">
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
               <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
-              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="''" >Edit</button>
+              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="'/editAppointment/'+appointment.appointmentID" >Edit</button>
               <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
               
             </span>

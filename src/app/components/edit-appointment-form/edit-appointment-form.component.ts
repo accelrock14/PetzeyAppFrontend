@@ -9,13 +9,14 @@ import { PetParent } from '../../models/PetParent';
 import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
+import { RouterLink } from '@angular/router';
 
 
 declare var window:any;
 @Component({
   selector: 'app-edit-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   templateUrl: './edit-appointment-form.component.html',
   styleUrl: './edit-appointment-form.component.css'
 })
