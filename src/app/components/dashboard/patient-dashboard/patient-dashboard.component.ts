@@ -90,4 +90,9 @@ export class PatientDashboardComponent implements OnInit {
   isPreviousPageDisabled() {
     return this.page === 1;
   }
+  isNextPageDisabled() {
+    const pageSize = 3; // Number of appointments per page
+    const totalAppointments = this.filteredAppointments.length; // Total number of filtered appointments
+    return totalAppointments < this.page * pageSize;
+}
 }

@@ -98,6 +98,10 @@ a.sidebar-link {
 }
 
 
+.currentpage{
+    border-left: 3px solid #3b7ddd;
+}
+
 
 a.sidebar-link:hover {
    
@@ -181,7 +185,7 @@ a.sidebar-link:hover {
 /* Additional styles for mobile responsiveness */
 @media (max-width: 768px) {
     #sidebar {
-        position: absolute;  /* Positioning sidebar absolutely to float over the content */
+        position: fixed;  /* Positioning sidebar absolutely to float over the content */
         height: 100vh;       /* Optional: to make sidebar extend full height */
         z-index: 1050;       /* Ensure sidebar is above main content */
         width: 70px;         /* Initial width, can adjust if needed */

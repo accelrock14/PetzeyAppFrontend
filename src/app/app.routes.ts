@@ -14,13 +14,15 @@ import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-lis
 import { UserProfileComponent } from './components/Pets/user-profile/user-profile.component';
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
 import { PetsListGridPagedComponent } from './components/Pets/pets-list-grid-paged/pets-list-grid-paged.component';
+import { SigninComponent } from './components/user-authentiaction/signin/signin.component';
 import { VetComponent } from './components/Vet/vet/vet.component';
 import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.component';
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'details', component: DetailsComponent },
+  { path: 'home', component: HomeComponent },
+    { path: '',redirectTo:'home', pathMatch:'full' },
+    { path: 'details/:id', component: DetailsComponent},
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
   {
@@ -60,7 +62,18 @@ export const routes: Routes = [
     path: 'editpet/:id',
     component: CreateOrEditPetComponent,
   },
+  {
+    path: 'profile',
+    component: UserProfileComponent,
+    title: "UserProfile",
+  },
+  {
+    path: 'signin',
+    component: SigninComponent,
+    title: "SignIn",
+  },
   {path:'add-vet',component:AddVetComponent},
   {path:'vet', component:VetComponent},
+  
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
 ];
