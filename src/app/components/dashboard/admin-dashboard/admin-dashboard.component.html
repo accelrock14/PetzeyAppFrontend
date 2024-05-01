@@ -57,7 +57,7 @@
       <li class="page-item"><a class="page-link" (click)="pageClick(page)" style="cursor: pointer;">{{page}}</a></li>
 
       <li class="page-item">
-        <a class="page-link" (click)="pageClick(page+1)" style="cursor: pointer;">&raquo;</a>
+        <a class="page-link" (click)="pageClick(page+1)" [class.disabled]="isNextPageDisabled()" style="cursor: pointer;">&raquo;</a>
       </li>
     </ul>
 </nav>

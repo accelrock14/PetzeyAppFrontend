@@ -9,4 +9,5 @@ export interface ReportHistoryDTO {
     Tests: ReportTest[]
     Symptoms: ReportSymptom[]
     Prescriptions: Prescription[]
+    ScheduleDate: Date[]
 }

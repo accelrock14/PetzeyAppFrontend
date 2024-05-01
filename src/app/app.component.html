@@ -1,18 +1,31 @@
+
 <div class="wrapper">
   <aside id="sidebar" [class.expand]="expand">
     <div class="d-flex">
       <button class="toggle-btn" (click)="onExpand()" type="button">
         <!-- <i class="lni lni-grid-alt"></i> -->
-        <img src="/assets/logo10.png" alt="no" class="move-left" />
+        <img src="assets\logo10.png" alt="no" class="move-left"   />
       </button>
       <div class="sidebar-logo">
-        <a href="#">Petzey</a>
+        <a routerLink="home">Petzey</a>
       </div>
     </div>
     <ul class="sidebar-nav">
       <li class="sidebar-item">
         <a
-          routerLink="AdminDashboard"
+          routerLink="home"
+          class="sidebar-link"
+          routerLinkActive="currentpage"
+        >
+          <div class="icon-wrapper">
+            <i class="fa-solid fa-house"></i>
+          </div>
+          <span>Home</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a
+          routerLink="/AdminDashboard"
           class="sidebar-link"
           [class.selected]="isSelected('dashboard')"
         >
@@ -29,7 +42,7 @@
               />
             </svg>
           </div>
-          <span>Dashboard</span>
+          <span>Patient Dashboard</span>
         </a>
       </li>
       <li class="sidebar-item">
@@ -70,7 +83,7 @@
 
       <li class="sidebar-item">
         <a
-          routerLink="/doctors"
+          routerLink="/vet"
           class="sidebar-link"
           [class.selected]="isSelected('doctors')"
         >
@@ -103,7 +116,7 @@
           <span>Doctors</span>
         </a>
       </li>
-      <li class="sidebar-item">
+      <li class="sidebar-item" [hidden]="loggedIn">
         <a
           routerLink="/profile"
           class="sidebar-link"
@@ -116,16 +129,19 @@
         </a>
       </li>
     </ul>
-    <div class="sidebar-footer">
-      <a href="#" class="sidebar-link">
+    <div class="sidebar-footer" [hidden]="!loggedIn">
+      <a routerLink="/signin"
+      class="sidebar-link"
+      [class.selected]="isSelected('signin')">
         <i class="lni lni-exit"></i>
-        <span>Logout</span>
+        <span>SignIn</span>
       </a>
     </div>
   </aside>
 
   <div class="main p-3">
     <router-outlet></router-outlet>
-    <button [routerLink]="'details'">Details</button>
   </div>
+  
+  
 </div>

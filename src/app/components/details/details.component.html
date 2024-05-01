@@ -33,7 +33,7 @@
           <div class="col-sm-6">
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
               <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
-              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="''" >Edit</button>
+              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="'/edi'" >Edit</button>
               <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
               
             </span>
@@ -94,7 +94,18 @@
       </div>
     </div>
   </div>
-  <app-appointment-pet-profile [PetId]="3"></app-appointment-pet-profile>
+  <div class="row">
+    <!-- First Child Component -->
+    <div class="col-md-8 pe-1">
+        <app-appointment-pet-profile [PetId]="3"></app-appointment-pet-profile>
+    </div>
+    <!-- Second Child Component -->
+    <div class="col-md-4 ps-1">
+        <app-vet-profile-appt [VetId]="1"></app-vet-profile-appt>
+    </div>
+</div>
+
+ 
 @if(appointment.Report!=null){
   <app-report [reportId]="appointment.Report.ReportID"></app-report>
 
