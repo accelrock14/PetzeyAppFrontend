@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { DetailsComponent } from './components/details/details.component';
 import { ReportComponent } from './components/appointments/report/report.component';
 import { ReportHistoryComponent } from './components/appointments/report-history/report-history.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
