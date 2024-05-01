@@ -24,7 +24,7 @@
     </div>
     </div>                
     <div class="card-body">
-        <a href="#" class="btn col-md-6 col-12">Details</a>
+        <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
         <a type="button"  class="btn col-md-6 col-12 px-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a>
         <!-- <button  >
             Open Feedback Form

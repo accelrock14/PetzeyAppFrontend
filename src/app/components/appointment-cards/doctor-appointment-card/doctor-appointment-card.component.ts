@@ -4,11 +4,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-appointment-card',
   standalone: true,
-  imports: [DatePipe, FormsModule, CommonModule],
+  imports: [DatePipe, FormsModule, CommonModule, RouterLink],
   templateUrl: './doctor-appointment-card.component.html',
   styleUrl: './doctor-appointment-card.component.css'
 })
