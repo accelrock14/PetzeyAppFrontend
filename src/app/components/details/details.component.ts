@@ -36,8 +36,8 @@ export class DetailsComponent implements OnInit {
   formModal2: any;
   constructor(private appointmentDetailsService: AppointmentDetailsService,private route: ActivatedRoute) { }
   ngOnInit(): void {
-    const ID :any =this.route.snapshot.paramMap.get('id');
-    this.appointmentDetailsService.GetAppointmentDetail(ID)
+
+    this.appointmentDetailsService.GetAppointmentDetail(52)
       .subscribe((appointment: any) => this.appointment = appointment);
 
 
