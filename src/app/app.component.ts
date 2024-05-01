@@ -3,18 +3,21 @@ import {  NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/route
 
 import { EditAppointmentFormComponent } from "./components/edit-appointment-form/edit-appointment-form.component";
 import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './services/UserAuthServices/auth.service';
 
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent]
+    imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent,CommonModule]
 })
 export class AppComponent implements OnInit{
-  
-  selectedLink: string = ''; 
-  constructor(private router: Router) { // Inject Router here
+
+  selectedLink: string = '';
+  loggedIn: boolean = false;
+  constructor(private router: Router,private auth:AuthService) { // Inject Router here
   }
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -23,6 +26,9 @@ export class AppComponent implements OnInit{
         this.selectedLink = this.getLinkFromUrl(url); // Define function to extract link from URL
       }
     });
+    if(this.auth.isLoggedIn()) {
+      this.loggedIn = true;
+    }
   }
   getLinkFromUrl(url: string): string {
     return url.split('/')[1]; // Assuming links are in format "/link-identifier"
