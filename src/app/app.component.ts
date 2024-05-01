@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
   constructor(private router: Router,private auth:AuthService) { // Inject Router here
   }
   ngOnInit() {
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects;
@@ -30,7 +31,10 @@ export class AppComponent implements OnInit{
     });
     if(this.auth.isLoggedIn()) {
       this.loggedIn = true;
+    }else{
+      this.loggedIn = false;
     }
+
   }
   getLinkFromUrl(url: string): string {
     return url.split('/')[1]; // Assuming links are in format "/link-identifier"

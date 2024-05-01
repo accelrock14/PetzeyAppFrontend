@@ -93,7 +93,7 @@ export class UserProfileComponent implements OnInit{
 
   OnLogout() {
     this.auth.logOut()
-    this.router.navigate(['/signin']);
+    this.router.navigate(['/']);
     }
 
 }
