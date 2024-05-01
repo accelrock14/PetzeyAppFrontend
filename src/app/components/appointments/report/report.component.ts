@@ -206,7 +206,7 @@ export class ReportComponent implements OnInit {
 
   save(): void {
     this.isEditing = false;
-    this.reportService.patchReport(1, this.report).subscribe((p) => {
+    this.reportService.patchReport(this.reportId, this.report).subscribe((p) => {
       console.log(p);
     });
   }
