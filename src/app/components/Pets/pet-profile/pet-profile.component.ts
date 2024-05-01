@@ -37,6 +37,7 @@ export class PetProfileComponent implements OnInit {
     BloodGroup: "O+ve",
     Breed: 'Afghan Hound',
     Gender: 'Female',
+    Neutered : true,
     DateOfBirth: new Date(),
     Allergies: '',
     LastAppointmentDate: new Date()

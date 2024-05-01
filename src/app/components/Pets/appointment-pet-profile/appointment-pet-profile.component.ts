@@ -35,7 +35,8 @@ export class AppointmentPetProfileComponent implements OnInit {
     Gender: 'Female',
     DateOfBirth: new Date(),
     Allergies: '',
-    LastAppointmentDate: new Date()
+    LastAppointmentDate: new Date(),
+    Neutered: false
   }
 
 
