@@ -1,15 +1,28 @@
+
 <div class="wrapper">
   <aside id="sidebar" [class.expand]="expand">
     <div class="d-flex">
       <button class="toggle-btn" (click)="onExpand()" type="button">
         <!-- <i class="lni lni-grid-alt"></i> -->
-        <img src="/assets/logo10.png" alt="no" class="move-left" />
+        <img src="assets\logo10.png" alt="no" class="move-left"   />
       </button>
       <div class="sidebar-logo">
-        <a href="#">Petzey</a>
+        <a routerLink="home">Petzey</a>
       </div>
     </div>
     <ul class="sidebar-nav">
+      <li class="sidebar-item">
+        <a
+          routerLink="home"
+          class="sidebar-link"
+          routerLinkActive="currentpage"
+        >
+          <div class="icon-wrapper">
+            <i class="fa-solid fa-house"></i>
+          </div>
+          <span>Home</span>
+        </a>
+      </li>
       <li class="sidebar-item">
         <a
           routerLink="/dashboard"
@@ -29,7 +42,7 @@
               />
             </svg>
           </div>
-          <span>Dashboard</span>
+          <span>Patient Dashboard</span>
         </a>
       </li>
       <li class="sidebar-item">
@@ -70,7 +83,7 @@
 
       <li class="sidebar-item">
         <a
-          routerLink="/doctors"
+          routerLink="/vet"
           class="sidebar-link"
           [class.selected]="isSelected('doctors')"
         >
@@ -128,6 +141,7 @@
 
   <div class="main p-3">
     <router-outlet></router-outlet>
-    <button [routerLink]="'details'">Details</button>
   </div>
+  
+  
 </div>

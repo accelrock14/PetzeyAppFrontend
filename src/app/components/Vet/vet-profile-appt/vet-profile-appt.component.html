@@ -1,0 +1,34 @@
+<div class="container mt-4">
+    <div class="card" style="max-width: 500px;"> 
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="row">
+                <h5 class="m-0">Doctor</h5>
+            </div>
+        </div>
+        <div class="card-body pb-5"> 
+            <div class="row">
+                <div class="col-md-4"> <!-- Adjusted grid layout to position the image on top left -->
+                    <img 
+                        src="{{ vetProfile?.Photo }}" 
+                        alt="Vet Photo" 
+                        class="img-fluid rounded-circle" 
+                        style="width: 120px; height: 120px;" 
+                    />
+                </div>
+                <div class="col-md-8"> <!-- Adjusted grid layout to allocate more space for information -->
+                    <div class="info">
+                        <p class="text-muted">Name: {{ vetProfile?.FName }} {{ vetProfile?.LName }}</p>
+                        <p class="text-muted">NPI Number: {{ vetProfile?.NpiNumber }}</p>
+                        <p class="text-muted">Speciality: {{ vetProfile?.Speciality }}</p>
+                        <p class="text-muted">
+                            <i class="fas fa-phone"></i> {{ vetProfile?.Phone }}
+                        </p>
+                        <p class="text-muted">
+                            <i class="far fa-envelope"></i> {{ vetProfile?.Email }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

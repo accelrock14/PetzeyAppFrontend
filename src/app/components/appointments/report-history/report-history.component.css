@@ -76,3 +76,8 @@ font-size: 40px;
 {
   margin: 0;
 }
+
+.mat-mdc-form-field {
+ height: 70px;
+ width: 200px;
+}
