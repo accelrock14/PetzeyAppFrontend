@@ -42,12 +42,12 @@
               />
             </svg>
           </div>
-          <span>Dashboard</span>
+          <span>Patient Dashboard</span>
         </a>
       </li>
       <li class="sidebar-item">
         <a
-          routerLink="/pets"
+          routerLink="/pets/1"
           class="sidebar-link"
           [class.selected]="isSelected('pets')"
         >
@@ -83,7 +83,7 @@
 
       <li class="sidebar-item">
         <a
-          routerLink="/doctors"
+          routerLink="/vet"
           class="sidebar-link"
           [class.selected]="isSelected('doctors')"
         >
@@ -140,10 +140,6 @@
   <div class="main p-3">
     <router-outlet></router-outlet>
   </div>
+  
+  
 </div>
-
-
-
-
-
-

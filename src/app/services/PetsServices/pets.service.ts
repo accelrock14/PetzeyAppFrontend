@@ -50,7 +50,7 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlGetPetsByIDs,petIDs)
   }
   GetPetDetailsByID(petID: number): Observable<IPet> {
-    const apiUrlGetPetDetailsByID ="";
+    const apiUrlGetPetDetailsByID =`${petsServiceUrl}/details/${petID}`;
     return this.apiService.get<IPet>(apiUrlGetPetDetailsByID);
   }
   GetMorePets(pageNumber: number): Observable<IPet[]> {
