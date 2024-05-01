@@ -7,7 +7,7 @@
           <div class="col">
           <!-- <div class="form-control "> -->
             <label for="firstName" class="form-label ">First Name*</label>         
-            <input type="text" class="form-control" id="firstName" name="fname" [(ngModel)]="vet.fName" #fname="ngModel" required>          
+            <input type="text" class="form-control" id="firstName" name="fname" [(ngModel)]="vet.FName" #fname="ngModel" required>          
             <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="text-danger ">
               First Name is required
             </div>

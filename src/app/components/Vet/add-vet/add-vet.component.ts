@@ -14,11 +14,11 @@ import { IVet } from '../../../models/Vets/IVet';
 export class AddVetComponent {
   vet: IVet = {
     vetId: 0,
-    lName: '',
-    fName: '',
+    LName: '',
+    FName: '',
     npiNumber: '',
     username: '',
-    phone: '',
+    Phone: '',
     email: '',
     speciality: '',
     shortBio: '',
