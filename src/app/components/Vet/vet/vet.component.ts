@@ -3,7 +3,6 @@ import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { CommonModule } from '@angular/common';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 

@@ -50,8 +50,8 @@ throw new Error('Method not implemented.');
 }
   vetProfile?: IVetProfileDTO;
 
-  constructor(private route: ActivatedRoute, private vetService: VetsserviceService,private modalService: NgbModal) { }
-
+  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal) { }
+  // 
   ngOnInit(): void {
     // Get the vet ID from the route parameter
     const idParam = this.route.snapshot.paramMap.get('id');
