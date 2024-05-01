@@ -1,0 +1,270 @@
+*{
+  box-sizing: border-box;
+}
+
+.orange-color-bg{
+  background-color: #ff5500;
+  color: white;
+}
+
+.orange-color{
+  color: #ff5500;
+}
+
+.orange-color-bg:active{
+  background-color: #e7804d;
+  color: white;
+}
+
+.vitals{
+  height: 213px;
+}
+
+.symptoms,.tests,.recommendeddr,.commentsbydoctor{
+  height: 190px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.symptoms, .tests, .recommendeddr{
+  overflow: visible;
+}
+
+.precription
+{
+  height: 427px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.vitals .icons .icon-container i{
+font-size: 40px;
+}
+
+.vitals .icons .icon-container .icon-text{
+  font-size: 20px;
+  }
+.fa-heart{
+  color: rgb(255, 0, 0);
+}
+
+.fa-thermometer,.fa-lungs{
+  color: rgb(29, 58, 91);
+}
+
+.all-item-list{
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* "thin" or "auto" */
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0); /* thumb color and track color */
+}
+
+.all-item-list::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.all-item-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.all-item-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0); /* Color of the scrollbar track */
+}
+
+.capsule{
+  display: inline-block;
+  margin: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background-color: rgb(240, 211, 199);
+  color: #ff1100;
+}
+
+.capsule2{
+  width: max-content;
+  margin: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background-color: rgb(42, 40, 39);
+  color: rgb(230, 230, 230);
+}
+
+
+.precription-item .my-auto {
+  max-width: 200px; /* Set your desired maximum width */
+  word-wrap: break-word; /* Allow word wrapping within the specified width */
+}
+
+
+@media (max-width: 700px){
+  .precription-item .my-auto{
+  max-width: 150px; /* Set your desired maximum width */
+
+  }
+}
+
+.comment-body img{
+  width: 50px;
+  height: 50px;
+  background-color: rgb(113, 163, 195);
+  border-radius: 50%;
+}
+
+.underline-input{
+  display: inline;
+  border: none; /* Remove default border */
+  outline: none; /* Remove focus outline */
+  border-bottom: 1px solid black; /* Display only bottom border */
+  padding-bottom: 5px; /* Add spacing for the underline */
+  width: 30px; /* Set your desired width */
+  background-color: #fafbfe;
+
+}
+
+
+
+
+
+
+/* styling the dosage */
+
+.circular-div {
+  width: 18px; /* or any size you want */
+  height: 18px;
+  border-radius: 50%; /* this makes it circular */
+  border: 2px solid #ff5500; /* adjust color as needed */
+  position: relative;
+}
+
+.tick-mark{
+font-size: .8rem;
+position: relative;
+top: -6px;
+left: 2px;
+  color: #ff5500;
+  font-weight:bolder;
+}
+
+.line {
+  width: 50px;
+  height: 2px;
+  background-color: #ff5500;
+}
+
+
+
+/* styling comment input */
+
+.comment-input {
+  /* Add your custom styles for the input here */
+  display: inline;
+  background-color: #fafbfe;
+  border: none; /* Remove default border */
+  outline: none; /* Remove focus outline */
+  border-bottom: 1px solid black; /* Display only bottom border */
+  padding-bottom: 5px; /* Add spacing for the underline */
+}
+
+
+
+
+
+/* search box */
+
+.search-box {
+  position: relative;
+  /* Allows absolute positioning of the icon inside */
+  /* width: 300px; */
+  /* or any width as per your design */
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 40px 8px 8px;
+  /* Right padding is larger to accommodate the icon */
+  border: none;
+  /* Remove borders */
+  border-bottom: 1px solid black;
+  background-color: #f8f8f8;
+  /* Only bottom border */
+  outline: none;
+  /* Removes the highlight around the input on focus */
+  font-size: 16px;
+  /* Adjust as needed */
+}
+
+.search-box .input-wrapper {
+  position: relative; /* Ensure this container is positioned relatively */
+  width: 100%; /* Adjust width as needed */
+}
+
+.search-box .search-icon {
+  position:absolute;
+  right: 10px;
+  /* Distance from right, adjust as needed */
+  top: 28%;
+  /* Center vertically */
+  transform: translateY(20%);
+  /* Precise centering */
+  cursor: pointer;
+  /* Indicates that the icon is interactive */
+  color: black;
+  /* Icon color, change as needed */
+  font-size: 15px;
+  /* Icon size, adjust based on the icon used */
+}
+
+
+
+/* medicine box */
+
+.fa-prescription-bottle-medical{
+  color: #ff5500;
+  font-size: 30px;
+  padding: 20px;
+}
+
+
+input[type="checkbox"]:checked{
+  background-color: #ff1100;
+  color: black;
+}
+
+
+
+
+/* input for days */
+
+.daysinput
+{
+position: relative;
+top: -18px;
+width: 40px;
+border: 0px;
+border-bottom: 1px black solid;
+outline: none;
+
+}
+
+
+
+
+
+/* modal style */
+
+.modal-dialog-centered{
+width: 353px;
+}
+
+
+.dosage input[type="checkbox"]:checked,input[type="radio"] {
+  accent-color: #ff1100;
+}
+
+
+.commenttextarea{
+  outline: none;
+
+    }
