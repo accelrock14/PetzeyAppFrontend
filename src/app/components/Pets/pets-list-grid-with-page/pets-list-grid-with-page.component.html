@@ -1,0 +1,48 @@
+<select class="form-control ms-2" [(ngModel)]="petsFilter.Species" (ngModelChange)="goToPage(1)">
+  <option value="">All Species</option>
+  <option *ngFor="let species of speciesOptions" [value]="'{{species}}'">{{ species }}</option>
+</select>
+
+<br>
+<br>
+
+
+<input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets"  (ngModelChange)="goToPage(1)">
+
+<hr>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let pet of pets">
+      <div class="card">
+        <div class="d-flex align-items-center">
+          <div class="col-5 px-0 py-3 d-flex justify-content-center align-items-center">
+            <img src="https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_640.jpg" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="pet image">
+          </div>
+          <div class="col-7 px-1 py-3">
+            <h6 class="card-title mb-0">{{ pet.PetName }}</h6>
+            <p class="card-text mb-2"><small class="text-muted">{{ pet.Gender }}, {{ pet.DateOfBirth | age }} years</small></p>
+            <p class="card-text"><small class="text-muted">Owner: {{ pet.PetParentId }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of *ngFor loop -->
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" *ngIf="totalPages > 0">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="prevPage()">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" (click)="nextPage()">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- End of Pagination -->
+  </div>
+</div>

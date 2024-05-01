@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit, input } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -36,6 +36,9 @@ import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
+
+  @Input() reportId: number = 1
+
   report: IReport = {
     ReportID: 1,
     Prescription: {
@@ -134,7 +137,7 @@ export class ReportComponent implements OnInit {
   deletePrescribedMedicineID: number = 0;
 
   ngOnInit(): void {
-    this.reportService.getReport(1).subscribe((r) => {
+    this.reportService.getReport(this.reportId).subscribe((r) => {
       this.report = r;
 
       this.symptomSettings = {
@@ -303,7 +306,7 @@ export class ReportComponent implements OnInit {
     this.reportService
       .DeletePrescription(this.deletePrescribedMedicineID)
       .subscribe((p) => {
-        this.reportService.getReport(1).subscribe((r) => {
+        this.reportService.getReport(this.reportId).subscribe((r) => {
           this.report = r;
         });
       });
@@ -417,7 +420,7 @@ export class ReportComponent implements OnInit {
           prescribedMedicine
         )
         .subscribe((p) => {
-          this.reportService.getReport(1).subscribe((r) => {
+          this.reportService.getReport(this.reportId).subscribe((r) => {
             this.report = r;
           });
         });
