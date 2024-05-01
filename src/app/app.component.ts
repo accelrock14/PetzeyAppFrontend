@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboard/doctor-dashboard.component';
 import { VetComponent } from './components/Vet/vet/vet.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,RouterLink,VetComponent],
+  imports: [RouterOutlet, DoctorDashboardComponent, RouterLinkActive,RouterLink,VetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
