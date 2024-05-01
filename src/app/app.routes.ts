@@ -14,6 +14,7 @@ import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-lis
 import { UserProfileComponent } from './components/Pets/user-profile/user-profile.component';
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
 import { PetsListGridPagedComponent } from './components/Pets/pets-list-grid-paged/pets-list-grid-paged.component';
+import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -57,4 +58,8 @@ export const routes: Routes = [
     path: 'editpet/:id',
     component: CreateOrEditPetComponent,
   },
+  {
+    path: 'newPet', component:CreatePetComponent
+  }
+  
 ];

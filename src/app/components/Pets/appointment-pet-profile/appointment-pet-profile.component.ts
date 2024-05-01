@@ -28,7 +28,7 @@ export class AppointmentPetProfileComponent implements OnInit {
     PetID: 0,
     PetParentId: 5,
     PetName: 'Doggo',
-    PetImage: new Uint8Array(),
+    PetImage: '',
     Species: 'Dog',
     BloodGroup: "O+ve",
     Breed: 'Afghan Hound',

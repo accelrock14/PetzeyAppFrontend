@@ -58,11 +58,11 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlGetMorePets,pageNumber);
   }
   AddPet(petToBeAdded: IPet): Observable<IPet> {
-    const apiUrlAddPet="";
+    const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
   }
   EditPet(petToBeEdited: IPet): Observable<IPet> {
-    const apiUrlPetToBeEdited = "";
+    const apiUrlPetToBeEdited = ``;
     return this.apiService.put<IPet>(apiUrlPetToBeEdited,petToBeEdited);
   }
   GetPetsByParentID(petParentID: number): Observable<IPet[]> {
