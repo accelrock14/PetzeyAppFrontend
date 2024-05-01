@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf, } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
@@ -30,7 +30,7 @@ export class DetailsComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: null
+    PetIssues: []
   }
   formModal: any;
   formModal2: any;

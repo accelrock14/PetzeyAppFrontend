@@ -167,4 +167,11 @@
     justify-content: center; /* Center children vertically in the main axis (optional) */
     text-align: center;   /* Center the text of each child */
 }
-  
+.capsule{
+    display: inline-block;
+    margin: 5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background-color: rgb(240, 211, 199);
+    color: #ff1100;
+  }
