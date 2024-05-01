@@ -5,11 +5,13 @@ import { CommonModule } from '@angular/common';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 @Component({
   selector: 'app-vet',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, NgMultiSelectDropDownModule],
   templateUrl: './vet.component.html',
   styleUrl: './vet.component.css'
 })
@@ -22,11 +24,28 @@ export class VetComponent implements OnInit{
   specialties: string[] = [];
   selectedSpecialties: string[] = [];
   fVets: any[] = [];
-  constructor(private vetService: VetsserviceService,private router: Router) { }
+  dropdownSettings = {};
+  currentPage: number = 1;
+  pageSize: number = 4; 
+  totalPages: number = 1; 
+ 
+  constructor(private vetService: VetsserviceService,private router: Router) { 
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      enableCheckAll: true,
+      itemsShowLimit: 3,
+      allowSearchFilter: false,
+      maxHeight	: 500
+    };
+  }
 
   ngOnInit(): void {
     this.getTopRated();
     this.getAllVets();
+    this.sFilterVet();
+    this.updateFilteredVets(); 
     
   }
 
@@ -41,7 +60,7 @@ export class VetComponent implements OnInit{
           console.error('Error fetching vets:', error);
         }
       );
-    this.sFilterVet();
+    
   }
 
   getAllVets(): void {
@@ -49,11 +68,13 @@ export class VetComponent implements OnInit{
       .subscribe(
         (vets: IVetCardDTO[]) => {
           this.vets = vets;
-          this.filteredVets = [...this.vets]; 
-          console.log(this.vets)
+          this.filteredVets = [...this.vets];
+          this.totalPages = Math.ceil(this.vets.length / this.pageSize);
+          console.log(this.vets);
+          this.updateFilteredVets();
         },
         error => {
-          console.error('Error fetching vets:', error);
+          console.error('Error fetching all vets:', error);
         }
       );
   }
@@ -115,6 +136,25 @@ export class VetComponent implements OnInit{
       } else {
         this.fVets = [];
       }
+    }
+
+
+    updateFilteredVets(): void {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      this.filteredVets = this.vets.filter(vet =>
+        vet.Name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        vet.Speciality.toLowerCase().includes(this.searchQuery.toLowerCase())
+      ).slice(startIndex, endIndex);
+    }
+
+    get totalPagesArray(): number[] {
+      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    }
+
+    onPageChange(page: number): void {
+      this.currentPage = page;
+      this.updateFilteredVets();
     }
   }
 
