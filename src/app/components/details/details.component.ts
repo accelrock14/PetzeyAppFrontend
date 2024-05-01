@@ -4,12 +4,13 @@ import { NgFor, NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
+import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/appointment-pet-profile.component';
 
 declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent],
+  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent, AppointmentPetProfileComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
