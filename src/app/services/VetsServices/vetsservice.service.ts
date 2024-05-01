@@ -50,7 +50,13 @@ export class VetsserviceService {
     return this.http.post<IVetIdNameDTO[]>(url, doctorIds);
   }
 
-  
+  getUniqueSpecialties(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/specialties`);
+  }
+
+  getVetsBySpecialty(specialties: string[]): Observable<any[]> {
+    return this.http.post<IVetCardDTO[]>(`${this.apiUrl}/vetsBySpecialty`, specialties);
+  }
 
 
 }

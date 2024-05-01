@@ -19,11 +19,14 @@ export class VetComponent implements OnInit{
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
   searchQuery: string = '';
-
+  specialties: string[] = [];
+  selectedSpecialties: string[] = [];
+  fVets: any[] = [];
   constructor(private vetService: VetsserviceService,private router: Router) { }
 
   ngOnInit(): void {
     this.getAllVets();
+    this.sFilterVet();
   }
 
   getAllVets(): void {
@@ -58,5 +61,45 @@ export class VetComponent implements OnInit{
       }
     }
     
+
+    sFilterVet() :void{
+      this.vetService.getUniqueSpecialties().subscribe({
+        next: (data) => {
+          this.specialties = data;
+          console.log(this.specialties)
+        },
+        error: (err) => console.error(err)
+      });
+    }
+    
+    onSpecialtyChange(specialty: string, event: Event): void {
+      const checkbox = event.target as HTMLInputElement; // Type assertion here
+      if (checkbox.checked) {
+        this.selectedSpecialties.push(specialty);
+      } else {
+        const index = this.selectedSpecialties.indexOf(specialty);
+        if (index > -1) {
+          this.selectedSpecialties.splice(index, 1);
+        }
+      }
+      this.filteringVets();
+    }
+    
+
+
+    filteringVets(): void {
+      if (this.selectedSpecialties.length > 0) {
+        this.vetService.getVetsBySpecialty(this.selectedSpecialties).subscribe({
+          next: (vets) => {
+            this.fVets = vets;
+            console.log(this.fVets)
+          },
+          
+          error: (err) => console.error(err)
+        });
+      } else {
+        this.fVets = [];
+      }
+    }
   }
 

@@ -5,5 +5,5 @@ export interface IVetProfileDTO {
     Speciality: string;
     Email: string;
     PhoneNumber: string;
-    Photo: ArrayBuffer;
+    Photo: string;
   }

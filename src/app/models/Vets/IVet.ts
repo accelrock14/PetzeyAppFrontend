@@ -2,11 +2,11 @@ import { IAddress } from "./IAddress";
 
 export interface IVet {
     vetId: number;
-    lName: string;
-    fName: string;
+    LName: string;
+    FName: string;
     npiNumber: string;
     username: string;
-    phone: string;
+    Phone: string;
     email: string;
     speciality: string;
     shortBio: string;

@@ -7,27 +7,121 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-4">
-      <div class="icon-input">
-        <input class="icon-input__text-field" type="text">
-        <i class="icon-input__icon material-icons">search</i>
+    <div class="col-2">
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50" class="search-icon">
+        <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
+        </svg> -->
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search..."
+        [(ngModel)]="searchQuery"
+        (input)="filterVets()"
+      />
+    </div>
+
+    <div class="col-2">
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-dark dropdown-toggle"
+          type="button"
+          id="dropdownSpecialtyFilter"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <i class="fa fa-filter" aria-hidden="true"></i>
+          Filter
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownSpecialtyFilter">
+          <li *ngFor="let specialty of specialties">
+            <a class="dropdown-item">
+              <input
+                type="checkbox"
+                [id]="specialty"
+                (change)="onSpecialtyChange(specialty, $event)"
+                class="form-control-file"
+              />
+              <label [for]="specialty">{{ specialty }}</label>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    
-  
-  <div class="row">
-    <!-- Repeat this block for each profile -->
-    <div *ngFor="let vet of filteredVets" class="col-md-3 col-sm-6 mb-4">
-      <a href="javascript:void(0);" class="card-link" (click)="openVetProfile(vet.VetId)">
-        <div class="card">
-          <!-- <img [src]="vet.Photo" class="card-img-top" alt="Not found" /> -->
-          <div class="card-body text-center">
-            <h5 class="card-title">{{ vet.Name }}</h5>
-            <p class="card-text">{{ vet.Speciality }}</p>
-            <p class="card-text">{{ vet.PhoneNumber }}</p>
-          </div>
+  </div>
+  <div class="container my-5">
+    <div *ngIf="selectedSpecialties.length === 0">
+      <div class="row">
+        <!-- Original loop for displaying all veterinarians -->
+        <div class="col-md-3 col-sm-6" *ngFor="let vet of filteredVets">
+          <a
+            href="javascript:void(0);"
+            class="card-link"
+            (click)="openVetProfile(vet.VetId)"
+          >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
+      </div>
     </div>
+
+    <!-- Display filtered veterinarians -->
+    <div *ngIf="selectedSpecialties.length > 0">
+      <div class="row">
+        <div *ngFor="let vet of fVets" class="col-md-3 col-sm-6">
+          <a
+            href="javascript:void(0);"
+            class="card-link"
+            (click)="openVetProfile(vet.VetId)"
+          >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <ng-template #noVets
+      ><p>No veterinarians found for the selected specialties.</p></ng-template
+    >
   </div>
 </div>
