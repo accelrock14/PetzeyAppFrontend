@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf, } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
 import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/appointment-pet-profile.component';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
+import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-appt.component';
 
 declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent, AppointmentPetProfileComponent],
+  imports: [NgIf, NgFor, DatePipe, RouterLink, ReportComponent, AppointmentPetProfileComponent, VetProfileApptComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements OnInit {
 
-  appointment:AppointmentDetail = {
+  appointment: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: 0,
     PetID: 0,
@@ -29,14 +30,14 @@ export class DetailsComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: null
+    PetIssues: []
   }
   formModal: any;
   formModal2: any;
-  constructor(private appointmentDetailsService: AppointmentDetailsService) { }
+  constructor(private appointmentDetailsService: AppointmentDetailsService, private route: ActivatedRoute) { }
   ngOnInit(): void {
-
-    this.appointmentDetailsService.GetAppointmentDetail(51)
+    const ID: any = this.route.snapshot.paramMap.get('id');
+    this.appointmentDetailsService.GetAppointmentDetail(ID)
       .subscribe((appointment: any) => this.appointment = appointment);
 
 
@@ -70,12 +71,13 @@ export class DetailsComponent implements OnInit {
           this.closeModal();
 
           this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
-            .subscribe(updatedAppointment =>{ this.appointment = updatedAppointment
-        console.log(this.appointment);
+            .subscribe(updatedAppointment => {
+              this.appointment = updatedAppointment
+              console.log(this.appointment);
 
             });
-            
-            
+
+
         },
         (error) => {
           // Handle error scenario (e.g., show error message)

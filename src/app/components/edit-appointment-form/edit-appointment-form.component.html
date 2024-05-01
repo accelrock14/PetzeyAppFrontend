@@ -1,12 +1,10 @@
-<p>edit-appointment-form works!</p>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <!-- this above is the cloudflare link for search icon magnifying glass -->
 <div class="new-appointment-form">
     <div class="back btn">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <pre class="pre"> Back to Appointments</pre>
+        <pre class="pre" (click)="navigateBack()"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
     <hr>
@@ -27,6 +25,7 @@
             </div>
         </div>
         <br>
+        <p>your currently selected schedule date is {{appointmentDetail.ScheduleDate | date}} select another to change</p>
         <div class="cal-slots-displayer">
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
@@ -93,6 +92,11 @@
             </div>
         </div>
     </div>
+    <div class="dycapsules">
+        <div *ngFor="let pi of appointmentDetail.PetIssues" class="capsule">{{pi.IssueName}}
+            <i class="fas fa-times" (click)="onDisSelectPetIssue(pi)" ></i>
+        </div>
+    </div>
 
     <br>
     <h6>Reason for Visit</h6>
@@ -127,12 +131,12 @@ modal popup code for confirmation
                 <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
             </div>
         
-            <h4>Book Appointment</h4>
-            <p>Do you want to book appointment?</p>
+            <h4>Confirm Book Appointment</h4>
+            <p>Do you want to confirm edit appointment?</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBook(reasonforvisit.value)" >Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBookEditBooking(reasonforvisit.value)" >Confirm</button>
         </div>
       </div>
     </div>

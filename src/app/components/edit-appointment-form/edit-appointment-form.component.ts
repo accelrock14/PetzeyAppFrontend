@@ -9,21 +9,28 @@ import { PetParent } from '../../models/PetParent';
 import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
+import { Router, RouterLink } from '@angular/router';
 
+
+declare var window:any;
 @Component({
   selector: 'app-edit-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   templateUrl: './edit-appointment-form.component.html',
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
 
+navigateBack() {
+this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
+}
+
   formModal: any;
   cancelAptModal: any;
 
   // id of appointment to edit;
-  AppointmentID: number = 1;
+  AppointmentID: number = 44;
   appointmentDetail: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: 0,
@@ -39,9 +46,9 @@ export class EditAppointmentFormComponent implements OnInit {
   };
   slotStatuses: boolean[] = [];
   selectedScheduleDate: Date = new Date();
-  selectedIndex: number | null = null;
+  selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -71,6 +78,20 @@ export class EditAppointmentFormComponent implements OnInit {
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
         this.appointmentDetail = data;
+        this.AppointmentID = this.appointmentDetail.AppointmentID;
+        this.selectedScheduleDate = this.appointmentDetail.ScheduleDate;
+        this.selectedSlotIndex=this.appointmentDetail.ScheduleTimeSlot;
+        this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.appointmentDetail.ScheduleDate)).subscribe({
+          next:(data)=>{
+            console.log(data+"data here");
+            this.slotStatuses = data;
+            // this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=true;
+          },
+          error:(err)=>{
+            console.log("error in oninit slot status fetching",err);
+            
+          }
+        });
         console.log("feteched appointmetnDetail for editing", data);
       },
       error: (err) => {
@@ -78,9 +99,12 @@ export class EditAppointmentFormComponent implements OnInit {
       }
     });
 
+    this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    //
+
     this.aptService.getVeternarians().subscribe({
       next: (data: Veterinarian[]) => {
-
         for (let i = 0; i < data.length; i++) {
           //console.log(typeof data[i].id + " and "+typeof this.appointmentDetail.DoctorID);
           // LATER I HAVE TO MAKE IT AS ===
@@ -135,22 +159,29 @@ export class EditAppointmentFormComponent implements OnInit {
       }
     });
 
+    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
+      next: (data) => {
+        this.slotStatuses = data, console.log("default date schedules success", data);
+      },
+      error: (err) => {
+        console.log("error occured array fetch", err);
+      }
+    });
+
     // modal popup code 
     // this.formModal= new window.bootstrap.Modal(
     //   document.getElementById("exampleModal")
     // );
     // this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
     //
-    this.selectedScheduleDate = new Date();
+    //this.selectedScheduleDate = new Date();
     // this is the method to getGeneralPetIssues from backend server
     this.aptService.getGeneralPetIssues().subscribe({
       next: (data) => {
         this.generalPetIssues = data;
         //console.log("logging data of generalpetissues",data);
         //console.log("my gpetissues",this.generalPetIssues);
-        //this.petIssuesNames = this.generalPetIssues.map(i => i.IssueName);
         this.filteredpetIssues = this.generalPetIssues;
-        //console.log("pet isssue names array",this.petIssuesNames);
       },
       error: (err) => { console.error('there was an error in while fetching the generalpetissue in the appointment form ng onint', err) }
     });
@@ -188,6 +219,7 @@ export class EditAppointmentFormComponent implements OnInit {
   }
   // modal popup code for submission
   openModal() {
+    alert("here");
     this.formModal.show();
   }
   closeModal() {
@@ -211,13 +243,18 @@ export class EditAppointmentFormComponent implements OnInit {
   }
 
   selectPetIssue(petIssue: string): void {
-    this.petIssueSearchText = petIssue;
+    this.petIssueSearchText = '';
+    // remove element from the general pet issues.
+    this.generalPetIssues = this.generalPetIssues.filter(gpi=>gpi.IssueName!==petIssue);
     this.filteredpetIssues = [];
-    let tempPetIssue: PetIssue = {
+    let tempPetIssue:PetIssue ={
       PetIssueID: 0,
       IssueName: petIssue,
     }
-    this.appointmentDetail.PetIssues?.push(tempPetIssue);
+    this.appointmentDetail.PetIssues.push(tempPetIssue);
+  }
+  onDisSelectPetIssue(Pi:PetIssue) {
+    this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
   }
 
   // veternarian methods 
@@ -250,7 +287,7 @@ export class EditAppointmentFormComponent implements OnInit {
     }
     // by default it should fetch the schedules for today.
     this.appointmentDetail.DoctorID = vid;
-    this.selectedScheduleDate = new Date();
+    // this.selectedScheduleDate = new Date();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
         this.slotStatuses = data, console.log("default date schedules success", data);
@@ -275,21 +312,28 @@ export class EditAppointmentFormComponent implements OnInit {
   }
 
   isDisabled(index: number): boolean {
-    return this.slotStatuses[index];
+    // console.log("here "+index+" , "+this.appointmentDetail.ScheduleTimeSlot);
+    if(index===this.appointmentDetail.ScheduleTimeSlot)
+      {
+        // console.log("logging the indexxxxxxx",index,this.appointmentDetail.ScheduleTimeSlot);
+        return false;
+      }
+    else 
+      return this.slotStatuses[index];
   }
 
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
       console.log('Slot selected:', slot);
       console.log('selected slot index', index);
-      this.selectedIndex = index;
+      this.selectedSlotIndex = index;
       this.appointmentDetail.ScheduleTimeSlot = index;
     }
   }
 
   isSelected(index: number): boolean {
     this.appointmentDetail.ScheduleTimeSlot = index;
-    return index === this.selectedIndex;
+    return index === this.selectedSlotIndex;
   }
 
   filterPetParents(): void {
@@ -328,17 +372,26 @@ export class EditAppointmentFormComponent implements OnInit {
     ['16:00', '16:30', '17:00', '17:30', '18:00', '18:30']
   ];
 
-  onBook(reasonforvisit: string) {
+  onBookEditBooking(reasonforvisit: string) {
     this.appointmentDetail.BookingDate = new Date();
     this.appointmentDetail.ReasonForVisit = reasonforvisit;
     this.appointmentDetail.Status = Status.Pending;
     this.appointmentDetail.Report = null;
+    this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
     // alert("inside booking");
     // finally call the service post method.
-    this.aptService.postAppointment(this.appointmentDetail).subscribe({
-      next: (response) => { console.log("successposting", response); },
-      error: (err) => { console.log("got error while posting", err); }
+    this.aptService.putAppointmentByIdandObj(this.appointmentDetail.AppointmentID,this.appointmentDetail).subscribe({
+      next:(data)=>{
+        let editedAppointment = data;
+        console.log("I am loggin edited appointment for our reference"+editedAppointment);
+        
+      },
+      error:(err)=>{
+        console.log("errooor occured while sending put request",err);
+      }
     });
+    alert("edit success");
+    this.closeModal();
   }
 
   isSubmitDisabled: boolean = true;

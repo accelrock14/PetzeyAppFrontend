@@ -14,5 +14,5 @@ export  interface AppointmentDetail
     ReasonForVisit:string,
     Status:Status,
     Report:Report|null,
-    PetIssues :PetIssue[]|null
+    PetIssues :PetIssue[]
 }

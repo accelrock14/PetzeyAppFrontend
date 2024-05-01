@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { ActivatedRoute } from '@angular/router';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
@@ -14,10 +14,13 @@ export class VetProfileApptComponent {
     constructor(private route: ActivatedRoute, private vetService: VetsserviceService) { }
     vetProfile?: IVetProfileDTO;
   
-  
+    @Input()
+    VetId:number = 0;
     ngOnInit(): void {
       // Get the vet ID from the route parameter
-      const idParam = this.route.snapshot.paramMap.get('id');
+      const idParam = this.VetId.toString();
+      //this.route.snapshot.paramMap.get('id');
+      
       if (idParam !== null) {
         const vetId = parseInt(idParam);
         // Fetch vet profile details by ID
