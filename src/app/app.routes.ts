@@ -60,7 +60,7 @@ export const routes: Routes = [
     path: 'editpet/:id',
     component: CreateOrEditPetComponent,
   },
-  {path:'add-vet',component:AddVetComponent}
+  {path:'add-vet',component:AddVetComponent},
   {path:'vet', component:VetComponent},
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
 ];
