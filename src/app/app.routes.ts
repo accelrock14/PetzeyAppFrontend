@@ -71,7 +71,7 @@ export const routes: Routes = [
     path: 'signin',
     component: SigninComponent,
     title: "SignIn",
-  }
+  },
   {path:'add-vet',component:AddVetComponent},
   {path:'vet', component:VetComponent},
   
