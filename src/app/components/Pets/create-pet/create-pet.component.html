@@ -39,6 +39,7 @@
                 <img
                   src="{{imageUrl}}"
                   class="img-fluid rounded-circle-img"
+                  onerror="this.onerror=null; this.src='https://placehold.co/100x100';" 
                   style="position: relative; z-index: 1"
                 />
                 <div class="form-group"></div>
@@ -284,6 +285,7 @@
             <button
               type="submit"
               class="btn orange-color-bg col-5"
+              data-bs-dismiss="modal"
             >
               Confirm
             </button>
@@ -292,10 +294,4 @@
       </div>
     </div>
   </div>
-  <div>
-    <div class="row justify-content-center">
-      <div class="col-9 text-light all-over w-30 m-3 justify-content-center ">
-        {{ newPetForm.value | json }}
-      </div>
-    </div>
-</div>
+
