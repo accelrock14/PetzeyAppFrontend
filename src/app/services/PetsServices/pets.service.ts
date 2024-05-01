@@ -50,7 +50,6 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPet[]>(apiUrlGetPetsByIDs,petIDs)
   }
   GetPetDetailsByID(petID: number): Observable<IPet> {
-    console.log(petID)
     const apiUrlGetPetDetailsByID =`${petsServiceUrl}/details/${petID}`;
     return this.apiService.get<IPet>(apiUrlGetPetDetailsByID);
   }
