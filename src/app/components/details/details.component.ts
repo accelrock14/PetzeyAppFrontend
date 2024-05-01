@@ -29,7 +29,7 @@ export class DetailsComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: null
+    PetIssues: []
   }
   formModal: any;
   formModal2: any;
