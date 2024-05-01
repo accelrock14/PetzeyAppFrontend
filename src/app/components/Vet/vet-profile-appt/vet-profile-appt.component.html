@@ -1,34 +1,38 @@
 <div class="container mt-4">
-    <div class="card" style="max-width: 500px;"> 
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <div class="row">
-                <h5 class="m-0">Doctor</h5>
-            </div>
-        </div>
+    <div class="card" style="max-width: 350px;">     
         <div class="card-body pb-5"> 
-            <div class="row">
+            <div class="row mb-2 ">
                 <div class="col-md-4"> 
                     <img 
-                        [src]="vetProfile?.Photo" 
+                        src= {{vetProfile?.Photo}} 
                         alt="Vet Photo" 
                         class="img-fluid rounded-circle" 
-                        style="width: 120px; height: 120px;" 
+                        style="width: 100px; height: 100px;" 
                     />
                 </div>
-                <div class="col-md-8"> <!-- Adjusted grid layout to allocate more space for information -->
+                <div class="col-md-8 mx-0"> 
                     <div class="info">
-                        <p class="text-muted">Name: {{ vetProfile?.FName }} {{ vetProfile?.LName }}</p>
-                        <p class="text-muted">NPI Number: {{ vetProfile?.NpiNumber }}</p>
-                        <p class="text-muted">Speciality: {{ vetProfile?.Speciality }}</p>
+                        <p>Doctor</p>
+                        <h6 class="fw-bold my-0">name {{ vetProfile?.FName }} {{ vetProfile?.LName }}</h6>
+                        <p class="text-muted mt-0 mb-3">speciality{{ vetProfile?.Speciality }}</p>
+                    </div>
+                </div>
+            </div>
+                <div class = "row">
+                    <div class="col-md-6">
+                        <p class="text-muted">NPI Number: <span class = "fw-semibold">
+                            {{ vetProfile?.NpiNumber }}
+                        </span></p>
+                    </div>
+                    <div class="col-md-6">
                         <p class="text-muted">
-                            <i class="fas fa-phone"></i> {{ vetProfile?.Phone }}
+                            <i class="far fa-envelope"></i>  <span class = "fw-semibold">{{ vetProfile?.Email }}</span>
                         </p>
                         <p class="text-muted">
-                            <i class="far fa-envelope"></i> {{ vetProfile?.Email }}
+                            <i class="fas fa-phone"></i>  <span class = "fw-semibold">{{ vetProfile?.Phone }}</span>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

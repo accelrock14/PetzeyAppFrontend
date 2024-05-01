@@ -18,7 +18,8 @@ import { SigninComponent } from './components/user-authentiaction/signin/signin.
 import { VetComponent } from './components/Vet/vet/vet.component';
 import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.component';
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
-
+import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-profile-appt.component';
+VetProfileApptComponent
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
     { path: '',redirectTo:'home', pathMatch:'full' },
