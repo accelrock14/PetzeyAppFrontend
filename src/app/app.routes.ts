@@ -78,4 +78,10 @@ export const routes: Routes = [
   {path:'vet', component:VetComponent},
   
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
+  {
+    path:'addAppointment',component:NewAppointmentFormComponent
+  },
+  {
+    path:'editAppointment/:AppointmentID',component:EditAppointmentFormComponent
+  }
 ];

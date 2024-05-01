@@ -9,7 +9,7 @@ import { PetParent } from '../../models/PetParent';
 import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 
 declare var window:any;
@@ -21,6 +21,10 @@ declare var window:any;
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
+
+navigateBack() {
+this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
+}
 
   formModal: any;
   cancelAptModal: any;
@@ -44,7 +48,7 @@ export class EditAppointmentFormComponent implements OnInit {
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
