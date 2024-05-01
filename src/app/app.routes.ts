@@ -20,7 +20,7 @@ import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'details', component: DetailsComponent },
+  { path: 'details/:id', component: DetailsComponent },
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
   {
@@ -62,5 +62,6 @@ export const routes: Routes = [
   },
   {path:'add-vet',component:AddVetComponent},
   {path:'vet', component:VetComponent},
+  
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
 ];
