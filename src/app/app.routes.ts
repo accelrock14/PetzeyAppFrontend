@@ -16,26 +16,45 @@ import { UserProfileComponent } from './components/Pets/user-profile/user-profil
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'details', component: DetailsComponent},
+  { path: '', component: HomeComponent },
+  { path: 'details', component: DetailsComponent },
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
-    { path: "AdminDashboard", component: AdminDashboardComponent, title: "AdminDashboard" },
-    { path: "DoctorDashboard", component: DoctorDashboardComponent, title: "DoctorDashboard" },
-    { path: 'PatientDashboard', component: PatientDashboardComponent, title: "PatientDashboard" },
-    {
-        path:'createandedittemp', component:CreateOrEditPetComponent
-    },
+  {
+    path: 'AdminDashboard',
+    component: AdminDashboardComponent,
+    title: 'AdminDashboard',
+  },
+  {
+    path: 'DoctorDashboard',
+    component: DoctorDashboardComponent,
+    title: 'DoctorDashboard',
+  },
+  {
+    path: 'PatientDashboard',
+    component: PatientDashboardComponent,
+    title: 'PatientDashboard',
+  },
+  {
+    path: 'createandedittemp',
+    component: CreateOrEditPetComponent,
+  },
 
-    {
-      path:'pets-list', component:PetsListGridComponent
-    },
-    {
-      path:'pets-profile/:id', component:PetProfileComponent
-    },
-    { path: 'pets/:page', component: PetsListGridWithPagesComponent }, // Route for the component with page number parameter
+  {
+    path: 'pets-list',
+    component: PetsListGridComponent,
+  },
+  {
+    path: 'pets-profile/:id',
+    component: PetProfileComponent,
+  },
+  { path: 'pets/:page', component: PetsListGridWithPagesComponent }, // Route for the component with page number parameter
 
-    { path: 'appointmentPetDetails', component:AppointmentPetProfileComponent },
+  { path: 'appointmentPetDetails', component: AppointmentPetProfileComponent },
 
-    { path: 'user', component: UserProfileComponent}
+  { path: 'user', component: UserProfileComponent },
+  {
+    path: 'editpet/:id',
+    component: CreateOrEditPetComponent,
+  },
 ];
