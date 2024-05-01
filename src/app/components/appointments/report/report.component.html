@@ -163,13 +163,13 @@
   </div>
 </div>
 
-<div class="appointmentDetailspage ps-3 p-5">
+<div class="appointmentDetailspage ps-3 p-5" #elementToExport>
   <div class="d-flex justify-content-between align-items-center" id="reportheading">
     <h5>Appointment Report</h5>
     <div>
       <button
         *ngIf="!isEditing"
-        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold"
+        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold" (click)="exportToPDF(elementToExport)"
       >
         <i class="fa-solid fa-download me-2"></i>Report
       </button>
