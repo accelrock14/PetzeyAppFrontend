@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
   styleUrl: './doctor-appointment-card.component.css'
 })
 export class DoctorAppointmentCardComponent {
+openPopup(arg0: string) {
+  alert("This service will be available soon")
+}
   @Input()
   appointmentcard!: AppointmentCardDto;
 }

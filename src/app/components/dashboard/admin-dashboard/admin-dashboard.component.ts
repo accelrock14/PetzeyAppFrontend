@@ -49,12 +49,12 @@ export class AdminDashboardComponent implements OnInit {
     //   this.appointmentCards = data;
     //   console.log(this.appointmentCards);
     // })
-  //   this.filteredAppointments = this.appointmentCards.filter(appointment => {
-  //     const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
-  //     const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
-  //     const matchesDoctor = !this.selectedDoctor || appointment.DoctorID == this.selectedDoctor;
-  //     return matchesDate && matchesStatus && matchesDoctor;
-  // });
+    this.filteredAppointments = this.appointmentCards.filter(appointment => {
+      const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
+      const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
+      const matchesDoctor = !this.selectedDoctor || appointment.DoctorID == this.selectedDoctor;
+      return matchesDate && matchesStatus && matchesDoctor;
+  });
     this.pageClick(this.page);
     
   }
@@ -94,14 +94,22 @@ export class AdminDashboardComponent implements OnInit {
             const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
             const matchesDoctor = !this.selectedDoctor || appointment.DoctorID == this.selectedDoctor;
             return matchesDate && matchesStatus && matchesDoctor;
-        })
-        .slice(this.offset, this.offset + pageSize); // Slice the array to get only the appointments for the current page
-}
+        }).slice(this.offset, this.offset + pageSize); // Slice the array to get only the appointments for the current page
+        console.log(this.filteredAppointments.length);
+      }
 
 
   isPreviousPageDisabled() {
     return this.page === 1;
   }
+  isNextPageDisabled() {
+    const pageSize = 3; // Number of appointments per page
+    const totalAppointments = this.filteredAppointments.length; // Total number of filtered appointments
+    return totalAppointments < this.page * pageSize;
+}
+
+
+
 
 
 }
