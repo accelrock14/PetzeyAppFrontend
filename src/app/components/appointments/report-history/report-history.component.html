@@ -53,15 +53,26 @@
         <div class="col-lg-6 col-md-12 mx-auto right-part">
           <div class="precription border shadow p-3 rounded-3">
             <div class="precription-heading d-flex justify-content-between">
-              <h4>Precription</h4>
-              <button class="btn me-3 orange-color-bg">
-                <i class="fa-regular fa-calendar-days me-2"></i>Select Dates
-              </button>
+              <h4 class="mt-2">Precription</h4>
+              <mat-form-field appearance="fill">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="selectedDate"
+                  placeholder="Select Date"
+                  (ngModelChange)="onDateChange()"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </div>
             <div class="row all-item-list p-3">
               @for (prescription of petHistory.Prescriptions; track $index) {
               <div
-                class="precription-item col-12 d-flex justify-content-between border rounded-3 shadow-sm mt-2"
+                class="precription-item col-12 p-2 d-flex justify-content-between border rounded-3 shadow-sm mt-2"
               >
                 <div class="medandid">
                   <p>#ID-{{ prescription.PrescriptionID }}</p>
@@ -74,8 +85,10 @@
                 </div>
 
                 <div class="appointmentdate my-auto">
-                  <span>28th march 2022</span>
-                  <small class="d-block">10:30 PM</small>
+                  <span>{{ petHistory.ScheduleDate[$index] | date }}</span>
+                  <small class="d-block">{{
+                    petHistory.ScheduleDate[$index] | date : "shortTime"
+                  }}</small>
                 </div>
               </div>
               }

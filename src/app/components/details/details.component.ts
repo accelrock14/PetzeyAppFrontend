@@ -4,18 +4,33 @@ import { NgFor, NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
+import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/appointment-pet-profile.component';
+import { AppointmentDetail } from '../../models/AppointmentDetail';
+import { Status } from '../../models/Status';
 
 declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent],
+  imports: [NgIf, NgFor, DatePipe, RouterLink,ReportComponent, AppointmentPetProfileComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements OnInit {
 
-  appointment: any | undefined;
+  appointment:AppointmentDetail = {
+    AppointmentID: 0,
+    DoctorID: 0,
+    PetID: 0,
+    OwnerID: 0,
+    ScheduleDate: new Date(),
+    ScheduleTimeSlot: 0,
+    BookingDate: new Date(),
+    ReasonForVisit: '',
+    Status: Status.Pending,
+    Report: null,
+    PetIssues: null
+  }
   formModal: any;
   formModal2: any;
   constructor(private appointmentDetailsService: AppointmentDetailsService) { }
