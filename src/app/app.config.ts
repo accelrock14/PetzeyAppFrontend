@@ -5,8 +5,12 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { DashboardService } from './services/DashboardServices/dashboard.service';
 
+
+
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), DashboardService, 
+  providers: [provideRouter(routes), provideHttpClient(), provideAnimationsAsync('noop'), DashboardService, 
     [
       {useClass: DashboardService}
     ]

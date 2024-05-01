@@ -1,0 +1,16 @@
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  pointer-events: none; /* Ensures the icon doesn't interfere with text selection */
+}
+
+.form-control {
+  padding-left: 30px; /* Adjust this value to leave space for the icon */
+}
+
