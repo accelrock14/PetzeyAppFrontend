@@ -11,48 +11,49 @@
   <header class="container-fluid">
     <div class="row justify-content-end align-items-center px-3 py-2">
       <div class="col-auto">
-        <span class="user-name">John Doe</span>
+        <span class="user-name">{{user.name}} {{user.family_name}}</span>
         <br>
         <span class="user-info">
-          <a href="#" class="logout-link">Logout</a>
+          <button class="btn btn-danger" (click)="OnLogout()">SignOut</button>
         </span>
       </div>
       <div class="col-auto">
-        <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="User Profile Image" class="img-fluid rounded-circle user-image">
+        <!-- <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="User Profile Image" class="img-fluid rounded-circle user-image"> -->
       </div>
     </div>
   </header>
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
   <main class="container-fluid py-4">
     <section class="user-info">
       <div class="row heading-and-button">
         <div class="col-9">
           <h2>Account Details</h2>
         </div>
-        <div class="col-3 text-right">
+        <!-- <div class="col-3 text-right">
           <a href="#" class="btn btn-primary edit-btn">Edit</a>
-        </div>
+        </div> -->
       </div>
       <div class="details">
         <div class="row">
-          <div class="col-4 ">
+          <!-- <div class="col-4 ">
             <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="Profile Image" class="img-fluid rounded-circle">
-          </div>
-          <div class="col-8">
+          </div> -->
+          <div class="col-14">
             <ul>
-              <li>Name: <strong>Jhonny Depp</strong></li>
-              <li>Mobile: <strong>+4750293457</strong></li>
-              <li>Location: <strong>Los Angeles, USA</strong></li>
+              <li>Name: <strong>{{user.name}} {{user.family_name}}</strong></li>
+              <li>Mobile: <strong>{{user.extension_PhoneNumber}}</strong></li>
+              <li>Location: <strong>{{user.city}}, {{user.state}}-{{user.postalCode}}</strong></li>
+              <li>Country: <strong>{{user.country}}</strong></li>
             </ul>
           </div>
-        </div>          
+        </div>
       </div>
     </section>
 
@@ -62,10 +63,12 @@
           <h2>Pet Details</h2>
         </div>
         <div class="col-2">
-          <a href="#" class="btn btn-primary edit-btn">+ Add Pet</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalCenterCreate">
+                + Add Pet
+              </button>
         </div>
       </div>
-      <div class="pet-cards">
+      <!-- <div class="pet-cards">
         <ng-container *ngFor="let pet of pets; let i = index">
           <section class="pet-card col-lg-3 col-md-5 col-sm-6 col-12 p-0 " (click)="testClick()">
             <div class="dropdown d-inline mt-0 ">
@@ -75,13 +78,21 @@
                   &#8942;
                 </button>
               </div>
-              <div class="dropdown-menu dropdown-menu-right" [attr.aria-labelledby]="'dropdownMenuButton' + i">
-                <button type="button" class="btn btn-light border-0 " data-bs-toggle="modal"
-                  [attr.data-bs-target]="'#mymodal_' + i" (click)="setPetToDelete(pet, $event)">Delete</button>
-                <a class="dropdown-item" href="#">Edit</a>
+              <div class="dropdown-menu dropdown-menu-right" [attr.aria-labelledby]="'dropdownMenuButton' + i" style="position: absolute; right: 0; top: 100%;">
+                <div>
+                    <button type="button" class="btn btn-light border-0" data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#mymodal_' + i" (click)="setPetToDelete(pet, $event)">
+                        Delete
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" (click)="preventCardClick($event)">
+                        Edit
+                      </button>
+                </div>
               </div>
             </div>
-            <div class="details">
+            <div class="details" style="padding-left: 10px; padding-bottom: 10px;">
               <div>
                 <img [src]="pet.PetImage" alt="Pet Image" class="img-fluid rounded-circle">
               </div>
@@ -89,6 +100,74 @@
                 <ul>
                   <li><strong>{{pet.PetName}}</strong></li>
                   <li>{{pet.Gender}}, {{pet.DateOfBirth}} years</li>
+                </ul>
+              </div>
+
+            </div>
+
+          </section> -->
+
+          <!-- Modal for deleting -->
+          <!--<div class="modal" [id]="'mymodal_' + i" tabindex="-1" role="dialog" aria-labelledby="mymodal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="row">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+                  </div>
+                  <div class="row">
+                    <p class="mt-2">Are you sure you want to delete {{pet.PetName}}?</p>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-secondary col-5" data-bs-dismiss="modal"
+                    (click)="closeDeleteModal($event)">Cancel</button>
+                  <button type="button" class="btn btn-danger col-5" data-bs-dismiss="modal"
+                    (click)="deleteConfirmedPet($event)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div> -->
+
+
+
+
+      <div class="pet-cards">
+        <ng-container *ngFor="let pet of pets; let i = index">
+          <section class="pet-card col-lg-3  col-md-4 col-sm-6 col-12 p-0 d-inline" (click)="testClick()">
+            <div class="dropdown">
+              <div class="dropdown-wrapper d-flex justify-content-end " (click)="toggleDropdown($event)">
+                <button class="border-0 bg-light" style="width: auto;" type="button"
+                  id="dropdownMenuButton{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  &#8942;
+                </button>
+              </div>
+              <div class="dropdown-menu dropdown-menu-right" [attr.aria-labelledby]="'dropdownMenuButton' + i" style="position: absolute; right: 0; top: calc(100% + 30px); overflow-y: auto; max-height: 90px;">
+                <div>
+                    <button type="button"  data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#mymodal_' + i" (click)="setPetToDelete(pet, $event)" style="border: 0; background: none;">
+                        Delete
+                    </button>
+                </div>
+                <div>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" (click)="preventCardClick($event)" style="border: 0; background: none;">
+                        Edit
+                      </button>
+                </div>
+              </div>
+            </div>
+            <div class="details" style="padding-left: 10px; padding-bottom: 10px;">
+              <div>
+                <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="Pet Image" class="img-fluid rounded-circle">
+              </div>
+              <div>
+                <ul>
+                  <li><strong>{{pet.PetName}}</strong></li>
+                  <li>{{pet.Gender}}, {{12}} years</li>
                 </ul>
               </div>
               
@@ -112,7 +191,7 @@
                 <div class="modal-footer justify-content-center">
                   <button type="button" class="btn btn-secondary col-5" data-bs-dismiss="modal"
                     (click)="closeDeleteModal($event)">Cancel</button>
-                  <button type="button" class="btn btn-danger col-5"
+                  <button type="button" class="btn btn-danger col-5" data-bs-dismiss="modal"
                     (click)="deleteConfirmedPet($event)">Delete</button>
                 </div>
               </div>
@@ -121,14 +200,13 @@
         </ng-container>
 
       </div>
-      
+
     </section>
   </main>
 
-  
-  
+
+
 
 </body>
 
 </html>
-<p>user-profile works!</p>
