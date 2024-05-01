@@ -25,7 +25,7 @@ export class EditAppointmentFormComponent implements OnInit {
   cancelAptModal: any;
 
   // id of appointment to edit;
-  AppointmentID: number = 1;
+  AppointmentID: number = 44;
   appointmentDetail: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: 0,
@@ -80,6 +80,7 @@ export class EditAppointmentFormComponent implements OnInit {
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
+            // this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=true;
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
@@ -168,16 +169,14 @@ export class EditAppointmentFormComponent implements OnInit {
     // );
     // this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
     //
-    this.selectedScheduleDate = new Date();
+    //this.selectedScheduleDate = new Date();
     // this is the method to getGeneralPetIssues from backend server
     this.aptService.getGeneralPetIssues().subscribe({
       next: (data) => {
         this.generalPetIssues = data;
         //console.log("logging data of generalpetissues",data);
         //console.log("my gpetissues",this.generalPetIssues);
-        //this.petIssuesNames = this.generalPetIssues.map(i => i.IssueName);
         this.filteredpetIssues = this.generalPetIssues;
-        //console.log("pet isssue names array",this.petIssuesNames);
       },
       error: (err) => { console.error('there was an error in while fetching the generalpetissue in the appointment form ng onint', err) }
     });

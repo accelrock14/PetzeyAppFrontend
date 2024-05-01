@@ -87,7 +87,7 @@
                 (input)="filterPetIssues()" #inputForSelectingPetIssues="ngModel">
             <i class="fas fa-search search-icon"></i>
         </div>
-        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length">
+        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length && inputForSelectingPetIssues.touched">
             <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"
                 class="petissuediv">
                 {{petissue.IssueName}}
@@ -133,8 +133,8 @@ modal popup code for confirmation
                 <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
             </div>
         
-            <h4>Book Appointment</h4>
-            <p>Do you want to book appointment?</p>
+            <h4>Confirm Book Appointment</h4>
+            <p>Do you want to confirm edit appointment?</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
