@@ -29,20 +29,33 @@ export class AdminDashboardComponent implements OnInit {
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
     console.log(this.filters);
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    // this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    //   this.appointmentCards = data;
+    //   console.log(this.appointmentCards);
+    // })
+    this.service.GetAllAppointments().subscribe(data => {
       this.appointmentCards = data;
-      console.log(this.appointmentCards);
-    })
+      this.filteredAppointments = [...this.appointmentCards]; // Initialize filteredAppointments here
+  });
   }
+  filteredAppointments : AppointmentCardDto[] =[]
 
   onDateStatusDoctorChange() {
-    this.filters.DoctorID = this.selectedDoctor;
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
-      this.appointmentCards = data;
-      console.log(this.appointmentCards);
-    })
+    // this.filters.DoctorID = this.selectedDoctor;
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    //   this.appointmentCards = data;
+    //   console.log(this.appointmentCards);
+    // })
+    this.filteredAppointments = this.appointmentCards.filter(appointment => {
+      const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
+      const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
+      const matchesDoctor = !this.selectedDoctor || appointment.DoctorID == this.selectedDoctor;
+      return matchesDate && matchesStatus && matchesDoctor;
+  });
+
+    
   }
 
   pageClick(pageInput:number) {
@@ -53,13 +66,13 @@ export class AdminDashboardComponent implements OnInit {
     else if(pageInput == this.page + 1) {
       this.page++;
     }
-    this.filters.DoctorID = this.selectedDoctor;
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
-      this.appointmentCards = data;
-      console.log(this.appointmentCards);
-    })
+    // this.filters.DoctorID = this.selectedDoctor;
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    //   this.appointmentCards = data;
+    //   console.log(this.appointmentCards);
+    // })
   }
 
   isPreviousPageDisabled() {

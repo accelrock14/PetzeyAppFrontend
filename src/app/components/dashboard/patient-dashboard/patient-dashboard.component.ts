@@ -28,31 +28,38 @@ export class PatientDashboardComponent implements OnInit {
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    // })
+    this.service.GetPatientAppointments(1).subscribe(data => {this.appointmentCards = data});
   }
+  filteredAppointments : AppointmentCardDto[] =[]
   onDateStatusChange() {
     
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    // })
+    this.filteredAppointments = this.appointmentCards.filter(appointment => {
+      const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
+      const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
+      return matchesDate && matchesStatus;
+  });
   }
   pageClick(pageInput:number) {
-    this.offset = (pageInput-1)*3;
-    if(pageInput == this.page - 1){
-      this.page--;
-    }
-    else if(pageInput == this.page + 1) {
-      this.page++;
-    }
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.offset = (pageInput-1)*3;
+    // if(pageInput == this.page - 1){
+    //   this.page--;
+    // }
+    // else if(pageInput == this.page + 1) {
+    //   this.page++;
+    // }
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    // })
   }
 
   isPreviousPageDisabled() {

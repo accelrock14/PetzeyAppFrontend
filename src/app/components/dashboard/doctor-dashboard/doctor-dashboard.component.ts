@@ -36,36 +36,44 @@ export class DoctorDashboardComponent implements OnInit {
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    // })
+    this.service.GetVetAppointments(1).subscribe(data => {this.appointmentCards = data});
+
     this.service.GetStatusCounts().subscribe(data => {
       this.appointmentStatus = data;
     })
   }
+  filteredAppointments : AppointmentCardDto[] =[]
 
   onDateStatusChange() {
     
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    // })
+    this.filteredAppointments = this.appointmentCards.filter(appointment => {
+      const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
+      const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
+      return matchesDate && matchesStatus;
+  });
   }
 
   pageClick(pageInput:number) {
-    this.offset = (pageInput-1)*3;
-    if(pageInput == this.page - 1){
-      this.page--;
-    }
-    else if(pageInput == this.page + 1) {
-      this.page++;
-    }
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-      this.appointmentCards = data;
-    })
+    // this.offset = (pageInput-1)*3;
+    // if(pageInput == this.page - 1){
+    //   this.page--;
+    // }
+    // else if(pageInput == this.page + 1) {
+    //   this.page++;
+    // }
+    // this.filters.ScheduleDate = this.selectedDate;
+    // this.filters.Status = this.selectedStatus;
+    // this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    //   this.appointmentCards = data;
+    //})
   }
 
   isPreviousPageDisabled() {
