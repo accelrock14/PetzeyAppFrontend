@@ -18,13 +18,174 @@
             <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate | date: 'hh:mm:a'}}</h6>
         </div>
         <div class=" container-box col-md-6 col-12 d-flex align-items-center justify-content-between card-content">
-            <i class="far fa-comment" style="color: orange;"></i>
-            <i class="fas fa-phone" style="color: orange;"></i>
-            <i class="fas fa-video" style="color: orange;"></i>
+                <button class="btn" (click)="openPopup('comment')"><i class="far fa-comment" style="color: orange;"></i></button>
+                <button class="btn" (click)="openPopup('phone')"><i class="fas fa-phone" style="color: orange;"></i></button>
+                <button class="btn" (click)="openPopup('video')"><i class="fas fa-video" style="color: orange;"></i></button>
     </div>
     </div>                
     <div class="card-body">
-        <a href="#" class="btn col-md-6 col-12">Details</a>
-        <a href="#" class="btn col-md-6 col-12 px-0">Feedback</a>
+        <a [routerLink]="'/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
+        <a type="button"  class="btn col-md-6 col-12 px-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a>
+        <!-- <button  >
+            Open Feedback Form
+          </button> -->
     </div>
 </div> 
+
+
+<!-- <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form #feedbackForm="ngForm"  novalidate>
+          <div class="modal-header">
+            <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5> -->
+            <!-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+          <!-- </div>
+          <div class="modal-body">
+            <div *ngIf="!isFormValid()" class="text-danger">
+              All rating field are compulsory
+            </div> -->
+           
+            <!-- <div class="form-group" *ngFor="let question of feedbackquestions">
+              <label for="question{{question.FeedbackQuestionId}}">How satisfied are you with {{ question.FeedbackQuestionName }}?</label>
+              <div class="star-rating">
+                <span class="star" *ngFor="let rating of [1, 2, 3, 4, 5]"
+          (click)="setRating(question.FeedbackQuestionId, rating)"
+          [ngClass]="{'filled': isFilled(rating, question.FeedbackQuestionId)}">
+          ★
+      </span>
+              </div>
+             <hr>
+            </div>
+            
+              
+              <div class="form-group">
+                <label for="recommendation">Would you refer this doctor to others?</label>
+                <select id="recommendation" name="recommendation" #recommendation=ngModel    [(ngModel)]="feedback.Recommendation" required class="form-control"  style="width: 250px;">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="PreferNotToSay">PreferNotToSay</option>
+                </select>
+               
+              </div>
+              <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" name="comments" [(ngModel)]="feedback.Comments" class="form-control" ></textarea>
+           
+              </div>
+         
+            </div> -->
+            <!-- <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Feedback Form</h5>
+                      <hr>
+                      <div class="form-group" *ngFor="let question of feedbackquestions">
+                        <label for="question{{question.FeedbackQuestionId}}">
+                          How satisfied are you with {{ question.FeedbackQuestionName }}?
+                        </label>
+                        <div class="star-rating">
+                          <span class="star" 
+                            *ngFor="let rating of [1, 2, 3, 4, 5]"
+                            (click)="setRating(question.FeedbackQuestionId, rating)"
+                            [ngClass]="{'filled': isFilled(rating, question.FeedbackQuestionId)}">
+                            ★
+                          </span>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="form-group">
+                        <label for="recommendation">Would you refer this doctor to others?</label>
+                        <select id="recommendation" name="recommendation" #recommendation=ngModel    
+                          [(ngModel)]="feedback.Recommendation" required class="form-control">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="PreferNotToSay">Prefer Not To Say</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="comments">Additional Comments</label>
+                        <textarea id="comments" name="comments" [(ngModel)]="feedback.Comments" 
+                          class="form-control" rows="4"></textarea>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()"  (click)="onSubmit(appointmentcard.AppointmentID)" data-dismiss="modal" data-bs-dismiss="modal">Submit Feedback</button>
+          </div> -->
+       
+        <!-- </form> -->
+    <!-- </div> -->
+      <!-- </div> -->
+    <!-- </div> -->
+  
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+      
+    <!-- <form (ngSubmit)="onSubmit()">
+      
+     
+      <div class="form-group">
+        <label for="recommendation">Would you refer this doctor to others?</label>
+        <select id="recommendation" name="recommendation" #recommendation=ngModel    [(ngModel)]="feedback.Recommendation" required class="form-control"  style="width: 250px;">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+          <option value="PreferNotToSay">PreferNotToSay</option>
+        </select>
+       
+      </div>
+      <div class="form-group">
+        <label for="comments">Additional Comments</label>
+        <textarea id="comments" name="comments" [(ngModel)]="feedback.Comments" class="form-control" ></textarea>
+   
+      </div>
+       Additional form fields (Recommendation, Comments, etc.) -->
+    
+      <!-- <button type="submit" [disabled]="!isFormValid()">Submit</button>
+    </form>  -->
+    
+
+    <!-- <div class="form-group">
+      <label for="competence">How satisfied are you with the competence of the doctor?</label>
+      <div class="star-rating">
+        <span class="star" (click)="setRating('competence', 1)" [class.filled]="feedback.Competence >= 1">★</span>
+        <span class="star" (click)="setRating('competence', 2)" [class.filled]="feedback.Competence >= 2">★</span>
+        <span class="star" (click)="setRating('competence', 3)" [class.filled]="feedback.Competence >= 3">★</span>
+        <span class="star" (click)="setRating('competence', 4)" [class.filled]="feedback.Competence >= 4">★</span>
+        <span class="star" (click)="setRating('competence', 5)" [class.filled]="feedback.Competence >= 5">★</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="outcome">How satisfied are you with the outcome of the treatment?</label>
+      <div class="star-rating">
+        <span class="star" (click)="setRating('outcome', 1)" [class.filled]="feedback.Outcome>= 1">★</span>
+        <span class="star" (click)="setRating('outcome', 2)" [class.filled]="feedback.Outcome >= 2">★</span>
+        <span class="star" (click)="setRating('outcome', 3)" [class.filled]="feedback.Outcome >= 3">★</span>
+        <span class="star" (click)="setRating('outcome', 4)" [class.filled]="feedback.Outcome >= 4">★</span>
+        <span class="star" (click)="setRating('outcome', 5)" [class.filled]="feedback.Outcome >= 5">★</span>
+      </div>
+    
+  </div>
+ 
+    <div class="form-group">
+      <label for="booking">How satisfied are you with the process of booking the appointment?</label>
+      <div class="star-rating">
+        <span class="star" (click)="setRating('booking', 1)" [class.filled]="feedback.Booking >= 1 " >★</span>
+        <span class="star" (click)="setRating('booking', 2)" [class.filled]="feedback.Booking >= 2" >★</span>
+        <span class="star" (click)="setRating('booking', 3)" [class.filled]="feedback.Booking >= 3" >★</span>
+        <span class="star" (click)="setRating('booking', 4)" [class.filled]="feedback.Booking >= 4" >★</span>
+        <span class="star" (click)="setRating('booking', 5)" [class.filled]="feedback.Booking >= 5" >★</span>
+      </div>
+    -->

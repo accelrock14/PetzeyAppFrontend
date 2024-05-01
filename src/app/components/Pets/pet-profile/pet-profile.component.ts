@@ -1,46 +1,43 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IPet } from '../../../models/Pets/IPet';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
+import { PetsService } from '../../../services/PetsServices/pets.service';
+import { ReportHistoryComponent } from '../../appointments/report-history/report-history.component';
+import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
 
 @Component({
     selector: 'app-pet-profile',
     standalone: true,
     templateUrl: './pet-profile.component.html',
     styleUrl: './pet-profile.component.css',
-    imports: [AgePipe]
+    imports: [AgePipe, ReportHistoryComponent, PetAppointmentsListComponent]
 })
 export class PetProfileComponent implements OnInit {
 
-  constructor(private activatedRoute : ActivatedRoute){
+  constructor(private petsService: PetsService,private activatedRoute : ActivatedRoute){
 
   }
 
-  id:string |null ="";
+
+
+
+  // id:string |null ="";
   ngOnInit(): void {
 
-   this.id = this.activatedRoute.snapshot.paramMap.get('id')
-   alert(this.id);
+   const id = (this.activatedRoute.snapshot.paramMap.get('id'))
+   console.log(id);
+   this.petsService.GetPetDetailsByID(Number(id)).subscribe( pet =>
+     {
+      this.Pet = pet
+      console.log(pet.PetName);
+      console.log(this.Pet.PetName);
+    });
+
 
   }
 
-  pet:IPet = {} as IPet;
-
-
-
-  Pet:IPet = {
-    PetID: 0,
-    PetParentId: 5,
-    PetName: 'Doggo',
-    PetImage: new Uint8Array(),
-    Species: 'Dog',
-    BloodGroup: "O+ve",
-    Breed: 'Afghan Hound',
-    Gender: 'Female',
-    DateOfBirth: new Date(),
-    Allergies: '',
-    LastAppointmentDate: new Date()
-  }
+  Pet:IPet = {} as IPet;
 
   Owner = {
     ownerName: "Jack Hall",
