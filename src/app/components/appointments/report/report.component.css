@@ -27,7 +27,7 @@
     flex-direction: column;
   }
 
-  .symptoms, .tests{
+  .symptoms, .tests, .recommendeddr{
     overflow: visible;
   }
 
