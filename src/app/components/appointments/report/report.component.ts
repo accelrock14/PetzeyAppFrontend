@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { Component, DoCheck, Input, OnInit, input } from '@angular/core';
+
 import {
   FormBuilder,
   FormGroup,
@@ -17,8 +17,11 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
-import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
+import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-report',
@@ -36,8 +39,7 @@ import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
-
-  @Input() reportId: number = 1
+  @Input() reportId: number = 3;
 
   report: IReport = {
     ReportID: 1,
@@ -125,15 +127,15 @@ export class ReportComponent implements OnInit {
   limitSelection = false;
   symptoms: Symptom[] = [];
   tests: Test[] = [];
-  medicines: Medicine[] = []
-  doctors: DoctorDTO[] = []
+  medicines: Medicine[] = [];
+  doctors: DoctorDTO[] = [];
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
-  selectedDoctors: any[] = []
+  selectedDoctors: any[] = [];
   symptomSettings: any = {};
   testSettings: any = {};
-  medicineSettings: any = {}
-  doctorSettings: any = {}
+  medicineSettings: any = {};
+  doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
 
   ngOnInit(): void {
@@ -181,22 +183,24 @@ export class ReportComponent implements OnInit {
         this.tests = t;
       });
       this.reportService.getAllMedicines().subscribe((m) => {
-        this.medicines = m
-      })
+        this.medicines = m;
+      });
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
-      this.selectedDoctors = this.report.RecommendedDoctors.map(d => d.DoctorID);
+      this.selectedDoctors = this.report.RecommendedDoctors.map(
+        (d) => d.DoctorID
+      );
 
       this.myForm = this.fb.group({
         symptom: [this.selectedSymptoms],
         test: [this.selectedTests],
         medicine: [],
-        doctor: [this.selectedDoctors]
+        doctor: [this.selectedDoctors],
       });
     });
   }
 
-  constructor(private fb: FormBuilder, private reportService: ReportService) { }
+  constructor(private fb: FormBuilder, private reportService: ReportService) {}
 
   isEditing = false;
 
@@ -313,7 +317,7 @@ export class ReportComponent implements OnInit {
   }
 
   activatePrescriptionModal(id: number) {
-    this.myForm.get('medicine')?.reset()
+    this.myForm.get('medicine')?.reset();
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
       this.prescriptionForm.medicine = 0;
@@ -391,7 +395,7 @@ export class ReportComponent implements OnInit {
         prescribedMedicine.Dosages = 6;
       } else if (this.prescriptionForm.dosage[1]) {
         prescribedMedicine.Dosages = 3;
-      } else {
+      } else if (this.prescriptionForm.dosage[2]) {
         prescribedMedicine.Dosages = 4;
       }
     } else if (this.prescriptionForm.dosage[1]) {
@@ -430,5 +434,20 @@ export class ReportComponent implements OnInit {
   selectMedicine(medicine: ListItem) {
     let selectMed: Medicine = medicine as unknown as Medicine;
     this.prescriptionForm.medicine = selectMed.MedicineID;
+  }
+
+  exportToPDF(printElemnt: HTMLDivElement) {
+    // const element = this.printElement.nativeElement as HTMLElement;
+    // if (element) {
+    //   html2canvas(element).then((canvas) => {
+    //     const imgData = canvas.toDataURL('image/png');
+    //     const pdf = new jsPDF('p', 'mm'); // Create new PDF document
+    //     const imgProps = pdf.getImageProperties(imgData);
+    //     const pdfWidth = pdf.internal.pageSize.getWidth();
+    //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    //     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    //     pdf.save('appointment-report.pdf');
+    //   });
+    // }
   }
 }
