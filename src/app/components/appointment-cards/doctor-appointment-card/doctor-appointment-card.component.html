@@ -13,11 +13,11 @@
         </div>
     </div>
     <div class="row mt-3 ms-1 me-1">
-        <div class="col-md-6 col-12 px-1">
+        <div class="col-md-5 col-12 px-1">
             <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate| date: 'mediumDate' }}</h6>
             <h6 class="card-text card-content">{{ appointmentcard.ScheduleDate | date: 'hh:mm:a'}}</h6>
         </div>
-        <div class=" container-box col-md-6 col-12 d-flex align-items-center justify-content-between">
+        <div class=" container-box col-md-7 flex-wrap col-12 d-flex align-items-center justify-content-between">
                 <button class="btn" (click)="openPopup('Chat')"><i class="far fa-comment" style="color: orange;"></i></button>
                 <button class="btn" (click)="openPopup('Phone')"><i class="fas fa-phone" style="color: orange;"></i></button>
                 <button class="btn" (click)="openPopup('Video')"><i class="fas fa-video" style="color: orange;"></i></button>
@@ -25,8 +25,8 @@
         </div>
     </div>                
     <div class="card-body">
-        <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a> 
+        <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-5 col-12">Detail</a>
+        <a class="btn col-md-7 col-12" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a> 
         
     </div>
 </div> 
