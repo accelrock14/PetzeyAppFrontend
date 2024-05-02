@@ -61,7 +61,7 @@ export class UserProfileComponent implements OnInit{
     //   this.user = data;
     // })
 
-    this.petsService.GetPetsByParentID(1).subscribe((data) => {
+    this.petsService.GetPetsByParentID("1").subscribe((data) => {
       this.pets = data;
     })
     if (this.NewPet) {
