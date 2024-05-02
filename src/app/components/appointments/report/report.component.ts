@@ -51,7 +51,7 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
-  @Input() reportId: number = 1;
+  @Input() reportId: number = 3;
   @Input() doctorId: string = '';
 
   report: IReport = {
