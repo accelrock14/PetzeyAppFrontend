@@ -51,6 +51,10 @@
               <li>Mobile: <strong>{{user.extension_PhoneNumber}}</strong></li>
               <li>Location: <strong>{{user.city}}, {{user.state}}-{{user.postalCode}}</strong></li>
               <li>Country: <strong>{{user.country}}</strong></li>
+              @if(auth.getRoleFromToken()=='Doctor'){
+              <li>VPI Number: <strong>{{user.extension_NPINumber}}</strong></li>
+              <li>Specialty: <strong>{{user.extension_Speciality}}</strong></li>
+              }
             </ul>
           </div>
         </div>
@@ -170,7 +174,7 @@
                   <li>{{pet.Gender}}, {{12}} years</li>
                 </ul>
               </div>
-              
+
             </div>
 
           </section>
