@@ -43,6 +43,9 @@ updateVet(vetid: number, vetPro: IVetProfileDTO) {
     });
   });
 }
+deleteVet(vetId:number){
+  this.vetService.deleteVet(vetId).subscribe();
+}
 
 
 editVetProfile() {
