@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnChanges, OnInit, SimpleChanges, } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild, } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
 import { Veterinarian } from '../../models/Veterinarian';
 import { PetParent } from '../../models/PetParent';
@@ -81,11 +81,35 @@ export class NewAppointmentFormComponent implements OnInit {
   petSearchText = '';
   filteredPets:Pet[]=[];
 
+  @ViewChild('inputForSelectingVet') inputForSelectingVet?: NgModel;
+
+
+  What_Flow:string='';
+  isReceptionist:boolean=false;
+  isDoctor:boolean=false;
+  isOwner:boolean=false;
 
 
   ngOnInit(): void {
 
-    console.log("this is the log for user role = "+this.userService.getRoleFromToken());
+    if(!this.userService.isLoggedIn()){
+      this.route.navigate(['/signin']);
+    }
+
+    this.What_Flow = this.userService.getRoleFromToken() as string;
+    if(this.What_Flow=='Owner'){
+      console.log("logged in as "+this.What_Flow);
+      
+      this.isOwner = true;
+    }
+    else if(this.What_Flow=='Doctor'){
+      this.isDoctor = true;
+      console.log("logged in as "+this.What_Flow);
+    }
+    else{
+      this.isReceptionist=true;
+      console.log("logged in as "+this.What_Flow);
+    }
     
     // modal popup code 
     this.formModal= new window.bootstrap.Modal(
