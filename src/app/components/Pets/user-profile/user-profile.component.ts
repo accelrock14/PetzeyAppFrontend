@@ -17,7 +17,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 })
 export class UserProfileComponent implements OnInit{
-
+  petParentID:any;
   NewPet?: IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router, private fb:FormBuilder) {
+  constructor(private petsService: PetsService, public auth:AuthService, private router:Router, private fb:FormBuilder) {
     this.newPetForm = this.fb.group({
       PetImage:[this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],
@@ -65,7 +65,9 @@ export class UserProfileComponent implements OnInit{
     //   this.user = data;
     // })
 
-    this.petsService.GetPetsByParentID("2").subscribe((data) => {
+    this.petParentID = this.auth.getUIDFromToken()
+    console.log(this.petParentID)
+    this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
       this.pets = data;
     })
    
@@ -81,9 +83,14 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     if(this.petToDelete){
       this.petsService.DeletePetByPetID(this.petToDelete.PetID).subscribe(() => {
-
+       
       });
+
+     
     }
+    this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+      this.pets = data;
+    })
     this.closeDeleteModal(event);
   }
 
@@ -111,8 +118,12 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     const editModal: HTMLElement | null = document.querySelector('.modal');
     if (editModal) {
-      editModal.style.display = 'none'; // Hide the modal
+      editModal.style.display = 'none';// Hide the modal
+       
     }
+    this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+      this.pets = data;
+    })
   }
 
   preventCardClick(event: MouseEvent) {
@@ -212,11 +223,17 @@ export class UserProfileComponent implements OnInit{
     
    
     SavePetDetails() {
+      this.NewPet!.PetParentId = this.auth.getUIDFromToken();
       console.log(this.NewPet)
       this.petsService.AddPet(this.NewPet!).subscribe({
         next: updatedPet => {
           // Handle success, if needed
           console.log('Pet updated successfully:', updatedPet);
+
+          this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+            this.pets = data;
+          })
+
         },
         error: error => {
           // Handle error, if needed
@@ -231,6 +248,10 @@ export class UserProfileComponent implements OnInit{
           next: updatedPet => {
             // Handle success, if needed
             console.log('Pet updated successfully:', updatedPet);
+
+            this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+              this.pets = data;
+            })
         },
         error: error => {
             // Handle error, if needed
