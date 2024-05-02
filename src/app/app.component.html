@@ -160,7 +160,7 @@
           <span>Doctors</span>
         </a>
       </li>
-      <li class="sidebar-item" [hidden]="loggedIn">
+      <li class="sidebar-item" [hidden]="!loggedIn">
         <a
           routerLink="/profile"
           class="sidebar-link"
@@ -173,12 +173,12 @@
         </a>
       </li>
     </ul>
-    <div class="sidebar-footer" [hidden]="!loggedIn">
+    <div class="sidebar-footer" [hidden]="loggedIn">
       <a routerLink="/signin"
       class="sidebar-link"
       [class.selected]="isSelected('signin')">
-        <i class="lni lni-exit"></i>
-        <span>SignIn</span>
+        <i class="lni lni-user"></i>
+        <span> SignIn</span>
       </a>
     </div>
   </aside>
@@ -186,6 +186,6 @@
   <div class="main p-3">
     <router-outlet></router-outlet>
   </div>
-  
-  
+
+
 </div>
