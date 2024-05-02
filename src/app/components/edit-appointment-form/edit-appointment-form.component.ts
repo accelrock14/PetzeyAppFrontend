@@ -87,6 +87,7 @@ this.location.back();
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
+            this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
@@ -323,7 +324,7 @@ this.location.back();
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
       // console.log('Slot selected:', slot);
-      // console.log('selected slot index', index);
+      console.log('selected slot index', index);
       this.selectedSlotIndex = index;
       this.appointmentDetail.ScheduleTimeSlot = index;
     }
