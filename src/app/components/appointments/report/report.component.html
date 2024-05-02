@@ -22,7 +22,7 @@
           <div class="search-box">
             <form [formGroup]="myForm">
               <ng-multiselect-dropdown
-                name="symptom"
+                name="medicine"
                 [settings]="medicineSettings"
                 [placeholder]="'Select Medicine'"
                 [data]="medicines"
@@ -163,13 +163,22 @@
   </div>
 </div>
 
-<div class="appointmentDetailspage ps-3 p-5" id="elementToExport" #elementToExport #elementsContainer>
-  <div class="d-flex justify-content-between align-items-center" id="reportheading">
+<div
+  class="appointmentDetailspage ps-3 p-5"
+  id="elementToExport"
+  #elementToExport
+  #elementsContainer
+>
+  <div
+    class="d-flex justify-content-between align-items-center"
+    id="reportheading"
+  >
     <h5>Appointment Report</h5>
     <div>
       <button
         *ngIf="!isEditing"
-        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold" (click)="exportToPDF()"
+        class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold"
+        (click)="exportToPDF()"
       >
         <i class="fa-solid fa-download me-2"></i>Report
       </button>
@@ -197,7 +206,10 @@
       <div class="row">
         <div class="col-lg-6 col-md-12 mx-auto left-part capture-section">
           <div class="precription border shadow p-3 rounded-3">
-            <div class="precription-heading d-flex justify-content-between" id="precriptionHeading">
+            <div
+              class="precription-heading d-flex justify-content-between"
+              id="precriptionHeading"
+            >
               <h4>Precription</h4>
               <button
                 *ngIf="isEditing"
@@ -213,7 +225,10 @@
               @for (prescription of report.Prescription.PrescribedMedicines;
               track $index) {
               <div class="precription-item border rounded-3 shadow-sm mt-2 p-3">
-                <div class="medicine-name d-flex justify-content-between" id="medicineHeading">
+                <div
+                  class="medicine-name d-flex justify-content-between"
+                  id="medicineHeading"
+                >
                   <h6>
                     {{
                       $index +
@@ -249,16 +264,25 @@
                   </div>
                 </div>
                 <small>Days: {{ prescription.NumberOfDays }}</small>
-                <div class="d-flex justify-content-between align-items-center" id="commentANDconsume">
+                <div
+                  class="d-flex justify-content-between align-items-center"
+                  id="commentANDconsume"
+                >
                   <small class="my-auto">{{ prescription.Comment }}</small>
                   <div *ngIf="prescription.Consume" class="capsule2 consumediv">
                     before-food
                   </div>
-                  <div *ngIf="!prescription.Consume" class="capsule2 consumediv">
+                  <div
+                    *ngIf="!prescription.Consume"
+                    class="capsule2 consumediv"
+                  >
                     after-food
                   </div>
                 </div>
-                <div class="d-flex justify-content-end align-items-center mt-2" id="dosagediv">
+                <div
+                  class="d-flex justify-content-end align-items-center mt-2"
+                  id="dosagediv"
+                >
                   <div class="circular-div">
                     @if(prescription.Dosages==0 || prescription.Dosages==3 ||
                     prescription.Dosages==4 || prescription.Dosages==6) {
@@ -306,7 +330,9 @@
             </div>
             <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
               @for (doctors of report.RecommendedDoctors; track $index) {
-              <div class="capsule">{{ doctors.DoctorID }}</div>
+              <div class="capsule">
+                {{ getDoctorById(doctors.DoctorID)?.Name }}
+              </div>
               }
             </div>
           </div>
@@ -421,16 +447,21 @@
           </div>
         </div>
 
-        <div class=" mx-auto bottom-part">
+        <div class="mx-auto bottom-part">
           <div
-            class="commentsbydoctor  border shadow p-3 rounded-3 capture-section"
+            class="commentsbydoctor border shadow p-3 rounded-3 capture-section"
           >
             <h4>Comments</h4>
 
-            <div *ngIf="!isEditing" class="comment-body mt-3 ms-2 d-flex all-item-list">
-              <img src="" alt="" />
+            <div
+              *ngIf="!isEditing"
+              class="comment-body mt-3 ms-2 d-flex all-item-list"
+            >
+              <img src="{{ getDoctorById(doctorId)?.Photo }}" alt="" />
               <div class="comment-info ms-3">
-                <p class="m-0 d-inline-block fw-bolder">Dr. Pal Manikam</p>
+                <p class="m-0 d-inline-block fw-bolder">
+                  {{ getDoctorById(doctorId)?.Name }}
+                </p>
                 <small class="ms-2">10 hr ago</small>
                 <p>{{ report.Comment }}</p>
               </div>
