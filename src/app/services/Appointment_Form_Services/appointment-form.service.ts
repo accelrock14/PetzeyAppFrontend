@@ -47,7 +47,7 @@ export class AppointmentFormService {
   }
 
   postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{ 
-    alert("inside post appointment");
+    // alert("inside post appointment");
     return this.backendClient.post<AppointmentDetail>(this.postAppointmentUrl,appointment);
   }
 
