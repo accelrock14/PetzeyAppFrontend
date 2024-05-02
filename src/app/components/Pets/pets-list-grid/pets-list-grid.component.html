@@ -17,13 +17,13 @@
   <div class="col-2">
 
     <div class="dropdown">
-      <select class="form-control ms-2" id="filterBySpecies" [(ngModel)]="petsFilter.Species" (ngModelChange)="searchPets()">
+      <select class="form-control ms-2" id="filterBySpecies" [(ngModel)]="petsFilter.Species" (ngModelChange)="filterPetsPerPage(currentPage)">
         <option value=""> <i class="bi bi-filter"></i> All Species</option>
         <option *ngFor="let species of speciesOptions" [value]="species">{{ species }}</option>
       </select>
     </div>
 
-    
+
 
   </div>
   <div class="col-3">
@@ -31,7 +31,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
       </svg>
-      <input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets" (ngModelChange)="searchPets()">
+      <input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets" (ngModelChange)="filterPetsPerPage(currentPage)">
     </div>
   </div>
 </div>
