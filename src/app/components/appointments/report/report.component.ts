@@ -23,6 +23,8 @@ import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
 import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
 import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 
 @Component({
   selector: 'app-report',
@@ -41,6 +43,7 @@ import html2canvas from 'html2canvas';
 })
 export class ReportComponent implements OnInit {
   @Input() reportId: number = 1;
+  @Input() doctorId: number = 1;
 
   report: IReport = {
     ReportID: 1,
@@ -129,7 +132,7 @@ export class ReportComponent implements OnInit {
   symptoms: Symptom[] = [];
   tests: Test[] = [];
   medicines: Medicine[] = [];
-  doctors: DoctorDTO[] = [];
+  doctors: IVetCardDTO[] = [];
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
   selectedDoctors: any[] = [];
@@ -169,8 +172,8 @@ export class ReportComponent implements OnInit {
       };
       this.doctorSettings = {
         singleSelection: false,
-        idField: 'DoctorID',
-        textField: 'DoctorName',
+        idField: 'VetId',
+        textField: 'Name',
         enableCheckAll: false,
         itemsShowLimit: 3,
         allowSearchFilter: this.ShowFilter,
@@ -186,6 +189,9 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllMedicines().subscribe((m) => {
         this.medicines = m;
       });
+      this.vetService.getAllVets().subscribe(v => {
+        this.doctors = v
+      })
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
       this.selectedDoctors = this.report.RecommendedDoctors.map(
@@ -204,7 +210,8 @@ export class ReportComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private reportService: ReportService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private vetService: VetsserviceService
   ) { }
 
   isEditing = false;
@@ -299,6 +306,17 @@ export class ReportComponent implements OnInit {
         return undefined;
       }
     });
+  }
+
+  getDoctorById(id: number): IVetCardDTO | undefined {
+    return this.doctors.find(d => {
+      if (d.VetId == id) {
+        return d
+      }
+      else {
+        return undefined
+      }
+    })
   }
 
   validateNumber(event: KeyboardEvent): void {
