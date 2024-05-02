@@ -78,10 +78,11 @@ throw new Error('Method not implemented.');
       console.error('Vet ID parameter is null.');
     }
     if (this.auth.isLoggedIn()) {
-      this.actualVet = this.auth.getLoggedInUserObject()
-    }
     this.VetNPI=this.auth.getVPIFromToken()
-    console.log(this.VetNPI)
+    this.vetService.getVetsByNPINumber(this.VetNPI).subscribe((data) =>{
+      this.actualVet=data;
+    })
+  }
 
     }
   // openEditModal(): void {
