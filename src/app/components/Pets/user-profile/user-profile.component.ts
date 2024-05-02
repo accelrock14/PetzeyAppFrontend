@@ -13,9 +13,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule]
+
 })
 export class UserProfileComponent implements OnInit {
+
   NewPet?: IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
@@ -60,7 +62,7 @@ export class UserProfileComponent implements OnInit {
     console.log('ngOnInit() is called');
 
     if (this.auth.isLoggedIn()) {
-      this.user = this.auth.getLoggedInUserObject();
+      this.user = this.auth.getLoggedInUserObject()
     }
 
     // this.petsService.getUser().subscribe((data) => {
@@ -69,7 +71,8 @@ export class UserProfileComponent implements OnInit {
 
     this.petsService.GetPetsByParentID('2').subscribe((data) => {
       this.pets = data;
-    });
+    })
+
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -83,7 +86,7 @@ export class UserProfileComponent implements OnInit {
     if (this.petToDelete) {
       this.petsService
         .DeletePetByPetID(this.petToDelete.PetID)
-        .subscribe(() => {});
+        .subscribe(() => { });
     }
     this.closeDeleteModal(event);
   }
@@ -148,9 +151,9 @@ export class UserProfileComponent implements OnInit {
       // Update ToBeUpdatedPet with form values
       this.NewPet = {
         ...this.NewPet,
-        ...this.newPetForm.value,
+        ...this.newPetForm.value
       };
-      this.SavePetDetails();
+      this.SavePetDetails()
     }
   }
   onSubmitEdit(): void {
@@ -158,16 +161,16 @@ export class UserProfileComponent implements OnInit {
       // Update ToBeUpdatedPet with form values
       this.ToBeUpdatedPet = {
         ...this.ToBeUpdatedPet,
-        ...this.petDetailsForm.value,
+        ...this.petDetailsForm.value
       };
-      this.SaveUpdatedPetDetails();
+      this.SaveUpdatedPetDetails()
     }
   }
   handleFileAdd(event: any): void {
     const files: FileList = event.target.files;
     if (files && files.length > 0) {
       const file: File = files[0];
-      console.log(file);
+      console.log(file)
       this.convertImageToBase64Add(file);
     }
   }
@@ -176,10 +179,13 @@ export class UserProfileComponent implements OnInit {
     reader.onload = (e) => {
       const base64String: string | null = e.target?.result as string;
       if (base64String) {
+
         // Store the base64String in your object or send it to the backend
         this.NewPet!.PetImage = base64String;
-        console.log(base64String);
-        if (this.NewPet) this.newPetForm.patchValue(this.NewPet);
+        console.log(base64String)
+        if (this.NewPet)
+          this.newPetForm.patchValue(this.NewPet)
+
       }
     };
     reader.readAsDataURL(file);
@@ -196,40 +202,44 @@ export class UserProfileComponent implements OnInit {
     reader.onload = (e) => {
       const base64String: string | null = e.target?.result as string;
       if (base64String) {
+
         // Store the base64String in your object or send it to the backend
         this.ToBeUpdatedPet!.PetImage = base64String;
         if (this.ToBeUpdatedPet)
-          this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+          this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
+
       }
     };
     reader.readAsDataURL(file);
   }
 
+
   SavePetDetails() {
-    console.log(this.NewPet);
+    console.log(this.NewPet)
     this.petsService.AddPet(this.NewPet!).subscribe({
-      next: (updatedPet) => {
+      next: updatedPet => {
         // Handle success, if needed
         console.log('Pet updated successfully:', updatedPet);
       },
-      error: (error) => {
+      error: error => {
         // Handle error, if needed
         console.error('Error updating pet:', error);
-      },
+      }
     });
   }
 
   SaveUpdatedPetDetails() {
-    console.log(this.ToBeUpdatedPet);
+    console.log(this.ToBeUpdatedPet)
     this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
-      next: (updatedPet) => {
+      next: updatedPet => {
         // Handle success, if needed
         console.log('Pet updated successfully:', updatedPet);
       },
-      error: (error) => {
+      error: error => {
         // Handle error, if needed
         console.error('Error updating pet:', error);
-      },
+      }
     });
+
   }
 }
