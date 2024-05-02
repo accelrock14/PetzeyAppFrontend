@@ -34,6 +34,7 @@ import html2canvas from 'html2canvas';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-report',
@@ -223,7 +224,8 @@ export class ReportComponent implements OnInit {
     private reportService: ReportService,
     private elementRef: ElementRef,
     private vetService: VetsserviceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   isEditing = false;
@@ -490,7 +492,16 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  callToastThenExport() {
+    this.toastr.info('Your PDF will be downloaded in sometime. Please wait !');
+
+    setTimeout(() => {
+      this.exportToPDF();
+    }, 30);
+  }
+
   async exportToPDF() {
+    //  this.callInfoToast();
     // const page = document.getElementById('elementToExport') as HTMLElement;
 
     // Function to capture a specific element (e.g., a div) as a canvas
@@ -499,11 +510,11 @@ export class ReportComponent implements OnInit {
     const sectionPromises: any = [];
 
     // Define the div elements you want to capture (adjust as needed)
-    const divsToCapture = document.querySelectorAll('.capture-section'); // Example: select divs with class "capture-section"
+    const divsToCapture = await document.querySelectorAll('.capture-section'); // Example: select divs with class "capture-section"
 
     // Loop through each div to capture
     for (var i = 0; i < 3; i++) {
-      const promise = this.captureElementAsCanvas(divsToCapture[i], i);
+      const promise = await this.captureElementAsCanvas(divsToCapture[i], i);
       sectionPromises.push(promise);
     }
 
@@ -513,7 +524,7 @@ export class ReportComponent implements OnInit {
     // });
 
     // When all section captures are complete
-    Promise.all(sectionPromises).then((sectionCanvases) => {
+    await Promise.all(sectionPromises).then((sectionCanvases) => {
       // Determine the total height needed for the final composite canvas
       let totalHeight = 0;
 
@@ -553,6 +564,7 @@ export class ReportComponent implements OnInit {
       // console.log(imgData);
 
       this.messageEvent.emit(imgData);
+
       // doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
       // doc.save('report.pdf');
     });
