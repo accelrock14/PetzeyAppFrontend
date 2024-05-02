@@ -26,15 +26,112 @@
     </div>                
     <div class="card-body">
         <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#exampleModal">Feedback</a> 
+        <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a> 
         
     </div>
 </div> 
 
+ <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form #feedbackForm="ngForm"  novalidate>
+          <div class="modal-header">
+            <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div *ngIf="!isFormValid()" class="text-danger">
+              All rating field are compulsory
+            </div>
+           
+            <div class="form-group" *ngFor="let question of feedbackquestions">
+              <label for="question{{question.FeedbackQuestionId}}">How satisfied are you with {{ question.FeedbackQuestionName }}?</label>
+              <div class="star-rating">
+                <span class="star" *ngFor="let rating of [1, 2, 3, 4, 5]"
+          (click)="setRating(question.FeedbackQuestionId, rating)"
+          [ngClass]="{'filled': isFilled(rating, question.FeedbackQuestionId)}">
+          ★
+      </span>
+              </div>
+             <hr>
+            </div>
+            
+              
+              <div class="form-group">
+                <label for="recommendation">Would you refer this doctor to others?</label>
+                <select id="recommendation" name="recommendation" #recommendation=ngModel    [(ngModel)]="feedback.Recommendation" required class="form-control"  style="width: 250px;">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="PreferNotToSay">PreferNotToSay</option>
+                </select>
+               
+              </div>
+              <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" name="comments" [(ngModel)]="feedback.Comments" class="form-control" ></textarea>
+           
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()"  (click)="onSubmit(appointmentcard.AppointmentID)" data-dismiss="modal" data-bs-dismiss="modal">Submit Feedback</button>
+              </div> 
+         
+            </div> 
+           <!-- <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Feedback Form</h5>
+                      <hr>
+                      <div class="form-group" *ngFor="let question of feedbackquestions">
+                        <label for="question{{question.FeedbackQuestionId}}">
+                          How satisfied are you with {{ question.FeedbackQuestionName }}?
+                        </label>
+                        <div class="star-rating">
+                          <span class="star" 
+                            *ngFor="let rating of [1, 2, 3, 4, 5]"
+                            (click)="setRating(question.FeedbackQuestionId, rating)"
+                            [ngClass]="{'filled': isFilled(rating, question.FeedbackQuestionId)}">
+                            ★
+                          </span>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="form-group">
+                        <label for="recommendation">Would you refer this doctor to others?</label>
+                        <select id="recommendation" name="recommendation" #recommendation=ngModel    
+                          [(ngModel)]="feedback.Recommendation" required class="form-control">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="PreferNotToSay">Prefer Not To Say</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="comments">Additional Comments</label>
+                        <textarea id="comments" name="comments" [(ngModel)]="feedback.Comments" 
+                          class="form-control" rows="4"></textarea>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()"  (click)="onSubmit(appointmentcard.AppointmentID)" data-dismiss="modal" data-bs-dismiss="modal">Submit Feedback</button>
+          </div> 
+       
+        </form>
+     </div>
+     </div> 
+    </div> -->
 
-  
-  
-  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -85,6 +182,6 @@
         </div>
       </div>
     </div>
-  </div>  -->
+  </div>
       
-  
+   -->

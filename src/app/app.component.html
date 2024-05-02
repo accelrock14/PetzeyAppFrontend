@@ -23,6 +23,7 @@
           <span>Home</span>
         </a>
       </li>
+      <!-- @if(auth.getRoleFromToken() == "Owner") { -->
       <li class="sidebar-item">
         <a
           routerLink="PatientDashboard"
@@ -44,7 +45,8 @@
           </div>
           <span>Patient Dashboard</span>
         </a>
-      </li>
+      </li> 
+      <!-- } -->
       <li class="sidebar-item">
         <a
           routerLink="AdminDashboard"
@@ -67,6 +69,7 @@
           <span>Admin Dashboard</span>
         </a>
       </li>
+      <!-- @if(userRole == "Doctor") { -->
       <li class="sidebar-item">
         <a
           routerLink="DoctorDashboard"
@@ -88,7 +91,8 @@
           </div>
           <span>Doctor Dashboard</span>
         </a>
-      </li>
+      </li> 
+    <!-- } -->
       <li class="sidebar-item">
         <a
           routerLink="/pets/1"

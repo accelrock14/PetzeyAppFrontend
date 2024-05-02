@@ -2,3 +2,19 @@
     border: 1px solid transparent; /* Invisible border */
     padding: 5px;
 }
+
+.container {
+    text-align: center;
+}
+
+.message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545; /* Red color for emphasis */
+}
+
+.illustration {
+    margin-top: 20px;
+    max-width: 400px;
+    width: 100%;
+}
