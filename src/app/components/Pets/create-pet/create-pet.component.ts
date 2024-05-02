@@ -1,70 +1,92 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { IPet } from '../../../models/Pets/IPet';
-import { FormsModule } from '@angular/forms';
-import { flush } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-pet',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule, JsonPipe, CommonModule],
   templateUrl: './create-pet.component.html',
-  styleUrl: './create-pet.component.css',
+  styleUrl: './create-pet.component.css'
 })
-export class CreatePetComponent {
-  handleFile(file:File) {
-    if (file) {
-      this.convertToBinary(file);
-    }
-  }
-  convertToUint8Array(binaryString: string): Uint8Array {
-    const length = binaryString.length;
-    const uintArray = new Uint8Array(length);
-    for (let i = 0; i < length; i++) {
-      uintArray[i] = binaryString.charCodeAt(i);
-    }
-    return uintArray;
-  }
-  convertToBinary(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const binaryString: string = reader.result as string;
-      this.NewPet.PetImage = this.convertToUint8Array(binaryString);
-      console.log(this.NewPet.PetImage);
-    };
-  }
-  CreateNewPet() {
-    if(this.tempFile){
-      alert("bleh");
-      this.handleFile(this.tempFile)
-    }
-      
-     
-    if (this.NewPet) {
-      this.petsService.AddPet(this.NewPet).subscribe();
-    }
-  }
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private petsService: PetsService
-  ) {}
+export class CreatePetComponent implements OnInit {
+  imageUrl: string | undefined;
+  NewPet?: IPet;
+  newPetForm: FormGroup;
 
-  NewPet: IPet = {
-    PetID: 0,
-    PetParentId: 0,
-    PetName: '',
-    PetImage: new Uint8Array(0),
-    Species: '',
-    Breed: '',
-    BloodGroup: '',
-    Gender: '',
-    DateOfBirth: new Date(),
-    Allergies: '',
-    LastAppointmentDate: new Date(),
-    Neutered: false
+
+  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private petsService: PetsService) {
+    this.newPetForm = this.fb.group({
+      PetName: [this.NewPet?.PetName],
+      Species: [this.NewPet?.Species],
+      Breed: [this.NewPet?.Breed],
+      BloodGroup: [this.NewPet?.BloodGroup],
+      Gender: [this.NewPet?.Gender],
+      DateOfBirth: [this.NewPet?.DateOfBirth],
+      Neutered: [this.NewPet?.Neutered],
+      Allergies: [this.NewPet?.Allergies]
+    });
   }
-  tempFile?:File;
+  ngOnInit(): void {
+    
+    if (this.NewPet) {
+      this.newPetForm.patchValue(this.NewPet);
+    }
+    if (this.NewPet)
+      this.displayImage(this.NewPet?.PetImage)
+
+  }
+
+  onSubmit(): void {
+    // Handle form submission
+    if (this.newPetForm.valid) {
+      // Update ToBeUpdatedPet with form values
+      this.NewPet = {
+        ...this.NewPet,
+        ...this.newPetForm.value
+      };
+      this.SavePetDetails()
+    }
+  }
+  handleFile(event: any): void {
+    const files: FileList = event.target.files;
+    if (files && files.length > 0) {
+      const file: File = files[0];
+      this.convertImageToBase64(file);
+    }
+  }
+  convertImageToBase64(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String: string | null = e.target?.result as string;
+      if (base64String) {
+        // Store the base64String in your object or send it to the backend
+        this.NewPet!.PetImage = base64String;
+        this.displayImage(base64String);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+  displayImage(base64String: string): void {
+    this.imageUrl = base64String;
+    console.log(this.imageUrl);
+  }
+  SavePetDetails() {
+    console.log(this.NewPet)
+    this.petsService.AddPet(this.NewPet!).subscribe({
+      next: updatedPet => {
+        // Handle success, if needed
+        console.log('Pet updated successfully:', updatedPet);
+      },
+      error: error => {
+        // Handle error, if needed
+        console.error('Error updating pet:', error);
+      }
+    });
+  }
 
 
 

@@ -100,20 +100,25 @@
             </select>
         </div>
         <div class="col-md-3 col-sm-12 d-flex align-items-center justify-content-center"> 
-            <button class="btn" style="background-color: orange; color: white;">+ New Appointment</button>
+            <button class="btn" style="background-color: orange; color: white;" [routerLink]="'/addAppointment'">+ New Appointment</button>
         </div>
     </div>
     <hr>
 </div>
 
-
+@if(appointmentCards.length == 0){
+    <div class="container">
+        <div class="message">Oops! Looks like you have reached the end of appointments.</div>
+    </div>
+}@else {
 <div class="container mt-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
-        <div class="col mb-4" *ngFor="let appointment of filteredAppointments">
+        <div class="col mb-4" *ngFor="let appointment of appointmentCards">
             <app-pet-appointment-card [appointmentcard]="appointment"></app-pet-appointment-card>
         </div>
     </div>
 </div>
+}
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">

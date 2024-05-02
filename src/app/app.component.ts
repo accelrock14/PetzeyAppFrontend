@@ -16,21 +16,19 @@ import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboar
     imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent,CommonModule, DoctorDashboardComponent,VetComponent]
 })
 export class AppComponent implements OnInit{
-
+  userRole: string = '';
   selectedLink: string = '';
-  loggedIn: boolean = false;
-  constructor(private router: Router,private auth:AuthService) { // Inject Router here
+  constructor(private router: Router,public auth:AuthService) { // Inject Router here
   }
   ngOnInit() {
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects;
         this.selectedLink = this.getLinkFromUrl(url); // Define function to extract link from URL
       }
     });
-    if(this.auth.isLoggedIn()) {
-      this.loggedIn = true;
-    }
+
   }
   getLinkFromUrl(url: string): string {
     return url.split('/')[1]; // Assuming links are in format "/link-identifier"

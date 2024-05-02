@@ -1,4 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
+import domtoimage from 'dom-to-image';
 
 import {
   FormBuilder,
@@ -17,11 +18,14 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
 import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
-import { jsPDF } from 'jspdf';
+import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-report',
@@ -39,7 +43,8 @@ import html2canvas from 'html2canvas';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
-  @Input() reportId: number = 3;
+  @Input() reportId: number = 1;
+  @Input() doctorId: number = 1;
 
   report: IReport = {
     ReportID: 1,
@@ -128,7 +133,7 @@ export class ReportComponent implements OnInit {
   symptoms: Symptom[] = [];
   tests: Test[] = [];
   medicines: Medicine[] = [];
-  doctors: DoctorDTO[] = [];
+  doctors: IVetCardDTO[] = [];
   selectedSymptoms: any[] = [];
   selectedTests: any[] = [];
   selectedDoctors: any[] = [];
@@ -137,6 +142,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
+  isDoctor: boolean = false
 
   ngOnInit(): void {
     this.reportService.getReport(this.reportId).subscribe((r) => {
@@ -168,8 +174,8 @@ export class ReportComponent implements OnInit {
       };
       this.doctorSettings = {
         singleSelection: false,
-        idField: 'DoctorID',
-        textField: 'DoctorName',
+        idField: 'VetId',
+        textField: 'Name',
         enableCheckAll: false,
         itemsShowLimit: 3,
         allowSearchFilter: this.ShowFilter,
@@ -185,6 +191,9 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllMedicines().subscribe((m) => {
         this.medicines = m;
       });
+      this.vetService.getAllVets().subscribe(v => {
+        this.doctors = v
+      })
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
       this.selectedDoctors = this.report.RecommendedDoctors.map(
@@ -197,10 +206,17 @@ export class ReportComponent implements OnInit {
         medicine: [],
         doctor: [this.selectedDoctors],
       });
+      this.isDoctor = this.authService.getRoleFromToken() == 'Doctor'
     });
   }
 
-  constructor(private fb: FormBuilder, private reportService: ReportService) {}
+  constructor(
+    private fb: FormBuilder,
+    private reportService: ReportService,
+    private elementRef: ElementRef,
+    private vetService: VetsserviceService,
+    private authService: AuthService
+  ) { }
 
   isEditing = false;
 
@@ -210,9 +226,11 @@ export class ReportComponent implements OnInit {
 
   save(): void {
     this.isEditing = false;
-    this.reportService.patchReport(this.reportId, this.report).subscribe((p) => {
-      console.log(p);
-    });
+    this.reportService
+      .patchReport(this.reportId, this.report)
+      .subscribe((p) => {
+        console.log(p);
+      });
   }
 
   onSelectSymptom(symptom: ListItem) {
@@ -292,6 +310,17 @@ export class ReportComponent implements OnInit {
         return undefined;
       }
     });
+  }
+
+  getDoctorById(id: number): IVetCardDTO | undefined {
+    return this.doctors.find(d => {
+      if (d.VetId == id) {
+        return d
+      }
+      else {
+        return undefined
+      }
+    })
   }
 
   validateNumber(event: KeyboardEvent): void {
@@ -436,18 +465,100 @@ export class ReportComponent implements OnInit {
     this.prescriptionForm.medicine = selectMed.MedicineID;
   }
 
-  exportToPDF(printElemnt: HTMLDivElement) {
-    // const element = this.printElement.nativeElement as HTMLElement;
-    // if (element) {
-    //   html2canvas(element).then((canvas) => {
-    //     const imgData = canvas.toDataURL('image/png');
-    //     const pdf = new jsPDF('p', 'mm'); // Create new PDF document
-    //     const imgProps = pdf.getImageProperties(imgData);
-    //     const pdfWidth = pdf.internal.pageSize.getWidth();
-    //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    //     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    //     pdf.save('appointment-report.pdf');
-    //   });
-    // }
+  captureElementAsCanvas(element: any, index: number) {
+    return html2canvas(element, {
+      scale: window.devicePixelRatio, // Scale for high-density displays
+      onclone: function (clonedDoc) {
+        // Modify cloned document if needed (e.g., removing scrollbars)
+        const clonedElement = clonedDoc.querySelector(
+          '.capture-section'
+        ) as HTMLElement; // Example: select element by class name
+        if (clonedElement && index == 2) {
+          // Increase the size (scale) of the cloned element
+
+          clonedElement.style.width = `${clonedElement.offsetWidth * 2}px`; // Adjust width after scaling
+          clonedElement.style.height = `${clonedElement.offsetHeight * 1}px`; // Adjust height after scaling
+        }
+        // if (clonedElement && index == 0) {
+        //   const numberofprescribedmedicines =
+        //     document.querySelectorAll('.precription-item').length;
+        //   // Increase the size (scale) of the cloned element
+        //   const clonedElement1 = clonedDoc.querySelector(
+        //     '.precription'
+        //   ) as HTMLElement;
+        //   // clonedElement.style.width = `${clonedElement.offsetWidth * 2}px`; // Adjust width after scaling
+        //   clonedElement1.style.height =
+        //     numberofprescribedmedicines * 460 + 'px'; // Adjust height after scaling
+        //   clonedElement1.style.overflow = 'visible';
+        // }
+        // clonedDoc.documentElement.style.height = 'auto';
+      },
+    });
+  }
+
+  async exportToPDF() {
+    // const page = document.getElementById('elementToExport') as HTMLElement;
+
+    // Function to capture a specific element (e.g., a div) as a canvas
+    const doc = new jsPDF();
+    // Array to hold promises for each section capture
+    const sectionPromises: any = [];
+
+    // Define the div elements you want to capture (adjust as needed)
+    const divsToCapture = document.querySelectorAll('.capture-section'); // Example: select divs with class "capture-section"
+
+    // Loop through each div to capture
+    for (var i = 0; i < 3; i++) {
+      const promise = this.captureElementAsCanvas(divsToCapture[i], i);
+      sectionPromises.push(promise);
+    }
+
+    // divsToCapture.forEach((div) => {
+    //   const promise = this.captureElementAsCanvas(div);
+    //   sectionPromises.push(promise);
+    // });
+
+    // When all section captures are complete
+    Promise.all(sectionPromises).then((sectionCanvases) => {
+      // Determine the total height needed for the final composite canvas
+      let totalHeight = 0;
+
+      totalHeight = sectionCanvases[0].height + sectionCanvases[2].height;
+
+      // sectionCanvases.forEach((canvas) => {
+      //   totalHeight += canvas.height;
+      // });
+
+      // Create a final composite canvas with the calculated dimensions
+      const compositeCanvas = document.createElement('canvas');
+      compositeCanvas.width = sectionCanvases[0].width * 2; // Assume all captured sections have the same width
+      compositeCanvas.height = totalHeight;
+
+      // Create a context for drawing on the composite canvas
+      const ctx = compositeCanvas.getContext('2d');
+      let yOffset = 0;
+      let xOffset = 0;
+
+      // Draw each captured section onto the composite canvas
+      for (var i = 0; i < 3; i++) {
+        ctx?.drawImage(sectionCanvases[i], xOffset, yOffset);
+        xOffset += sectionCanvases[i].width;
+
+        if (i == 1) {
+          yOffset += sectionCanvases[i].height;
+          xOffset = 0;
+        }
+      }
+      // sectionCanvases.forEach((canvas) => {
+      //   ctx?.drawImage(canvas, 0, yOffset);
+      //   yOffset += canvas.height;
+      // });
+
+      // Convert the composite canvas to a data URL (or use it as needed)
+      const imgData = compositeCanvas.toDataURL('image/png');
+      console.log(imgData);
+      doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
+      doc.save('report.pdf');
+    });
   }
 }

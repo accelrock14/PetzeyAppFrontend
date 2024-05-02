@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class AppointmentDetailsService {
   private apiUrl = 'https://localhost:44327/api/Appointment';
   private apiUrl2= 'https://localhost:44327/api/AppointmentDetails';
+  private apiUrl3= 'https://localhost:44327/api/PetIdByDocId';
 
   constructor(private http: HttpClient) { }
   GetAppointmentDetail(AppointmentID: number):Observable<any> {
@@ -19,6 +20,10 @@ export class AppointmentDetailsService {
     return this.http.patch(url, StatusNo);
 
 
+  }
+  GetAllPetIDByVetId(VetID:number):Observable<number[]>{
+    const url=`${this.apiUrl3}/${VetID}`
+    return this.http.get<number[]>(url);
   }
 
 

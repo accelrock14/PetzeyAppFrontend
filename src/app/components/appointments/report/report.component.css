@@ -31,6 +31,9 @@
     flex: 1;
     word-break: break-word;
   }
+.fa-heart{
+  color: rgb(255, 0, 0);
+}
 
 .symptoms, .tests, .recommendeddr{
   overflow: visible;
@@ -330,3 +333,7 @@ width: 353px;
           text-align: center;
         } */
       }
+
+.fa-triangle-exclamation{
+  font-size: 50px;
+}
