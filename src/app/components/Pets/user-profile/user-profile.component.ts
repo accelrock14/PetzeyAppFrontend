@@ -4,13 +4,14 @@ import { PetsService } from '../../../services/PetsServices/pets.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { AgePipe } from "../../../pipes/Age/age.pipe";
 
 @Component({
-  selector: 'app-user-profile',
-  standalone: true,
-  imports: [CommonModule,RouterLink],
-  templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.css'
+    selector: 'app-user-profile',
+    standalone: true,
+    templateUrl: './user-profile.component.html',
+    styleUrl: './user-profile.component.css',
+    imports: [CommonModule, RouterLink, AgePipe]
 })
 export class UserProfileComponent implements OnInit{
 
