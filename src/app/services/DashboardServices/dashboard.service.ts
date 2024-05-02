@@ -10,8 +10,8 @@ import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentSt
 })
 export class DashboardService {
 
-  //apiUrl: string = `https://localhost:44327/api/dashboard`;
-  apiUrl: string = `https://localhost:44327/api/appointment`;
+  apiUrl: string = `https://localhost:44327/api/dashboard`;
+  // apiUrl: string = `https://localhost:44327/api/appointment`;
 
 
   constructor(private http: HttpClient) { }

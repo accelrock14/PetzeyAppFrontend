@@ -16,10 +16,9 @@ import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboar
     imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent,CommonModule, DoctorDashboardComponent,VetComponent]
 })
 export class AppComponent implements OnInit{
-
+  userRole: string = '';
   selectedLink: string = '';
-  loggedIn: boolean = false;
-  constructor(private router: Router,private auth:AuthService) { // Inject Router here
+  constructor(private router: Router,public auth:AuthService) { // Inject Router here
   }
   ngOnInit() {
 
@@ -29,11 +28,6 @@ export class AppComponent implements OnInit{
         this.selectedLink = this.getLinkFromUrl(url); // Define function to extract link from URL
       }
     });
-    if(this.auth.isLoggedIn()) {
-      this.loggedIn = true;
-    }else{
-      this.loggedIn = false;
-    }
 
   }
   getLinkFromUrl(url: string): string {

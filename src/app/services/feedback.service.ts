@@ -9,6 +9,7 @@ import { Feedback, Question, FeedbackQuestion } from '../models/appoitment-model
 export class FeedbackService {
 constructor(private http:HttpClient){}
 getData(id:number): Observable<Feedback> {
+  console.log("id getting: " + id);
   return this.http.get<Feedback>(`https://localhost:44327/api/Feedback/${id}`);
 }
 postData(obj:Feedback):Observable<Feedback>{

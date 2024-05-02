@@ -18,7 +18,7 @@ declare var window: any;
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements OnInit {
-
+  //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: 0,
@@ -40,8 +40,20 @@ export class DetailsComponent implements OnInit {
     this.appointmentDetailsService.GetAppointmentDetail(ID)
       .subscribe((appointment: any) => this.appointment = appointment);
 
-
-
+    // this.appointmentDetailsService.GetAllPetIDByVetId(1)
+    // .subscribe({
+    //   next:(data)=>{
+    //     this.petIds = data;
+        
+        
+    //   },
+    //   error:(err)=>{
+    //     console.log("error while fetching",err);
+        
+    //   }
+    // });
+    
+    
     this.formModal = new window.bootstrap.Modal(
       document.getElementById("exampleModal2")
     );
