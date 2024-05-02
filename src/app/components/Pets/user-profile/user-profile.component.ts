@@ -70,7 +70,7 @@ export class UserProfileComponent implements OnInit{
     this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
       this.pets = data;
     })
-   
+
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -144,7 +144,7 @@ export class UserProfileComponent implements OnInit{
       error=>{
         console.log(error)
       });
-      
+
     if(this.ToBeUpdatedPet)
       this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
       console.log(this.petDetailsForm.value)
@@ -173,7 +173,7 @@ export class UserProfileComponent implements OnInit{
           ...this.ToBeUpdatedPet,
           ...this.petDetailsForm.value
         };
-        this.SaveUpdatedPetDetails()       
+        this.SaveUpdatedPetDetails()
       }
     }
     handleFileAdd(event: any): void {
@@ -195,9 +195,9 @@ export class UserProfileComponent implements OnInit{
           console.log(base64String)
           if(this.NewPet)
             this.newPetForm.patchValue(this.NewPet)
-          
+
         }
-      };   
+      };
       reader.readAsDataURL(file);
     }
     handleFileEdit(event: any): void {
@@ -217,13 +217,13 @@ export class UserProfileComponent implements OnInit{
           this.ToBeUpdatedPet!.PetImage = base64String;
           if(this.ToBeUpdatedPet)
             this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-          
+
         }
-      };   
+      };
       reader.readAsDataURL(file);
     }
-    
-   
+
+
     SavePetDetails() {
       this.NewPet!.PetParentId = this.auth.getUIDFromToken();
       console.log(this.NewPet)
@@ -243,7 +243,7 @@ export class UserProfileComponent implements OnInit{
         }
       });
     }
-    
+
       SaveUpdatedPetDetails() {
         console.log(this.ToBeUpdatedPet)
         this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
@@ -260,7 +260,7 @@ export class UserProfileComponent implements OnInit{
             console.error('Error updating pet:', error);
         }
       });
-  
+
     }
 }
 
