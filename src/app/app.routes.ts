@@ -21,7 +21,8 @@ import { NewAppointmentFormComponent } from './components/new-appointment-form/n
 import { EditAppointmentFormComponent } from './components/edit-appointment-form/edit-appointment-form.component';
 
 import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
-
+import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-profile-appt.component';
+VetProfileApptComponent
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
     { path: '',redirectTo:'home', pathMatch:'full' },
