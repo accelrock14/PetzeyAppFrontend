@@ -16,9 +16,8 @@ export class AgePipe implements PipeTransform {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    if(age==0)
-      return '0';
-    if(age==1)
+
+    if(age==1 || age==0 )
     return age + " year";
     else
     return age + " years";
