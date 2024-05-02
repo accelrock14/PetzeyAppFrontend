@@ -50,7 +50,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'pets-list',
+    path: 'pets-list/:page',
     component: PetsListGridComponent,
   },
   {
