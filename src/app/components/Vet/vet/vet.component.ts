@@ -17,6 +17,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 })
 export class VetComponent implements OnInit{
 
+
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
   searchQuery: string = '';
@@ -155,6 +156,10 @@ export class VetComponent implements OnInit{
     onPageChange(page: number): void {
       this.currentPage = page;
       this.updateFilteredVets();
+    }
+
+    navigateToAddVet() {
+      this.router.navigate(['/add-vet']);
     }
   }
 

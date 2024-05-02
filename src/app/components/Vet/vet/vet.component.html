@@ -8,8 +8,8 @@
 </style>
 
 <div class="container mt-2">
-  <div class="row column-gap-2 p-0">
-    <h5 class="col-3 ms-3 py-0">All Vets</h5>
+  <div class="row column-gap-1 p-0 m-0">
+    <h5 class="col-4 ms-3 py-0">All Vets</h5>
     <div class="col-3">
       <div class="dropdown">
         <ng-multiselect-dropdown
@@ -43,8 +43,8 @@
         </svg>
       </div>
     </div>
-    <div class="col-2">
-      <button>Add</button>
+    <div class="col">
+      <button class="btn btn-edit" (click) = "navigateToAddVet()">Add Vet</button>
     </div>
   </div>
   <!--Top Rated Vets Display-->
