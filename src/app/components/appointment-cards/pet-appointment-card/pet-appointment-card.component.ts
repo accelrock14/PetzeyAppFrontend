@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
@@ -27,45 +27,52 @@ export class PetAppointmentCardComponent {
   user!:string;
 
   constructor(private snackBar: MatSnackBar, private service :FeedbackService){}
-  feedbackDetails: any[]=[];
-  feedbackquestions!: FeedbackQuestion[];
-  viewFeedbackfor!:number;
-  feedback:Feedback={
-    FeedbackID: 0,
-    Questions: [],
-    Recommendation: '',
-    Comments: '',
-    AppointmentId: 0
-  }
-  feedbacklist: Feedback[] = [];
-  feedbackClicked(appointmentId: number) {
-    const fb=this.feedbacklist.find(f=>f.AppointmentId==appointmentId)
-  if(fb){
-    this.feedback=fb;
-  }
-  
-  this.feedbackDetails = this.feedback.Questions.map(question => {
-    const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
-    return {
-      QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
-      Rating: question.Rating
-    };
-  });
-  console.log(this.feedback)
-  console.log(appointmentId);
-  }
-  ngOnInit(): void {
-    this.service.getAllFeedback().subscribe((q:Feedback[])=>{
-      this.feedbacklist=q;
-    })
-    this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
-      this.feedbackquestions=q
+//   feedbackDetails: any[]=[];
+//   feedbackquestions!: FeedbackQuestion[];
+//   viewFeedbackfor!:number;
+//   feedback:Feedback={
+//     FeedbackID: 0,
+//     Questions: [],
+//     Recommendation: '',
+//     Comments: '',
+//     AppointmentId: 0
+//   }
+//   feedbacklist: Feedback[] = [];
+//   feedbackClicked(appointmentId: number) {
+//   //   console.log("done --")
+//   //  console.log(appointmentId)
+//     const fb=this.feedbacklist.find(f=>f.AppointmentId===appointmentId)
     
-    });
-  }
-  openFeedbackPopup(action: string, appointmentId: number) {
-    if (action === 'feedback') {
-      this.feedback.AppointmentId = appointmentId; // Set the appointmentId for feedback
-    }
-  }
+//   if(fb){
+//     this.feedback=fb;
+//   }
+//   // console.log(this.feedback)
+//   this.feedbackDetails = this.feedback.Questions.map(question => {
+//     const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
+    
+//     return {
+     
+//       QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
+//       Rating: question.Rating
+//     };
+//   });
+//   console.log(this.feedback)
+  
+
+
+
+  
+// }
+
+//   ngOnInit(): void {
+//     this.service.getAllFeedback().subscribe((q:Feedback[])=>{
+//       this.feedbacklist=q;
+//       console.log(this.feedbacklist)
+//     })
+//     this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
+//       this.feedbackquestions=q
+    
+//     });
+//   }
+  
 }

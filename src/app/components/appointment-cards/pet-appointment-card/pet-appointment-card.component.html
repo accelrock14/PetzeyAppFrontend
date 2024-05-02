@@ -25,11 +25,11 @@
     </div>                
     <div class="card-body">
         <a [routerLink]="'/' + user + 'Dashboard/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <a type="button"  class="btn col-md-6 col-12 px-0" data-bs-toggle="modal" data-bs-target="#exampleModal" (click) = "feedbackClicked(appointmentcard.AppointmentID)">Feedback</a>
+        <a type="button"  class="btn col-md-6 col-12 px-0" data-bs-toggle="modal" data-bs-target="#exampleModal">Feedback</a>
     </div>
 </div> 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -41,7 +41,7 @@
         <div class="modal-body">
           <div class="container">
             <h2>View Feedback</h2>
-          
+         
             <div *ngFor="let detail of feedbackDetails" class="card mb-3">
               <div class="card-body">
                 <h5 class="card-title">{{ detail.QuestionName }}</h5>
@@ -81,7 +81,7 @@
       </div>
     </div>
   </div>
-      
+       -->
 
 
 <!-- <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
