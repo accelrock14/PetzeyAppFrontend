@@ -4,7 +4,7 @@
     <div class="back btn" [routerLink]="'/AdminDashboard'">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <button class="btn" (click)="GoBack()">Back to Appointments</button>
+        <button class="btn" (click)="GoBackSimply()">Back to Appointments</button>
     </div>
     <h1>New Appointment</h1>
     <hr>
@@ -120,7 +120,7 @@
 modal popup code for confirmation
 -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <!-- <div class="modal-header">
@@ -147,7 +147,7 @@ modal popup code for confirmation
 
   <!-- ||||||||||||||||||||||||||||||||||||||||||||| -->
 <!-- modal popup code for cancel confirmation -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalPopup-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <!-- <div class="modal-header">
@@ -167,7 +167,7 @@ modal popup code for confirmation
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
           <!-- later add a method here to navigate to the previous window -->
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="OnCancelAdding()">Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="GoBackSimply()">Confirm</button>
         </div>
       </div>
     </div>

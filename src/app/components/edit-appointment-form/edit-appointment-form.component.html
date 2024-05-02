@@ -4,7 +4,7 @@
     <div class="back btn">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <pre class="pre" (click)="GoBack()"> Back to Appointments</pre>
+        <pre class="pre" (click)="GoBackSimply()"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
     <hr>
@@ -25,7 +25,11 @@
             </div>
         </div>
         <br>
-        <p>your currently selected schedule date is {{appointmentDetail.ScheduleDate | date}} select another to change</p>
+        <div class="alert alert-info p-3" style="width: 750px;">
+            Your currently have appointment on <strong class="text-primary">{{appointmentDetail.ScheduleDate | date}}</strong>.
+            Select another to change.
+        </div>
+        
         <div class="cal-slots-displayer">
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
@@ -116,7 +120,7 @@
 <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||
 modal popup code for confirmation
 -->
-
+<!-- edit confirm modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -131,7 +135,7 @@ modal popup code for confirmation
                 <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
             </div>
         
-            <h4>Confirm Book Appointment</h4>
+            <h4>Confirm Edit Appointment</h4>
             <p>Do you want to confirm edit appointment?</p>
         </div>
         <div class="modal-footer">
@@ -144,7 +148,7 @@ modal popup code for confirmation
 
   <!-- ||||||||||||||||||||||||||||||||||||||||||||| -->
 <!-- modal popup code for cancel confirmation -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="cancelEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <!-- <div class="modal-header">
@@ -164,7 +168,7 @@ modal popup code for confirmation
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
           <!-- later add a method here to navigate to the previous window -->
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="GoBack()" >Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="GoBackSimply()" >Confirm</button>
         </div>
       </div>
     </div>

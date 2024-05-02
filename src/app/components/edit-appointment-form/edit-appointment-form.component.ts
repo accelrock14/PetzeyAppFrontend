@@ -11,17 +11,27 @@ import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 declare var window:any;
 @Component({
   selector: 'app-edit-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterLink],
+  imports: [FormsModule, CommonModule,RouterLink,MatSnackBarModule],
   templateUrl: './edit-appointment-form.component.html',
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
-GoBack() {
+GoBackSimply() {
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+this.location.back();
+}
+
+GoBackWithMsg(msg:string){
+  this.snackBar.open(msg, '', {
+    duration: 3000 // message will disappear after 3000ms
+  });
   this.formModal.hide();
   this.cancelAptModal.hide();
 this.location.back();
@@ -50,7 +60,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -87,6 +97,7 @@ this.location.back();
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
+            this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
@@ -101,7 +112,7 @@ this.location.back();
     });
 
     this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
-    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('cancelEditModal'));
     //
 
     this.aptService.getVeternarians().subscribe({
@@ -323,7 +334,7 @@ this.location.back();
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
       // console.log('Slot selected:', slot);
-      // console.log('selected slot index', index);
+      console.log('selected slot index', index);
       this.selectedSlotIndex = index;
       this.appointmentDetail.ScheduleTimeSlot = index;
     }
@@ -390,7 +401,7 @@ this.location.back();
     // alert("edit success");
     // alert("edit success");
     this.closeModal();
-    this.GoBack();
+    this.GoBackWithMsg("your appointment edited successfully");
 
   }
 
