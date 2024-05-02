@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideHttpClient(), provideAnimationsAsync('noop'), DashboardService,
     [
       {useClass: DashboardService}
-    ]
+    ], provideAnimationsAsync('noop')
   ]
 };
