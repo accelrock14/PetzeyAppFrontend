@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent implements OnInit {
+  user:string = "Admin";
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
   selectedStatus: string = "";

@@ -1,8 +1,11 @@
-<div class="container my-4">
-    <h2 class="mb-3">Appointment History</h2>
-    <div class="scrolling-wrapper">
-        @for (appointment of appointmentcard; track $index) {
-            <app-doctor-appointment-card [appointmentcard]="appointment"></app-doctor-appointment-card>
-        }
+<h2>Appointment History</h2>
+<hr />
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
+    <div class="col mb-4" *ngFor="let appointment of appointmentcard">
+      <app-doctor-appointment-card
+        [appointmentcard]="appointment"
+      ></app-doctor-appointment-card>
     </div>
+  </div>
 </div>

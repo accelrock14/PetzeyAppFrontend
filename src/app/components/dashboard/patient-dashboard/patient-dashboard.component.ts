@@ -16,6 +16,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './patient-dashboard.component.css'
 })
 export class PatientDashboardComponent implements OnInit {
+  user:string = "Patient";
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: '',
