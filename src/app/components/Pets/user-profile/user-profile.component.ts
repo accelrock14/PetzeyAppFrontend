@@ -88,7 +88,7 @@ export class UserProfileComponent implements OnInit{
         })
       });
 
-     
+
     }
     this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
       this.pets = data;
@@ -121,7 +121,7 @@ export class UserProfileComponent implements OnInit{
     const editModal: HTMLElement | null = document.querySelector('.modal');
     if (editModal) {
       editModal.style.display = 'none';// Hide the modal
-       
+
     }
     this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
       this.pets = data;
@@ -251,9 +251,9 @@ export class UserProfileComponent implements OnInit{
             // Handle success, if needed
             console.log('Pet updated successfully:', updatedPet);
 
-            this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
-              this.pets = data;
-            })
+            // this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+            //   this.pets = data;
+            // })
         },
         error: error => {
             // Handle error, if needed
