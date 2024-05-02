@@ -154,7 +154,7 @@
                     </button>
                 </div>
                 <div>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" (click)="preventCardClick($event)" style="border: 0; background: none;">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" (click)="preventCardClickEdit($event, pet.PetID)" style="border: 0; background: none;">
                         Edit
                       </button>
                 </div>
@@ -162,7 +162,7 @@
             </div>
             <div class="details" style="padding-left: 10px; padding-bottom: 10px;">
               <div>
-                <img src="pet.PetImage" alt="Pet Image" class="img-fluid rounded-circle">
+                <img src="{{pet.PetImage}}" onerror="this.onerror=null; this.src='https://placehold.co/100x100';" class="img-fluid rounded-circle">
               </div>
               <div>
                 <ul>
@@ -197,6 +197,293 @@
               </div>
             </div>
           </div>
+              <!-- Modal for edit -->
+                <div
+                class="modal fade"
+                style="backdrop-filter: blur(100%)"
+                id="exampleModalCenter"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true"
+                style="border-radius: 20%"
+                >
+                <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <form [formGroup]="petDetailsForm" (ngSubmit)="onSubmitEdit()">
+                        <div class="row">
+                          <h5 class="modal-title" id="exampleModalLongTitle">
+                            Edit Pet Profile
+                          </h5>
+                        </div>
+                        <div class="row">
+                          <h6 class="text-muted mt-2" style="font-size: small">
+                            Update Pet Details
+                          </h6>
+                        </div>
+                        <div class="row mt-3">
+                          <div class="col-5 ms-3">
+                            <div style="position: relative; display: inline-block">
+                              <img
+                                src="{{imageUrl}}"
+                                class="img-fluid rounded-circle-img"
+                                onerror="this.onerror=null; this.src='https://placehold.co/100x100';" 
+                                style="position: relative; z-index: 1"
+                              />
+                              <div class="form-group"></div>
+                              <div
+                                class="custom-file"
+                                style="position: absolute; bottom: 0; right: 0; z-index: 2"
+                              >
+                                <input
+                                  type="file"
+                                  id="inputGroupFile"
+                                  (change)="handleFileEdit($event)"
+                                  accept=".jpeg, .jpg"
+                                  style="opacity: 0; width: 100%; height: 100%"
+                                />
+                                <button
+                                  class="btn orange-color-bg p-1"
+                                  style="
+                                    border-radius: 50%;
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                  "
+                                  onclick="document.getElementById('inputGroupFile').click()"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-camera-fill"
+                                    viewBox="0 0 16 16"
+                                    style="display: block; margin: auto"
+                                  >
+                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                    <path
+                                      d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-6">
+                            <div class="row">
+                              <h6 class="text-muted ms-1" style="font-size: small">Name</h6>
+                            </div>
+                            <div class="row ms-1 me-3">
+                              <input
+                                type="text"
+                                class="text-box"
+                                formControlName="PetName"
+                                placeholder="Enter Name"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mt-3 ms-2">
+                          <h6 class="text-muted" style="font-size: small">Species</h6>
+                        </div>
+                        <div class="row ms-4">
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Species"
+                              id="radio1"
+                              formControlName="Species"
+                              value="Dog"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radio1"
+                              >Dog</label
+                            >
+                          </div>
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Species"
+                              formControlName="Species"
+                              id="radio2"
+                              value="Cat"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radio2"
+                              >Cat</label
+                            >
+                          </div>
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Species"
+                              formControlName="Species"
+                              id="radio3"
+                              value="Reptile"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radio3"
+                              >Reptile</label
+                            >
+                          </div>
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Species"
+                              formControlName="Species"
+                              id="radio4"
+                              value="Other"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radio4"
+                              >Other</label
+                            >
+                          </div>
+                        </div>
+                        <div class="row ms-2 mt-3">
+                          <h6 class="text-muted" style="font-size: small">Breed</h6>
+                        </div>
+                        <div class="row ms-3">
+                          <input
+                            type="text"
+                            class="text-box-end"
+                            formControlName="Breed"
+                            placeholder="Enter Breed of Pet"
+                          />
+                        </div>
+                        <div class="row mt-3 ms-2">
+                          <h6 class="text-muted" style="font-size: small">Gender</h6>
+                        </div>
+                        <div class="row ms-4">
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Gender"
+                              id="radiomale"
+                              formControlName="Gender"
+                              value="Male"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radiomale"
+                              >Male</label
+                            >
+                          </div>
+                          <div class="col-2 form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="Gender"
+                              formControlName="Gender"
+                              id="radiofemale"
+                              value="Female"
+                            />
+                            <label
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="radiofemale"
+                              >Female</label
+                            >
+                          </div>
+                          <div class="col-2 form-check form-check-inline ms-5">
+                            <input
+                              type="checkbox"
+                              class="form-check-input"
+                              id="Neutered"
+                              formControlName="Neutered"
+                            />
+                            <label 
+                              class="form-check-label"
+                              style="font-size: small"
+                              for="Neutered"
+                              >Neutered</label
+                            >
+                          </div>
+                        </div>
+                        <div class="row mt-3 ms-2">
+                          <div class="col-5">
+                            <h6 class="text-muted" style="font-size: small">Date of Birth</h6>
+                          </div>
+                          <div class="col-5 ms-4">
+                            <h6 class="text-muted" style="font-size: small">Age</h6>
+                          </div>
+                        </div>
+                        <div class="row ms-2 mt-0">
+                          <div class="col-5">
+                            <input
+                              type="date"
+                              formControlName="DateOfBirth"
+                              class="text-box"
+                            />
+                          </div>
+                          <div class="col-5 ms-4">
+                            <input
+                              type="text"
+                              class="text-box"
+                              
+                              placeholder="Age of the Pet in years"
+                            />
+                          </div>
+                        </div>
+                        <div class="row mt-3 ms-2">
+                          <h6 class="text-muted" style="font-size: small">Blood Group</h6>
+                        </div>
+                        <div class="row ms-3">
+                          <input
+                            type="text"
+                            class="text-box"
+                            formControlName="BloodGroup"
+                            placeholder="Blood Group of the Pet"
+                          />
+                        </div>
+                        <div class="row ms-2 mt-3">
+                          <h6 class="text-muted" style="font-size: small">Allergies</h6>
+                        </div>
+                        <input
+                          type="text"
+                          class="text-box-end ms-3 mb-2"
+                          formControlName="Allergies"
+                          placeholder="Allergies related to the pet"
+                        />
+
+                        <div class="modal-footer justify-content-center">
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary col-5"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn orange-color-bg col-5"
+                            data-bs-dismiss="modal"
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </ng-container>
 
       </div>
@@ -227,7 +514,7 @@
   <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form [formGroup]="newPetForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="newPetForm" (ngSubmit)="onSubmitAdd()">
           <div class="row">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Add Pet Profile
@@ -255,7 +542,7 @@
                   <input
                     type="file"
                     id="inputGroupFile"
-                    (change)="handleFile($event)"
+                    (change)="handleFileAdd($event)"
                     accept=".jpeg, .jpg"
                     style="opacity: 0; width: 100%; height: 100%"
                   />

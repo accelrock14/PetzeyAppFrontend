@@ -190,7 +190,7 @@ body {
     max-width: 400px;
   }
   .text-box {
-    width: 200px; /* Adjust width as needed */
+    width: 150px; /* Adjust width as needed */
     border: none;
     border-bottom: 2px solid #aaa; /* Bottom border */
     outline: none;
@@ -199,7 +199,7 @@ body {
     transition: border-bottom-color 0.3s;
 }
 .text-box-end {
-    width: 430px; /* Adjust width as needed */
+    width: 300px; /* Adjust width as needed */
     border: none;
     border-bottom: 2px solid #aaa; /* Bottom border */
     outline: none;

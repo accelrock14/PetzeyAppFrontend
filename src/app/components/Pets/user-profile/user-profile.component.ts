@@ -19,6 +19,8 @@ export class UserProfileComponent implements OnInit{
   imageUrl: string | undefined;
   NewPet?: IPet;
   newPetForm: FormGroup;
+  petDetailsForm: FormGroup;
+  ToBeUpdatedPet?: IPet;
   // user!: User ;
   pets: IPet[] = [];
   petToDelete!: IPet;
@@ -34,6 +36,17 @@ export class UserProfileComponent implements OnInit{
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: [this.NewPet?.Neutered],
       Allergies: [this.NewPet?.Allergies]
+    });
+
+    this.petDetailsForm = this.fb.group({
+      PetName: [this.ToBeUpdatedPet?.PetName],
+      Species: [this.ToBeUpdatedPet?.Species],
+      Breed: [this.ToBeUpdatedPet?.Breed],
+      BloodGroup: [this.ToBeUpdatedPet?.BloodGroup],
+      Gender: [this.ToBeUpdatedPet?.Gender],
+      DateOfBirth: [this.ToBeUpdatedPet?.DateOfBirth],
+      Neutered: [this.ToBeUpdatedPet?.Neutered],
+      Allergies: [this.ToBeUpdatedPet?.Allergies]
     });
    }
 
@@ -111,13 +124,30 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     console.log("hi");
     }
+  preventCardClickEdit($event: MouseEvent,arg1: number) {
+    $event.stopPropagation();
+    this.petsService.GetPetDetailsByID(arg1).subscribe(
+      pet =>{
+        this.ToBeUpdatedPet = pet
+        console.log(this.ToBeUpdatedPet)
+        this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
+        console.log(pet)
+      },
+      error=>{
+        console.log(error)
+      });
+      
+    if(this.ToBeUpdatedPet)
+      this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
+      console.log(this.petDetailsForm.value )
+    }
 
   OnLogout() {
     this.auth.logOut()
     this.router.navigate(['/']);
     }
 
-    onSubmit(): void {
+    onSubmitAdd(): void {
       // Handle form submission
       if (this.newPetForm.valid) {
         // Update ToBeUpdatedPet with form values
@@ -128,20 +158,42 @@ export class UserProfileComponent implements OnInit{
         this.SavePetDetails()
       }
     }
-    handleFile(event: any): void {
+    onSubmitEdit(): void {
+      if (this.petDetailsForm.valid) {
+        // Update ToBeUpdatedPet with form values
+        this.ToBeUpdatedPet = {
+          ...this.ToBeUpdatedPet,
+          ...this.petDetailsForm.value
+        };
+        this.SaveUpdatedPetDetails()       
+      }
+    }
+    handleFileAdd(event: any): void {
       const files: FileList = event.target.files;
       if (files && files.length > 0) {
         const file: File = files[0];
-        this.convertImageToBase64(file);
+        this.convertImageToBase64(file, 0);
       }
     }
-    convertImageToBase64(file: File): void {
+    handleFileEdit(event: any): void {
+      const files: FileList = event.target.files;
+      if (files && files.length > 0) {
+        const file: File = files[0];
+        this.convertImageToBase64(file,1);
+      }
+    }
+    convertImageToBase64(file: File, bias:number): void {
       const reader = new FileReader();
       reader.onload = (e) => {
         const base64String: string | null = e.target?.result as string;
         if (base64String) {
           // Store the base64String in your object or send it to the backend
-          this.NewPet!.PetImage = base64String;
+          if(bias == 0){
+            this.NewPet!.PetImage = base64String;
+          }
+          if(bias == 1){
+            this.ToBeUpdatedPet!.PetImage = base64String;
+          }
           this.displayImage(base64String);
         }
       };
@@ -164,6 +216,20 @@ export class UserProfileComponent implements OnInit{
         }
       });
     }
+    
+      SaveUpdatedPetDetails() {
+        console.log(this.ToBeUpdatedPet)
+        this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
+          next: updatedPet => {
+            // Handle success, if needed
+            console.log('Pet updated successfully:', updatedPet);
+        },
+        error: error => {
+            // Handle error, if needed
+            console.error('Error updating pet:', error);
+        }
+      });
   
+    }
 }
 
