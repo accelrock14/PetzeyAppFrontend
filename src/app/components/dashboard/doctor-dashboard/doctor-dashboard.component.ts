@@ -8,6 +8,7 @@ import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-a
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
 import { PetAppointmentCardComponent } from '../../appointment-cards/pet-appointment-card/pet-appointment-card.component';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -36,9 +37,10 @@ export class DoctorDashboardComponent implements OnInit {
   }
   page:number = 1;
 
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService, public authService : AuthService) {}
   ngOnInit(): void {
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    console.log(this.authService.getUIDFromToken());
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
     // this.service.GetVetAppointments(1).subscribe(data => {
@@ -47,7 +49,7 @@ export class DoctorDashboardComponent implements OnInit {
     //   this.pageClick(this.page);
     // });
 
-    this.service.GetStatusCounts().subscribe(data => {
+    this.service.GetStatusCounts("1").subscribe(data => {
       this.appointmentStatus = data;
     })
   }
@@ -57,7 +59,7 @@ export class DoctorDashboardComponent implements OnInit {
     
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
   //   this.filteredAppointments = this.appointmentCards.filter(appointment => {
@@ -78,7 +80,7 @@ export class DoctorDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
   }

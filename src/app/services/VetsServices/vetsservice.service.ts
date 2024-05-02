@@ -73,4 +73,10 @@ export class VetsserviceService {
   getVetsByNPINumber(id:number):Observable<IVet>{
     return this.http.get<IVet>(`${this.apiUrl}/npiNumber`);
   }
+
+  uploadPhoto(id:number,photo: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', photo);
+    return this.http.post<any>(this.apiUrl+`/upload-photo/${id}`, formData);
+  }
 }

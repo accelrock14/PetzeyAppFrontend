@@ -7,6 +7,7 @@ import { PetAppointmentCardComponent } from '../../appointment-cards/pet-appoint
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
 import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-appointment-card/doctor-appointment-card.component';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -28,9 +29,10 @@ export class PatientDashboardComponent implements OnInit {
   selectedDate!: Date;
   page:number = 1;
 
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService,public authService: AuthService) {}
   ngOnInit(): void {
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    console.log(this.authService.getUIDFromToken());
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
     // this.service.GetPatientAppointments(1).subscribe(data => {
@@ -44,7 +46,7 @@ export class PatientDashboardComponent implements OnInit {
     
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
   //   this.filteredAppointments = this.appointmentCards.filter(appointment => {
@@ -64,7 +66,7 @@ export class PatientDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
   }

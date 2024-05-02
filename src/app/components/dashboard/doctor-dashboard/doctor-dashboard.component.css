@@ -7,6 +7,11 @@
     object-fit: cover; /* Maintain aspect ratio */
 }
 
+.card-title {
+    font-size: large;
+    font-weight: 500;
+}
+
 /* Calendar input style */
 input[type="date"] {
     width: 100%;

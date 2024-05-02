@@ -7,21 +7,25 @@ import { Feedback, Question, FeedbackQuestion } from '../models/appoitment-model
   providedIn: 'root'
 })
 export class FeedbackService {
+  selectedid:number=0;
+  selectedviewid:number=0;
 constructor(private http:HttpClient){}
 getData(id:number): Observable<Feedback> {
-  console.log("id getting: " + id);
+  
   return this.http.get<Feedback>(`https://localhost:44327/api/Feedback/${id}`);
 }
 postData(obj:Feedback):Observable<Feedback>{
-  console.log("obj:" + obj);
+
   return this.http.post<Feedback>("https://localhost:44327/api/Feedback",obj);
 }
 getQuestions():Observable<FeedbackQuestion[]>{
-  return this.http.get<FeedbackQuestion[]>("https://localhost:44327/api/FeedbackQuestions")
+  return this.http.get<FeedbackQuestion[]>("https://localhost:44327/api/FeedbackQuestions");
 }
 getAllFeedback():Observable<Feedback[]>{
   return this.http.get<Feedback[]>("https://localhost:44327/api/Feedback");
 }
+
+
 // getQuestionsRating(obj:FeedbackQuestion[]):Question[]{
   
 //   const questions: Question[] = [
