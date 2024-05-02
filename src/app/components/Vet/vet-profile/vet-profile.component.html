@@ -3,11 +3,11 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <h5 class="col-9 p-0">Account Details</h5>
+          <h5 class="col-9 mx-2 p-0">Account Details</h5>
         
         <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-        <button class="btn btn-outline-danger col-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
-        <p class="text-muted col-5">Manage your account details here</p>
+        <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        <!-- <p class="text-muted col-5">Manage your account details here</p> -->
 
       </div>
 
@@ -88,6 +88,34 @@
       <ng-template #successMessage>
         <div class="alert alert-success" role="alert">
             Vet profile updated successfully!
+        </div>
+    </ng-template>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete?
+        <div class="row p-5">
+          <div class="col-6">
+            <button class="btn btn-light mx-2">Cancel</button>
+          </div>
+          <div class="col-6">
+            <button type = "button" class = "btn btn-edit mx-2" (click) = "deleteVet(vetProfile!.VetId)">Delete</button>
+          </div>
+        </div>
+        </div>
+      <ng-template #successMessage>
+        <div class="alert alert-success" role="alert">
+            Vet profile deleted successfully!
         </div>
     </ng-template>
     </div>
