@@ -204,7 +204,7 @@
 
     <div class="report-body">
       <div class="row">
-        <div class="col-lg-6 col-md-12 mx-auto left-part capture-section" #section1>
+        <div class="col-lg-6 col-md-12 mx-auto left-part capture-section">
           <div class="precription border shadow p-3 rounded-3">
             <div
               class="precription-heading d-flex justify-content-between"
@@ -350,7 +350,7 @@
           </div>
         </div>
 
-        <div class="col-lg-6 col-md-12 mx-auto right-part capture-section" #section2>
+        <div class="col-lg-6 col-md-12 mx-auto right-part capture-section">
           <div class="vitals border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Vitals</h4>
             <div class="icons mt-4 ps-3">
@@ -473,7 +473,7 @@
 
         <div class="mx-auto bottom-part">
           <div
-            class="commentsbydoctor border shadow p-3 rounded-3 capture-section" #section3
+            class="commentsbydoctor border shadow p-3 rounded-3 capture-section"
           >
             <h4>Comments</h4>
 
@@ -486,8 +486,16 @@
                 <p class="m-0 d-inline-block fw-bolder">
                   {{ getDoctorById(doctorId)?.Name }}
                 </p>
-                <small class="ms-2">10 hr ago</small>
-                <p>{{ report.Comment }}</p>
+                @if (report.Comment!=null && report.Comment!='')
+                {
+                  <p>{{ report.Comment }}</p>
+                }
+                @else {
+                  <div class="text-center text-danger mt-1">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <p>No Commemts given</p>
+                  </div>
+                  }
               </div>
             </div>
             <textarea

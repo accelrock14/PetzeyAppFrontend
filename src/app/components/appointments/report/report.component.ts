@@ -324,7 +324,7 @@ export class ReportComponent implements OnInit {
     return this.doctors.find((d) => {
       if (d.VetId.toString() == id) {
         return d;
-      }
+      } else return undefined;
     });
   }
 

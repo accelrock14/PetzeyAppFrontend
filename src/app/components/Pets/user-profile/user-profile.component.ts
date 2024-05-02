@@ -5,19 +5,17 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
-import { AgePipe } from "../../../pipes/Age/age.pipe";
+import { AgePipe } from '../../../pipes/Age/age.pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-user-profile',
-    standalone: true,
-    templateUrl: './user-profile.component.html',
-    styleUrl: './user-profile.component.css',
-    imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule]
-
+  selector: 'app-user-profile',
+  standalone: true,
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.css',
+  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule],
 })
-export class UserProfileComponent implements OnInit{
-
+export class UserProfileComponent implements OnInit {
   NewPet?: IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
@@ -27,9 +25,14 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router, private fb:FormBuilder) {
+  constructor(
+    private petsService: PetsService,
+    public auth: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
     this.newPetForm = this.fb.group({
-      PetImage:[this.NewPet?.PetImage],
+      PetImage: [this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],
       Species: [this.NewPet?.Species],
       Breed: [this.NewPet?.Breed],
@@ -37,11 +40,11 @@ export class UserProfileComponent implements OnInit{
       Gender: [this.NewPet?.Gender],
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: [this.NewPet?.Neutered],
-      Allergies: [this.NewPet?.Allergies]
+      Allergies: [this.NewPet?.Allergies],
     });
 
     this.petDetailsForm = this.fb.group({
-      PetImage:[this.ToBeUpdatedPet?.PetImage],
+      PetImage: [this.ToBeUpdatedPet?.PetImage],
       PetName: [this.ToBeUpdatedPet?.PetName],
       Species: [this.ToBeUpdatedPet?.Species],
       Breed: [this.ToBeUpdatedPet?.Breed],
@@ -49,26 +52,24 @@ export class UserProfileComponent implements OnInit{
       Gender: [this.ToBeUpdatedPet?.Gender],
       DateOfBirth: [this.ToBeUpdatedPet?.DateOfBirth],
       Neutered: [this.ToBeUpdatedPet?.Neutered],
-      Allergies: [this.ToBeUpdatedPet?.Allergies]
+      Allergies: [this.ToBeUpdatedPet?.Allergies],
     });
-   }
-
+  }
 
   ngOnInit(): void {
-    console.log("ngOnInit() is called");
+    console.log('ngOnInit() is called');
 
-    if(this.auth.isLoggedIn()){
-      this.user = this.auth.getLoggedInUserObject()
+    if (this.auth.isLoggedIn()) {
+      this.user = this.auth.getLoggedInUserObject();
     }
 
     // this.petsService.getUser().subscribe((data) => {
     //   this.user = data;
     // })
 
-    this.petsService.GetPetsByParentID("2").subscribe((data) => {
+    this.petsService.GetPetsByParentID('2').subscribe((data) => {
       this.pets = data;
-    })
-   
+    });
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -77,20 +78,18 @@ export class UserProfileComponent implements OnInit{
     this.openDeleteModal();
   }
 
-  deleteConfirmedPet(event: MouseEvent){
+  deleteConfirmedPet(event: MouseEvent) {
     event.stopPropagation();
-    if(this.petToDelete){
-      this.petsService.DeletePetByPetID(this.petToDelete.PetID).subscribe(() => {
-
-      });
+    if (this.petToDelete) {
+      this.petsService
+        .DeletePetByPetID(this.petToDelete.PetID)
+        .subscribe(() => {});
     }
     this.closeDeleteModal(event);
   }
 
-
-
   toggleDropdown(event: MouseEvent) {
-    event.stopPropagation();// This thing is to prevent the card from clicking
+    event.stopPropagation(); // This thing is to prevent the card from clicking
     const dropdown = (event.target as HTMLElement).closest('.dropdown');
     if (dropdown) {
       const dropdownMenu = dropdown.querySelector('.dropdown-menu');
@@ -117,127 +116,120 @@ export class UserProfileComponent implements OnInit{
 
   preventCardClick(event: MouseEvent) {
     event.stopPropagation();
-    console.log("hi");
-    }
-  preventCardClickEdit($event: MouseEvent,arg1: number) {
+    console.log('hi');
+  }
+  preventCardClickEdit($event: MouseEvent, arg1: number) {
     $event.stopPropagation();
     this.petsService.GetPetDetailsByID(arg1).subscribe(
-      pet =>{
-        this.ToBeUpdatedPet = pet
-        console.log(this.ToBeUpdatedPet)
-        this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-        console.log(pet)
+      (pet) => {
+        this.ToBeUpdatedPet = pet;
+        console.log(this.ToBeUpdatedPet);
+        this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+        console.log(pet);
       },
-      error=>{
-        console.log(error)
-      });
-      
-    if(this.ToBeUpdatedPet)
-      this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-      console.log(this.petDetailsForm.value)
-    }
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    if (this.ToBeUpdatedPet)
+      this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+    console.log(this.petDetailsForm.value);
+  }
 
   OnLogout() {
-    this.auth.logOut()
+    this.auth.logOut();
     this.router.navigate(['/']);
-    }
+  }
 
-    onSubmitAdd(): void {
-      // Handle form submission
-      if (this.newPetForm.valid) {
-        // Update ToBeUpdatedPet with form values
-        this.NewPet = {
-          ...this.NewPet,
-          ...this.newPetForm.value
-        };
-        this.SavePetDetails()
-      }
+  onSubmitAdd(): void {
+    // Handle form submission
+    if (this.newPetForm.valid) {
+      // Update ToBeUpdatedPet with form values
+      this.NewPet = {
+        ...this.NewPet,
+        ...this.newPetForm.value,
+      };
+      this.SavePetDetails();
     }
-    onSubmitEdit(): void {
-      if (this.petDetailsForm.valid) {
-        // Update ToBeUpdatedPet with form values
-        this.ToBeUpdatedPet = {
-          ...this.ToBeUpdatedPet,
-          ...this.petDetailsForm.value
-        };
-        this.SaveUpdatedPetDetails()       
-      }
+  }
+  onSubmitEdit(): void {
+    if (this.petDetailsForm.valid) {
+      // Update ToBeUpdatedPet with form values
+      this.ToBeUpdatedPet = {
+        ...this.ToBeUpdatedPet,
+        ...this.petDetailsForm.value,
+      };
+      this.SaveUpdatedPetDetails();
     }
-    handleFileAdd(event: any): void {
-      const files: FileList = event.target.files;
-      if (files && files.length > 0) {
-        const file: File = files[0];
-        console.log(file)
-        this.convertImageToBase64Add(file);
-      }
+  }
+  handleFileAdd(event: any): void {
+    const files: FileList = event.target.files;
+    if (files && files.length > 0) {
+      const file: File = files[0];
+      console.log(file);
+      this.convertImageToBase64Add(file);
     }
-    convertImageToBase64Add(file: File): void {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64String: string | null = e.target?.result as string;
-        if (base64String) {
+  }
+  convertImageToBase64Add(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String: string | null = e.target?.result as string;
+      if (base64String) {
+        // Store the base64String in your object or send it to the backend
+        this.NewPet!.PetImage = base64String;
+        console.log(base64String);
+        if (this.NewPet) this.newPetForm.patchValue(this.NewPet);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+  handleFileEdit(event: any): void {
+    const files: FileList = event.target.files;
+    if (files && files.length > 0) {
+      const file: File = files[0];
+      this.convertImageToBase64Edit(file);
+    }
+  }
+  convertImageToBase64Edit(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String: string | null = e.target?.result as string;
+      if (base64String) {
+        // Store the base64String in your object or send it to the backend
+        this.ToBeUpdatedPet!.PetImage = base64String;
+        if (this.ToBeUpdatedPet)
+          this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
 
-          // Store the base64String in your object or send it to the backend
-          this.NewPet!.PetImage = base64String;
-          console.log(base64String)
-          if(this.NewPet)
-            this.newPetForm.patchValue(this.NewPet)
-          
-        }
-      };   
-      reader.readAsDataURL(file);
-    }
-    handleFileEdit(event: any): void {
-      const files: FileList = event.target.files;
-      if (files && files.length > 0) {
-        const file: File = files[0];
-        this.convertImageToBase64Edit(file);
-      }
-    }
-    convertImageToBase64Edit(file: File): void {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64String: string | null = e.target?.result as string;
-        if (base64String) {
+  SavePetDetails() {
+    console.log(this.NewPet);
+    this.petsService.AddPet(this.NewPet!).subscribe({
+      next: (updatedPet) => {
+        // Handle success, if needed
+        console.log('Pet updated successfully:', updatedPet);
+      },
+      error: (error) => {
+        // Handle error, if needed
+        console.error('Error updating pet:', error);
+      },
+    });
+  }
 
-          // Store the base64String in your object or send it to the backend
-          this.ToBeUpdatedPet!.PetImage = base64String;
-          if(this.ToBeUpdatedPet)
-            this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-          
-        }
-      };   
-      reader.readAsDataURL(file);
-    }
-    
-   
-    SavePetDetails() {
-      console.log(this.NewPet)
-      this.petsService.AddPet(this.NewPet!).subscribe({
-        next: updatedPet => {
-          // Handle success, if needed
-          console.log('Pet updated successfully:', updatedPet);
-        },
-        error: error => {
-          // Handle error, if needed
-          console.error('Error updating pet:', error);
-        }
-      });
-    }
-    
-      SaveUpdatedPetDetails() {
-        console.log(this.ToBeUpdatedPet)
-        this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
-          next: updatedPet => {
-            // Handle success, if needed
-            console.log('Pet updated successfully:', updatedPet);
-        },
-        error: error => {
-            // Handle error, if needed
-            console.error('Error updating pet:', error);
-        }
-      });
-  
-    }
+  SaveUpdatedPetDetails() {
+    console.log(this.ToBeUpdatedPet);
+    this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
+      next: (updatedPet) => {
+        // Handle success, if needed
+        console.log('Pet updated successfully:', updatedPet);
+      },
+      error: (error) => {
+        // Handle error, if needed
+        console.error('Error updating pet:', error);
+      },
+    });
+  }
 }
-
