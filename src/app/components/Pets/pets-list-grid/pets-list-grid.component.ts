@@ -35,7 +35,7 @@ export class PetsListGridComponent implements OnInit{
 searchPets() {
   this.petsService.FilterPets(this.petsFilter)
   .subscribe(pets => {
-    this.pets = pets;
+
     console.log('Original pets:',this.pets);
 
     this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,4);
@@ -73,18 +73,15 @@ searchPets() {
     // this.searchPets();
   }
 
-  selectSpecies(species: string) {
-    this.petsFilter.Species = species; // Update the selected species in the filter
-    this.searchPets(); // Call the searchPets method to perform filtering based on the selected species
-  }
 
   filterPetsPerPage(page: number): void {
+    this.calculateTotalPages()
     this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
       .subscribe(pets => {
         this.pets = pets;
         console.log('Original pets:', this.pets);
 
-        this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 2);
+        this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
         this.errorMessage = ''; // Clear error message on successful retrieval
@@ -99,11 +96,14 @@ searchPets() {
           }
         }
       );
+
   }
 
   calculateTotalPages(): void {
+
     this.petsService.GetPetsCount(this.petsFilter).subscribe(count => {
       this.totalPages = Math.ceil(count / this.itemsPerPage);
+      console.log(this.totalPages)
       this.generatePageNumbers();
     });
   }
