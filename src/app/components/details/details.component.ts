@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
-import { CommonModule, NgFor, NgIf, } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
@@ -8,14 +14,24 @@ import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-appt.component';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 declare var window: any;
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, RouterLink, ReportComponent, AppointmentPetProfileComponent, VetProfileApptComponent],
+  imports: [
+    NgIf,
+    NgFor,
+    DatePipe,
+    RouterLink,
+    ReportComponent,
+    AppointmentPetProfileComponent,
+    VetProfileApptComponent,
+  ],
   templateUrl: './details.component.html',
-  styleUrl: './details.component.css'
+  styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
   //petIds:number[]=[]
@@ -30,35 +46,37 @@ export class DetailsComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues: []
-  }
+    PetIssues: [],
+  };
   formModal: any;
   formModal2: any;
-  constructor(private appointmentDetailsService: AppointmentDetailsService, private route: ActivatedRoute) { }
+  constructor(
+    private appointmentDetailsService: AppointmentDetailsService,
+    private route: ActivatedRoute
+  ) {}
   ngOnInit(): void {
     const ID: any = this.route.snapshot.paramMap.get('id');
-    this.appointmentDetailsService.GetAppointmentDetail(ID)
-      .subscribe((appointment: any) => this.appointment = appointment);
+    this.appointmentDetailsService
+      .GetAppointmentDetail(ID)
+      .subscribe((appointment: any) => (this.appointment = appointment));
 
     // this.appointmentDetailsService.GetAllPetIDByVetId(1)
     // .subscribe({
     //   next:(data)=>{
     //     this.petIds = data;
-        
-        
+
     //   },
     //   error:(err)=>{
     //     console.log("error while fetching",err);
-        
+
     //   }
     // });
-    
-    
+
     this.formModal = new window.bootstrap.Modal(
-      document.getElementById("exampleModal2")
+      document.getElementById('exampleModal2')
     );
     this.formModal2 = new window.bootstrap.Modal(
-      document.getElementById("exampleModal3")
+      document.getElementById('exampleModal3')
     );
   }
 
@@ -75,21 +93,19 @@ export class DetailsComponent implements OnInit {
     this.formModal2.hide();
   }
   closeAppointment() {
-
-    this.appointmentDetailsService.PatchAppointmentStatus(this.appointment.AppointmentID, 3)
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
           this.closeModal();
 
-          this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
-            .subscribe(updatedAppointment => {
-              this.appointment = updatedAppointment
+          this.appointmentDetailsService
+            .GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe((updatedAppointment) => {
+              this.appointment = updatedAppointment;
               console.log(this.appointment);
-
             });
-
-
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
@@ -97,8 +113,8 @@ export class DetailsComponent implements OnInit {
       );
   }
   cancelAppointment() {
-
-    this.appointmentDetailsService.PatchAppointmentStatus(this.appointment.AppointmentID, 2)
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 2)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
@@ -106,8 +122,11 @@ export class DetailsComponent implements OnInit {
 
           // this.confirmed=true;
 
-          this.appointmentDetailsService.GetAppointmentDetail(this.appointment.AppointmentID)
-            .subscribe(updatedAppointment => this.appointment = updatedAppointment);
+          this.appointmentDetailsService
+            .GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe(
+              (updatedAppointment) => (this.appointment = updatedAppointment)
+            );
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
@@ -115,6 +134,31 @@ export class DetailsComponent implements OnInit {
       );
   }
 
+  receivedMessage: string = '';
 
+  async exportToPDF($event: string) {
+    const element = document.getElementById('all-appointment');
 
+    if (!element) {
+      console.error(`Element with ID ${1} not found.`);
+      return;
+    }
+
+    const canvas = await html2canvas(element);
+
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF();
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    let position = 0;
+    console.log();
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+    pdf.addImage($event, 'PNG', 0, imgHeight + 2, pdfWidth, 150);
+
+    // Save PDF
+    pdf.save('test.pdf');
+  }
 }
