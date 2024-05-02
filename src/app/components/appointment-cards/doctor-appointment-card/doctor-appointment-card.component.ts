@@ -61,7 +61,8 @@ openPopup(arg0: string) {
      
      
        onSubmit(appointmentId: number) {
-        this.feedback.AppointmentId = appointmentId;
+        console.log(appointmentId);
+        console.log(this.feedback.AppointmentId);
          this.service.postData(this.feedback).subscribe(
            (response) => {
              console.log('Response:', response);
