@@ -222,8 +222,9 @@
               </button>
             </div>
             <div class="all-item-list p-3">
-              @for (prescription of report.Prescription.PrescribedMedicines;
-              track $index) {
+              @if(report.Prescription.PrescribedMedicines.length>0){ @for
+              (prescription of report.Prescription.PrescribedMedicines; track
+              $index) {
               <div class="precription-item border rounded-3 shadow-sm mt-2 p-3">
                 <div
                   class="medicine-name d-flex justify-content-between"
@@ -308,13 +309,18 @@
                   </div>
                 </div>
               </div>
+              } } @else {
+              <div class="text-center text-danger mt-5 align-content-around">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>No Prescriptions Found</p>
+              </div>
               }
             </div>
           </div>
 
           <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
             <h4>Recommended Doctors</h4>
-            <div *ngIf="isEditing" class="search-box ps-3 mt-2">
+            <div *ngIf="isEditing" class="search-box ps-3 mt-4">
               <form *ngIf="isEditing" [formGroup]="myForm">
                 <ng-multiselect-dropdown
                   name="doctor"
@@ -329,9 +335,15 @@
               </form>
             </div>
             <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
-              @for (doctors of report.RecommendedDoctors; track $index) {
+              @if(report.RecommendedDoctors.length > 0){ @for (doctors of
+              report.RecommendedDoctors; track $index) {
               <div class="capsule">
                 {{ getDoctorById(doctors.DoctorID)?.Name }}
+              </div>
+              }} @else {
+              <div class="text-center text-danger mt-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Recommendations</p>
               </div>
               }
             </div>
@@ -413,9 +425,15 @@
               </form>
             </div>
             <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
-              @for (symptoms of report.Symptoms; track $index) {
+              @if(report.Symptoms.length > 0){ @for (symptoms of
+              report.Symptoms; track $index) {
               <div class="capsule">
                 {{ getSymptomById(symptoms.SymptomID)?.SymptomName }}
+              </div>
+              }}@else {
+              <div class="text-center text-danger mt-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Symptoms Added</p>
               </div>
               }
             </div>
@@ -438,9 +456,15 @@
               </form>
             </div>
             <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
-              @for (tests of report.Tests; track $index) {
+              @if (report.Tests.length>0) { @for (tests of report.Tests; track
+              $index) {
               <div class="capsule">
                 {{ getTestById(tests.TestID)?.TestName }}
+              </div>
+              }}@else {
+              <div class="text-center text-danger mt-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Tests Performed</p>
               </div>
               }
             </div>
@@ -462,8 +486,16 @@
                 <p class="m-0 d-inline-block fw-bolder">
                   {{ getDoctorById(doctorId)?.Name }}
                 </p>
-                <small class="ms-2">10 hr ago</small>
-                <p>{{ report.Comment }}</p>
+                @if (report.Comment!=null && report.Comment!='')
+                {
+                  <p>{{ report.Comment }}</p>
+                }
+                @else {
+                  <div class="text-center text-danger mt-1">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <p>No Commemts given</p>
+                  </div>
+                  }
               </div>
             </div>
             <textarea

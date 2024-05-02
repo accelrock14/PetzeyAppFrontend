@@ -18,7 +18,15 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { DoctorDTO } from '../../../models/appoitment-models/DoctorDTO';
 import { RecommendedDoctor } from '../../../models/appoitment-models/RecommendedDoctor';
 import jspdf, { jsPDF } from 'jspdf';
@@ -43,8 +51,8 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnInit {
-  @Input() reportId: number = 1;
-  @Input() doctorId: number = 1;
+  @Input() reportId: number = 3;
+  @Input() doctorId: string = '';
 
   report: IReport = {
     ReportID: 1,
@@ -142,7 +150,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
-  isDoctor: boolean = false
+  isDoctor: boolean = false;
 
   ngOnInit(): void {
     this.reportService.getReport(this.reportId).subscribe((r) => {
@@ -191,9 +199,9 @@ export class ReportComponent implements OnInit {
       this.reportService.getAllMedicines().subscribe((m) => {
         this.medicines = m;
       });
-      this.vetService.getAllVets().subscribe(v => {
-        this.doctors = v
-      })
+      this.vetService.getAllVets().subscribe((v) => {
+        this.doctors = v;
+      });
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
       this.selectedDoctors = this.report.RecommendedDoctors.map(
@@ -206,7 +214,7 @@ export class ReportComponent implements OnInit {
         medicine: [],
         doctor: [this.selectedDoctors],
       });
-      this.isDoctor = this.authService.getRoleFromToken() == 'Doctor'
+      this.isDoctor = this.authService.getRoleFromToken() == 'Doctor';
     });
   }
 
@@ -216,7 +224,7 @@ export class ReportComponent implements OnInit {
     private elementRef: ElementRef,
     private vetService: VetsserviceService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   isEditing = false;
 
@@ -312,15 +320,12 @@ export class ReportComponent implements OnInit {
     });
   }
 
-  getDoctorById(id: number): IVetCardDTO | undefined {
-    return this.doctors.find(d => {
-      if (d.VetId == id) {
-        return d
-      }
-      else {
-        return undefined
-      }
-    })
+  getDoctorById(id: string): IVetCardDTO | undefined {
+    return this.doctors.find((d) => {
+      if (d.VetId.toString() == id) {
+        return d;
+      } else return undefined;
+    });
   }
 
   validateNumber(event: KeyboardEvent): void {
@@ -465,6 +470,8 @@ export class ReportComponent implements OnInit {
     this.prescriptionForm.medicine = selectMed.MedicineID;
   }
 
+  @Output() messageEvent = new EventEmitter<string>();
+
   captureElementAsCanvas(element: any, index: number) {
     return html2canvas(element, {
       scale: window.devicePixelRatio, // Scale for high-density displays
@@ -479,19 +486,6 @@ export class ReportComponent implements OnInit {
           clonedElement.style.width = `${clonedElement.offsetWidth * 2}px`; // Adjust width after scaling
           clonedElement.style.height = `${clonedElement.offsetHeight * 1}px`; // Adjust height after scaling
         }
-        // if (clonedElement && index == 0) {
-        //   const numberofprescribedmedicines =
-        //     document.querySelectorAll('.precription-item').length;
-        //   // Increase the size (scale) of the cloned element
-        //   const clonedElement1 = clonedDoc.querySelector(
-        //     '.precription'
-        //   ) as HTMLElement;
-        //   // clonedElement.style.width = `${clonedElement.offsetWidth * 2}px`; // Adjust width after scaling
-        //   clonedElement1.style.height =
-        //     numberofprescribedmedicines * 460 + 'px'; // Adjust height after scaling
-        //   clonedElement1.style.overflow = 'visible';
-        // }
-        // clonedDoc.documentElement.style.height = 'auto';
       },
     });
   }
@@ -556,9 +550,11 @@ export class ReportComponent implements OnInit {
 
       // Convert the composite canvas to a data URL (or use it as needed)
       const imgData = compositeCanvas.toDataURL('image/png');
-      console.log(imgData);
-      doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
-      doc.save('report.pdf');
+      // console.log(imgData);
+
+      this.messageEvent.emit(imgData);
+      // doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
+      // doc.save('report.pdf');
     });
   }
 }

@@ -1,14 +1,16 @@
 <body>
   <div class="container mt-4">
     <div class="card">
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
+      <div class="card-header">
         <div class="row">
-          <h5 class="m-0">Account Details</h5>
-          <p class="text-muted">Manage your account details here</p>
-        </div>
-        <button class="btn btn-edit col-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+          <h5 class="col-9 mx-2 p-0">Account Details</h5>
+        
+        <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+        <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        <!-- <p class="text-muted col-5">Manage your account details here</p> -->
+
+      </div>
+
       </div>
       <div class="card-body pb-5">
         <div class="row">
@@ -91,4 +93,38 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <!-- Modal content -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete?
+        <div class="row">
+          <div class="col-2 p-2 m-2">
+            <button class="btn btn-light mx-2">Cancel</button>
+          </div>
+          <div class="col-2 p-2 m-2">
+            <!-- Disable the button if the successMessage variable is falsy -->
+            <button type="button" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
+          </div>
+        </div>
+      </div>
+      <!-- Display the success message if the successMessage variable is truthy -->
+      <ng-container *ngIf="deleteMessage">
+        <div class="modal-footer">
+          <div class="alert alert-success" role="alert">
+            Vet profile deleted successfully!
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
 </body>

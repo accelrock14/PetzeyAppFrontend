@@ -4,7 +4,7 @@
     <div class="back btn">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <a class="pre" [href]="'/details/'+appointmentDetail.AppointmentID"> Back to Appointments</a>
+        <pre class="pre" (click)="GoBack()"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
     <hr>
@@ -164,7 +164,7 @@ modal popup code for confirmation
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
           <!-- later add a method here to navigate to the previous window -->
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" >Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="GoBack()" >Confirm</button>
         </div>
       </div>
     </div>

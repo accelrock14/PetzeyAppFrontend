@@ -35,6 +35,7 @@ export class ReportHistoryComponent implements OnInit {
   constructor(private reportService: ReportService) { }
 
   ngOnInit(): void {
+    console.log(this.petId)
     this.reportService.getPetHistory(this.petId).subscribe(h => {
       this.petHistory = h
       this.existingPrescriptions = this.petHistory.Prescriptions
