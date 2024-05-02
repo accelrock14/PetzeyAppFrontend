@@ -10,27 +10,39 @@ import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-
+import { Location } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 declare var window:any;
 @Component({
   selector: 'app-edit-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterLink],
+  imports: [FormsModule, CommonModule,RouterLink,MatSnackBarModule],
   templateUrl: './edit-appointment-form.component.html',
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
-
-navigateBack() {
-this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
+GoBackSimply() {
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+this.location.back();
 }
+
+GoBackWithMsg(msg:string){
+  this.snackBar.open(msg, '', {
+    duration: 3000 // message will disappear after 3000ms
+  });
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+this.location.back();
+}
+
 
   formModal: any;
   cancelAptModal: any;
 
   // id of appointment to edit;
-   AppointmentID: number =0;
+  AppointmentID: number = 0;
   appointmentDetail: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: '',
@@ -48,7 +60,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo: ActivatedRoute) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -75,8 +87,6 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
 
   ngOnInit(): void {
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
-    console.log("abc"+this.routeTo.snapshot.paramMap.get('AppointmentID')!)
-    console.log(this.AppointmentID+"fu")
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
         this.appointmentDetail = data;
@@ -87,7 +97,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
-            // this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=true;
+            this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
@@ -102,7 +112,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
     });
 
     this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
-    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('cancelEditModal'));
     //
 
     this.aptService.getVeternarians().subscribe({
@@ -148,7 +158,6 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
         if (this.appointmentDetail.PetIssues && this.appointmentDetail.PetIssues.length > 0) {
           const firstIssueName = this.appointmentDetail.PetIssues[0].IssueName;
           this.petIssueSearchText = data.find(pi => { 
-          console.log("general issue name="+pi.IssueName+" type is "+typeof pi.IssueName);
           return pi.IssueName == firstIssueName;
            })?.IssueName || 'No Issue Found';
         } else {
@@ -161,14 +170,14 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
       }
     });
 
-    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
-      next: (data) => {
-        this.slotStatuses = data, console.log("default date schedules success", data);
-      },
-      error: (err) => {
-        console.log("error occured array fetch", err);
-      }
-    });
+    // this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
+    //   next: (data) => {
+    //     this.slotStatuses = data, console.log("default date schedules success", data);
+    //   },
+    //   error: (err) => {
+    //     console.log("error occured array fetch", err);
+    //   }
+    // });
 
     // modal popup code 
     // this.formModal= new window.bootstrap.Modal(
@@ -221,7 +230,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   }
   // modal popup code for submission
   openModal() {
-    alert("here");
+    // alert("here");
     this.formModal.show();
   }
   closeModal() {
@@ -313,20 +322,18 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
     });
   }
 
-  isDisabled(index: number): boolean {
-    // console.log("here "+index+" , "+this.appointmentDetail.ScheduleTimeSlot);
-    if(index===this.appointmentDetail.ScheduleTimeSlot)
-      {
-        // console.log("logging the indexxxxxxx",index,this.appointmentDetail.ScheduleTimeSlot);
-        return false;
-      }
-    else 
-      return this.slotStatuses[index];
+  isDisabled(index: number):boolean {
+    // console.log("index = "+index+" obj index = "+this.appointmentDetail.ScheduleTimeSlot);
+    
+    if(index===this.appointmentDetail.ScheduleTimeSlot){
+      return true;
+    }
+    return this.slotStatuses[index];
   }
 
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
-      console.log('Slot selected:', slot);
+      // console.log('Slot selected:', slot);
       console.log('selected slot index', index);
       this.selectedSlotIndex = index;
       this.appointmentDetail.ScheduleTimeSlot = index;
@@ -334,10 +341,9 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   }
 
   isSelected(index: number): boolean {
-    this.appointmentDetail.ScheduleTimeSlot = index;
+    // this.appointmentDetail.ScheduleTimeSlot = index;
     return index === this.selectedSlotIndex;
   }
-
   filterPetParents(): void {
     if (!this.petParentSearchText.length) {
       this.filteredPetParents = [];
@@ -392,8 +398,11 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
         console.log("errooor occured while sending put request",err);
       }
     });
-    alert("edit success");
+    // alert("edit success");
+    // alert("edit success");
     this.closeModal();
+    this.GoBackWithMsg("your appointment edited successfully");
+
   }
 
   isSubmitDisabled: boolean = true;
@@ -401,6 +410,4 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   toggleDisabled(): void {
     this.isSubmitDisabled = !this.isSubmitDisabled;
   }
-
-
 }

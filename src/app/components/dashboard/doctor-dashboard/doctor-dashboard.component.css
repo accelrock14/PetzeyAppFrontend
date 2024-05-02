@@ -52,10 +52,6 @@ select[name="Status"]::-ms-expand {
     padding: 5px;
     
 }
-.container {
-    text-align: center;
-}
-
 .message {
     font-size: 24px;
     font-weight: bold;

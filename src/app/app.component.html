@@ -1,10 +1,9 @@
-
 <div class="wrapper">
   <aside id="sidebar" [class.expand]="expand">
     <div class="d-flex">
       <button class="toggle-btn" (click)="onExpand()" type="button">
         <!-- <i class="lni lni-grid-alt"></i> -->
-        <img src="assets\logo10.png" alt="no" class="move-left"   />
+        <img src="assets\logo10.png" alt="no" class="move-left" />
       </button>
       <div class="sidebar-logo">
         <a routerLink="home">Petzey</a>
@@ -45,7 +44,7 @@
           </div>
           <span>Patient Dashboard</span>
         </a>
-      </li> 
+      </li>
       <!-- } -->
       <li class="sidebar-item">
         <a
@@ -92,9 +91,11 @@
           </div>
           <span>Doctor Dashboard</span>
         </a>
-      </li> 
+      </li>
+
     <!-- } -->
 
+    @if(auth.isLoggedIn() && auth.getRoleFromToken() != "Owner") {
       <li class="sidebar-item">
         <a
           routerLink="pets-list/1"
@@ -130,7 +131,7 @@
           <span>Pets</span>
         </a>
       </li>
-
+    }
       <li class="sidebar-item">
         <a
           routerLink="/vet"
@@ -166,7 +167,10 @@
           <span>Doctors</span>
         </a>
       </li>
-      <li class="sidebar-item" [hidden]="!this.auth.isLoggedIn()">
+
+      @if(auth.getRoleFromToken() == "Owner")
+      {
+      <li class="sidebar-item" [hidden]="!auth.isLoggedIn() ">
         <a
           routerLink="/profile"
           class="sidebar-link"
@@ -178,11 +182,15 @@
           <span>Profile</span>
         </a>
       </li>
+    }
+
     </ul>
-    <div class="sidebar-footer" [hidden]="this.auth.isLoggedIn()">
-      <a routerLink="/signin"
-      class="sidebar-link"
-      [class.selected]="isSelected('signin')">
+    <div class="sidebar-footer" [hidden]="auth.isLoggedIn()">
+      <a
+        routerLink="/signin"
+        class="sidebar-link"
+        [class.selected]="isSelected('signin')"
+      >
         <i class="lni lni-user"></i>
         <span> SignIn</span>
       </a>
@@ -191,8 +199,5 @@
 
   <div class="main p-3">
     <router-outlet></router-outlet>
-     <button [routerLink]="'details'">Details</button> 
   </div>
-
-
 </div>

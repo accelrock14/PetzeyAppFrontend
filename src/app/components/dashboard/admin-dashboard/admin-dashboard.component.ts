@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent implements OnInit {
+  user:string = "Admin";
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
   selectedStatus: string = "";
@@ -27,7 +28,7 @@ export class AdminDashboardComponent implements OnInit {
   };
   page:number = 1;
 
-  constructor(private service: DashboardService) {}
+  constructor(public service: DashboardService) {}
   ngOnInit(): void {
     console.log(this.filters);
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {

@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetCardComponent } from "../pet-card/pet-card.component";
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 
 @Component({
     selector: 'app-pets-list-grid',
@@ -54,11 +56,44 @@ searchPets() {
 
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
-    private router: Router){}
+    private router: Router,
+    private authService : AuthService,
+    private appointmentDetailsService:  AppointmentDetailsService){}
 
   ngOnInit(): void {
 
+   if(this.authService.isLoggedIn())
+    {
+      console.log("logged in");
+       if(this.authService.getRoleFromToken() == 'Doctor')
+        {
+          console.log("doctor");
+          console.log(this.authService.getUIDFromToken());
+
+          // uncomment this while integrating
+
+          // this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
+          //   .subscribe({
+          //   next:(data)=>{
+          //   this.petsFilter.PetIDs = data;
+          //   this.errorMessage = '';
+          //  },
+          //   error:(err)=>{
+          //     console.log("error while fetching",err);
+          //     if (err.status === 404) {
+          //       this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          //     } else {
+          //       this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+          //     }
+          //   }
+          // });
+
+          console.log(this.petsFilter.PetIDs);
+        }
+    }
+
     this.calculateTotalPages();
+
 
     this.route.params.subscribe(params => {
       const pageNumber = +params['page'];
