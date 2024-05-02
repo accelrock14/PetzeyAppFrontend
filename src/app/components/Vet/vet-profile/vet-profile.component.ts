@@ -92,13 +92,22 @@ throw new Error('Method not implemented.');
   // }
   imageSrc: string | ArrayBuffer | null = null;
 
-  onImageSelected(event: Event): void {
-    const element = event.target as HTMLInputElement;
-    const file = element.files ? element.files[0] : null;
+  onImageSelected(event: any): void {
+    console.log('ewqrew')
+    const file: File = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = e => this.imageSrc = reader.result; // Update imageSrc to the file's content
-      reader.readAsDataURL(file);
+      // Extract the file name and store it
+      this.vetService.uploadPhoto(this.vetProfile!.VetId,file).subscribe(
+
+        (response: any) => {
+          console.log('File uploaded successfully:', response);
+          // Optionally, you can handle the response here
+        },
+        (error: any) => {
+          console.error('Error uploading file:', error);
+          // Optionally, you can handle errors here
+        }
+      );
     }
   }
   

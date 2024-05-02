@@ -70,4 +70,10 @@ export class VetsserviceService {
   getVetsAndIds(): Observable<VetDTO[]> {
     return this.http.get<VetDTO[]>(`${this.apiUrl}/vetsandids`);
   }
+
+  uploadPhoto(id:number,photo: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', photo);
+    return this.http.post<any>(this.apiUrl+`/upload-photo/${id}`, formData);
+  }
 }
