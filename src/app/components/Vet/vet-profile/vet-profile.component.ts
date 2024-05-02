@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IVet } from '../../../models/Vets/IVet';
 import { Observable } from 'rxjs/internal/Observable';
+import { VetAppointmentListComponent } from "../vet-appointment-list/vet-appointment-list.component";
 
 @Component({
-  selector: 'app-vet-profile',
-  standalone: true,
-  imports: [NgbModule, FormsModule, CommonModule],
-  templateUrl: './vet-profile.component.html',
-  styleUrl: './vet-profile.component.css'
+    selector: 'app-vet-profile',
+    standalone: true,
+    templateUrl: './vet-profile.component.html',
+    styleUrl: './vet-profile.component.css',
+    imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
 
