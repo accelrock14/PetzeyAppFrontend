@@ -486,8 +486,16 @@
                 <p class="m-0 d-inline-block fw-bolder">
                   {{ getDoctorById(doctorId)?.Name }}
                 </p>
-                <small class="ms-2">10 hr ago</small>
-                <p>{{ report.Comment }}</p>
+                @if (report.Comment!=null && report.Comment!='')
+                {
+                  <p>{{ report.Comment }}</p>
+                }
+                @else {
+                  <div class="text-center text-danger mt-1">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <p>No Commemts given</p>
+                  </div>
+                  }
               </div>
             </div>
             <textarea
