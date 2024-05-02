@@ -35,7 +35,6 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
-
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
@@ -55,7 +54,7 @@ export class DetailsComponent implements OnInit {
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
     private route: ActivatedRoute,
-    private prtSetvice:PetsService
+    private prtSetvice: PetsService
   ) {}
   ngOnInit(): void {
     const ID: any = this.route.snapshot.paramMap.get('id');
@@ -64,7 +63,7 @@ export class DetailsComponent implements OnInit {
       .subscribe((appointment: any) => (this.appointment = appointment));
 
     // this.appointmentDetailsService.GetAllPetIDByVetId(1)
-    // .subscribe({ 
+    // .subscribe({
     //   next:(data)=>{
     //     this.petIds = data;
 
@@ -108,14 +107,18 @@ export class DetailsComponent implements OnInit {
             .subscribe((updatedAppointment) => {
               this.appointment = updatedAppointment;
               console.log(this.appointment);
-
             });
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
         }
       );
-      this.prtSetvice.AddLastAppointmentDate(this.appointment.PetID,this.appointment.ScheduleDate).subscribe();
+    this.prtSetvice
+      .AddLastAppointmentDate(
+        this.appointment.PetID,
+        this.appointment.ScheduleDate
+      )
+      .subscribe();
   }
   cancelAppointment() {
     this.appointmentDetailsService
@@ -149,10 +152,16 @@ export class DetailsComponent implements OnInit {
       return;
     }
 
+    const appointmentTitleElement = document.querySelector(
+      '.appointment-heading'
+    ) as HTMLElement;
+    if (appointmentTitleElement) {
+      appointmentTitleElement.style.display = 'none'; // Hide the element
+    }
     const canvas = await html2canvas(element);
 
     const imgData = canvas.toDataURL('image/png');
- 
+
     const pdf = new jsPDF();
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -164,6 +173,6 @@ export class DetailsComponent implements OnInit {
     pdf.addImage($event, 'PNG', 0, imgHeight + 2, pdfWidth, 150);
 
     // Save PDF
-    pdf.save('test.pdf');
+    pdf.save('report' + this.appointment.AppointmentID + '.pdf');
   }
 }
