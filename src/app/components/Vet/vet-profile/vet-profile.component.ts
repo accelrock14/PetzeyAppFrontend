@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IVet } from '../../../models/Vets/IVet';
 import { Observable } from 'rxjs/internal/Observable';
+import { VetAppointmentListComponent } from "../vet-appointment-list/vet-appointment-list.component";
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
-  selector: 'app-vet-profile',
-  standalone: true,
-  imports: [NgbModule, FormsModule, CommonModule],
-  templateUrl: './vet-profile.component.html',
-  styleUrl: './vet-profile.component.css'
+    selector: 'app-vet-profile',
+    standalone: true,
+    templateUrl: './vet-profile.component.html',
+    styleUrl: './vet-profile.component.css',
+    imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
 
@@ -21,6 +23,7 @@ export class VetProfileComponent implements OnInit {
   @ViewChild('deleteMessage') deleteMessage!: boolean;
 
   actualVet?:IVet;
+  VetNPI:any;
 // updateVet(vetid: number,vetPro: IVetProfileDTO) {
 //   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
 //   fullVet.subscribe(vet=>{this.actualVet=fullVet});
@@ -58,7 +61,7 @@ throw new Error('Method not implemented.');
 }
   vetProfile?: IVetProfileDTO;
 
-  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router) { }
+  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService) { }
   // 
   ngOnInit(): void {
     // Get the vet ID from the route parameter
@@ -68,12 +71,20 @@ throw new Error('Method not implemented.');
       // Fetch vet profile details by ID
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
+        console.log(this.vetProfile)
       });
     } else {
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
     }
+    if (this.auth.isLoggedIn()) {
+    this.VetNPI=this.auth.getVPIFromToken()
+    this.vetService.getVetsByNPINumber(this.VetNPI).subscribe((data) =>{
+      this.actualVet=data;
+    })
   }
+
+    }
   // openEditModal(): void {
   //   const modalRef = this.modalService.open(EditModalComponent, { size: 'lg' });
   //   // You can pass data to the modal using modalRef.componentInstance
@@ -90,13 +101,22 @@ throw new Error('Method not implemented.');
   // }
   imageSrc: string | ArrayBuffer | null = null;
 
-  onImageSelected(event: Event): void {
-    const element = event.target as HTMLInputElement;
-    const file = element.files ? element.files[0] : null;
+  onImageSelected(event: any): void {
+    console.log('ewqrew')
+    const file: File = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = e => this.imageSrc = reader.result; // Update imageSrc to the file's content
-      reader.readAsDataURL(file);
+      // Extract the file name and store it
+      this.vetService.uploadPhoto(this.vetProfile!.VetId,file).subscribe(
+
+        (response: any) => {
+          console.log('File uploaded successfully:', response);
+          // Optionally, you can handle the response here
+        },
+        (error: any) => {
+          console.error('Error uploading file:', error);
+          // Optionally, you can handle errors here
+        }
+      );
     }
   }
   

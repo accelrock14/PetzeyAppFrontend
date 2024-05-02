@@ -3,7 +3,7 @@ export interface IVetProfileDTO {
     VetId:number,
     LName: string;
     FName:string;
-    NpiNumber: string;
+    NPINumber: string;
     Speciality: string;
     Email: string;
     Phone: string;
