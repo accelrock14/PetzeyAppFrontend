@@ -27,9 +27,9 @@ export class NewAppointmentFormComponent implements OnInit {
 
   appointmentDetail:AppointmentDetail={
     AppointmentID: 0,
-    DoctorID: 0,
+    DoctorID: "",
     PetID: 0,
-    OwnerID: 0,
+    OwnerID: "",
     ScheduleDate: new Date(),
     ScheduleTimeSlot: 0,
     BookingDate: new Date(),
@@ -179,7 +179,7 @@ closeCancelModal(){
       }
     }
   }
-  selectVeternarian(vid: number, vname: string): void {
+  selectVeternarian(vid: string, vname: string): void {
     // we need to assign for the respective variable in the appointment object
     this.veternarianSearchText = vname;
     this.filteredVets = [];
@@ -242,7 +242,7 @@ closeCancelModal(){
     }
   }
 
-  selectPetParent(ppid:number,ppname:string):void{
+  selectPetParent(ppid:string,ppname:string):void{
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID=ppid;
