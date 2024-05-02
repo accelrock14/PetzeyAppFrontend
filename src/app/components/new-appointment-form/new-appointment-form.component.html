@@ -4,7 +4,7 @@
     <div class="back btn" [routerLink]="'/AdminDashboard'">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
-        <pre class="pre"> Back to Appointments</pre>
+        <button class="btn" (click)="GoBack()">Back to Appointments</button>
     </div>
     <h1>New Appointment</h1>
     <hr>
@@ -84,15 +84,13 @@
     <h6>Other Details</h6>
     <div class="search-box">
         <div class="input-wrapper">
-
             <label for="petissue">Pet Issues</label>
             <input type="text" name="petissue" placeholder="Search..." [(ngModel)]="petIssueSearchText"
                 (input)="filterPetIssues()" #inputForSelectingPetIssues="ngModel">
             <i class="fas fa-search search-icon"></i>
         </div>
         <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length">
-            <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"
-                class="petissuediv">
+            <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"class="petissuediv">
                 {{petissue.IssueName}}
             </div>
         </div>
@@ -169,7 +167,7 @@ modal popup code for confirmation
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
           <!-- later add a method here to navigate to the previous window -->
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" >Confirm</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="OnCancelAdding()">Confirm</button>
         </div>
       </div>
     </div>
@@ -178,113 +176,3 @@ modal popup code for confirmation
 
 
 
-
-
-
-
-
-<!--  .pre {
-    display: inline;
-}
-
-/* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\ */
-/* search */
-.search-box {
-    position: relative;
-    /* Allows absolute positioning of the icon inside */
-    width: 300px;
-    /* or any width as per your design */
-}
-
-.search-box input {
-    width: 100%;
-    padding: 8px 40px 8px 8px;
-    /* Right padding is larger to accommodate the icon */
-    border: none;
-    /* Remove borders */
-    border-bottom: 2px solid gray;
-    /* Only bottom border */
-    outline: none;
-    /* Removes the highlight around the input on focus */
-    font-size: 16px;
-    /* Adjust as needed */
-}
-
-.search-box .search-icon {
-    position: absolute;
-    right: 10px;
-    /* Distance from right, adjust as needed */
-    top: 50%;
-    /* Center vertically */
-    transform: translateY(20%);
-    /* Precise centering */
-    cursor: pointer;
-    /* Indicates that the icon is interactive */
-    color: gray;
-    /* Icon color, change as needed */
-    font-size: 20px;
-    /* Icon size, adjust based on the icon used */
-}
-
-/* book appointment button */
-.bookappointment {
-    background-color: rgb(233, 56, 11);
-}
-
-
-
-
-/* ||||||||||||||||||||||||||||||||||||||||||| */
-.cal-icon {
-    border: 1px solid black;
-}
-
-.fas.fa-calendar {
-    color: #292a2b;
-    /* Bootstrap primary blue */
-
-    font-size: 16px;
-}
-
-/* ||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
-.myslots {
-    display: flex;
-    justify-content: center;
-    /* Center the `.time-slots` horizontally */
-    width: 100%;
-    /* Ensures `.myslots` takes full width of its parent */
-}
-
-.time-slots {
-    width: 35%;
-    /* Sets width of time slots to 35% of its container `.myslots` */
-    display: flex;
-    flex-direction: column;
-    /* Aligns rows in a column */
-    padding: 10px;
-    /* Optional: Adds some padding inside the time slots container */
-}
-
-.row {
-    width: 100%;
-    /* Each row will take the full width of `.time-slots` */
-    display: flex;
-    justify-content: space-between;
-    /* Distributes slots evenly */
-    margin-bottom: 10px;
-    /* Adds space between rows */
-}
-
-.slot {
-    flex: 0 0 16%;
-    /* Makes each slot take approximately 16% of the `.row` width */
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-input[type="date"] {
-    position: absolute;
-    left: -9999px;
-}  -->

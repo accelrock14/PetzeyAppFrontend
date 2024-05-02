@@ -1,10 +1,13 @@
+<div id="all-appointment">
+
+
 <div class="appointment container" *ngIf="appointment">
   <span class="appointment-heading" routerLink="../..">
   <i class="fas fa-arrow-left"></i>  
 
   <h6 class="appointment-title" >Back to appointments</h6>
 </span>
-    
+
       <div class="col-sm-6">
         <span class="appointment-id">#ID - {{ appointment.AppointmentID }}</span>
       </div>
@@ -22,11 +25,11 @@
             </span>
           </div>
           <div class="col-sm-2">
-            <span class="appointment-actions d-flex justify-content-end"> 
-              <i class="fas fa-phone" style="color: rgb(255, 111, 0);"></i> 
+            <span class="appointment-actions d-flex justify-content-end">
+              <i class="fas fa-phone" style="color: rgb(255, 111, 0);"></i>
             </span>
-            <span class="appointment-actions d-flex justify-content-end"> 
-            
+            <span class="appointment-actions d-flex justify-content-end">
+
             <i class="fas fa-video" style="color: rgb(255, 111, 0);"></i>
             </span>
           </div>
@@ -35,11 +38,11 @@
               <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
               <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
               <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
-              
+
             </span>
           </div>
         </div>
-      
+
         <div class="pet-issues d-flex flex-wrap">
           <p>Pet Issues:</p>
           <ul class="list-unstyled d-flex flex-wrap">
@@ -77,7 +80,7 @@
 
 
 
-   
+
   <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -88,7 +91,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal2()" style="background-color: white; color: black;">Cancel</button>
-          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="cancelAppointment()" >Confirm</button>   
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="cancelAppointment()" >Confirm</button>
           <!--  -->
         </div>
       </div>
@@ -104,10 +107,11 @@
         <app-vet-profile-appt [VetId]="1"></app-vet-profile-appt>
     </div>
 </div>
+</div>
 
- 
+
 @if(appointment.Report!=null){
-  <app-report [reportId]="appointment.Report.ReportID"></app-report>
+  <app-report [reportId]="appointment.Report.ReportID" (messageEvent)="exportToPDF($event)"></app-report>
 
 }
 
@@ -116,4 +120,4 @@
 
 
 
- 
+
