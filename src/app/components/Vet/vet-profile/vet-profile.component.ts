@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IVet } from '../../../models/Vets/IVet';
 import { Observable } from 'rxjs/internal/Observable';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-vet-profile',
@@ -21,6 +22,7 @@ export class VetProfileComponent implements OnInit {
   @ViewChild('deleteMessage') deleteMessage!: boolean;
 
   actualVet?:IVet;
+  VetNPI:any;
 // updateVet(vetid: number,vetPro: IVetProfileDTO) {
 //   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
 //   fullVet.subscribe(vet=>{this.actualVet=fullVet});
@@ -58,7 +60,7 @@ throw new Error('Method not implemented.');
 }
   vetProfile?: IVetProfileDTO;
 
-  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router) { }
+  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService) { }
   // 
   ngOnInit(): void {
     // Get the vet ID from the route parameter
@@ -73,7 +75,13 @@ throw new Error('Method not implemented.');
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
     }
-  }
+    if (this.auth.isLoggedIn()) {
+      this.actualVet = this.auth.getLoggedInUserObject()
+    }
+    this.VetNPI=this.auth.getVPIFromToken()
+    console.log(this.VetNPI)
+
+    }
   // openEditModal(): void {
   //   const modalRef = this.modalService.open(EditModalComponent, { size: 'lg' });
   //   // You can pass data to the modal using modalRef.componentInstance
