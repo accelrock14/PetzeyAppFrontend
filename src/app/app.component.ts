@@ -16,7 +16,7 @@ import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboar
     imports: [RouterOutlet, RouterLink, EditAppointmentFormComponent, NewAppointmentFormComponent,CommonModule, DoctorDashboardComponent,VetComponent]
 })
 export class AppComponent implements OnInit{
-
+  userRole: string = '';
   selectedLink: string = '';
   constructor(private router: Router,public auth:AuthService) { // Inject Router here
   }
