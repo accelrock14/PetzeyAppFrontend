@@ -36,6 +36,10 @@ export class AppointmentFormService {
     return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets");
   }
 
+  getAllPetsOfOwener(OwnerID:number):Observable<Pet[]>{
+    return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets/"+OwnerID);
+  }
+
   getScheduleSlotStatuses(id:number,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
     //alert(this.getScheduleSlotsUrl+id+"/"+formattedDate);
@@ -54,4 +58,7 @@ export class AppointmentFormService {
   putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
+
+  
+
 }
