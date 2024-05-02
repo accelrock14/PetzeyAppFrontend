@@ -70,6 +70,9 @@ export class VetsserviceService {
   getVetsAndIds(): Observable<VetDTO[]> {
     return this.http.get<VetDTO[]>(`${this.apiUrl}/vetsandids`);
   }
+  getVetsByNPINumber(id:number):Observable<IVet>{
+    return this.http.get<IVet>(`${this.apiUrl}/npiNumber`);
+  }
 
   uploadPhoto(id:number,photo: File): Observable<any> {
     const formData = new FormData();
