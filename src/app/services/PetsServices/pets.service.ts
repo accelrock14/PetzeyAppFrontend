@@ -15,7 +15,7 @@ export interface IPetsService{
   GetMorePets(pageNumber:number):Observable<IPet[]>;
   AddPet(petToBeAdded:IPet):Observable<IPet>;
   EditPet(petToBeEdited:IPet):Observable<IPet>;
-  GetPetsByParentID(petParentID:number):Observable<IPet[]>;
+  GetPetsByParentID(petParentID:string):Observable<IPet[]>;
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):Observable<object>;
@@ -65,8 +65,8 @@ export class PetsService implements IPetsService{
     const apiUrlPetToBeEdited = `${petsServiceUrl}`;
     return this.apiService.put<IPet>(apiUrlPetToBeEdited,petToBeEdited);
   }
-  GetPetsByParentID(petParentID: number): Observable<IPet[]> {
-    const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/1`;
+  GetPetsByParentID(petParentID: string): Observable<IPet[]> {
+    const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/${petParentID}`;
     return this.apiService.get<IPet[]>(apiUrlGetPetsbyParentId)
   }
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>{
