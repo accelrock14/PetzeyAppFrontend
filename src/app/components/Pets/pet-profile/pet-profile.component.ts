@@ -24,7 +24,7 @@ export class PetProfileComponent implements OnInit {
 
 
 
-  // id:string |null ="";
+
   ngOnInit(): void {
 
    const id = (this.activatedRoute.snapshot.paramMap.get('id'))

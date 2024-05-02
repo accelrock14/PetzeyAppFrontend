@@ -25,8 +25,8 @@ export class AppointmentPetProfileComponent implements OnInit {
   PetId:number = 0;
 
   Pet:IPet = {
-    PetID: 0,
-    PetParentId: 5,
+    PetID: 1,
+    PetParentId: "5",
     PetName: 'Doggo',
     PetImage: '',
     Species: 'Dog',

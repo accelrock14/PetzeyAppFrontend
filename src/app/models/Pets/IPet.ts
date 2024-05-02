@@ -1,6 +1,6 @@
 export interface IPet {
     PetID:number,
-    PetParentId:number,
+    PetParentId:string,
     PetName:string,
     PetImage:string,
     Species:string,

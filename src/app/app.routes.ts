@@ -50,11 +50,15 @@ export const routes: Routes = [
   },
 
   {
-    path: 'pets-list',
+    path: 'pets-list/:page',
     component: PetsListGridComponent,
   },
   {
-    path: 'pets-profile/:id',
+    path: 'pets-list/:page/pets-profile/:id',
+    component: PetProfileComponent,
+  },
+  {
+    path: 'profile/pets-profile/:id',
     component: PetProfileComponent,
   },
   { path: 'pets/:page', component: PetsListGridPagedComponent }, // Route for the component with page number parameter
@@ -81,7 +85,7 @@ export const routes: Routes = [
   },
   {path:'add-vet',component:AddVetComponent},
   {path:'vet', component:VetComponent},
-  
+
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
 
   {
