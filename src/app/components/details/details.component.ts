@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
 import { CommonModule, NgFor, NgIf, } from '@angular/common';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReportComponent } from '../appointments/report/report.component';
 import { AppointmentPetProfileComponent } from '../Pets/appointment-pet-profile/appointment-pet-profile.component';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
@@ -18,6 +18,7 @@ declare var window: any;
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements OnInit {
+
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
@@ -34,14 +35,17 @@ export class DetailsComponent implements OnInit {
   }
   formModal: any;
   formModal2: any;
-  constructor(private appointmentDetailsService: AppointmentDetailsService, private route: ActivatedRoute) { }
-  ngOnInit(): void {
+  constructor(private appointmentDetailsService: AppointmentDetailsService, private route: ActivatedRoute, private router: Router) { }
+  GoBack() {
+    // this.router.navigate(['../..']);
+  }
+  ngOnInit(): void { 
     const ID: any = this.route.snapshot.paramMap.get('id');
     this.appointmentDetailsService.GetAppointmentDetail(ID)
       .subscribe((appointment: any) => this.appointment = appointment);
 
     // this.appointmentDetailsService.GetAllPetIDByVetId(1)
-    // .subscribe({
+    // .subscribe({ 
     //   next:(data)=>{
     //     this.petIds = data;
         
