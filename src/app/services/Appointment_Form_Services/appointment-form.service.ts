@@ -18,6 +18,7 @@ export class AppointmentFormService {
   private postAppointmentUrl="https://localhost:44327/api/Appointment";
   private getScheduleSlotsUrl="https://localhost:44327/api/AppointmentDetails/schedules/";
   private getAppointmentByIdUrl='https://localhost:44327/api/Appointment/';
+  private editAppointmentUrl = "https://localhost:44327/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
@@ -38,15 +39,19 @@ export class AppointmentFormService {
   getScheduleSlotStatuses(id:number,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
     //alert(this.getScheduleSlotsUrl+id+"/"+formattedDate);
-    let x = this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+id+"/"+formattedDate);
-    return x;
+    return this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+id+"/"+formattedDate);
   }
 
   postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{ 
+    alert("inside post appointment");
     return this.backendClient.post<AppointmentDetail>(this.postAppointmentUrl,appointment);
   }
 
   getAppointmentById(AppointmentID:number):Observable<AppointmentDetail>{
     return this.backendClient.get<AppointmentDetail>(this.getAppointmentByIdUrl+AppointmentID);
+  }
+
+  putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
+    return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 }

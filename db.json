@@ -64,6 +64,20 @@
         { "id": 18, "name": "Rocky" },
         { "id": 19, "name": "Sasha" },
         { "id": 20, "name": "Toby" }
-    ]
-    
+    ],
+    "AppointmentCard": {
+        "AppointmentID": 1,
+        "DoctorID": 101,
+        "PetID": 201,
+        "PetName": "Max",
+        "PetAge": 5,
+        "PetGender": "Male",
+        "OwnerName": "Alice Smith",
+        "DoctorName": "Dr. Emily Johnson",
+        "PetPhoto": "base64_encoded_image_data",
+        "VetSpecialization": "Canine Medicine",
+        "DoctorPhoto": "doctor_photo_url",
+        "ScheduleDate": "2024-05-10T10:00:00Z",
+        "Status": "Scheduled"
+    }
 }

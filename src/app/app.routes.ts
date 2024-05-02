@@ -18,6 +18,8 @@ import { SigninComponent } from './components/user-authentiaction/signin/signin.
 import { VetComponent } from './components/Vet/vet/vet.component';
 import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.component';
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
+import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
+import { EditAppointmentFormComponent } from './components/edit-appointment-form/edit-appointment-form.component';
 import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 
 export const routes: Routes = [
@@ -80,5 +82,10 @@ export const routes: Routes = [
   {path:'vet', component:VetComponent},
   
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
-
+  {
+    path:'addAppointment',component:NewAppointmentFormComponent
+  },
+  {
+    path:'editAppointment/:AppointmentID',component:EditAppointmentFormComponent
+  }
 ];
