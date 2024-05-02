@@ -183,14 +183,14 @@
         <i class="fa-solid fa-download me-2"></i>Report
       </button>
       <button
-        *ngIf="!isEditing"
+        *ngIf="!isEditing && isDoctor"
         class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
         (click)="enableEdit()"
       >
         <i class="fa-solid fa-pen-to-square me-2"></i>Edit
       </button>
       <button
-        *ngIf="isEditing"
+        *ngIf="isEditing && isDoctor"
         class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
         (click)="save()"
       >
