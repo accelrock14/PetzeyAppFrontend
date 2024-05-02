@@ -11,29 +11,34 @@ import { PetIssue } from "../../models/PetIssue"
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 declare var window:any;
 @Component({
   selector: 'app-new-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterLink],
+  imports: [FormsModule, CommonModule,RouterLink,MatSnackBarModule],
   templateUrl: './new-appointment-form.component.html',
   styleUrl: './new-appointment-form.component.css'
 })
 export class NewAppointmentFormComponent implements OnInit {
+  GoBackSimply() {
+    this.formModal.hide();
+    this.cancelAptModal.hide();
+  this.location.back();
+  }
+  
+  GoBackWithMsg(msg:string){
+    this.snackBar.open(msg, '', {
+      duration: 3000 // message will disappear after 3000ms
+    });
+    this.formModal.hide();
+    this.cancelAptModal.hide();
+  this.location.back();
+  }
+  
 
-GoBack() {
-  
-  this.formModal.hide();
-  this.cancelAptModal.hide();
-  this.location.back();
-}
-OnCancelAdding() {
-  
-  this.formModal.hide();
-  this.cancelAptModal.hide();
-  this.location.back();
-}
+
 
 
   formModal:any;
@@ -56,7 +61,7 @@ OnCancelAdding() {
   selectedScheduleDate:Date=new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -85,9 +90,9 @@ OnCancelAdding() {
 
     // modal popup code 
     this.formModal= new window.bootstrap.Modal(
-      document.getElementById("exampleModal")
+      document.getElementById("myModalPopup")
     );
-    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('myModalPopup-2'));
     //
     this.selectedScheduleDate=new Date();
     // this is the method to getGeneralPetIssues from backend server
@@ -310,7 +315,7 @@ closeCancelModal(){
       error:(err)=>{console.log("got error while posting",err);}
     });
     this.closeModal();
-    this.location.back();
+    this.GoBackWithMsg('your appointment is added successfully');
   }
 
   isSubmitDisabled: boolean = true;

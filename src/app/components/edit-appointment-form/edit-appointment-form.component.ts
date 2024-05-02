@@ -22,11 +22,16 @@ declare var window:any;
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
-GoBack() {
-  this.snackBar.open('Your message here!', 'Action', {
+GoBackSimply() {
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+this.location.back();
+}
+
+GoBackWithMsg(msg:string){
+  this.snackBar.open(msg, '', {
     duration: 3000 // message will disappear after 3000ms
   });
-
   this.formModal.hide();
   this.cancelAptModal.hide();
 this.location.back();
@@ -107,7 +112,7 @@ this.location.back();
     });
 
     this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
-    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('exampleModal2'));
+    this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('cancelEditModal'));
     //
 
     this.aptService.getVeternarians().subscribe({
@@ -396,7 +401,7 @@ this.location.back();
     // alert("edit success");
     // alert("edit success");
     this.closeModal();
-    this.GoBack();
+    this.GoBackWithMsg("your appointment edited successfully");
 
   }
 
