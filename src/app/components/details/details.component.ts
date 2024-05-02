@@ -16,6 +16,7 @@ import { Status } from '../../models/Status';
 import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-appt.component';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { PetsService } from '../../services/PetsServices/pets.service';
 
 declare var window: any;
 @Component({
@@ -53,7 +54,8 @@ export class DetailsComponent implements OnInit {
   formModal2: any;
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private prtSetvice:PetsService
   ) {}
   ngOnInit(): void {
     const ID: any = this.route.snapshot.paramMap.get('id');
@@ -106,12 +108,14 @@ export class DetailsComponent implements OnInit {
             .subscribe((updatedAppointment) => {
               this.appointment = updatedAppointment;
               console.log(this.appointment);
+
             });
         },
         (error) => {
           // Handle error scenario (e.g., show error message)
         }
       );
+      this.prtSetvice.AddLastAppointmentDate(this.appointment.PetID,this.appointment.ScheduleDate).subscribe();
   }
   cancelAppointment() {
     this.appointmentDetailsService
@@ -148,7 +152,7 @@ export class DetailsComponent implements OnInit {
     const canvas = await html2canvas(element);
 
     const imgData = canvas.toDataURL('image/png');
-
+ 
     const pdf = new jsPDF();
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();

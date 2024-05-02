@@ -222,6 +222,11 @@ body {
     height: 100px; /* Maximum height for the image */
     border-radius: 100%; /* Make it a circle */
 }
+.rounded-circle-img-e {
+  width: 100px; /* Maximum width for the image */
+  height: 100px; /* Maximum height for the image */
+  border-radius: 100%; /* Make it a circle */
+}
 .custom-modal .model-content{
     width: 400px; /* Set your desired width */
     border-radius : 20%;

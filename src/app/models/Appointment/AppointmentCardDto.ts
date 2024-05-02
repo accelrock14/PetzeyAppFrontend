@@ -7,7 +7,7 @@ export interface AppointmentCardDto {
     PetGender: string;
     OwnerName: string;
     DoctorName: string;
-    PetPhoto: any; //datatype?
+    PetPhoto: string; //datatype?
     VetSpecialization: string;
     DoctorPhoto: string;
     ScheduleDate: Date;
