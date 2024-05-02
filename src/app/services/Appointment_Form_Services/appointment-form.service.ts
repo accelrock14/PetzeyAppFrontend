@@ -36,7 +36,7 @@ export class AppointmentFormService {
     return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets");
   }
 
-  getAllPetsOfOwener(OwnerID:number):Observable<Pet[]>{
+  getAllPetsOfOwener(OwnerID:string):Observable<Pet[]>{
     return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets/"+OwnerID);
   }
 
