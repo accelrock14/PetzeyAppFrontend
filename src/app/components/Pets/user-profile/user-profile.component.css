@@ -189,5 +189,61 @@ body {
   .pet-card .modal-dialog {
     max-width: 400px;
   }
+  .text-box {
+    width: 200px; /* Adjust width as needed */
+    border: none;
+    border-bottom: 2px solid #aaa; /* Bottom border */
+    outline: none;
+    font-size: small;
+    padding: 8px 0; /* Add padding to keep text away from border */
+    transition: border-bottom-color 0.3s;
+}
+.text-box-end {
+    width: 430px; /* Adjust width as needed */
+    border: none;
+    border-bottom: 2px solid #aaa; /* Bottom border */
+    outline: none;
+    font-size: small;
+    padding: 8px 0; /* Add padding to keep text away from border */
+    transition: border-bottom-color 0.3s;
+}
+
+/* Style for the placeholder text */
+.text-box::placeholder {
+    color: #aaa; /* Placeholder color */
+}
+
+/* Style for the text box when focused */
+.text-box:focus {
+    border-bottom-color: #b84f17; /* Change border color when focused */
+}
+.rounded-circle-img {
+    width: 100px; /* Maximum width for the image */
+    height: 100px; /* Maximum height for the image */
+    border-radius: 100%; /* Make it a circle */
+}
+.custom-modal .model-content{
+    width: 400px; /* Set your desired width */
+    border-radius : 20%;
+}
+.orange-color-bg{
+    background-color: #ff5500;
+    color: white;
+  }
+
+  .orange-color{
+    color: #ff5500;
+  }
+
+  .orange-color-bg:active{
+    background-color: #e7804d;
+    color: white;
+  }
+  .dark-color{
+    color:black;
+  }
+  #inputGroupFile {
+    display: none;
+}
   
   
