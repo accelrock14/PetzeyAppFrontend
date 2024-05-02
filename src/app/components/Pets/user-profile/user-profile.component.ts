@@ -16,7 +16,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class UserProfileComponent implements OnInit{
 
-  imageUrl: string | undefined;
   NewPet?: IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
@@ -28,6 +27,7 @@ export class UserProfileComponent implements OnInit{
 
   constructor(private petsService: PetsService, private auth:AuthService, private router:Router, private fb:FormBuilder) {
     this.newPetForm = this.fb.group({
+      PetImage:[this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],
       Species: [this.NewPet?.Species],
       Breed: [this.NewPet?.Breed],
@@ -39,6 +39,7 @@ export class UserProfileComponent implements OnInit{
     });
 
     this.petDetailsForm = this.fb.group({
+      PetImage:[this.ToBeUpdatedPet?.PetImage],
       PetName: [this.ToBeUpdatedPet?.PetName],
       Species: [this.ToBeUpdatedPet?.Species],
       Breed: [this.ToBeUpdatedPet?.Breed],
@@ -64,12 +65,7 @@ export class UserProfileComponent implements OnInit{
     this.petsService.GetPetsByParentID(1).subscribe((data) => {
       this.pets = data;
     })
-    if (this.NewPet) {
-      this.newPetForm.patchValue(this.NewPet);
-    }
-    if (this.NewPet)
-      this.displayImage(this.NewPet?.PetImage)
-
+   
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -139,7 +135,7 @@ export class UserProfileComponent implements OnInit{
       
     if(this.ToBeUpdatedPet)
       this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-      console.log(this.petDetailsForm.value )
+      console.log(this.petDetailsForm.value)
     }
 
   OnLogout() {
@@ -172,37 +168,48 @@ export class UserProfileComponent implements OnInit{
       const files: FileList = event.target.files;
       if (files && files.length > 0) {
         const file: File = files[0];
-        this.convertImageToBase64(file, 0);
+        this.convertImageToBase64Add(file);
       }
+    }
+    convertImageToBase64Add(file: File): void {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64String: string | null = e.target?.result as string;
+        if (base64String) {
+
+          // Store the base64String in your object or send it to the backend
+          this.NewPet!.PetImage = base64String;
+            if(this.NewPet)
+              this.newPetForm.patchValue(this.NewPet)
+          
+        }
+      };   
+      reader.readAsDataURL(file);
     }
     handleFileEdit(event: any): void {
       const files: FileList = event.target.files;
       if (files && files.length > 0) {
         const file: File = files[0];
-        this.convertImageToBase64(file,1);
+        this.convertImageToBase64Edit(file);
       }
     }
-    convertImageToBase64(file: File, bias:number): void {
+    convertImageToBase64Edit(file: File): void {
       const reader = new FileReader();
       reader.onload = (e) => {
         const base64String: string | null = e.target?.result as string;
         if (base64String) {
+
           // Store the base64String in your object or send it to the backend
-          if(bias == 0){
-            this.NewPet!.PetImage = base64String;
-          }
-          if(bias == 1){
-            this.ToBeUpdatedPet!.PetImage = base64String;
-          }
-          this.displayImage(base64String);
+          this.ToBeUpdatedPet!.PetImage = base64String;
+            if(this.ToBeUpdatedPet)
+              this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
+          
         }
-      };
+      };   
       reader.readAsDataURL(file);
     }
-    displayImage(base64String: string): void {
-      this.imageUrl = base64String;
-      console.log(this.imageUrl);
-    }
+    
+   
     SavePetDetails() {
       console.log(this.NewPet)
       this.petsService.AddPet(this.NewPet!).subscribe({
