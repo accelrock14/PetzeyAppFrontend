@@ -68,6 +68,7 @@ throw new Error('Method not implemented.');
       // Fetch vet profile details by ID
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
+        console.log(this.vetProfile)
       });
     } else {
       // Handle the case when the route parameter is null
