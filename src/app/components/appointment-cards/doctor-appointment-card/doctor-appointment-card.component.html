@@ -27,7 +27,7 @@
     <div class="card-body">
         <a [routerLink]="'/Details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
         <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#feedbackModal" (click)="clicked(appointmentcard.AppointmentID)">Feedback</a>
-        {{appointmentcard.AppointmentID}} 
+        
     </div>
 </div> 
 
@@ -45,7 +45,7 @@
             <div *ngIf="!isFormValid()" class="text-danger">
               All rating field are compulsory
             </div>
-           {{appointmentcard.AppointmentID}}
+          
             <div class="form-group" *ngFor="let question of feedbackquestions">
               <label for="question{{question.FeedbackQuestionId}}">How satisfied are you with {{ question.FeedbackQuestionName }}?</label>
               <div class="star-rating">
