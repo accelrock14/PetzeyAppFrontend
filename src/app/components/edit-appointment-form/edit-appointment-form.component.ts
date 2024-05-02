@@ -221,7 +221,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   }
   // modal popup code for submission
   openModal() {
-    alert("here");
+    // alert("here");
     this.formModal.show();
   }
   closeModal() {
@@ -392,7 +392,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
         console.log("errooor occured while sending put request",err);
       }
     });
-    alert("edit success");
+    // alert("edit success");
     this.closeModal();
   }
 
@@ -401,6 +401,4 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   toggleDisabled(): void {
     this.isSubmitDisabled = !this.isSubmitDisabled;
   }
-
-
 }

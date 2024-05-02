@@ -229,7 +229,7 @@ closeCancelModal(){
       console.log('selected slot index',index);
       this.selectedIndex = index;
       this.appointmentDetail.ScheduleTimeSlot=index;
-      alert("slot index is "+index);
+      // alert("slot index is "+index);
     }
   }
 
@@ -275,7 +275,7 @@ closeCancelModal(){
     this.appointmentDetail.Status=Status.Pending;
     this.appointmentDetail.Report=null;
     this.appointmentDetail.ScheduleTimeSlot=this.selectedIndex!;
-    alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
+    // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
       next:(response)=>{console.log("successposting",response);},
