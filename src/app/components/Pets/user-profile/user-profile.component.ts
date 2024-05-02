@@ -62,7 +62,7 @@ export class UserProfileComponent implements OnInit{
     //   this.user = data;
     // })
 
-    this.petsService.GetPetsByParentID("1").subscribe((data) => {
+    this.petsService.GetPetsByParentID("2").subscribe((data) => {
       this.pets = data;
     })
    
@@ -168,6 +168,7 @@ export class UserProfileComponent implements OnInit{
       const files: FileList = event.target.files;
       if (files && files.length > 0) {
         const file: File = files[0];
+        console.log(file)
         this.convertImageToBase64Add(file);
       }
     }
@@ -179,8 +180,9 @@ export class UserProfileComponent implements OnInit{
 
           // Store the base64String in your object or send it to the backend
           this.NewPet!.PetImage = base64String;
-            if(this.NewPet)
-              this.newPetForm.patchValue(this.NewPet)
+          console.log(base64String)
+          if(this.NewPet)
+            this.newPetForm.patchValue(this.NewPet)
           
         }
       };   
@@ -201,8 +203,8 @@ export class UserProfileComponent implements OnInit{
 
           // Store the base64String in your object or send it to the backend
           this.ToBeUpdatedPet!.PetImage = base64String;
-            if(this.ToBeUpdatedPet)
-              this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
+          if(this.ToBeUpdatedPet)
+            this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
           
         }
       };   
