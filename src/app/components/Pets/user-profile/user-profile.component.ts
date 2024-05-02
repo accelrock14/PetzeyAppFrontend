@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
-import { AgePipe } from "../../../pipes/Age/age.pipe";
+import { AgePipe } from '../../../pipes/Age/age.pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -27,7 +27,12 @@ export class UserProfileComponent implements OnInit {
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, public auth: AuthService, private router: Router, private fb: FormBuilder) {
+  constructor(
+    private petsService: PetsService,
+    public auth: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
     this.newPetForm = this.fb.group({
       PetImage: [this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],
@@ -37,7 +42,7 @@ export class UserProfileComponent implements OnInit {
       Gender: [this.NewPet?.Gender],
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: [this.NewPet?.Neutered],
-      Allergies: [this.NewPet?.Allergies]
+      Allergies: [this.NewPet?.Allergies],
     });
 
     this.petDetailsForm = this.fb.group({
@@ -49,13 +54,12 @@ export class UserProfileComponent implements OnInit {
       Gender: [this.ToBeUpdatedPet?.Gender],
       DateOfBirth: [this.ToBeUpdatedPet?.DateOfBirth],
       Neutered: [this.ToBeUpdatedPet?.Neutered],
-      Allergies: [this.ToBeUpdatedPet?.Allergies]
+      Allergies: [this.ToBeUpdatedPet?.Allergies],
     });
   }
 
-
   ngOnInit(): void {
-    console.log("ngOnInit() is called");
+    console.log('ngOnInit() is called');
 
     if (this.auth.isLoggedIn()) {
       this.user = this.auth.getLoggedInUserObject()
@@ -65,7 +69,7 @@ export class UserProfileComponent implements OnInit {
     //   this.user = data;
     // })
 
-    this.petsService.GetPetsByParentID("2").subscribe((data) => {
+    this.petsService.GetPetsByParentID('2').subscribe((data) => {
       this.pets = data;
     })
 
@@ -80,17 +84,15 @@ export class UserProfileComponent implements OnInit {
   deleteConfirmedPet(event: MouseEvent) {
     event.stopPropagation();
     if (this.petToDelete) {
-      this.petsService.DeletePetByPetID(this.petToDelete.PetID).subscribe(() => {
-
-      });
+      this.petsService
+        .DeletePetByPetID(this.petToDelete.PetID)
+        .subscribe(() => { });
     }
     this.closeDeleteModal(event);
   }
 
-
-
   toggleDropdown(event: MouseEvent) {
-    event.stopPropagation();// This thing is to prevent the card from clicking
+    event.stopPropagation(); // This thing is to prevent the card from clicking
     const dropdown = (event.target as HTMLElement).closest('.dropdown');
     if (dropdown) {
       const dropdownMenu = dropdown.querySelector('.dropdown-menu');
@@ -117,28 +119,29 @@ export class UserProfileComponent implements OnInit {
 
   preventCardClick(event: MouseEvent) {
     event.stopPropagation();
-    console.log("hi");
+    console.log('hi');
   }
   preventCardClickEdit($event: MouseEvent, arg1: number) {
     $event.stopPropagation();
     this.petsService.GetPetDetailsByID(arg1).subscribe(
-      pet => {
-        this.ToBeUpdatedPet = pet
-        console.log(this.ToBeUpdatedPet)
-        this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-        console.log(pet)
+      (pet) => {
+        this.ToBeUpdatedPet = pet;
+        console.log(this.ToBeUpdatedPet);
+        this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+        console.log(pet);
       },
-      error => {
-        console.log(error)
-      });
+      (error) => {
+        console.log(error);
+      }
+    );
 
     if (this.ToBeUpdatedPet)
-      this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-    console.log(this.petDetailsForm.value)
+      this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
+    console.log(this.petDetailsForm.value);
   }
 
   OnLogout() {
-    this.auth.logOut()
+    this.auth.logOut();
     this.router.navigate(['/']);
   }
 
@@ -240,4 +243,3 @@ export class UserProfileComponent implements OnInit {
 
   }
 }
-
