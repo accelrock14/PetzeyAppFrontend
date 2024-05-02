@@ -36,7 +36,7 @@ export class AppointmentFormService {
     return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets");
   }
 
-  getScheduleSlotStatuses(id:number,schDate:Date):Observable<boolean[]>{
+  getScheduleSlotStatuses(id:string,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
     //alert(this.getScheduleSlotsUrl+id+"/"+formattedDate);
     return this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+id+"/"+formattedDate);

@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router, private fb:FormBuilder) {
+  constructor(private petsService: PetsService, public auth:AuthService, private router:Router, private fb:FormBuilder) {
     this.newPetForm = this.fb.group({
       PetImage:[this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],

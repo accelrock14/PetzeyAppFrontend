@@ -21,9 +21,9 @@ export class DetailsComponent implements OnInit {
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
-    DoctorID: 0,
+    DoctorID: '',
     PetID: 0,
-    OwnerID: 0,
+    OwnerID: '',
     ScheduleDate: new Date(),
     ScheduleTimeSlot: 0,
     BookingDate: new Date(),
