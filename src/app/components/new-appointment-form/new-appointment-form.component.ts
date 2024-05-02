@@ -9,12 +9,13 @@ import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { PetIssue } from "../../models/PetIssue"
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
+import { RouterLink } from '@angular/router';
 
 declare var window:any;
 @Component({
   selector: 'app-new-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   templateUrl: './new-appointment-form.component.html',
   styleUrl: './new-appointment-form.component.css'
 })

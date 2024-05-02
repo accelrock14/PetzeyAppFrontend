@@ -9,7 +9,7 @@ import { PetParent } from '../../models/PetParent';
 import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 
 declare var window:any;
@@ -30,7 +30,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   cancelAptModal: any;
 
   // id of appointment to edit;
-  AppointmentID: number = 44;
+   AppointmentID: number =0;
   appointmentDetail: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: 0,
@@ -48,7 +48,7 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo: ActivatedRoute) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -74,7 +74,9 @@ this.route.navigate(['/details/'+this.appointmentDetail.AppointmentID]);
 
 
   ngOnInit(): void {
-    
+    this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
+    console.log("abc"+this.routeTo.snapshot.paramMap.get('AppointmentID')!)
+    console.log(this.AppointmentID+"fu")
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
         this.appointmentDetail = data;
