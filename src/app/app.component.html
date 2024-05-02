@@ -1,10 +1,9 @@
-
 <div class="wrapper">
   <aside id="sidebar" [class.expand]="expand">
     <div class="d-flex">
       <button class="toggle-btn" (click)="onExpand()" type="button">
         <!-- <i class="lni lni-grid-alt"></i> -->
-        <img src="assets\logo10.png" alt="no" class="move-left"   />
+        <img src="assets\logo10.png" alt="no" class="move-left" />
       </button>
       <div class="sidebar-logo">
         <a routerLink="home">Petzey</a>
@@ -45,7 +44,7 @@
           </div>
           <span>Patient Dashboard</span>
         </a>
-      </li> 
+      </li>
       <!-- } -->
       <li class="sidebar-item">
         <a
@@ -92,8 +91,8 @@
           </div>
           <span>Doctor Dashboard</span>
         </a>
-      </li> 
-    <!-- } -->
+      </li>
+      <!-- } -->
 
       <li class="sidebar-item">
         <a
@@ -180,9 +179,11 @@
       </li>
     </ul>
     <div class="sidebar-footer" [hidden]="this.auth.isLoggedIn()">
-      <a routerLink="/signin"
-      class="sidebar-link"
-      [class.selected]="isSelected('signin')">
+      <a
+        routerLink="/signin"
+        class="sidebar-link"
+        [class.selected]="isSelected('signin')"
+      >
         <i class="lni lni-user"></i>
         <span> SignIn</span>
       </a>
@@ -192,6 +193,4 @@
   <div class="main p-3">
     <router-outlet></router-outlet>
   </div>
-
-
 </div>
