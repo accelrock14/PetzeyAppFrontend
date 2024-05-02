@@ -3,12 +3,12 @@ import { IPet } from '../../../models/Pets/IPet';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
