@@ -66,7 +66,7 @@ export class PetsService implements IPetsService{
     return this.apiService.put<IPet>(apiUrlPetToBeEdited,petToBeEdited);
   }
   GetPetsByParentID(petParentID: number): Observable<IPet[]> {
-    const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/1`;
+    const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/2`;
     return this.apiService.get<IPet[]>(apiUrlGetPetsbyParentId)
   }
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>{
