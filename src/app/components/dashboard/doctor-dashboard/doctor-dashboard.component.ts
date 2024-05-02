@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-appointment-card/doctor-appointment-card.component';
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
 import { PetAppointmentCardComponent } from '../../appointment-cards/pet-appointment-card/pet-appointment-card.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-dashboard',
   standalone: true,
-  imports: [FormsModule, CommonModule, PetAppointmentCardComponent],
+  imports: [FormsModule, CommonModule, PetAppointmentCardComponent,RouterLink],
   templateUrl: './doctor-dashboard.component.html',
   styleUrl: './doctor-dashboard.component.css'
 })
