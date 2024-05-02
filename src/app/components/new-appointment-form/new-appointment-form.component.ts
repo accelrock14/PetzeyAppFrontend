@@ -9,16 +9,18 @@ import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { PetIssue } from "../../models/PetIssue"
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
+import { RouterLink } from '@angular/router';
 
 declare var window:any;
 @Component({
   selector: 'app-new-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   templateUrl: './new-appointment-form.component.html',
   styleUrl: './new-appointment-form.component.css'
 })
 export class NewAppointmentFormComponent implements OnInit {
+
 
   formModal:any;
   cancelAptModal:any;
@@ -143,13 +145,19 @@ closeCancelModal(){
   }
 
   selectPetIssue(petIssue: string): void {
-    this.petIssueSearchText = petIssue;
+    this.petIssueSearchText = '';
+    // remove element from the general pet issues.
+    this.generalPetIssues = this.generalPetIssues.filter(gpi=>gpi.IssueName!==petIssue);
     this.filteredpetIssues = [];
     let tempPetIssue:PetIssue ={
       PetIssueID: 0,
       IssueName: petIssue,
     }
-    this.appointmentDetail.PetIssues?.push(tempPetIssue);
+    this.appointmentDetail.PetIssues.push(tempPetIssue);
+
+  }
+  onDisSelectPetIssue(Pi:PetIssue) {
+    this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
   }
 
   // veternarian methods 
@@ -210,18 +218,19 @@ closeCancelModal(){
     return this.slotStatuses[index];
   }
 
+  isSelected(index: number): boolean {
+    this.appointmentDetail.ScheduleTimeSlot=index;
+    return index === this.selectedIndex;
+  }
+
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
       console.log('Slot selected:', slot);
       console.log('selected slot index',index);
       this.selectedIndex = index;
       this.appointmentDetail.ScheduleTimeSlot=index;
+      alert("slot index is "+index);
     }
-  }
-
-  isSelected(index: number): boolean {
-    this.appointmentDetail.ScheduleTimeSlot=index;
-    return index === this.selectedIndex;
   }
 
   filterPetParents():void{
@@ -265,12 +274,14 @@ closeCancelModal(){
     this.appointmentDetail.ReasonForVisit = reasonforvisit;
     this.appointmentDetail.Status=Status.Pending;
     this.appointmentDetail.Report=null;
-    // alert("inside booking");
+    this.appointmentDetail.ScheduleTimeSlot=this.selectedIndex!;
+    alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
       next:(response)=>{console.log("successposting",response);},
       error:(err)=>{console.log("got error while posting",err);}
     });
+    this.closeModal();
   }
 
   isSubmitDisabled: boolean = true;
