@@ -20,6 +20,7 @@ import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.co
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
 import { EditAppointmentFormComponent } from './components/edit-appointment-form/edit-appointment-form.component';
+import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -63,6 +64,9 @@ export const routes: Routes = [
   {
     path: 'editpet/:id',
     component: CreateOrEditPetComponent,
+  },
+  {
+      path: 'newPet', component:CreatePetComponent
   },
   {
     path: 'profile',
