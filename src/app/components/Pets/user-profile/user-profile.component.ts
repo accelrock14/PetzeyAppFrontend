@@ -83,7 +83,9 @@ export class UserProfileComponent implements OnInit{
     event.stopPropagation();
     if(this.petToDelete){
       this.petsService.DeletePetByPetID(this.petToDelete.PetID).subscribe(() => {
-       
+        this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+          this.pets = data;
+        })
       });
 
      
