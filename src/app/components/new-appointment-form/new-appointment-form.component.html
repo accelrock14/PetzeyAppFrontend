@@ -1,13 +1,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <!-- this above is the cloudflare link for search icon magnifying glass -->
 <div class="new-appointment-form">
-    <div class="back btn">
+    <div class="back btn" [routerLink]="'/AdminDashboard'">
         <img width="12" height="14" src="https://img.icons8.com/serif/32/experimental-left-serif.png"
             alt="experimental-left-serif" />
         <pre class="pre"> Back to Appointments</pre>
     </div>
     <h1>New Appointment</h1>
     <hr>
+    <!-- {{ "time slot is "+appointmentDetail.ScheduleTimeSlot}} -->
     <h6>Veternarian Details</h6>
 
     <div class="vet-cal-slots">
@@ -27,6 +28,10 @@
         <br>
 
         <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length">
+            <div>
+                <p class="text-secondary font-weight-bold">Select appointment schedule date</p>
+            </div>
+            
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()">
             </div>
@@ -91,8 +96,13 @@
                 {{petissue.IssueName}}
             </div>
         </div>
+        
     </div>
-
+    <div class="dycapsules">
+        <div *ngFor="let pi of appointmentDetail.PetIssues" class="capsule">{{pi.IssueName}}
+            <i class="fas fa-times" (click)="onDisSelectPetIssue(pi)" ></i>
+        </div>
+    </div>
     <br>
     <h6>Reason for Visit</h6>
     <textarea name="reasonforvisit" id="reasonforvisit" cols="50" rows="2" class="reasonforvisit" #reasonforvisit [(ngModel)]="appointmentDetail.ReasonForVisit" ></textarea>

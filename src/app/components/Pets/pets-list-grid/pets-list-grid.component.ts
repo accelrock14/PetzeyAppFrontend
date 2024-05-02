@@ -51,8 +51,8 @@ searchPets() {
   ngOnInit(): void {
 
    // get pet IDs for doctors flow
-    const petIds=[1,2];
-    this.petsFilter.PetIDs=petIds;
+    // const petIds=[1,2];
+    // this.petsFilter.PetIDs=petIds;
 
     this.searchPets();
   }
