@@ -16,6 +16,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './patient-dashboard.component.css'
 })
 export class PatientDashboardComponent implements OnInit {
+  user:string = "Patient";
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: '',
@@ -29,71 +30,69 @@ export class PatientDashboardComponent implements OnInit {
 
   constructor(private service: DashboardService) {}
   ngOnInit(): void {
-    // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-    //   this.appointmentCards = data;
-    // })
-    this.service.GetPatientAppointments(1).subscribe(data => {
-      this.appointmentCards = data
-      this.filteredAppointments = [...this.appointmentCards]; // Initialize filteredAppointments here
-      this.pageClick(this.page);
-    });
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
+    // this.service.GetPatientAppointments(1).subscribe(data => {
+    //   this.appointmentCards = data
+    //   this.filteredAppointments = [...this.appointmentCards]; // Initialize filteredAppointments here
+    //   this.pageClick(this.page);
+    // });
   }
-  filteredAppointments : AppointmentCardDto[] =[]
+  // filteredAppointments : AppointmentCardDto[] =[]
   onDateStatusChange() {
     
-    // this.filters.ScheduleDate = this.selectedDate;
-    // this.filters.Status = this.selectedStatus;
-    // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-    //   this.appointmentCards = data;
-    // })
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
   //   this.filteredAppointments = this.appointmentCards.filter(appointment => {
   //     const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
   //     const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
   //     return matchesDate && matchesStatus;
   // });
-  this.pageClick(this.page);
+  // this.pageClick(this.page);
   }
-  // pageClick(pageInput:number) {
-  //   // this.offset = (pageInput-1)*3;
-  //   // if(pageInput == this.page - 1){
-  //   //   this.page--;
-  //   // }
-  //   // else if(pageInput == this.page + 1) {
-  //   //   this.page++;
-  //   // }
-  //   // this.filters.ScheduleDate = this.selectedDate;
-  //   // this.filters.Status = this.selectedStatus;
-  //   // this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
-  //   //   this.appointmentCards = data;
-  //   // })
-  // }
-  pageClick(pageInput: number) {
-    this.page = pageInput; // Update the current page
+  pageClick(pageInput:number) {
+    this.offset = (pageInput-1)*3;
     if(pageInput == this.page - 1){
-          this.page--;
-        }
-        else if(pageInput == this.page + 1) {
-          this.page++;
-        }
-    const pageSize = 3; // Number of appointments per page
-    this.offset = (this.page - 1) * pageSize; // Calculate the starting index for the displayed appointments
+      this.page--;
+    }
+    else if(pageInput == this.page + 1) {
+      this.page++;
+    }
+    this.filters.ScheduleDate = this.selectedDate;
+    this.filters.Status = this.selectedStatus;
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, 1).subscribe(data => {
+      this.appointmentCards = data;
+    })
+  }
+//   pageClick(pageInput: number) {
+//     this.page = pageInput; // Update the current page
+//     if(pageInput == this.page - 1){
+//           this.page--;
+//         }
+//         else if(pageInput == this.page + 1) {
+//           this.page++;
+//         }
+//     const pageSize = 3; // Number of appointments per page
+//     this.offset = (this.page - 1) * pageSize; // Calculate the starting index for the displayed appointments
 
-    // Apply filters and update filteredAppointments based on the new offset
-    this.filteredAppointments = this.appointmentCards
-        .filter(appointment => {
-            const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
-            const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
-            return matchesDate && matchesStatus;
-        })
-        .slice(this.offset, this.offset + pageSize); // Slice the array to get only the appointments for the current page
-}
+//     // Apply filters and update filteredAppointments based on the new offset
+//     this.filteredAppointments = this.appointmentCards
+//         .filter(appointment => {
+//             const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
+//             const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
+//             return matchesDate && matchesStatus;
+//         })
+//         .slice(this.offset, this.offset + pageSize); // Slice the array to get only the appointments for the current page
+// }
 
   isPreviousPageDisabled() {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    const pageSize = 3; // Number of appointments per page
-    const totalAppointments = this.filteredAppointments.length; // Total number of filtered appointments
-    return totalAppointments < this.page * pageSize;
+    return this.appointmentCards.length == 0;
 }
 }

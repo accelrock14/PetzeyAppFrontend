@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +18,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class VetProfileComponent implements OnInit {
 
   @ViewChild('successMessage') successMessage!: ElementRef;
+  @ViewChild('deleteMessage') deleteMessage!: boolean;
 
   actualVet?:IVet;
 // updateVet(vetid: number,vetPro: IVetProfileDTO) {
@@ -43,6 +44,13 @@ updateVet(vetid: number, vetPro: IVetProfileDTO) {
     });
   });
 }
+deleteVet(vetId:number){
+  this.vetService.deleteVet(vetId).subscribe();
+  this.deleteMessage = true;
+  setTimeout(() => {
+    this.router.navigate(['/vet']);
+  }, 2000);
+}
 
 
 editVetProfile() {
@@ -50,7 +58,7 @@ throw new Error('Method not implemented.');
 }
   vetProfile?: IVetProfileDTO;
 
-  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router) { }
   // 
   ngOnInit(): void {
     // Get the vet ID from the route parameter

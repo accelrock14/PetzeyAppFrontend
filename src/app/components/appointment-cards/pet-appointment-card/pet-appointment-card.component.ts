@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { FeedbackService } from '../../../services/feedback.service';
-import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { FeedbackService } from '../../../services/feedback.service';
+import { Feedback, FeedbackQuestion } from '../../../models/appoitment-models/IFeedback';
 
 @Component({
   selector: 'app-pet-appointment-card',
@@ -14,103 +15,57 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './pet-appointment-card.component.css'
 })
 export class PetAppointmentCardComponent {
-openPopup(arg0: string) {
-  alert("This service will be available soon")
-}
+  openPopup(arg0: string) {
+    // alert("This service will be available soon")
+    this.snackBar.open(`${arg0} service will be available soon`, "Close", {
+      verticalPosition: 'bottom'
+    })
+  }
   @Input()
   appointmentcard!: AppointmentCardDto;
-//   clicked(obj: number) {
-//     this.feedback.AppointmentId = obj;
-//  }
-   
-    //  feedbackForm: any;
-    //  competenceTouched: boolean=false;
-     
-    //  constructor( private service:FeedbackService ){}
-    //  feedbackquestions!: FeedbackQuestion[];
-       
-      
-     
-    //  questions:Question[]=[];
-    //    ngOnInit(): void {
-    //    this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
-    //      this.feedbackquestions=q;
-    //      this.feedback.Questions = this.feedbackquestions.map(question => ({
-    //        QuestionId:0,
-    //        FeedbackQuestionId: question.FeedbackQuestionId,
-    //        Rating: 0
-    //      }));
-    //    })
-       // this.feedback.Questions = this.feedbackquestions.map(question => ({
-       //       QuestionId:0,
-       //       FeedbackQuestionId: question.FeedbackQuestionId,
-       //       Rating: 0
-       //     }));
-       //}
-     
-       
-     
-     
-      //  onSubmit(appointmentId: number) {
-      //   this.feedback.AppointmentId = appointmentId;
-      //    this.service.postData(this.feedback).subscribe(
-      //      (response) => {
-      //        console.log('Response:', response);
-      //        // Handle response as needed
-      //      },
-      //      (error) => {
-      //        console.error('Error:', error);
-      //        // Handle error
-      //      }
-      //    );
-      //    console.log(this.feedback)
-         
-      //    }
-      //    temp:string='hello';
-      //      feedback: Feedback={
-      //        FeedbackID: 0,
-      //        Questions: [],
-      //        Recommendation: '',
-      //        Comments: '',
-      //        AppointmentId: 0,
-      //      }
-           
-         
-           
-           // setRating(property: string, value: number ) {
-           //   switch (property) {
-           //     case 'competence':
-           //       this.feedback.Competence = value;
-           //       break;
-           //     case 'outcome':
-           //       this.feedback.Outcome = value;
-           //       break;
-           //     case 'booking':
-           //       this.feedback.Booking = value;
-           //       break;
-              
-           //   }
-           //   // Set touched flag
-           // }
-          //  setRating(questionId: number, rating: number) {
-          //    const questionIndex = this.feedback.Questions.findIndex(q => q.FeedbackQuestionId === questionId);
-          //    if (questionIndex !== -1) {
-          //      this.feedback.Questions[questionIndex].Rating = rating;
-          //    }
-          //  }
-          
-          //  // isFormValid(): boolean {
-          //  //   return this.feedback.Competence !== 0 &&
-          //  //          this.feedback.Outcome !== 0 &&
-          //  //          this.feedback.Booking !== 0
-                   
-          //  // }
-          //  isFilled(rating: number, id: number): boolean {
-          //    const foundQuestion = this.feedback.Questions.find(q => q.FeedbackQuestionId === id);
-          //    return foundQuestion ? foundQuestion.Rating >= rating : false;
-          //  }
-          //  isFormValid(): boolean {
-          //    // Check if all questions have been rated
-          //    return this.feedback.Questions.every(q => q.Rating !== 0);
-           //}
+  @Input()
+  user!:string;
+
+  constructor(private snackBar: MatSnackBar, private service :FeedbackService){}
+  feedbackDetails: any[]=[];
+  feedbackquestions!: FeedbackQuestion[];
+  viewFeedbackfor!:number;
+  feedback:Feedback={
+    FeedbackID: 0,
+    Questions: [],
+    Recommendation: '',
+    Comments: '',
+    AppointmentId: 0
+  }
+  feedbacklist: Feedback[] = [];
+  feedbackClicked(appointmentId: number) {
+    const fb=this.feedbacklist.find(f=>f.AppointmentId==appointmentId)
+  if(fb){
+    this.feedback=fb;
+  }
+  
+  this.feedbackDetails = this.feedback.Questions.map(question => {
+    const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
+    return {
+      QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
+      Rating: question.Rating
+    };
+  });
+  console.log(this.feedback)
+  console.log(appointmentId);
+  }
+  ngOnInit(): void {
+    this.service.getAllFeedback().subscribe((q:Feedback[])=>{
+      this.feedbacklist=q;
+    })
+    this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
+      this.feedbackquestions=q
+    
+    });
+  }
+  openFeedbackPopup(action: string, appointmentId: number) {
+    if (action === 'feedback') {
+      this.feedback.AppointmentId = appointmentId; // Set the appointmentId for feedback
+    }
+  }
 }

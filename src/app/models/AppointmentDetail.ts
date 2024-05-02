@@ -5,9 +5,9 @@ import { Status } from "./Status"
 export  interface AppointmentDetail
 {
     AppointmentID:number,
-    DoctorID:number,
+    DoctorID:string,
     PetID:number,
-    OwnerID:number,
+    OwnerID:string,
     ScheduleDate:Date,
     ScheduleTimeSlot:number,
     BookingDate:Date,
