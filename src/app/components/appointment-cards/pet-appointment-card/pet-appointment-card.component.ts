@@ -35,35 +35,35 @@ export class PetAppointmentCardComponent {
     Comments: '',
     AppointmentId: 0
   }
+  feedbacklist: Feedback[] = [];
   feedbackClicked(appointmentId: number) {
-    this.viewFeedbackfor = appointmentId;
-    console.log(this.viewFeedbackfor);
-   
+    const fb=this.feedbacklist.find(f=>f.AppointmentId==appointmentId)
+  if(fb){
+    this.feedback=fb;
   }
-ngOnInit(): void {
-
-
-  this.service.getData(1).subscribe(
-    (response) => {
-      this.feedback = response;
-      console.log(this.feedback);
-      console.log(this.feedbackDetails);
-    },
-    (error) => {
-      console.error('Error:', error);
-      // Handle error
-    }
-  );
-
-  this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
-    this.feedbackquestions=q
-    this.feedbackDetails = this.feedback.Questions.map(question => {
-      const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
-      return {
-        QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
-        Rating: question.Rating
-      };
-    });
+  
+  this.feedbackDetails = this.feedback.Questions.map(question => {
+    const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
+    return {
+      QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
+      Rating: question.Rating
+    };
   });
-}
+  console.log(this.feedback)
+  console.log(appointmentId);
+  }
+  ngOnInit(): void {
+    this.service.getAllFeedback().subscribe((q:Feedback[])=>{
+      this.feedbacklist=q;
+    })
+    this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
+      this.feedbackquestions=q
+    
+    });
+  }
+  openFeedbackPopup(action: string, appointmentId: number) {
+    if (action === 'feedback') {
+      this.feedback.AppointmentId = appointmentId; // Set the appointmentId for feedback
+    }
+  }
 }
