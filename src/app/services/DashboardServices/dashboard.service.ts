@@ -18,7 +18,7 @@ export class DashboardService {
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/appointments/filter/${offset}`, filters);
   }
-  GetStatusCounts():Observable<AppointmentStatusCountsDto> {
+  GetStatusCounts(): Observable<AppointmentStatusCountsDto> {
     return this.http.get<AppointmentStatusCountsDto>(`https://localhost:44327/api/dashboard/statuscounts`);
   }
   GetPatientAppointmentsWithFilters(filters: FilterParamsDto, offset: number, ownerid: number): Observable<AppointmentCardDto[]> {
