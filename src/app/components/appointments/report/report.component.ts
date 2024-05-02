@@ -43,7 +43,7 @@ import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 })
 export class ReportComponent implements OnInit {
   @Input() reportId: number = 1;
-  @Input() doctorId: number = 1;
+  @Input() doctorId: string = '';
 
   report: IReport = {
     ReportID: 1,
@@ -308,9 +308,9 @@ export class ReportComponent implements OnInit {
     });
   }
 
-  getDoctorById(id: number): IVetCardDTO | undefined {
+  getDoctorById(id: string): IVetCardDTO | undefined {
     return this.doctors.find(d => {
-      if (d.VetId == id) {
+      if (d.VetId.toString() == id) {
         return d
       }
       else {
