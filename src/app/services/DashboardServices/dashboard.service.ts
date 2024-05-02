@@ -18,13 +18,13 @@ export class DashboardService {
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/appointments/filter/${offset}`, filters);
   }
-  GetStatusCounts(): Observable<AppointmentStatusCountsDto> {
-    return this.http.get<AppointmentStatusCountsDto>(`https://localhost:44327/api/dashboard/statuscounts`);
+  GetStatusCounts(vetid: string): Observable<AppointmentStatusCountsDto> {
+    return this.http.get<AppointmentStatusCountsDto>(`https://localhost:44327/api/dashboard/statuscounts/${vetid}`);
   }
-  GetPatientAppointmentsWithFilters(filters: FilterParamsDto, offset: number, ownerid: number): Observable<AppointmentCardDto[]> {
+  GetPatientAppointmentsWithFilters(filters: FilterParamsDto, offset: number, ownerid: string): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/petappointments/filter/${ownerid}/${offset}`, filters)
   }
-  GetVetAppointmentsWithFilters(filters: FilterParamsDto, offset: number, vetid: number): Observable<AppointmentCardDto[]> {
+  GetVetAppointmentsWithFilters(filters: FilterParamsDto, offset: number, vetid: string): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/vetappointments/filter/${vetid}/${offset}`, filters)
   }
 

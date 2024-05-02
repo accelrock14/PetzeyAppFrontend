@@ -22,7 +22,7 @@
           <span>Home</span>
         </a>
       </li>
-      <!-- @if(auth.getRoleFromToken() == "Owner") { -->
+      @if(auth.isLoggedIn() && auth.getRoleFromToken()=="Owner") {
       <li class="sidebar-item">
         <a
           routerLink="PatientDashboard"
@@ -45,7 +45,8 @@
           <span>Patient Dashboard</span>
         </a>
       </li>
-      <!-- } -->
+      }
+      @if(auth.isLoggedIn() && auth.getRoleFromToken()=="Receptionist") {
       <li class="sidebar-item">
         <a
           routerLink="AdminDashboard"
@@ -68,8 +69,8 @@
           <span>Admin Dashboard</span>
         </a>
       </li>
-
-      <!-- @if(userRole == "Doctor") { -->
+    }
+      @if(auth.isLoggedIn() && auth.getRoleFromToken()=="Doctor") {
       <li class="sidebar-item">
         <a
           routerLink="DoctorDashboard"
@@ -93,7 +94,7 @@
         </a>
       </li>
 
-    <!-- } -->
+    }
 
     @if(auth.isLoggedIn() && auth.getRoleFromToken() != "Owner") {
       <li class="sidebar-item">

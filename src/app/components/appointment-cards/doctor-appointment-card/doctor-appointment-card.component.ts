@@ -28,13 +28,16 @@ openPopup(arg0: string) {
 
   constructor(private snackBar: MatSnackBar,  private service:FeedbackService){}
 
-
+selectedappointmentid:number=0;
   clicked(obj: number) {
-    this.feedback.AppointmentId = obj;
+    this.service.selectedid=obj;
+    this.selectedappointmentid=obj;
+    console.log(this.selectedappointmentid)
+   
  }
    
      feedbackForm: any;
-     competenceTouched: boolean=false;
+   
     
      feedbackquestions!: FeedbackQuestion[];
        
@@ -61,22 +64,31 @@ openPopup(arg0: string) {
      
      
        onSubmit(appointmentId: number) {
-        console.log(appointmentId);
-        console.log(this.feedback.AppointmentId);
-         this.service.postData(this.feedback).subscribe(
+        
+        // Wait for update
+        const feedbackToSubmit: Feedback = { ...this.feedback };
+        feedbackToSubmit.AppointmentId = this.service.selectedid;
+       console.log(this.selectedappointmentid)
+         this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
              console.log('Response:', response);
-             // Handle response as needed
+             
            },
            (error) => {
              console.error('Error:', error);
              // Handle error
            }
          );
-         console.log(this.feedback)
+        this.feedback={
+          FeedbackID: 0,
+             Questions: [],
+             Recommendation: '',
+             Comments: '',
+             AppointmentId: 0,
+        }
          
          }
-         temp:string='hello';
+         
            feedback: Feedback={
              FeedbackID: 0,
              Questions: [],
