@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetCardComponent } from "../pet-card/pet-card.component";
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
     selector: 'app-pets-list-grid',
@@ -54,9 +55,21 @@ searchPets() {
 
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
-    private router: Router){}
+    private router: Router,
+    private authService : AuthService){}
 
   ngOnInit(): void {
+
+   if(this.authService.isLoggedIn())
+    {
+      console.log("logged in");
+       if(this.authService.getRoleFromToken() == 'Doctor')
+        {
+          console.log("doctor");
+          this.petsFilter.PetIDs=[1,2,4,5,6];
+          console.log(this.petsFilter.PetIDs);
+        }
+    }
 
     this.calculateTotalPages();
 

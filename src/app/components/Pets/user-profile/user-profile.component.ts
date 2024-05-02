@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router, private fb:FormBuilder) {
+  constructor(private petsService: PetsService, public auth:AuthService, private router:Router, private fb:FormBuilder) {
     this.newPetForm = this.fb.group({
       PetImage:[this.NewPet?.PetImage],
       PetName: [this.NewPet?.PetName],
@@ -68,7 +68,7 @@ export class UserProfileComponent implements OnInit{
     this.petsService.GetPetsByParentID("2").subscribe((data) => {
       this.pets = data;
     })
-   
+
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -131,7 +131,7 @@ export class UserProfileComponent implements OnInit{
       error=>{
         console.log(error)
       });
-      
+
     if(this.ToBeUpdatedPet)
       this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
       console.log(this.petDetailsForm.value)
@@ -160,7 +160,7 @@ export class UserProfileComponent implements OnInit{
           ...this.ToBeUpdatedPet,
           ...this.petDetailsForm.value
         };
-        this.SaveUpdatedPetDetails()       
+        this.SaveUpdatedPetDetails()
       }
     }
     handleFileAdd(event: any): void {
@@ -182,9 +182,9 @@ export class UserProfileComponent implements OnInit{
           console.log(base64String)
           if(this.NewPet)
             this.newPetForm.patchValue(this.NewPet)
-          
+
         }
-      };   
+      };
       reader.readAsDataURL(file);
     }
     handleFileEdit(event: any): void {
@@ -204,13 +204,13 @@ export class UserProfileComponent implements OnInit{
           this.ToBeUpdatedPet!.PetImage = base64String;
           if(this.ToBeUpdatedPet)
             this.petDetailsForm.patchValue(this.ToBeUpdatedPet)
-          
+
         }
-      };   
+      };
       reader.readAsDataURL(file);
     }
-    
-   
+
+
     SavePetDetails() {
       console.log(this.NewPet)
       this.petsService.AddPet(this.NewPet!).subscribe({
@@ -224,7 +224,7 @@ export class UserProfileComponent implements OnInit{
         }
       });
     }
-    
+
       SaveUpdatedPetDetails() {
         console.log(this.ToBeUpdatedPet)
         this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
@@ -237,7 +237,7 @@ export class UserProfileComponent implements OnInit{
             console.error('Error updating pet:', error);
         }
       });
-  
+
     }
 }
 
