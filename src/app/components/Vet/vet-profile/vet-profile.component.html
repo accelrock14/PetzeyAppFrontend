@@ -96,6 +96,7 @@
 
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <!-- Modal content -->
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -104,21 +105,26 @@
       </div>
       <div class="modal-body">
         Are you sure you want to delete?
-        <div class="row p-5">
-          <div class="col-6">
+        <div class="row">
+          <div class="col-2 p-2 m-2">
             <button class="btn btn-light mx-2">Cancel</button>
           </div>
-          <div class="col-6">
-            <button type = "button" class = "btn btn-edit mx-2" (click) = "deleteVet(vetProfile!.VetId)">Delete</button>
+          <div class="col-2 p-2 m-2">
+            <!-- Disable the button if the successMessage variable is falsy -->
+            <button type="button" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
           </div>
         </div>
-        </div>
-      <ng-template #successMessage>
-        <div class="alert alert-success" role="alert">
+      </div>
+      <!-- Display the success message if the successMessage variable is truthy -->
+      <ng-container *ngIf="deleteMessage">
+        <div class="modal-footer">
+          <div class="alert alert-success" role="alert">
             Vet profile deleted successfully!
+          </div>
         </div>
-    </ng-template>
+      </ng-container>
     </div>
   </div>
 </div>
+
 </body>
