@@ -6,6 +6,7 @@
   }
 .card-content {
     text-align: left;
+    font-size:medium;
   }
 
   /* Media query for small screens */
