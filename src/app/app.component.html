@@ -116,7 +116,7 @@
           <span>Doctors</span>
         </a>
       </li>
-      <li class="sidebar-item" [hidden]="!loggedIn">
+      <li class="sidebar-item" [hidden]="!this.auth.isLoggedIn()">
         <a
           routerLink="/profile"
           class="sidebar-link"
@@ -129,7 +129,7 @@
         </a>
       </li>
     </ul>
-    <div class="sidebar-footer" [hidden]="loggedIn">
+    <div class="sidebar-footer" [hidden]="this.auth.isLoggedIn()">
       <a routerLink="/signin"
       class="sidebar-link"
       [class.selected]="isSelected('signin')">
