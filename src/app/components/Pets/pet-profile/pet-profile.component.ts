@@ -4,6 +4,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { ReportHistoryComponent } from '../../appointments/report-history/report-history.component';
+import { DatePipe, formatDate } from '@angular/common';
+import { FormatDatePipe } from '../../../pipes/Date/format-date.pipe';
 import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
 
 @Component({
@@ -11,7 +13,7 @@ import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appoi
     standalone: true,
     templateUrl: './pet-profile.component.html',
     styleUrl: './pet-profile.component.css',
-    imports: [AgePipe, ReportHistoryComponent, PetAppointmentsListComponent]
+    imports: [AgePipe, FormatDatePipe, RouterLink, ReportHistoryComponent, PetAppointmentsListComponent]
 })
 export class PetProfileComponent implements OnInit {
 

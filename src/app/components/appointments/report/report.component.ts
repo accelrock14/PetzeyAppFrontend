@@ -25,6 +25,7 @@ import jspdf, { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-report',
@@ -141,6 +142,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
+  isDoctor: boolean = false
 
   ngOnInit(): void {
     this.reportService.getReport(this.reportId).subscribe((r) => {
@@ -204,6 +206,7 @@ export class ReportComponent implements OnInit {
         medicine: [],
         doctor: [this.selectedDoctors],
       });
+      this.isDoctor = this.authService.getRoleFromToken() == 'Doctor'
     });
   }
 
@@ -211,7 +214,8 @@ export class ReportComponent implements OnInit {
     private fb: FormBuilder,
     private reportService: ReportService,
     private elementRef: ElementRef,
-    private vetService: VetsserviceService
+    private vetService: VetsserviceService,
+    private authService: AuthService
   ) { }
 
   isEditing = false;

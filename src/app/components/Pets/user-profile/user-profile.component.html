@@ -51,6 +51,10 @@
               <li>Mobile: <strong>{{user.extension_PhoneNumber}}</strong></li>
               <li>Location: <strong>{{user.city}}, {{user.state}}-{{user.postalCode}}</strong></li>
               <li>Country: <strong>{{user.country}}</strong></li>
+              @if(auth.getRoleFromToken()=='Doctor'){
+              <li>VPI Number: <strong>{{user.extension_NPINumber}}</strong></li>
+              <li>Specialty: <strong>{{user.extension_Speciality}}</strong></li>
+              }
             </ul>
           </div>
         </div>
@@ -138,7 +142,7 @@
 
       <div class="pet-cards">
         <ng-container *ngFor="let pet of pets; let i = index">
-          <section class="pet-card col-lg-3  col-md-4 col-sm-6 col-12 p-0 d-inline" (click)="testClick()">
+          <section class="pet-card col-lg-3  col-md-4 col-sm-6 col-12 p-0 d-inline">
             <div class="dropdown">
               <div class="dropdown-wrapper d-flex justify-content-end " (click)="toggleDropdown($event)">
                 <button class="border-0 bg-light" style="width: auto;" type="button"
@@ -170,7 +174,7 @@
                   <li>{{pet.Gender}}, {{12}} years</li>
                 </ul>
               </div>
-              
+
             </div>
 
           </section>

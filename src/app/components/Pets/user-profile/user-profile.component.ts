@@ -3,12 +3,12 @@ import { IPet } from '../../../models/Pets/IPet';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -19,7 +19,7 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router) { }
+  constructor(private petsService: PetsService, public auth:AuthService, private router:Router) { }
 
   ngOnInit(): void {
     console.log("ngOnInit() is called");
@@ -56,10 +56,6 @@ export class UserProfileComponent implements OnInit{
 
 
 
-  testClick() {
-    alert("Pet Card clicked");
-  }
-
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();// This thing is to prevent the card from clicking
     const dropdown = (event.target as HTMLElement).closest('.dropdown');
@@ -93,7 +89,7 @@ export class UserProfileComponent implements OnInit{
 
   OnLogout() {
     this.auth.logOut()
-    this.router.navigate(['/signin']);
+    this.router.navigate(['/']);
     }
 
 }

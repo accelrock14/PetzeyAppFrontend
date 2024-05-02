@@ -48,4 +48,13 @@ export class AuthService {
     if(this.userPayload){
     return this.userPayload.extension_role;
   }}
+
+  getVPIFromToken(){
+    if(this.getRoleFromToken()=='Doctor'){
+      this.userPayload = this.decodedToken();
+      if (this.userPayload){
+        return this.userPayload.extension_NPINumber;
+      }
+    }
+  }
 }
