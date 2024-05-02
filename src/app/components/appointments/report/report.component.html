@@ -178,10 +178,11 @@
       <button
         *ngIf="!isEditing"
         class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold"
-        (click)="exportToPDF()"
+        (click)="callToastThenExport()"
       >
         <i class="fa-solid fa-download me-2"></i>Report
       </button>
+
       <button
         *ngIf="!isEditing && isDoctor"
         class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"

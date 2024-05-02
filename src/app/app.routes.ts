@@ -7,7 +7,6 @@ import { ReportHistoryComponent } from './components/appointments/report-history
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboard/doctor-dashboard.component';
 import { PatientDashboardComponent } from './components/dashboard/patient-dashboard/patient-dashboard.component';
-
 import { AppointmentPetProfileComponent } from './components/Pets/appointment-pet-profile/appointment-pet-profile.component';
 import { CreateOrEditPetComponent } from './components/Pets/create-or-edit-pet/create-or-edit-pet.component';
 import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-list-grid.component';
@@ -27,7 +26,9 @@ VetProfileApptComponent
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
     { path: '',redirectTo:'home', pathMatch:'full' },
-    { path: 'details/:id', component: DetailsComponent},
+    { path: 'AdminDashboard/details/:id', component: DetailsComponent},
+    { path: 'DoctorDashboard/details/:id', component: DetailsComponent},
+    { path: 'PatientDashboard/details/:id', component: DetailsComponent},
   { path: 'report', component: ReportComponent },
   { path: 'reporthistory', component: ReportHistoryComponent },
   {

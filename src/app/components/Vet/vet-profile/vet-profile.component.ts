@@ -7,14 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IVet } from '../../../models/Vets/IVet';
 import { Observable } from 'rxjs/internal/Observable';
+import { VetAppointmentListComponent } from "../vet-appointment-list/vet-appointment-list.component";
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
-  selector: 'app-vet-profile',
-  standalone: true,
-  imports: [NgbModule, FormsModule, CommonModule],
-  templateUrl: './vet-profile.component.html',
-  styleUrl: './vet-profile.component.css'
+    selector: 'app-vet-profile',
+    standalone: true,
+    templateUrl: './vet-profile.component.html',
+    styleUrl: './vet-profile.component.css',
+    imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
 
@@ -70,6 +71,7 @@ throw new Error('Method not implemented.');
       // Fetch vet profile details by ID
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
+        console.log(this.vetProfile)
       });
     } else {
       // Handle the case when the route parameter is null

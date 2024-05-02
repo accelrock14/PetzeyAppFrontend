@@ -6,6 +6,7 @@ import { IVet } from '../../models/Vets/IVet';
 import { IVetProfileDTO } from '../../models/Vets/IVetProfileDto';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IVetIdNameDTO } from '../../models/Vets/IVetIDNameDto';
+import { VetDTO } from '../../models/Vets/IVetDTO';
 
 
 @Injectable({
@@ -66,5 +67,7 @@ export class VetsserviceService {
     return this.http.post<IVetCardDTO[]>(`${this.apiUrl}/vetsBySpecialty`, specialties);
   }
 
-
+  getVetsAndIds(): Observable<VetDTO[]> {
+    return this.http.get<VetDTO[]>(`${this.apiUrl}/vetsandids`);
+  }
 }

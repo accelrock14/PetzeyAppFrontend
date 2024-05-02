@@ -13,10 +13,14 @@ getData(id:number): Observable<Feedback> {
   return this.http.get<Feedback>(`https://localhost:44327/api/Feedback/${id}`);
 }
 postData(obj:Feedback):Observable<Feedback>{
+  console.log("obj:" + obj);
   return this.http.post<Feedback>("https://localhost:44327/api/Feedback",obj);
 }
 getQuestions():Observable<FeedbackQuestion[]>{
   return this.http.get<FeedbackQuestion[]>("https://localhost:44327/api/FeedbackQuestions")
+}
+getAllFeedback():Observable<Feedback[]>{
+  return this.http.get<Feedback[]>("https://localhost:44327/api/Feedback");
 }
 // getQuestionsRating(obj:FeedbackQuestion[]):Question[]{
   

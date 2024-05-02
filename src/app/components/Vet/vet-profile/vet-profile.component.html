@@ -10,7 +10,6 @@
         <!-- <p class="text-muted col-5">Manage your account details here</p> -->
 
       </div>
-
       </div>
       <div class="card-body pb-5">
         <div class="row">
@@ -20,7 +19,7 @@
             <div class="col-md-4">
                 <div class="info">
                     <p class="text-muted">Name  &nbsp;: &nbsp;{{vetProfile?.FName}}&nbsp;{{vetProfile?.LName}} </p>
-                    <p class="text-muted">NPI Number &nbsp;: &nbsp;{{vetProfile?.NpiNumber}} </p>
+                    <p class="text-muted">NPI Number &nbsp;: &nbsp;{{vetProfile?.NPINumber}} </p>
                     <p class="text-muted">Speciality  &nbsp;:&nbsp; {{vetProfile?.Speciality}} </p>
                 </div>
             </div>
@@ -103,13 +102,13 @@
         <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Account</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         Are you sure you want to delete?
-        <div class="row">
-          <div class="col-2 p-2 m-2">
+        <div class="row mx-5 px-5 gap-5">
+          <div class="col-2 p-2 mx-2 ">
             <button class="btn btn-light mx-2">Cancel</button>
           </div>
-          <div class="col-2 p-2 m-2">
+          <div class="col-2 p-2 mx-2 ">
             <!-- Disable the button if the successMessage variable is falsy -->
             <button type="button" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
           </div>
@@ -126,5 +125,7 @@
     </div>
   </div>
 </div>
+
+<app-vet-appointment-list [VetID]="vetProfile!.VetId"></app-vet-appointment-list>
 
 </body>

@@ -16,6 +16,6 @@ export class PetCardComponent {
   @Input()
   pet:IPet = {} as IPet;
 
-
+  
 
 }
