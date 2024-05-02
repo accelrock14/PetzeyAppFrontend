@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 })
 export class UserProfileComponent implements OnInit{
+
   petParentID:any;
   NewPet?: IPet;
   newPetForm: FormGroup;
@@ -127,6 +128,7 @@ export class UserProfileComponent implements OnInit{
       this.pets = data;
     })
   }
+  
 
   preventCardClick(event: MouseEvent) {
     event.stopPropagation();
@@ -251,9 +253,7 @@ export class UserProfileComponent implements OnInit{
             // Handle success, if needed
             console.log('Pet updated successfully:', updatedPet);
 
-            this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
-              this.pets = data;
-            })
+            
         },
         error: error => {
             // Handle error, if needed
