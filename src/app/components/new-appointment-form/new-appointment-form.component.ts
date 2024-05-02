@@ -12,6 +12,7 @@ import { AppointmentFormService } from '../../services/Appointment_Form_Services
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/UserAuthServices/auth.service';
 
 declare var window:any;
 @Component({
@@ -37,10 +38,6 @@ export class NewAppointmentFormComponent implements OnInit {
   this.location.back();
   }
   
-
-
-
-
   formModal:any;
   cancelAptModal:any;
 
@@ -61,7 +58,7 @@ export class NewAppointmentFormComponent implements OnInit {
   selectedScheduleDate:Date=new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar,private userService:AuthService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -88,6 +85,8 @@ export class NewAppointmentFormComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log("this is the log for user role = "+this.userService.getRoleFromToken());
+    
     // modal popup code 
     this.formModal= new window.bootstrap.Modal(
       document.getElementById("myModalPopup")
