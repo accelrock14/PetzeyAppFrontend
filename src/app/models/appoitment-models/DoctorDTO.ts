@@ -1,4 +1,4 @@
 export interface DoctorDTO {
-    DoctorID: number,
+    DoctorID: string,
     DoctorName: string
 }
