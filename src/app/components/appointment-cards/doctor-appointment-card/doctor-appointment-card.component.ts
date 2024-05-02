@@ -23,6 +23,8 @@ openPopup(arg0: string) {
 }
   @Input()
   appointmentcard!: AppointmentCardDto;
+  @Input()
+  user!:string;
 
   constructor(private snackBar: MatSnackBar,  private service:FeedbackService){}
 

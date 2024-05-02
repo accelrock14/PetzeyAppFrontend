@@ -9,7 +9,8 @@ import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { PetIssue } from "../../models/PetIssue"
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
 
 declare var window:any;
 @Component({
@@ -21,15 +22,28 @@ declare var window:any;
 })
 export class NewAppointmentFormComponent implements OnInit {
 
+GoBack() {
+  
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+  this.location.back();
+}
+OnCancelAdding() {
+  
+  this.formModal.hide();
+  this.cancelAptModal.hide();
+  this.location.back();
+}
+
 
   formModal:any;
   cancelAptModal:any;
 
   appointmentDetail:AppointmentDetail={
     AppointmentID: 0,
-    DoctorID: 0,
+    DoctorID: "",
     PetID: 0,
-    OwnerID: 0,
+    OwnerID: "",
     ScheduleDate: new Date(),
     ScheduleTimeSlot: 0,
     BookingDate: new Date(),
@@ -42,7 +56,7 @@ export class NewAppointmentFormComponent implements OnInit {
   selectedScheduleDate:Date=new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -109,7 +123,7 @@ export class NewAppointmentFormComponent implements OnInit {
       error: (err) => { console.log('error in fetching petParents', err); }
     });
 
-    // this is the method for  fetching pets 
+    // this is the method for  fetching pets
     this.aptService.getPets().subscribe({
       next: (data) => {
         this.pets = data;
@@ -118,6 +132,19 @@ export class NewAppointmentFormComponent implements OnInit {
       },
       error: (err) => { console.log('eror in fetching pets', err); }
     });
+
+    // get pets of particular parent.
+    // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
+    // ALSO DO THIS IN EDIT THING.
+    // this.aptService.getAllPetsOfOwener(this.appointmentDetail.OwnerID).subscribe({
+    //   next:(data)=>{
+    //     this.pets=data;
+    //   },
+    //   error:(err)=>{
+    //     console.log("error while fetching pets of a owener",err);
+        
+    //   }
+    // });
 
   }
 // modal popup code for submission
@@ -136,7 +163,7 @@ closeCancelModal(){
 }
 
   filterPetIssues(): void {
-    if (!this.petIssueSearchText.length) {
+    if (!this.petIssueSearchText.length){
       this.filteredpetIssues = [];
     }
     else {
@@ -154,8 +181,8 @@ closeCancelModal(){
       IssueName: petIssue,
     }
     this.appointmentDetail.PetIssues.push(tempPetIssue);
-
   }
+  
   onDisSelectPetIssue(Pi:PetIssue) {
     this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
   }
@@ -179,7 +206,7 @@ closeCancelModal(){
       }
     }
   }
-  selectVeternarian(vid: number, vname: string): void {
+  selectVeternarian(vid: string, vname: string): void {
     // we need to assign for the respective variable in the appointment object
     this.veternarianSearchText = vname;
     this.filteredVets = [];
@@ -229,7 +256,7 @@ closeCancelModal(){
       console.log('selected slot index',index);
       this.selectedIndex = index;
       this.appointmentDetail.ScheduleTimeSlot=index;
-      alert("slot index is "+index);
+      // alert("slot index is "+index);
     }
   }
 
@@ -242,7 +269,7 @@ closeCancelModal(){
     }
   }
 
-  selectPetParent(ppid:number,ppname:string):void{
+  selectPetParent(ppid:string,ppname:string):void{
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID=ppid;
@@ -275,13 +302,15 @@ closeCancelModal(){
     this.appointmentDetail.Status=Status.Pending;
     this.appointmentDetail.Report=null;
     this.appointmentDetail.ScheduleTimeSlot=this.selectedIndex!;
-    alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
+    // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
+    // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
       next:(response)=>{console.log("successposting",response);},
       error:(err)=>{console.log("got error while posting",err);}
     });
     this.closeModal();
+    this.location.back();
   }
 
   isSubmitDisabled: boolean = true;

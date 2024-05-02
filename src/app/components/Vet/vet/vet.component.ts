@@ -4,7 +4,7 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 import { CommonModule } from '@angular/common';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
@@ -16,6 +16,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   styleUrl: './vet.component.css'
 })
 export class VetComponent implements OnInit{
+
 
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
@@ -155,6 +156,10 @@ export class VetComponent implements OnInit{
     onPageChange(page: number): void {
       this.currentPage = page;
       this.updateFilteredVets();
+    }
+
+    navigateToAddVet() {
+      this.router.navigate(['/add-vet']);
     }
   }
 

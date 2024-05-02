@@ -23,6 +23,8 @@ export class PetAppointmentCardComponent {
   }
   @Input()
   appointmentcard!: AppointmentCardDto;
+  @Input()
+  user!:string;
 
   constructor(private snackBar: MatSnackBar, private service :FeedbackService){}
   feedbackDetails: any[]=[];

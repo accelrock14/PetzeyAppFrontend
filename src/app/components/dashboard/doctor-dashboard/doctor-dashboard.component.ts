@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './doctor-dashboard.component.css'
 })
 export class DoctorDashboardComponent implements OnInit {
+  user:string = "Doctor";
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
   selectedStatus: string = "";
