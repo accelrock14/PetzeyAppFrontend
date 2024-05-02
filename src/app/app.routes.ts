@@ -22,6 +22,9 @@ import { EditAppointmentFormComponent } from './components/edit-appointment-form
 
 import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-profile-appt.component';
+import { doctorGuard } from './guards/doctor.guard';
+import { receptionistGuard } from './guards/receptionist.guard';
+import { loggedInGuard } from './guards/logged-in.guard';
 VetProfileApptComponent
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -85,7 +88,7 @@ export const routes: Routes = [
     component: SigninComponent,
     title: "SignIn",
   },
-  {path:'add-vet',component:AddVetComponent},
+  {path:'add-vet',component:AddVetComponent,canActivate:[loggedInGuard,receptionistGuard]},
   {path:'vet', component:VetComponent},
 
   {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},

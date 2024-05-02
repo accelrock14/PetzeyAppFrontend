@@ -62,6 +62,7 @@ throw new Error('Method not implemented.');
   vetProfile?: IVetProfileDTO;
 
   constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService) { }
+  role:any;
   // 
   ngOnInit(): void {
     // Get the vet ID from the route parameter
@@ -77,6 +78,10 @@ throw new Error('Method not implemented.');
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
     }
+
+    this.role=this.auth.getRoleFromToken();
+
+    
     if (this.auth.isLoggedIn()) {
     this.VetNPI=this.auth.getVPIFromToken()
     this.vetService.getVetsByNPINumber(this.VetNPI).subscribe((data) =>{
