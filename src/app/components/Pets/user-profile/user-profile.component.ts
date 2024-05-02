@@ -19,7 +19,7 @@ export class UserProfileComponent implements OnInit{
   petToDelete!: IPet;
   user!: any;
 
-  constructor(private petsService: PetsService, private auth:AuthService, private router:Router) { }
+  constructor(private petsService: PetsService, public auth:AuthService, private router:Router) { }
 
   ngOnInit(): void {
     console.log("ngOnInit() is called");
