@@ -54,17 +54,22 @@ return parseInt(arg0);
   };
   formModal: any;
   formModal2: any;
+  //vetId:number=0;
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
     private route: ActivatedRoute,
     private prtSetvice: PetsService
   ) {}
   ngOnInit(): void {
-    const ID: any = this.route.snapshot.paramMap.get('id');
+    const ID: string= this.route.snapshot.paramMap.get('id')!;
+    //console.log(ID+" "+typeof(parseInt(ID)))
+    
     this.appointmentDetailsService
-      .GetAppointmentDetail(ID)
+      .GetAppointmentDetail(parseInt(ID))
       .subscribe((appointment: any) => (this.appointment = appointment));
-
+//this.vetId =parseInt(this.appointment.DoctorID)
+// console.log(this.appointment)
+// console.log("in details"+this.vetId)
     // this.appointmentDetailsService.GetAllPetIDByVetId(1)
     // .subscribe({
     //   next:(data)=>{

@@ -12,6 +12,7 @@ export class AppointmentDetailsService {
 
   constructor(private http: HttpClient) { }
   GetAppointmentDetail(AppointmentID: number):Observable<any> {
+    //console.log(AppointmentID+"in service"+typeof(AppointmentID))
     const url = `${this.apiUrl}/${AppointmentID}`;
     return this.http.get<any>(url);
   }
