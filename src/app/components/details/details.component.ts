@@ -96,7 +96,7 @@ export class DetailsComponent implements OnInit {
   }
   closeAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 3) 
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
