@@ -7,6 +7,8 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AgePipe } from '../../../pipes/Age/age.pipe';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,7 +35,9 @@ export class UserProfileComponent implements OnInit {
     private petsService: PetsService,
     public auth: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private vetservice:VetsserviceService, 
+    private toastr: ToastrService
   ) {
 
     this.newPetForm = this.fb.group({
@@ -72,6 +76,12 @@ export class UserProfileComponent implements OnInit {
     //   this.user = data;
     // })
 
+     
+   this.decideDestiny()
+  
+
+
+
 
     this.petParentID = this.auth.getUIDFromToken()
     console.log(this.petParentID)
@@ -80,6 +90,55 @@ export class UserProfileComponent implements OnInit {
       this.pets = data;
     })
 
+  }
+
+  validDoctor:boolean=false
+  errorMessage:string=""
+
+  
+  decideDestiny():void{
+    if(this.auth.isLoggedIn()){
+      if(this.auth.getRoleFromToken()=="Doctor"){
+
+        this.vetservice.checkNpi(this.auth.getVPIFromToken()).subscribe({
+          next:(res)=>{
+             
+            console.log(res);
+            this.validDoctor=res
+            this.toastr.success("Welcome")
+            
+            
+          },
+          error:(err)=>{
+
+            console.log(err.error.Message);
+            this.errorMessage=err
+            this.auth.logOut()
+            this.router.navigate(['/signin'])
+            this.toastr.error(err.error.Message)
+            
+          }
+            
+            
+          }
+
+        )
+
+
+
+        // if(this.vetservice.checkNpi(this.auth.getVPIFromToken())){
+        //   // this.router.navigate(['/home']);
+        //   console.log("true part");
+          
+        // }
+        // else{
+        //   console.log("false part");
+          
+        //   this.auth.logOut();
+        //   this.router.navigate(['/signin'])
+        // }
+      }
+    }
   }
 
   setPetToDelete(pet: IPet, event: MouseEvent) {
@@ -242,7 +301,7 @@ export class UserProfileComponent implements OnInit {
       this.petsService.AddPet(this.NewPet!).subscribe({
         next: updatedPet => {
           // Handle success, if needed
-          console.log('Pet updated successfully:', updatedPet);
+          console.log('Pet added successfully:', updatedPet);
 
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
             this.pets = data;

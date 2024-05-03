@@ -18,7 +18,7 @@ export class FormatDatePipe implements PipeTransform {
     const month = datePipe.transform(value, 'MMMM');  // Use 'MMMM' for full month name
     const year = datePipe.transform(value, 'yyyy');
 
-    return `${day}${ordinalSuffix} ${month} ${year}`;
+    return `${day} ${month} ${year}`;
   }
 
 

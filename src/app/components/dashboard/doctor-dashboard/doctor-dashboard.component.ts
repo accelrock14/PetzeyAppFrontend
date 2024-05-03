@@ -52,7 +52,7 @@ export class DoctorDashboardComponent implements OnInit {
     let doc: IVet;
     this.vetService.getVetsByNPINumber(npi).subscribe(data => {
       doc = data;
-      this.doctorIdFromNPI = String(doc.vetId);
+      this.doctorIdFromNPI = String(doc.VetId);
     })
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
