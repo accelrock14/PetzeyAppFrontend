@@ -301,7 +301,7 @@ export class UserProfileComponent implements OnInit {
       this.petsService.AddPet(this.NewPet!).subscribe({
         next: updatedPet => {
           // Handle success, if needed
-          console.log('Pet updated successfully:', updatedPet);
+          console.log('Pet added successfully:', updatedPet);
 
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
             this.pets = data;
