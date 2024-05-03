@@ -231,14 +231,14 @@
                   class="medicine-name d-flex justify-content-between"
                   id="medicineHeading"
                 >
-                  <h6>
+                  <b>
                     {{
                       $index +
                         1 +
                         ". " +
                         getMedicineById(prescription.MedicineID)?.MedicineName
                     }}
-                  </h6>
+                  </b>
 
                   <div *ngIf="isEditing">
                     <button
@@ -487,16 +487,14 @@
                 <p class="m-0 d-inline-block fw-bolder">
                   {{ getDoctorById(doctorId)?.Name }}
                 </p>
-                @if (report.Comment!=null && report.Comment!='')
-                {
-                  <p>{{ report.Comment }}</p>
+                @if (report.Comment!=null && report.Comment!='') {
+                <p>{{ report.Comment }}</p>
+                } @else {
+                <div class="text-center text-danger mt-1">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <p>No Commemts given</p>
+                </div>
                 }
-                @else {
-                  <div class="text-center text-danger mt-1">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <p>No Commemts given</p>
-                  </div>
-                  }
               </div>
             </div>
             <textarea
