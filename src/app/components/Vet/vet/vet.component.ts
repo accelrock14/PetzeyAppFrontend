@@ -27,7 +27,7 @@ export class VetComponent implements OnInit{
   fVets: any[] = [];
   dropdownSettings = {};
   currentPage: number = 1;
-  pageSize: number = 4; 
+  pageSize: number = 2; 
   totalPages: number = 1; 
  
   constructor(private vetService: VetsserviceService,private router: Router) { 
@@ -96,6 +96,9 @@ export class VetComponent implements OnInit{
           vet.Speciality.toLowerCase().includes (this.searchQuery.toLowerCase()) 
         );
       }
+      this.currentPage = 1; // Reset to first page
+      this.totalPages = Math.ceil(this.filteredVets.length / this.pageSize);
+      this.updateFilteredVets();
     }
     
 
@@ -129,13 +132,19 @@ export class VetComponent implements OnInit{
         this.vetService.getVetsBySpecialty(this.selectedSpecialties).subscribe({
           next: (vets) => {
             this.fVets = vets;
+            this.currentPage = 1;
             console.log(this.fVets)
+            this.totalPages = Math.ceil(this.fVets.length / this.pageSize);
+            this.updateFilteredVets(); 
           },
           
           error: (err) => console.error(err)
         });
       } else {
         this.fVets = [];
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.updateFilteredVets();
       }
     }
 
