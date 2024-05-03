@@ -169,8 +169,8 @@
         </a>
       </li>
 
-      @if(auth.getRoleFromToken() == "Owner")
-      {
+      <!-- @if(auth.getRoleFromToken() == "Owner")
+      { -->
       <li class="sidebar-item" [hidden]="!auth.isLoggedIn() ">
         <a
           routerLink="/profile"
@@ -183,7 +183,7 @@
           <span>Profile</span>
         </a>
       </li>
-    }
+    <!-- } -->
 
     </ul>
     <div class="sidebar-footer" [hidden]="auth.isLoggedIn()">
