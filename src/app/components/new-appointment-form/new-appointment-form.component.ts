@@ -341,6 +341,15 @@ closeCancelModal(){
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.
+    // console.log("printing before posting "+ this.appointmentDetail);
+    // console.log(this.appointmentDetail.AppointmentID);
+    // console.log(this.appointmentDetail.DoctorID);
+    // console.log(this.appointmentDetail.OwnerID);
+    // console.log(this.appointmentDetail.PetID);
+    // console.log(this.appointmentDetail.BookingDate);
+    // console.log(this.appointmentDetail.ScheduleTimeSlot);
+    // console.log(this.appointmentDetail.PetIssues);
+    // console.log(this.appointmentDetail.Report);
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
       next:(response)=>{console.log("success---posting",response);},
       error:(err)=>{console.log("got error while posting",err);}
