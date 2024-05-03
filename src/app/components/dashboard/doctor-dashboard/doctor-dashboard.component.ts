@@ -43,17 +43,11 @@ export class DoctorDashboardComponent implements OnInit {
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset,this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
     })
-    // this.service.GetVetAppointments(1).subscribe(data => {
-    //   this.appointmentCards = data
-    //   this.filteredAppointments = [...this.appointmentCards]; // Initialize filteredAppointments here
-    //   this.pageClick(this.page);
-    // });
 
     this.service.GetStatusCounts(this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentStatus = data;
     })
   }
-  // filteredAppointments : AppointmentCardDto[] =[]
 
   onDateStatusChange() {
     
@@ -62,12 +56,6 @@ export class DoctorDashboardComponent implements OnInit {
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
       this.appointmentCards = data;
     })
-  //   this.filteredAppointments = this.appointmentCards.filter(appointment => {
-  //     const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
-  //     const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
-  //     return matchesDate && matchesStatus;
-  // });
-    // this.pageClick(this.page);
   }
 
   pageClick(pageInput:number) {
@@ -84,29 +72,6 @@ export class DoctorDashboardComponent implements OnInit {
       this.appointmentCards = data;
     })
   }
-//   pageClick(pageInput: number) {
-//     this.page = pageInput; // Update the current page
-//     if(pageInput == this.page - 1){
-//           this.page--;
-//         }
-//         else if(pageInput == this.page + 1) {
-//           this.page++;
-//         }
-//     const pageSize = 3; // Number of appointments per page
-//     this.offset = (this.page - 1) * pageSize; // Calculate the starting index for the displayed appointments
-
-//     // Apply filters and update filteredAppointments based on the new offset
-//     this.filteredAppointments = this.appointmentCards
-//         .filter(appointment => {
-//             const matchesDate = !this.selectedDate || new Date(appointment.ScheduleDate).toDateString() === new Date(this.selectedDate).toDateString();
-//             const matchesStatus = !this.selectedStatus || appointment.Status === this.selectedStatus;
-//             return matchesDate && matchesStatus;
-//         })
-//         .slice(this.offset, this.offset + pageSize); // Slice the array to get only the appointments for the current page
-// }
-
-
-
   isPreviousPageDisabled() {
     return this.page === 1;
   }

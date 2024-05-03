@@ -1,6 +1,6 @@
 export interface AppointmentCardDto {
     AppointmentID: number;
-    DoctorID: number;
+    DoctorID: string;
     PetID: number;
     PetName: string;
     PetAge: number;

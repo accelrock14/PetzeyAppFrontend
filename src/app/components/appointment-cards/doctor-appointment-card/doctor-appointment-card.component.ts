@@ -6,17 +6,17 @@ import { RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
+import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 
 @Component({
   selector: 'app-doctor-appointment-card',
   standalone: true,
-  imports: [DatePipe, FormsModule, CommonModule, RouterLink],
+  imports: [DatePipe, FormsModule, CommonModule, RouterLink, EllipsisPipe],
   templateUrl: './doctor-appointment-card.component.html',
   styleUrl: './doctor-appointment-card.component.css'
 })
 export class DoctorAppointmentCardComponent {
 openPopup(arg0: string) {
-  // alert("This service will be available soon")
   this.snackBar.open(`${arg0} service will be available soon`, "Close", {
     verticalPosition: 'bottom'
   })
