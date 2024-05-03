@@ -239,7 +239,7 @@ closeCancelModal(){
     }
     // by default it should fetch the schedules for today.
     //||||||||||||||||||||||||||| major change in vet ID |||||||||||||||||||||||||||||||||||||
-    this.appointmentDetail.DoctorID=vid as unknown as string;
+    this.appointmentDetail.DoctorID=vid.toString();
     this.selectedScheduleDate = new Date();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.selectedScheduleDate)).subscribe({
       next:(data)=>{
@@ -337,11 +337,12 @@ closeCancelModal(){
     this.appointmentDetail.Status=Status.Pending;
     this.appointmentDetail.Report=null;
     this.appointmentDetail.ScheduleTimeSlot=this.selectedIndex!;
+    this.appointmentDetail.OwnerID = this.userService.getUIDFromToken();
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
-      next:(response)=>{console.log("successposting",response);},
+      next:(response)=>{console.log("success---posting",response);},
       error:(err)=>{console.log("got error while posting",err);}
     });
     this.closeModal();
