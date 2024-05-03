@@ -11,99 +11,106 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 
 @Component({
-    selector: 'app-pets-list-grid',
-    standalone: true,
-    templateUrl: './pets-list-grid.component.html',
-    styleUrl: './pets-list-grid.component.css',
-    imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
+  selector: 'app-pets-list-grid',
+  standalone: true,
+  templateUrl: './pets-list-grid.component.html',
+  styleUrl: './pets-list-grid.component.css',
+  imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
 })
-export class PetsListGridComponent implements OnInit{
+export class PetsListGridComponent implements OnInit {
 
-  pets : IPet[] =[]
-  recentlyConsultedPets : IPet[] =[]
-  petsFilter : IPetFilterParams ={
-    PetName:"",
-    Species:"",
-    PetIDs:[]
-   };
+  pets: IPet[] = []
+  recentlyConsultedPets: IPet[] = []
+  petsFilter: IPetFilterParams = {
+    PetName: "",
+    Species: "",
+    PetIDs: []
+  };
 
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
-  errorMessage: string ='';
+  errorMessage: string = '';
   currentPage = 1;
   itemsPerPage = 4; // Change this value as per your requirement
   totalPages = 0;
   pages: number[] = [];
 
-searchPets() {
-  this.petsService.FilterPets(this.petsFilter)
-  .subscribe(pets => {
+  searchPets() {
+    this.petsService.FilterPets(this.petsFilter)
+      .subscribe(pets => {
 
-    console.log('Original pets:',this.pets);
+        console.log('Original pets:', this.pets);
 
-    this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,4);
-    console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+        this.recentlyConsultedPets = pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
-    this.errorMessage = ''; // Clear error message on successful retrieval
-   },
-   error => {
-     if (error.status === 404) {
-       this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-     } else {
-       this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-     }
-   })
-}
+        this.errorMessage = ''; // Clear error message on successful retrieval
+      },
+        error => {
+          if (error.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+          }
+        })
+  }
 
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService : AuthService,
-    private appointmentDetailsService:  AppointmentDetailsService){}
+    private authService: AuthService,
+    private appointmentDetailsService: AppointmentDetailsService) { }
 
   ngOnInit(): void {
 
-   if(this.authService.isLoggedIn())
-    {
+    if (this.authService.isLoggedIn()) {
       console.log("logged in");
-       if(this.authService.getRoleFromToken() == 'Doctor')
-        {
-          console.log("doctor");
-          console.log(this.authService.getUIDFromToken());
+      if (this.authService.getRoleFromToken() == 'Doctor') {
+        console.log("doctor");
+        console.log(this.authService.getUIDFromToken());
 
-          // uncomment this while integrating
+        // uncomment this while integrating
 
-          // this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
-          //   .subscribe({
-          //   next:(data)=>{
-          //   this.petsFilter.PetIDs = data;
-          //   this.errorMessage = '';
-          //  },
-          //   error:(err)=>{
-          //     console.log("error while fetching",err);
-          //     if (err.status === 404) {
-          //       this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-          //     } else {
-          //       this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-          //     }
-          //   }
-          // });
+        this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
+          .subscribe({
+            next: (data) => {
+              console.log('data', data)
+              if (data.length != 0) {
+                this.petsFilter.PetIDs = data;
+                this.errorMessage = '';
 
-          console.log(this.petsFilter.PetIDs);
-        }
+              }
+              else {
+                this.petsFilter.PetIDs = [-1]
+              }
+              this.calculateTotalPages();
+
+
+
+              this.route.params.subscribe(params => {
+                const pageNumber = +params['page'];
+                if (!isNaN(pageNumber) && pageNumber > 0) {
+                  this.currentPage = pageNumber;
+                  this.filterPetsPerPage(pageNumber);
+                } else {
+                  this.updateRoute(1)
+                }
+              });
+            },
+            error: (err) => {
+              this.petsFilter.PetIDs = [-1]
+              console.log("error while fetching", err);
+              if (err.status === 404) {
+                this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+              } else {
+                this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+              }
+            }
+          });
+        console.log(this.petsFilter.PetIDs);
+      }
     }
 
-    this.calculateTotalPages();
 
-
-    this.route.params.subscribe(params => {
-      const pageNumber = +params['page'];
-      if (!isNaN(pageNumber) && pageNumber > 0) {
-        this.currentPage = pageNumber;
-        this.filterPetsPerPage(pageNumber);
-      } else {
-        this.updateRoute(1)
-      }
-    });
 
     // this.searchPets();
   }
@@ -111,6 +118,7 @@ searchPets() {
 
   filterPetsPerPage(page: number): void {
     this.calculateTotalPages()
+    console.log('filter', this.petsFilter.PetIDs)
     this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
       .subscribe(pets => {
         this.pets = pets;
@@ -161,7 +169,7 @@ searchPets() {
   }
 
   nextPage(): void {
-    if(this.currentPage < this.pages[this.pages.length - 1]){
+    if (this.currentPage < this.pages[this.pages.length - 1]) {
       this.updateRoute(this.currentPage + 1);
     }
     console.log(this.pets)
