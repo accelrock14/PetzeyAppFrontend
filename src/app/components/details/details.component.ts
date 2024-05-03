@@ -120,8 +120,8 @@ return parseInt(arg0);
       .AddLastAppointmentDate(
         this.appointment.PetID,
         this.appointment.ScheduleDate
-      )
-      .subscribe();
+      );
+      
   }
   cancelAppointment() {
     this.appointmentDetailsService
