@@ -39,8 +39,8 @@ export class DoctorDashboardComponent implements OnInit {
 
   constructor(private service: DashboardService, public authService : AuthService) {}
   ngOnInit(): void {
-    console.log(this.authService.getUIDFromToken());
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    console.log("here"+this.authService.getUIDFromToken());
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset,'2').subscribe(data => {
       this.appointmentCards = data;
     })
     // this.service.GetVetAppointments(1).subscribe(data => {
