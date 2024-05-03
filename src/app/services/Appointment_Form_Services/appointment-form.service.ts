@@ -13,12 +13,12 @@ import { AppointmentDetail } from '../../models/AppointmentDetail';
 export class AppointmentFormService {
 
   constructor(private backendClient:HttpClient) { }
-  private generalPetIssuesUrl = 'https://localhost:44327/api/AppointmentDetails/GeneralPetIssues';
+  private generalPetIssuesUrl = 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/GeneralPetIssues';
   private myJsonServerUrl='http://localhost:3000/';
-  private postAppointmentUrl="https://localhost:44327/api/Appointment";
-  private getScheduleSlotsUrl="https://localhost:44327/api/AppointmentDetails/schedules/";
-  private getAppointmentByIdUrl='https://localhost:44327/api/Appointment/';
-  private editAppointmentUrl = "https://localhost:44327/api/Appointment/";
+  private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
+  private getScheduleSlotsUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/schedules/";
+  private getAppointmentByIdUrl='https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/';
+  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/https://localhost:44327/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
