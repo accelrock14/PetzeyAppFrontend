@@ -35,6 +35,9 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
+parseToInt(arg0: string): number {
+return parseInt(arg0);
+}
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
