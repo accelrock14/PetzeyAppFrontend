@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnChanges, OnInit, SimpleChanges, } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild, } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
 import { Veterinarian } from '../../models/Veterinarian';
 import { PetParent } from '../../models/PetParent';
@@ -12,6 +12,7 @@ import { AppointmentFormService } from '../../services/Appointment_Form_Services
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/UserAuthServices/auth.service';
 
 declare var window:any;
 @Component({
@@ -37,10 +38,6 @@ export class NewAppointmentFormComponent implements OnInit {
   this.location.back();
   }
   
-
-
-
-
   formModal:any;
   cancelAptModal:any;
 
@@ -61,7 +58,7 @@ export class NewAppointmentFormComponent implements OnInit {
   selectedScheduleDate:Date=new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar,private userService:AuthService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -84,10 +81,36 @@ export class NewAppointmentFormComponent implements OnInit {
   petSearchText = '';
   filteredPets:Pet[]=[];
 
+  @ViewChild('inputForSelectingVet') inputForSelectingVet?: NgModel;
+
+
+  What_Flow:string='';
+  isReceptionist:boolean=false;
+  isDoctor:boolean=false;
+  isOwner:boolean=false;
 
 
   ngOnInit(): void {
 
+    if(!this.userService.isLoggedIn()){
+      this.route.navigate(['/signin']);
+    }
+
+    this.What_Flow = this.userService.getRoleFromToken() as string;
+    if(this.What_Flow=='Owner'){
+      console.log("logged in as "+this.What_Flow);
+      
+      this.isOwner = true;
+    }
+    else if(this.What_Flow=='Doctor'){
+      this.isDoctor = true;
+      console.log("logged in as "+this.What_Flow);
+    }
+    else{
+      this.isReceptionist=true;
+      console.log("logged in as "+this.What_Flow);
+    }
+    
     // modal popup code 
     this.formModal= new window.bootstrap.Modal(
       document.getElementById("myModalPopup")

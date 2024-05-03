@@ -1,0 +1,8 @@
+<div class="container my-4">
+    <h2 class="mb-3">Appointment History</h2>
+    <div class="scrolling-wrapper">
+        @for (appointment of appointmentcard; track $index) {
+            <app-pet-appointment-card [appointmentcard]="appointment"></app-pet-appointment-card>
+        }
+    </div>
+</div>

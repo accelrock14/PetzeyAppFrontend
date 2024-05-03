@@ -12,6 +12,7 @@ import { AppointmentFormService } from '../../services/Appointment_Form_Services
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/UserAuthServices/auth.service';
 
 declare var window:any;
 @Component({
@@ -60,7 +61,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private userService:AuthService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -83,9 +84,27 @@ this.location.back();
   petSearchText = '';
   filteredPets: Pet[] = [];
 
-
+  What_Flow:string='';
+  isReceptionist:boolean=false;
+  isDoctor:boolean=false;
+  isOwner:boolean=false;
 
   ngOnInit(): void {
+
+    if(!this.userService.isLoggedIn()){
+      this.route.navigate(['/signin']);
+    }
+
+    this.What_Flow = this.userService.getRoleFromToken() as string;
+    if(this.What_Flow=='Owner'){
+      this.isOwner = true;
+    }
+    else if(this.What_Flow=='Doctor'){
+      this.isDoctor = true;
+    }
+    else{
+      this.isReceptionist=true;
+    }
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
