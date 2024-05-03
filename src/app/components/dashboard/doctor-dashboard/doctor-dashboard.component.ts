@@ -40,7 +40,7 @@ export class DoctorDashboardComponent implements OnInit {
   constructor(private service: DashboardService, public authService : AuthService) {}
   ngOnInit(): void {
     console.log("here"+this.authService.getUIDFromToken());
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset,'2').subscribe(data => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset,this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
     })
     // this.service.GetVetAppointments(1).subscribe(data => {
@@ -49,7 +49,7 @@ export class DoctorDashboardComponent implements OnInit {
     //   this.pageClick(this.page);
     // });
 
-    this.service.GetStatusCounts("1").subscribe(data => {
+    this.service.GetStatusCounts(this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentStatus = data;
     })
   }
