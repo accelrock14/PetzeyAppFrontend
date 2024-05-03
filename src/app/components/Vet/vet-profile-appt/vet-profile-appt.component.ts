@@ -14,24 +14,28 @@ export class VetProfileApptComponent {
     constructor(private route: ActivatedRoute, private vetService: VetsserviceService) { }
     vetProfile?: IVetProfileDTO;
   
-    @Input()
-    VetId:number = 0;
+    
     ngOnInit(): void {
-      // Get the vet ID from the route parameter
-      const idParam = this.VetId.toString();
-      //this.route.snapshot.paramMap.get('id');
       
-      if (idParam !== null) {
-        const vetId = parseInt(idParam);
+      // Get the vet ID from the route parameter
+      //const idParam = this.route.snapshot.paramMap.get('id');
+      
+      // if (idParam !== null) {
+      //   const vetId = parseInt(idParam);
         // Fetch vet profile details by ID
-        this.vetService.getVetById(vetId).subscribe(profile => {
+        console.log("vets"+this.VetId);
+        this.vetService.getVetById(parseInt(this.VetId)).subscribe(profile => {
           this.vetProfile = profile;
+          
         });
-      } else {
-        // Handle the case when the route parameter is null
-        console.error('Vet ID parameter is null.');
-      }
+      // } else {
+      //   // Handle the case when the route parameter is null
+      //   console.error('Vet ID parameter is null.');
+      // }
+      console.log("vet here"+this.vetProfile);
     }
+    @Input()
+    VetId:string = '';
   
   }
 

@@ -5,6 +5,8 @@ import { IPetFilterParams } from '../../models/Pets/IPetFilterParams';
 import { HttpClient } from '@angular/common/http';
 import { NumberSymbol } from '@angular/common';
 import { petsServiceUrl } from '../../Shared/apiUrls';
+import { defaultEquals } from '@angular/core/primitives/signals';
+import { DYNAMIC_TYPE } from '@angular/compiler';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
@@ -18,7 +20,7 @@ export interface IPetsService{
   GetPetsByParentID(petParentID:string):Observable<IPet[]>;
   GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
-  AddLastAppointmentDate(ID:number,date:Date):Observable<object>;
+  AddLastAppointmentDate(ID:number,date:Date):void;
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
 }
 export let petToken = new InjectionToken<IPetsService>('IPetsToken')
@@ -77,9 +79,10 @@ export class PetsService implements IPetsService{
     const apiUrlDeletePetbyID=`${petsServiceUrl}/${petID}`;
     return this.apiService.delete(apiUrlDeletePetbyID)
   }
-  AddLastAppointmentDate(ID: number, date: Date): Observable<object> {
-    const apiUrlAddLastAppointmentDate="";
-    return this.apiService.put(apiUrlAddLastAppointmentDate,date)
+  AddLastAppointmentDate(petID: number, date: Date) {
+    const apiUrlAddLastAppointmentDate=`${petsServiceUrl}/AddLastAppointmentDate/${petID}`;
+    const tempDate: Date = new Date(date)
+    this.apiService.put(apiUrlAddLastAppointmentDate,tempDate).subscribe()
   }
 
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>{
