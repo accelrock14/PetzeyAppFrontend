@@ -7,17 +7,19 @@ import { ReportHistoryComponent } from '../../appointments/report-history/report
 import { DatePipe, NgIf, formatDate } from '@angular/common';
 import { FormatDatePipe } from '../../../pipes/Date/format-date.pipe';
 import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-pet-profile',
   standalone: true,
   templateUrl: './pet-profile.component.html',
   styleUrl: './pet-profile.component.css',
-  imports: [AgePipe, FormatDatePipe, NgIf, RouterLink, ReportHistoryComponent, PetAppointmentsListComponent]
+  imports: [AgePipe, FormatDatePipe,DatePipe, NgIf, RouterLink, ReportHistoryComponent, PetAppointmentsListComponent]
 })
 export class PetProfileComponent implements OnInit {
 
-  constructor(private petsService: PetsService, private activatedRoute: ActivatedRoute) {
+  Owner: any|null;
+  constructor(private petsService: PetsService, private activatedRoute: ActivatedRoute, public auth: AuthService) {
 
   }
 
@@ -26,6 +28,11 @@ export class PetProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    if (this.auth.isLoggedIn()) {
+      this.Owner = this.auth.getLoggedInUserObject()
+      console.log(this.Owner);
+    }
 
     const id = (this.activatedRoute.snapshot.paramMap.get('id'))
     console.log(id);
@@ -40,11 +47,11 @@ export class PetProfileComponent implements OnInit {
 
   Pet: IPet = {} as IPet;
 
-  Owner = {
-    ownerName: "Jack Hall",
-    email: "jhondoe@gmail.com",
-    address: "Bangalore, Karnataka, 560102",
-    phoneNo: "+44 2071838750"
-  }
+  // Owner = {
+  //   ownerName: "Jack Hall",
+  //   email: "jhondoe@gmail.com",
+  //   address: "Bangalore, Karnataka, 560102",
+  //   phoneNo: "+44 2071838750"
+  // }
 
 }
