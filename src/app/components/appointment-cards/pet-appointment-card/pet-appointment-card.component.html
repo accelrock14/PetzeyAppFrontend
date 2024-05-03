@@ -25,8 +25,12 @@
     </div>                
     <div class="card-body">
         <a [routerLink]="'/' + user + 'Dashboard/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <a type="button"  class="btn col-md-6 col-12 px-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a>
-        {{role}}
+        <!-- <div ngIf="role!='Owner'"> -->
+          <a type="button" class="btn col-md-6 col-12 px-0"   *ngIf="role !== 'Doctor'" [attr.data-bs-toggle]="role === 'Doctor' ? null : 'modal'" 
+          [attr.data-bs-target]="role === 'Doctor' ? null : '#feedbackModal'"  (click)="clicked(appointmentcard.AppointmentID)" >Feedback</a>
+        <!-- </div> -->
+        
+        
     </div>
 </div> 
 

@@ -55,6 +55,7 @@ export class PetAppointmentCardComponent {
          }));
        })
        this.role=this.authservice.getRoleFromToken();
+       
       //  this.feedback.Questions = this.feedbackquestions.map(question => ({
       //        QuestionId:0,
       //        FeedbackQuestionId: question.FeedbackQuestionId,
@@ -125,6 +126,8 @@ export class PetAppointmentCardComponent {
              // Check if all questions have been rated
              return this.feedback.Questions.every(q => q.Rating !== 0);
            }
+          
+          
 
 }
 
