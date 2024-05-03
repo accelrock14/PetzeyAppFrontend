@@ -124,6 +124,30 @@ throw new Error('Method not implemented.');
       );
     }
   }
+
+  //Added
+  v:boolean=false;
+  CheckNpiNumber(npi:string):boolean{
+
+    this.vetService.checkNpi(npi).subscribe(v=>{
+      this.v=v;
+    })
+    return this.v;
+  }
   
+  decideDestiny():void{
+    if(this.auth.isLoggedIn()){
+      if(this.auth.getRoleFromToken()=="Doctor"){
+        if(this.CheckNpiNumber(this.auth.getVPIFromToken())){
+          this.router.navigate(['/home']);
+        }
+        else{
+          this.auth.logOut();
+          this.router.navigate(['/signin'])
+        }
+      }
+    }
+  }
+  //Ended
 
 }
