@@ -27,7 +27,7 @@ export class VetComponent implements OnInit{
   fVets: any[] = [];
   dropdownSettings = {};
   currentPage: number = 1;
-  pageSize: number = 2; 
+  pageSize: number = 4; 
   totalPages: number = 1; 
  
   constructor(private vetService: VetsserviceService,private router: Router) { 
