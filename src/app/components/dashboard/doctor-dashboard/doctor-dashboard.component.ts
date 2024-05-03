@@ -9,6 +9,8 @@ import { DashboardService } from '../../../services/DashboardServices/dashboard.
 import { PetAppointmentCardComponent } from '../../appointment-cards/pet-appointment-card/pet-appointment-card.component';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { IVet } from '../../../models/Vets/IVet';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -36,15 +38,27 @@ export class DoctorDashboardComponent implements OnInit {
     Closed: 0
   }
   page:number = 1;
+  doctorIdFromNPI: string = "";
 
-  constructor(private service: DashboardService, public authService : AuthService) {}
+  constructor(private service: DashboardService, public authService : AuthService, private vetService: VetsserviceService) {}
   ngOnInit(): void {
-    console.log(this.authService.getUIDFromToken());
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    // console.log(this.authService.getUIDFromToken());
+
+    let npi: any;
+    this.authService.getVPIFromToken().subscribe((data:any) => {
+      npi = data;
+    });
+
+    let doc: IVet;
+    this.vetService.getVetsByNPINumber(npi).subscribe(data => {
+      doc = data;
+      this.doctorIdFromNPI = String(doc.vetId);
+    })
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
     })
 
-    this.service.GetStatusCounts("1").subscribe(data => {
+    this.service.GetStatusCounts(this.doctorIdFromNPI).subscribe(data => {
       this.appointmentStatus = data;
     })
   }
@@ -53,7 +67,7 @@ export class DoctorDashboardComponent implements OnInit {
     
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
     })
   }
@@ -68,7 +82,7 @@ export class DoctorDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
     })
   }
