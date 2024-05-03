@@ -100,7 +100,7 @@
   <div class="row">
     <!-- First Child Component -->
     <div class="col-md-8 pe-1">
-        <app-appointment-pet-profile [PetId]="appointment.PetID"></app-appointment-pet-profile>
+        <app-appointment-pet-profile [PetId]="appointment.PetID" *ngIf="appointment.PetID != undefined"></app-appointment-pet-profile>
     </div>
     <!-- Second Child Component -->
     <div class="col-md-4 ps-1">
