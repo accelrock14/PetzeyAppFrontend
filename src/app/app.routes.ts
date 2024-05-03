@@ -98,5 +98,9 @@ export const routes: Routes = [
   },
   {
     path:'editAppointment/:AppointmentID',component:EditAppointmentFormComponent
+  },
+  //Added
+  {
+    path:'home',component:HomeComponent
   }
 ];

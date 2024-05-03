@@ -80,4 +80,8 @@ export class VetsserviceService {
   formData.append('file', photo); 
     return this.http.post<any>(this.apiUrl + `/upload-photo/${id}`, formData, );
   }
+  checkNpi(npi:string):Observable<boolean>{
+    const url=`${this.apiUrl}/AllNpi/${npi}`
+    return this.http.get<any>(url);
+  }
 }
