@@ -12,7 +12,7 @@ import { VetDTO } from '../../models/Vets/IVetDTO';
   providedIn: 'root',
 })
 export class VetsserviceService {
-  private apiUrl = 'https://localhost:44304/api/vets';
+  private apiUrl = 'https://petzyvetapi20240502220748.azurewebsites.net/api/vets';
 
   constructor(private http: HttpClient) {}
 
