@@ -6,9 +6,9 @@
         </div>
         <div class="col-md-8 col-12">
             <div class="card-body">
-                <h5 class="card-title card-content">{{ appointmentcard.PetName }}</h5>
+                <h5 class="card-title card-content">{{ appointmentcard.PetName | ellipsis}}</h5>
                 <p class="text-muted">{{ appointmentcard.PetGender }} ({{appointmentcard.PetAge}}) </p>
-                <p class="text-muted card-text">Owner: {{ appointmentcard.OwnerName }}</p>
+                <p class="text-muted card-text">Owner: {{ appointmentcard.OwnerName | ellipsis}}</p>
             </div>
         </div>
     </div>
