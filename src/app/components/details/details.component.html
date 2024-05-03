@@ -102,6 +102,7 @@
     <div class="col-md-8 pe-1">
         <app-appointment-pet-profile [PetId]="appointment.PetID"></app-appointment-pet-profile>
     </div>
+    <!-- <p>{{appointment.PetID}}</p> -->
     <!-- Second Child Component -->
     <div class="col-md-4 ps-1">
         <app-vet-profile-appt [VetId]="parseToInt(appointment.DoctorID)"></app-vet-profile-appt>
