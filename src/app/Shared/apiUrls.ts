@@ -5,3 +5,6 @@ export const petsServiceUrl =
 
 export const appointmentServiceUrl =
   'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/';
+
+export const vetServiceUrl = 
+'https://petzyvetapi20240502220748.azurewebsites.net/'
