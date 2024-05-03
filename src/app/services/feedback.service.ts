@@ -12,17 +12,18 @@ export class FeedbackService {
 constructor(private http:HttpClient){}
 getData(id:number): Observable<Feedback> {
   
-  return this.http.get<Feedback>(`https://localhost:44327/api/Feedback/${id}`);
+  return this.http.get<Feedback>(`https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback/${id}`);
 }
 postData(obj:Feedback):Observable<Feedback>{
-
-  return this.http.post<Feedback>("https://localhost:44327/api/Feedback",obj);
+  console.log("Done");
+  return this.http.post<Feedback>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback",obj);
+  
 }
 getQuestions():Observable<FeedbackQuestion[]>{
-  return this.http.get<FeedbackQuestion[]>("https://localhost:44327/api/FeedbackQuestions");
+  return this.http.get<FeedbackQuestion[]>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/FeedbackQuestions");
 }
 getAllFeedback():Observable<Feedback[]>{
-  return this.http.get<Feedback[]>("https://localhost:44327/api/Feedback");
+  return this.http.get<Feedback[]>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback");
 }
 
 
