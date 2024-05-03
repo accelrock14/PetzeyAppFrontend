@@ -12,6 +12,11 @@
     font-weight: 500;
 }
 
+.heading {
+    padding-top: 16px;
+    font-size: 1.5rem;
+}
+
 /* Calendar input style */
 input[type="date"] {
     width: 100%;
