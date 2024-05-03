@@ -1,18 +1,33 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { Veterinarian } from '../../models/Veterinarian';
 import { PetParent } from '../../models/PetParent';
-import { Pet } from '../../models/Pet';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
+import { PetsService } from '../PetsServices/pets.service';
+import { IPet } from '../../models/Pets/IPet';
+import { VetsserviceService } from '../VetsServices/vetsservice.service';
+import { AuthService } from '../UserAuthServices/auth.service';
+import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppointmentFormService {
 
-  constructor(private backendClient:HttpClient) { }
+  petService = inject(PetsService); 
+  vetService = inject(VetsserviceService);
+  authService = inject(AuthService);
+
+  constructor(private backendClient:HttpClient) {
+      this.petService = inject(PetsService); 
+      this.vetService = inject(VetsserviceService);
+      this.authService = inject(AuthService);
+   }
+
+
   private generalPetIssuesUrl = 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/GeneralPetIssues';
   private myJsonServerUrl='http://localhost:3000/';
   private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
@@ -24,21 +39,21 @@ export class AppointmentFormService {
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
   }
 
-  getVeternarians():Observable<Veterinarian[]>{
-    return this.backendClient.get<Veterinarian[]>(this.myJsonServerUrl+"Veterinarians");
+  getVeternarians():Observable<IVetCardDTO[]>{
+    // return this.backendClient.get<Veterinarian[]>(this.myJsonServerUrl+"Veterinarians");
+    return this.vetService.getAllVets();
   }
 
   getPetParents():Observable<PetParent[]>{
     return this.backendClient.get<PetParent[]>(this.myJsonServerUrl+"PetParents");
+    // here call the auth service method to either retrieve all the pet parents or all the users and then filter them.
+    //
   }
 
-  getPets():Observable<Pet[]>{
-    return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets");
-  }
-
-  getAllPetsOfOwener(OwnerID:string):Observable<Pet[]>{
-    return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets/"+OwnerID);
-  }
+  // no use of this method now.
+  // getPets():Observable<IPet[]>{
+  //   return this.backendClient.get<IPet[]>(this.myJsonServerUrl+"Pets");
+  // }
 
   getScheduleSlotStatuses(doctorID:string,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
@@ -59,6 +74,7 @@ export class AppointmentFormService {
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 
-  
-
+  getAllPetsOfOwener(OwnerID: string):Observable<IPet[]> {
+    return this.petService.GetPetsByParentID(OwnerID);
+  }
 }

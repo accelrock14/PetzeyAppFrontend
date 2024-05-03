@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnChanges, OnInit, SimpleChanges, ViewChild, } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { Veterinarian } from '../../models/Veterinarian';
 import { PetParent } from '../../models/PetParent';
-import { Pet } from '../../models/Pet';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { PetIssue } from "../../models/PetIssue"
@@ -13,6 +11,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
+import { IPet } from '../../models/Pets/IPet';
+import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 
 declare var window:any;
 @Component({
@@ -66,9 +66,9 @@ export class NewAppointmentFormComponent implements OnInit {
   filteredpetIssues: GeneralPetIssue[] = [];
 
   // variable data for vets
-  veternarians: Veterinarian[] = []; // to be fetched from backend or dummy json server and assigned in oninit method
+  veternarians: IVetCardDTO[] = []; // to be fetched from backend or dummy json server and assigned in oninit method
   veternarianSearchText = '';
-  filteredVets: Veterinarian[] = [];
+  filteredVets: IVetCardDTO[] = [];
   vetDateAndSlotPicker:boolean=false;
 
   //// for pet parents
@@ -77,9 +77,9 @@ export class NewAppointmentFormComponent implements OnInit {
   filteredPetParents:PetParent[]=[];
 
   // for pets
-  pets: Pet[] = [];
+  pets: IPet[] = [];
   petSearchText = '';
-  filteredPets:Pet[]=[];
+  filteredPets:IPet[]=[];
 
   @ViewChild('inputForSelectingVet') inputForSelectingVet?: NgModel;
 
@@ -132,16 +132,20 @@ export class NewAppointmentFormComponent implements OnInit {
     });
 
     // this is the method to get Veternarians from the backend of other teams api
-    this.aptService.getVeternarians().subscribe({
-      next: (data) => {
-        this.veternarians = data;
-        this.filteredVets = this.veternarians;
-        console.log(this.veternarians);
-      },
-      error: (err) => { console.error('there was error in vets fetch', err); }
-    });
+    if(!this.isDoctor){
+      this.aptService.getVeternarians().subscribe({ // to get all vets. for patient and receptionist
+        next: (data) => {
+          this.veternarians = data;
+          this.filteredVets = this.veternarians;
+          console.log(this.veternarians);
+        },
+        error: (err) => { console.error('there was error in vets fetch', err); }
+      });
+    }
+    
 
     // this is the method for pet parents 
+    if(!this.isOwner){  // only do this if logged in user is a recep or doctor
     this.aptService.getPetParents().subscribe({
       next: (data) => {
         this.petParents = data;
@@ -150,30 +154,20 @@ export class NewAppointmentFormComponent implements OnInit {
       },
       error: (err) => { console.log('error in fetching petParents', err); }
     });
+  }
 
-    // this is the method for  fetching pets
-    this.aptService.getPets().subscribe({
-      next: (data) => {
-        this.pets = data;
-        this.filteredPets=this.pets;
-        console.log('pets are ', this.pets);
-      },
-      error: (err) => { console.log('eror in fetching pets', err); }
-    });
-
-    // get pets of particular parent.
-    // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
-    // ALSO DO THIS IN EDIT THING.
-    // this.aptService.getAllPetsOfOwener(this.appointmentDetail.OwnerID).subscribe({
-    //   next:(data)=>{
-    //     this.pets=data;
-    //   },
-    //   error:(err)=>{
-    //     console.log("error while fetching pets of a owener",err);
-        
-    //   }
-    // });
-
+    // this is the method for fetching pets
+    if(this.isOwner){
+      this.aptService.getAllPetsOfOwener(this.userService.getUIDFromToken()).subscribe({
+        next: (data) => {
+          this.pets = data;
+          this.filteredPets=this.pets;
+          console.log('pets are ', this.pets);
+        },
+        error: (err) => { console.log('eror in fetching pets', err); }
+      });
+    }
+    
   }
 // modal popup code for submission
 openModal(){
@@ -226,7 +220,7 @@ closeCancelModal(){
       }
     }
     else {
-      this.filteredVets = this.veternarians.filter(v => v.name.toLowerCase().includes(this.veternarianSearchText.toLowerCase()));
+      this.filteredVets = this.veternarians.filter(v => v.Name.toLowerCase().includes(this.veternarianSearchText.toLowerCase()));
       if(this.veternarianSearchText){
         this.vetDateAndSlotPicker=true;
       }else{
@@ -234,7 +228,7 @@ closeCancelModal(){
       }
     }
   }
-  selectVeternarian(vid: string, vname: string): void {
+  selectVeternarian(vid: number, vname: string): void {
     // we need to assign for the respective variable in the appointment object
     this.veternarianSearchText = vname;
     this.filteredVets = [];
@@ -244,7 +238,8 @@ closeCancelModal(){
       this.vetDateAndSlotPicker=false;
     }
     // by default it should fetch the schedules for today.
-    this.appointmentDetail.DoctorID=vid;
+    //||||||||||||||||||||||||||| major change in vet ID |||||||||||||||||||||||||||||||||||||
+    this.appointmentDetail.DoctorID=vid as unknown as string;
     this.selectedScheduleDate = new Date();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.selectedScheduleDate)).subscribe({
       next:(data)=>{
@@ -301,6 +296,18 @@ closeCancelModal(){
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID=ppid;
+
+    // get pets of particular parent.
+    // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
+    // ALSO DO THIS IN EDIT THING.
+    this.aptService.getAllPetsOfOwener(this.appointmentDetail.OwnerID).subscribe({
+      next:(data)=>{
+        this.pets=data;
+      },
+      error:(err)=>{
+        console.log("error while fetching pets of a owener",err);
+      }
+    });
   }
 
   // methods for pets 
@@ -309,7 +316,7 @@ closeCancelModal(){
       this.filteredPets=[];
     }
     else{
-      this.filteredPets = this.pets.filter(p=>p.name.toLowerCase().includes(this.petSearchText.toLowerCase()));
+      this.filteredPets = this.pets.filter(p=>p.PetName.toLowerCase().includes(this.petSearchText.toLowerCase()));
     }
   }
   selectPet(petid: number,petname: string) {
@@ -348,3 +355,4 @@ closeCancelModal(){
   }
 
 }
+
