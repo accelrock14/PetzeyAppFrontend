@@ -53,7 +53,7 @@
               <img src="{{ vetProfile!.Photo }}" alt="Image" class="img-thumbnail mb-3" style="width: 100px; height: auto;">
             
               <!-- File Input for New Image -->
-              <input type="file" id="profileImage" (change)="onImageSelected($event)" class="form-control-file">
+              <input type="file" id="profileImage" (change)="onImageSelected($event)"  [(ngModel)]="vetProfile!.Photo" name="Photo"class="form-control-file">
             
               <!-- Preview of New Image -->
               <img [src]="imageSrc" *ngIf="imageSrc" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
