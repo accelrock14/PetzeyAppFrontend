@@ -7,12 +7,13 @@ import { IVetProfileDTO } from '../../models/Vets/IVetProfileDto';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IVetIdNameDTO } from '../../models/Vets/IVetIDNameDto';
 import { VetDTO } from '../../models/Vets/IVetDTO';
+import { vetServiceUrl } from '../../Shared/apiUrls';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VetsserviceService {
-  private apiUrl = 'https://petzyvetapi20240502220748.azurewebsites.net/api/vets';
+  private apiUrl = vetServiceUrl + 'api/vets';
 
   constructor(private http: HttpClient) {}
 
