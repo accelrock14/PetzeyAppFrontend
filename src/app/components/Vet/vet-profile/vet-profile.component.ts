@@ -173,28 +173,25 @@ throw new Error('Method not implemented.');
   }
 
   //Added
-  v:boolean=false;
-  CheckNpiNumber(npi:string):boolean{
+  // v:boolean=false;
+  // CheckNpiNumber(npi:string):boolean{
 
-    this.vetService.checkNpi(npi).subscribe(v=>{
-      this.v=v;
-    })
-    return this.v;
-  }
+  //   return this.vetService.checkNpi(npi)
+  // }
   
-  decideDestiny():void{
-    if(this.auth.isLoggedIn()){
-      if(this.auth.getRoleFromToken()=="Doctor"){
-        if(this.CheckNpiNumber(this.auth.getVPIFromToken())){
-          this.router.navigate(['/home']);
-        }
-        else{
-          this.auth.logOut();
-          this.router.navigate(['/signin'])
-        }
-      }
-    }
-  }
+  // decideDestiny():void{
+  //   if(this.auth.isLoggedIn()){
+  //     if(this.auth.getRoleFromToken()=="Doctor"){
+  //       if(this.CheckNpiNumber(this.auth.getVPIFromToken())){
+  //         this.router.navigate(['/home']);
+  //       }
+  //       else{
+  //         this.auth.logOut();
+  //         this.router.navigate(['/signin'])
+  //       }
+  //     }
+  //   }
+  // }
   //Ended
 
 }

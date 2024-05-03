@@ -1,12 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { IPet } from '../../models/Pets/IPet';
 import { IVet } from '../../models/Vets/IVet';
 import { IVetProfileDTO } from '../../models/Vets/IVetProfileDto';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IVetIdNameDTO } from '../../models/Vets/IVetIDNameDto';
 import { VetDTO } from '../../models/Vets/IVetDTO';
+import { json } from 'body-parser';
+import { JsonPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -80,8 +82,22 @@ export class VetsserviceService {
   formData.append('file', photo); 
     return this.http.post<any>(this.apiUrl + `/upload-photo/${id}`, formData, );
   }
+
+
   checkNpi(npi:string):Observable<boolean>{
-    const url=`${this.apiUrl}/AllNpi/${npi}`
-    return this.http.get<any>(url);
+    const url=`${this.apiUrl}/AllNpi/${npi}`;
+   
+    //  result:boolean="true";
+     console.log("checkApi called");    
+     
+
+   
+    return this.http.get<any>(url)
+    
+       
+
+    
+    
+     
   }
 }
