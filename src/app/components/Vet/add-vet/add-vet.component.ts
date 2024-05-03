@@ -23,7 +23,7 @@ export class AddVetComponent {
     speciality: '',
     shortBio: '',
     status: false,
-    photo: "",
+    Photo: "",
     gender: '',
     dob: new Date(),
     rating: 0,

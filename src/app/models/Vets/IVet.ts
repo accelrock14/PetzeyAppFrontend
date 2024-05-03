@@ -11,7 +11,7 @@ export interface IVet {
     speciality: string;
     shortBio: string;
     status: boolean;
-    photo: string;
+    Photo: string;
     gender: string;
     dob: Date;
     rating: number;

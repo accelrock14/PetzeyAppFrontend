@@ -24,29 +24,31 @@ export class VetProfileComponent implements OnInit {
 
   actualVet?:IVet;
   VetNPI:any;
+  selectedFile: File | null = null;
+
 // updateVet(vetid: number,vetPro: IVetProfileDTO) {
 //   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
 //   fullVet.subscribe(vet=>{this.actualVet=fullVet});
 //   this.vetService.updateVet(vetid,fullVet).subscribe();
 // }
-updateVet(vetid: number, vetPro: IVetProfileDTO) {
-  // Fetch the full vet profile
-  this.vetService.getFullVetById(vetid).subscribe((fullVet: IVet) => {
-    // Update the matching attributes with values from vetPro
-    Object.keys(vetPro).forEach(key => {
-      if (fullVet.hasOwnProperty(key)) {
-        // Type assertion to inform TypeScript about the types
-        (fullVet as any)[key] = vetPro[key];
-      }
-    });
-
-    // Pass the updated vet profile to the updateVet function
-    this.vetService.updateVet(vetid, fullVet).subscribe(() => {
-      // Optionally, you can perform any post-update actions here
-      alert("Successfully Saved the Changes");
-    });
-  });
-}
+// updateVet(vetid: number, vetPro: IVetProfileDTO) {
+//   // Fetch the full vet profile
+//   this.vetService.getFullVetById(vetid).subscribe((fullVet: IVet) => {
+//     // Update the matching attributes with values from vetPro
+//     Object.keys(vetPro).forEach(key => {
+//       if (fullVet.hasOwnProperty(key)) {
+//         // Type assertion to inform TypeScript about the types
+//         (fullVet as any)[key] = vetPro[key];
+//       }
+//     });
+// console.log(fullVet);
+//     // Pass the updated vet profile to the updateVet function
+//     this.vetService.updateVet(vetid, fullVet).subscribe(() => {
+//       // Optionally, you can perform any post-update actions here
+//       alert("Successfully Saved the Changes");
+//     });
+//   });
+// }
 deleteVet(vetId:number){
   this.vetService.deleteVet(vetId).subscribe();
   this.deleteMessage = true;
@@ -100,24 +102,69 @@ throw new Error('Method not implemented.');
   //   });
   // }
   imageSrc: string | ArrayBuffer | null = null;
-
   onImageSelected(event: any): void {
-    console.log('ewqrew')
+    console.log('File selected');
     const file: File = event.target.files[0];
     if (file) {
-      // Extract the file name and store it
-      this.vetService.uploadPhoto(this.vetProfile!.VetId,file).subscribe(
-
-        (response: any) => {
-          console.log('File uploaded successfully:', response);
-          // Optionally, you can handle the response here
-        },
-        (error: any) => {
-          console.error('Error uploading file:', error);
-          // Optionally, you can handle errors here
-        }
-      );
+      this.selectedFile = file; // Update the component-level variable
+      const reader = new FileReader();
+      reader.onload = (e: any) => this.imageSrc = e.target.result; // For image preview
+      reader.readAsDataURL(file);
     }
+  }
+  updateVet(vetId: number, vetPro: IVetProfileDTO) {
+    // Fetch the full vet profile first
+    this.vetService.getFullVetById(vetId).subscribe({
+      next: (fullVet: IVet) => {
+        // Update the matching attributes with values from vetPro
+        Object.keys(vetPro).forEach(key => {
+          if (fullVet.hasOwnProperty(key)) {
+            (fullVet as any)[key] = vetPro[key];  // Type assertion to inform TypeScript
+          }
+        });
+  
+        // Check if a new file has been selected for upload
+        if (this.selectedFile) {
+          // Upload the photo first
+          this.vetService.uploadPhoto(vetId, this.selectedFile).subscribe({
+            next: (response) => {
+              console.log('File uploaded successfully:', response);
+              // Update the Photo property in the vetProfile
+              fullVet.Photo = `${response.fileName}`;
+              console.log('Full Vet: ',fullVet)// Update with the new photo URL
+              
+              // After successful photo upload, update the other profile details
+              this.sendProfileUpdate(vetId, fullVet);
+            },
+            error: (error) => {
+              console.error('Error uploading file:', error);
+              // Optionally, handle the error specific to file upload
+            }
+          });
+        } else {
+          // If no file is selected, directly update the profile
+          this.sendProfileUpdate(vetId, fullVet);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching vet details:', error);
+        // Optionally, handle the error specific to fetching details
+      }
+    });
+  }
+  
+  private sendProfileUpdate(vetId: number, fullVet: IVet) {
+    this.vetService.updateVet(vetId, fullVet).subscribe({
+      next: () => {
+        alert("Successfully Saved the Changes");
+        console.log(fullVet)
+        // Optionally, perform any other post-update actions here
+      },
+      error: (error) => {
+        console.error('Error updating vet profile:', error);
+        // Optionally, handle the error specific to profile update
+      }
+    });
   }
   
 
