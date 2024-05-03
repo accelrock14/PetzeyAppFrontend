@@ -31,18 +31,18 @@ export class AppointmentPetProfileComponent implements OnInit {
   PetId:number = 0;
 
   Pet:IPet = {
-    PetID: 1,
-    PetParentId: "5",
-    PetName: 'Doggo',
+    PetID: 0,
+    PetParentId: '',
+    PetName: '',
     PetImage: '',
-    Species: 'Dog',
-    BloodGroup: "O+ve",
-    Breed: 'Afghan Hound',
-    Gender: 'Female',
+    Species: '',
+    Breed: '',
+    BloodGroup: '',
+    Gender: '',
+    Neutered: false,
     DateOfBirth: new Date(),
     Allergies: '',
-    LastAppointmentDate: new Date(),
-    Neutered: false
+    LastAppointmentDate: new Date()
   }
 
 }
