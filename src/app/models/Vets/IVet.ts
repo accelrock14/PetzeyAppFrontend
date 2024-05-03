@@ -1,7 +1,7 @@
 import { IAddress } from "./IAddress";
 
 export interface IVet {
-    vetId: number;
+    VetId: number;
     LName: string;
     FName: string;
     npiNumber: string;

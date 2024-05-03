@@ -6,17 +6,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion } from '../../../models/appoitment-models/IFeedback';
+import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 
 @Component({
   selector: 'app-pet-appointment-card',
   standalone: true,
-  imports: [DatePipe, RouterLink, RouterOutlet, RouterLinkActive, FormsModule, CommonModule],
+  imports: [DatePipe, RouterLink, RouterOutlet, RouterLinkActive, FormsModule, CommonModule, EllipsisPipe],
   templateUrl: './pet-appointment-card.component.html',
   styleUrl: './pet-appointment-card.component.css'
 })
 export class PetAppointmentCardComponent {
   openPopup(arg0: string) {
-    // alert("This service will be available soon")
     this.snackBar.open(`${arg0} service will be available soon`, "Close", {
       verticalPosition: 'bottom'
     })
@@ -27,7 +27,11 @@ export class PetAppointmentCardComponent {
   user!:string;
 
   constructor(private snackBar: MatSnackBar, private service :FeedbackService){}
-//   feedbackDetails: any[]=[];
+
+}
+
+
+  //   feedbackDetails: any[]=[];
 //   feedbackquestions!: FeedbackQuestion[];
 //   viewFeedbackfor!:number;
 //   feedback:Feedback={
@@ -75,4 +79,4 @@ export class PetAppointmentCardComponent {
 //     });
 //   }
   
-}
+
