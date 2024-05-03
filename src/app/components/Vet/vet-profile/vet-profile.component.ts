@@ -9,6 +9,18 @@ import { IVet } from '../../../models/Vets/IVet';
 import { Observable } from 'rxjs/internal/Observable';
 import { VetAppointmentListComponent } from "../vet-appointment-list/vet-appointment-list.component";
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { ToastrService, provideToastr } from 'ngx-toastr';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+bootstrapApplication(Component, {
+  providers: [
+    provideToastr({
+      timeOut: 100
+    }), 
+    provideAnimations(), // required animations providers
+  ]
+});
 
 @Component({
     selector: 'app-vet-profile',
@@ -20,7 +32,6 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 export class VetProfileComponent implements OnInit {
 
   @ViewChild('successMessage') successMessage!: ElementRef;
-  @ViewChild('deleteMessage') deleteMessage!: boolean;
 
   actualVet?:IVet;
   VetNPI:any;
@@ -49,13 +60,13 @@ export class VetProfileComponent implements OnInit {
 //     });
 //   });
 // }
-deleteVet(vetId:number){
-  this.vetService.deleteVet(vetId).subscribe();
-  this.deleteMessage = true;
-  setTimeout(() => {
-    this.router.navigate(['/vet']);
-  }, 2000);
-}
+constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,) { }
+
+
+  
+
+  
+
 
 
 editVetProfile() {
@@ -63,7 +74,6 @@ throw new Error('Method not implemented.');
 }
   vetProfile?: IVetProfileDTO;
 
-  constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService) { }
   role:any;
   // 
   ngOnInit(): void {
@@ -196,5 +206,18 @@ throw new Error('Method not implemented.');
     }
   }
   //Ended
+  deleteVet(vetId:number){
+    this.vetService.deleteVet(vetId).subscribe({
+      next: () => {
+        alert('Vet deleted');
+        // Optionally, perform any other post-update actions here
+      },
+      error: (error) => {
+        console.error('Error updating vet profile:', error);
+        // Optionally, handle the error specific to profile update
+      }
+    });
+    this.router.navigate(['/vet']);
 
+  }
 }
