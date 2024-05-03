@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ElementRef } from '@angular/core';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVet } from '../../../models/Vets/IVet';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-vet',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './add-vet.component.html',
   styleUrl: './add-vet.component.css'
 })
@@ -37,9 +37,12 @@ export class AddVetComponent {
     }
 };
   constructor(private vetService:VetsserviceService){}
-  addVet() {
-    this.vetService.addVet(this.vet);
-    console.log(this.vet)
+  addVet(vet:IVet) {
+    console.log(vet);
+    
+    
+    this.vetService.addVet(vet).subscribe();
+   
     
     }
 }
