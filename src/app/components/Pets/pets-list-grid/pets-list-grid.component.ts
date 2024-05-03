@@ -11,54 +11,55 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 
 @Component({
-    selector: 'app-pets-list-grid',
-    standalone: true,
-    templateUrl: './pets-list-grid.component.html',
-    styleUrl: './pets-list-grid.component.css',
-    imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
+  selector: 'app-pets-list-grid',
+  standalone: true,
+  templateUrl: './pets-list-grid.component.html',
+  styleUrl: './pets-list-grid.component.css',
+  imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
 })
-export class PetsListGridComponent implements OnInit{
+export class PetsListGridComponent implements OnInit {
 
-  pets : IPet[] =[]
-  recentlyConsultedPets : IPet[] =[]
-  petsFilter : IPetFilterParams ={
-    PetName:"",
-    Species:"",
-    PetIDs:[]
-   };
+  pets: IPet[] = []
+  recentlyConsultedPets: IPet[] = []
+  petsFilter: IPetFilterParams = {
+    PetName: "",
+    Species: "",
+    PetIDs: []
+  };
 
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
-  errorMessage: string ='';
+  errorMessage: string = '';
   currentPage = 1;
   itemsPerPage = 8 // Change this value as per your requirement
   totalPages = 0;
   pages: number[] = [];
 
-searchPets() {
-  this.petsService.FilterPets(this.petsFilter)
-  .subscribe(pets => {
+  searchPets() {
+    this.petsService.FilterPets(this.petsFilter)
+      .subscribe(pets => {
 
-    console.log('Original pets:',this.pets);
+        console.log('Original pets:', this.pets);
 
-    this.recentlyConsultedPets =pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0,4);
-    console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+        this.recentlyConsultedPets = pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
-    this.errorMessage = ''; // Clear error message on successful retrieval
-   },
-   error => {
-     if (error.status === 404) {
-       this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-     } else {
-       this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-     }
-   })
-}
+        this.errorMessage = ''; // Clear error message on successful retrieval
+      },
+        error => {
+          if (error.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+          }
+        })
+  }
 
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService : AuthService,
-    private appointmentDetailsService:  AppointmentDetailsService){}
+    private authService: AuthService,
+    private appointmentDetailsService: AppointmentDetailsService) { }
+
 
     ngOnInit(): void {
 
@@ -92,6 +93,7 @@ searchPets() {
         this.updateRoute(1);
       }
     });
+
   }
 
   private DoctorsFlow() {
@@ -136,6 +138,7 @@ searchPets() {
 
   filterPetsPerPage(page: number): void {
     this.calculateTotalPages()
+    console.log('filter', this.petsFilter.PetIDs)
     this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
       .subscribe(pets => {
         this.pets = pets;
@@ -186,7 +189,7 @@ searchPets() {
   }
 
   nextPage(): void {
-    if(this.currentPage < this.pages[this.pages.length - 1]){
+    if (this.currentPage < this.pages[this.pages.length - 1]) {
       this.updateRoute(this.currentPage + 1);
     }
     console.log(this.pets)
