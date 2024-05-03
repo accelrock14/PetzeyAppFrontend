@@ -3,7 +3,7 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { IPet } from '../../../models/Pets/IPet';
 import { IPetFilterParams } from '../../../models/Pets/IPetFilterParams';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NumberFormatStyle } from '@angular/common';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetCardComponent } from "../pet-card/pet-card.component";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,7 +30,7 @@ export class PetsListGridComponent implements OnInit {
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
   errorMessage: string = '';
   currentPage = 1;
-  itemsPerPage = 4; // Change this value as per your requirement
+  itemsPerPage = 8 // Change this value as per your requirement
   totalPages = 0;
   pages: number[] = [];
 
@@ -60,61 +60,81 @@ export class PetsListGridComponent implements OnInit {
     private authService: AuthService,
     private appointmentDetailsService: AppointmentDetailsService) { }
 
-  ngOnInit(): void {
 
-    if (this.authService.isLoggedIn()) {
-      console.log("logged in");
-      if (this.authService.getRoleFromToken() == 'Doctor') {
-        console.log("doctor");
-        console.log(this.authService.getUIDFromToken());
+    ngOnInit(): void {
 
-        // uncomment this while integrating
+      if (this.authService.isLoggedIn()) {
+        console.log("logged in");
 
-        this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
-          .subscribe({
-            next: (data) => {
-              console.log('data', data)
-              if (data.length != 0) {
-                this.petsFilter.PetIDs = data;
-                this.errorMessage = '';
+        if (this.authService.getRoleFromToken() == 'Doctor') {
+          this.DoctorsFlow();
+        }
 
-              }
-              else {
-                this.petsFilter.PetIDs = [-1]
-              }
-              this.calculateTotalPages();
-
-
-
-              this.route.params.subscribe(params => {
-                const pageNumber = +params['page'];
-                if (!isNaN(pageNumber) && pageNumber > 0) {
-                  this.currentPage = pageNumber;
-                  this.filterPetsPerPage(pageNumber);
-                } else {
-                  this.updateRoute(1)
-                }
-              });
-            },
-            error: (err) => {
-              this.petsFilter.PetIDs = [-1]
-              console.log("error while fetching", err);
-              if (err.status === 404) {
-                this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-              } else {
-                this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-              }
-            }
-          });
-        console.log(this.petsFilter.PetIDs);
+        if (this.authService.getRoleFromToken() == 'Receptionist') {
+          this.ReceptionistFlow();
+        }
       }
+
+      // this.searchPets();
     }
 
 
 
-    // this.searchPets();
+  private ReceptionistFlow() {
+
+    this.calculateTotalPages();
+
+    this.route.params.subscribe(params => {
+      const pageNumber = +params['page'];
+      if (!isNaN(pageNumber) && pageNumber > 0) {
+        this.currentPage = pageNumber;
+        this.filterPetsPerPage(pageNumber);
+      } else {
+        this.updateRoute(1);
+      }
+    });
+
   }
 
+  private DoctorsFlow() {
+    console.log("doctor");
+    console.log(this.authService.getUIDFromToken());
+
+    this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
+      .subscribe({
+        next: (data) => {
+          console.log('data', data);
+          if (data.length != 0) {
+            this.petsFilter.PetIDs = data;
+            this.errorMessage = '';
+
+          }
+          else {
+            this.petsFilter.PetIDs = [-1];
+          }
+          this.calculateTotalPages();
+
+          this.route.params.subscribe(params => {
+            const pageNumber = +params['page'];
+            if (!isNaN(pageNumber) && pageNumber > 0) {
+              this.currentPage = pageNumber;
+              this.filterPetsPerPage(pageNumber);
+            } else {
+              this.updateRoute(1);
+            }
+          });
+        },
+        error: (err) => {
+          this.petsFilter.PetIDs = [-1];
+          console.log("error while fetching", err);
+          if (err.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.';
+          }
+        }
+      });
+  }
 
   filterPetsPerPage(page: number): void {
     this.calculateTotalPages()
