@@ -18,8 +18,7 @@ export class VetProfileApptComponent {
     VetId:number = 0;
     ngOnInit(): void {
       // Get the vet ID from the route parameter
-      const idParam = this.VetId.toString();
-      //this.route.snapshot.paramMap.get('id');
+      const idParam = this.route.snapshot.paramMap.get('id');
       
       if (idParam !== null) {
         const vetId = parseInt(idParam);
