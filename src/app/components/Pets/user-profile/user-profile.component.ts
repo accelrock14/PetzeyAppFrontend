@@ -195,7 +195,7 @@ export class UserProfileComponent implements OnInit {
       this.convertImageToBase64Add(file);
     }
   }
-                                    
+
     convertImageToBase64Add(file: File): void {
       const reader = new FileReader();
       reader.onload = (e) => {
