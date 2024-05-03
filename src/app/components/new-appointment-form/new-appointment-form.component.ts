@@ -105,6 +105,7 @@ export class NewAppointmentFormComponent implements OnInit {
     else if(this.What_Flow=='Doctor'){
       this.isDoctor = true;
       console.log("logged in as "+this.What_Flow);
+      this.appointmentDetail.DoctorID = this.userService.getUIDFromToken();
     }
     else{
       this.isReceptionist=true;
