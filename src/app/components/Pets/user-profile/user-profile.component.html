@@ -71,6 +71,8 @@
         </div>
       </section>
 
+      @if(auth.getRoleFromToken() === "Owner")
+      {
       <section class="user-info">
         <div class="row heading-and-button">
           <div class="col-10">
@@ -82,12 +84,13 @@
               class="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#exampleModalCenterCreate"
-              
+
             >
               + Add Pet
             </button>
           </div>
         </div>
+
         <!-- <div class="pet-cards">
         <ng-container *ngFor="let pet of pets; let i = index">
           <section class="pet-card col-lg-3 col-md-5 col-sm-6 col-12 p-0 " (click)="testClick()">
@@ -151,7 +154,7 @@
           </div>
         </ng-container>
 
-      </div> -->
+        </div> -->
 
         <div class="pet-cards">
           <ng-container *ngFor="let pet of pets; let i = index">
@@ -592,6 +595,7 @@
           </ng-container>
         </div>
       </section>
+    }
     </main>
   </body>
 </html>
@@ -824,7 +828,7 @@
             <div class="col-5">
               <h6 class="text-muted" style="font-size: small">Date of Birth</h6>
             </div>
-            >
+            
           </div>
           <div class="row ms-2 mt-0">
             <div class="col-5">

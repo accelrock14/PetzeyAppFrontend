@@ -18,6 +18,11 @@ import { AppointmentDetailsService } from '../../../services/appointment-details
   standalone: true,
   templateUrl: './pets-list-grid.component.html',
   styleUrl: './pets-list-grid.component.css',
+  imports: [FormsModule, CommonModule, AgePipe, PetCardComponent]
+  selector: 'app-pets-list-grid',
+  standalone: true,
+  templateUrl: './pets-list-grid.component.html',
+  styleUrl: './pets-list-grid.component.css',
   imports: [FormsModule, CommonModule, AgePipe, PetCardComponent],
 })
 export class PetsListGridComponent implements OnInit {
@@ -28,8 +33,18 @@ export class PetsListGridComponent implements OnInit {
     Species: '',
     PetIDs: [],
   };
+export class PetsListGridComponent implements OnInit {
+
+  pets: IPet[] = []
+  recentlyConsultedPets: IPet[] = []
+  petsFilter: IPetFilterParams = {
+    PetName: "",
+    Species: "",
+    PetIDs: []
+  };
 
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
+  errorMessage: string = '';
   errorMessage: string = '';
   currentPage = 1;
   itemsPerPage = 8; // Change this value as per your requirement
@@ -39,6 +54,11 @@ export class PetsListGridComponent implements OnInit {
   searchPets() {
     this.petsService.FilterPets(this.petsFilter).subscribe(
       (pets) => {
+        console.log('Original pets:', this.pets);
+  searchPets() {
+    this.petsService.FilterPets(this.petsFilter)
+      .subscribe(pets => {
+
         console.log('Original pets:', this.pets);
 
         this.recentlyConsultedPets = pets
@@ -53,6 +73,8 @@ export class PetsListGridComponent implements OnInit {
           'Top 4 recently consulted pets:',
           this.recentlyConsultedPets
         );
+        this.recentlyConsultedPets = pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
         this.errorMessage = ''; // Clear error message on successful retrieval
       },
@@ -65,6 +87,16 @@ export class PetsListGridComponent implements OnInit {
       }
     );
   }
+        this.errorMessage = ''; // Clear error message on successful retrieval
+      },
+        error => {
+          if (error.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+          }
+        })
+  }
 
   constructor(
     private petsService: PetsService,
@@ -73,6 +105,9 @@ export class PetsListGridComponent implements OnInit {
     private authService: AuthService,
     private appointmentDetailsService: AppointmentDetailsService
   ) {}
+    private authService: AuthService,
+    private appointmentDetailsService: AppointmentDetailsService) { }
+
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
@@ -102,6 +137,7 @@ export class PetsListGridComponent implements OnInit {
         this.updateRoute(1);
       }
     });
+
   }
 
   private DoctorsFlow() {
@@ -151,6 +187,12 @@ export class PetsListGridComponent implements OnInit {
         (pets) => {
           this.pets = pets;
           console.log('Original pets:', this.pets);
+    this.calculateTotalPages()
+    console.log('filter', this.petsFilter.PetIDs)
+    this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
+      .subscribe(pets => {
+        this.pets = pets;
+        console.log('Original pets:', this.pets);
 
           this.recentlyConsultedPets = this.pets
             .slice()
@@ -205,6 +247,7 @@ export class PetsListGridComponent implements OnInit {
   }
 
   nextPage(): void {
+    if (this.currentPage < this.pages[this.pages.length - 1]) {
     if (this.currentPage < this.pages[this.pages.length - 1]) {
       this.updateRoute(this.currentPage + 1);
     }
