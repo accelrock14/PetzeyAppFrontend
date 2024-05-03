@@ -1,8 +1,10 @@
+
 <small routerLink="../../" routerLinkActive="router-link-active">
   <i class="fas fa-arrow-left"></i> Back to Pets
 </small>
 <br />
 <br />
+
 
 <div class="row">
   <div class="card mb-4 shadow" style="max-width: 600px; margin: auto">
@@ -23,9 +25,7 @@
             </p>
             <h3 class="card-title mb-0">{{ Pet.PetName }}</h3>
             <p class="card-text">
-              <small class="text-muted"
-                >{{ Pet.Species }}, {{ Pet.Breed }}</small
-              >
+              <small class="text-muted">{{ Pet.Species }}, {{ Pet.Breed }}</small>
             </p>
           </div>
           <div class="col-4">
@@ -63,25 +63,25 @@
             <small class="text-muted">:</small><br />
           </div>
 
+
           <div class="col-6 px-0 text-start">
+
             <small class="text-muted" style="font-weight: bold">{{
               Pet.Gender
-            }}</small
-            ><br />
-            <small class="text-muted" style="font-weight: bold"
-              >{{ Pet.DateOfBirth | age }} </small
-            ><br />
+              }}</small><br />
+            <small class="text-muted" style="font-weight: bold">{{ Pet.DateOfBirth | age }} </small><br />
             <small class="text-muted" style="font-weight: bold">{{
               Pet.BloodGroup
-            }}</small
-            ><br />
+              }}</small><br />
             <small class="text-muted" style="font-weight: bold">{{
               Pet.DateOfBirth | formatDate
+
             }}</small
             ><br />
             <small class="text-muted" style="font-weight: bold">{{
               Pet.Allergies
             }}</small>
+
           </div>
         </div>
       </div>
@@ -136,14 +136,12 @@
   }
 </div>
 
+}
+
+
+
 <!-- Add Report Component-->
 
-<app-report-history
-  *ngIf="Pet.PetID != undefined"
-  [petId]="Pet.PetID"
-></app-report-history>
+<app-report-history *ngIf="Pet.PetID != undefined" [petId]="Pet.PetID"></app-report-history>
 <hr />
-<app-pet-appointments-list
-  *ngIf="Pet.PetID != undefined"
-  [PetID]="Pet.PetID"
-></app-pet-appointments-list>
+<app-pet-appointments-list *ngIf="Pet.PetID != undefined" [PetID]="Pet.PetID"></app-pet-appointments-list>

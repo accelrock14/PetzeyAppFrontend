@@ -21,8 +21,8 @@
                     <i class="fas fa-search search-icon"></i>
                 </div>
                 <div class="dropdown-container" *ngIf="inputForSelectingVet.value.length>0">
-                    <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.id,vet.name)" class="vetdiv">
-                        {{vet.name}}
+                    <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.VetId ,vet.Name)" class="vetdiv">
+                        {{vet.Name}}
                     </div>
                 </div>
             </div>
@@ -84,8 +84,8 @@
             <i class="fas fa-search search-icon"></i>
         </div>
         <div class="dropdown-container" *ngIf="inputForSelectingPet.value.length">
-            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.id,pet.name)" class="petdiv">
-                {{pet.name}}
+            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.PetID,pet.PetName)" class="petdiv">
+                {{pet.PetName}}
             </div>
         </div>
     </div>

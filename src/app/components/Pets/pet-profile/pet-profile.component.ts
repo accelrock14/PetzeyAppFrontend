@@ -14,6 +14,7 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
   standalone: true,
   templateUrl: './pet-profile.component.html',
   styleUrl: './pet-profile.component.css',
+
   imports: [
     AgePipe,
     FormatDatePipe,
@@ -38,7 +39,9 @@ export class PetProfileComponent implements OnInit {
       console.log(this.Owner);
     }
 
+
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+
     console.log(id);
     this.petsService.GetPetDetailsByID(Number(id)).subscribe((pet) => {
       this.Pet = pet;
@@ -48,4 +51,5 @@ export class PetProfileComponent implements OnInit {
   }
 
   Pet: IPet = {} as IPet;
+
 }
