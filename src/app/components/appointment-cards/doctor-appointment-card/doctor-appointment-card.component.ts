@@ -45,6 +45,7 @@ selectedappointmentid:number=0;
      
      questions:Question[]=[];
        ngOnInit(): void {
+        console.log(this.appointmentcard.DoctorPhoto)
        this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
          this.feedbackquestions=q;
          this.feedback.Questions = this.feedbackquestions.map(question => ({
