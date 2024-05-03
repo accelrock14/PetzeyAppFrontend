@@ -53,11 +53,11 @@ selectedappointmentid:number=0;
            Rating: 0
          }));
        })
-       this.feedback.Questions = this.feedbackquestions.map(question => ({
-             QuestionId:0,
-             FeedbackQuestionId: question.FeedbackQuestionId,
-             Rating: 0
-           }));
+      //  this.feedback.Questions = this.feedbackquestions.map(question => ({
+      //        QuestionId:0,
+      //        FeedbackQuestionId: question.FeedbackQuestionId,
+      //        Rating: 0
+      //      }));
        }
      
        
@@ -79,13 +79,14 @@ selectedappointmentid:number=0;
              // Handle error
            }
          );
-        this.feedback={
-          FeedbackID: 0,
-             Questions: [],
-             Recommendation: '',
-             Comments: '',
-             AppointmentId: 0,
-        }
+         this.feedback.Questions = this.feedbackquestions.map(question => ({
+          QuestionId:0,
+          FeedbackQuestionId: question.FeedbackQuestionId,
+          Rating: 0
+        }));
+       this.feedback.Comments='';
+       this.feedback.Recommendation='';
+       
          
          }
          
