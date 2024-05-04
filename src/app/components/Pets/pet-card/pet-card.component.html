@@ -8,7 +8,7 @@
     <div class="col-7 px-1 py-3">
         <h6 class="card-title mb-0">{{pet.PetName}}</h6>
         <p class="card-text mb-2"><small class="text-muted">{{pet.Gender}}, {{pet.DateOfBirth | age}} </small></p>
-        <p class="card-text" *ngIf="petOwner"><small class="text-muted">Owner: {{petOwner }}</small></p>
+        <p class="card-text" *ngIf="petOwner"><small class="text-muted">Owner: {{this.authService.getUserByID(this.pet.PetParentID) }}</small></p>
     </div>
   </div>
 </div>

@@ -17,20 +17,18 @@ export class PetCardComponent {
  // users:any[]=[];
   petOwner:string="";
 
-  constructor( private authService: AuthService){}
+  constructor( public authService: AuthService){}
 
   @Input()
   pet:IPet = {} as IPet;
 
-  ngOnInit()
-  {
-
-    this.authService.getUserByID(this.pet.PetParentID).subscribe( (username) =>
-     {
-      console.log(username);
-        this.petOwner=username;
-     }
-    )
-  }
+  // ngOnInit()
+  // {
+  //   this.authService.getUserByID(this.pet.PetParentID).subscribe( (username) =>
+  //    {
+  //       this.petOwner=username
+  //    }
+  //   )
+  // }
 
 }
