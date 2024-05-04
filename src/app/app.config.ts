@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,14 +10,22 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr } from 'ngx-toastr';
 import { tokenInterceptor } from './interceptors/token.interceptor';
+import { errorInterceptorInterceptor } from './interceptors/error-interceptor.interceptor';
+import { GlobalErrorHandler } from './GlobalErrorHandler';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideHttpClient(
+      withInterceptors([tokenInterceptor, errorInterceptorInterceptor])
+    ),
     provideAnimationsAsync('noop'),
     DashboardService,
     [{ useClass: DashboardService }],
     provideAnimations(),
     provideToastr(),
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
   ],
 };
