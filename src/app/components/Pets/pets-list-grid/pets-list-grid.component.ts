@@ -61,6 +61,8 @@ export class PetsListGridComponent implements OnInit {
     private appointmentDetailsService: AppointmentDetailsService) { }
 
 
+    users!:any;
+
     ngOnInit(): void {
 
       if (this.authService.isLoggedIn()) {
@@ -73,6 +75,10 @@ export class PetsListGridComponent implements OnInit {
         if (this.authService.getRoleFromToken() == 'Receptionist') {
           this.ReceptionistFlow();
         }
+
+        this.authService.getAllUsers().subscribe(users => {
+          this.users = users
+        }) 
       }
 
       // this.searchPets();

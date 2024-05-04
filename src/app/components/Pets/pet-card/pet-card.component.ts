@@ -15,13 +15,14 @@ import { CommonModule } from '@angular/common';
 export class PetCardComponent {
 
  // users:any[]=[];
-  petOwner:string="";
 
   constructor( public authService: AuthService){}
 
   @Input()
   pet:IPet = {} as IPet;
 
+  @Input()
+  petOwner:string = "";
   // ngOnInit()
   // {
   //   this.authService.getUserByID(this.pet.PetParentID).subscribe( (username) =>
