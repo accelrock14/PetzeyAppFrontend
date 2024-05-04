@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
 
-import { cachingReportInterceptorInterceptor } from './caching-report-interceptor.interceptor';
+import { cachingInterceptor } from './caching.interceptor';
 
-describe('cachingReportInterceptorInterceptor', () => {
+describe('cachingInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => 
-    TestBed.runInInjectionContext(() => cachingReportInterceptorInterceptor(req, next));
+    TestBed.runInInjectionContext(() => cachingInterceptor(req, next));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
