@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Status } from '../../models/Status';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { PetParent } from '../../models/PetParent';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -13,6 +12,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IPet } from '../../models/Pets/IPet';
+import { TempPetParent } from '../../models/TempPetParent';
 
 declare var window:any;
 @Component({
@@ -75,9 +75,9 @@ this.location.back();
   vetDateAndSlotPicker: boolean = false;
 
   //// for pet parents
-  petParents: PetParent[] = [];
+  petParents: TempPetParent[] = [];
   petParentSearchText = '';
-  filteredPetParents: PetParent[] = [];
+  filteredPetParents: TempPetParent[] = [];
 
   // for pets
   pets: IPet[] = [];
@@ -152,9 +152,9 @@ this.location.back();
 
     this.aptService.getPetParents().subscribe({
       next: (data) => {
-        const foundItem = data.find((pp) => pp.id == this.appointmentDetail.OwnerID);
+        const foundItem = data.find((pp) => pp.PetParentID == this.appointmentDetail.OwnerID);
         if (foundItem) {
-          this.petParentSearchText = foundItem.name;
+          this.petParentSearchText = foundItem.PetParentName;
         } else {
           this.petParentSearchText = 'Default owner Name'; // Or handle the undefined case differently
         }
@@ -363,7 +363,7 @@ this.location.back();
       this.filteredPetParents = [];
     }
     else {
-      this.filteredPetParents = this.petParents.filter(pp => pp.name.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
+      this.filteredPetParents = this.petParents.filter(pp => pp.PetParentName.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
     }
   }
 
