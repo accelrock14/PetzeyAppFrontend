@@ -19,14 +19,14 @@ import { catchError, map } from 'rxjs/operators';
 })
 
 export class AppointmentFormService {
- 
 
-  petService = inject(PetsService); 
+
+  petService = inject(PetsService);
   vetService = inject(VetsserviceService);
   authService = inject(AuthService);
 
   constructor(private backendClient:HttpClient) {
-      this.petService = inject(PetsService); 
+      this.petService = inject(PetsService);
       this.vetService = inject(VetsserviceService);
       this.authService = inject(AuthService);
    }
@@ -49,7 +49,7 @@ export class AppointmentFormService {
 
   getVet(): Observable<IVet> {
     // this is correct vpi number.
-    console.log(this.authService.getVPIFromToken()); 
+    console.log(this.authService.getVPIFromToken());
     console.log(this.vetService.getVetsByNPINumber(1234)); // here I need to subscribe...
     // tomorrow I should do that now I am sleepy
     // this.vetService.getVetsByNPINumber(parseInt(this.authService.getVPIFromToken())).subscribe({
@@ -84,9 +84,9 @@ export class AppointmentFormService {
         const parents: TempPetParent[] = [];
         users.forEach(user => {
           pets.forEach(pet => {
-            if (user.id === pet.PetParentId) {
+            if (user.id === pet.PetParentID) {
               parents.push({
-                PetParentID: pet.PetParentId,
+                PetParentID: pet.PetParentID,
                 PetParentName: user.name as string
               });
             }
@@ -115,7 +115,7 @@ export class AppointmentFormService {
   //       pets=data;
   //       console.log("fetched all pets in service to retrieve the parents");
 
-  //       // now filter accordingly 
+  //       // now filter accordingly
   //   let Parents:TempPetParent[]=[];
   //   for(let i=0;i<users.length;i++){
   //       for(let j=0;j<pets.length;j++){
@@ -141,7 +141,7 @@ export class AppointmentFormService {
   //       console.error('There was an error!', error);
   //     }
   //   });
- 
+
   // }
 
   // no use of this method now.
@@ -155,7 +155,7 @@ export class AppointmentFormService {
     return this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+doctorID+"/"+formattedDate);
   }
 
-  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{ 
+  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{
     // alert("inside post appointment");
     return this.backendClient.post<AppointmentDetail>(this.postAppointmentUrl,appointment);
   }

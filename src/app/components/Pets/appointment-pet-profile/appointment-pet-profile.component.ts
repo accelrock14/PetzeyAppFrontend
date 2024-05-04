@@ -32,7 +32,7 @@ export class AppointmentPetProfileComponent implements OnInit {
 
   Pet:IPet = {
     PetID: 0,
-    PetParentId: '',
+    PetParentID: '',
     PetName: '',
     PetImage: '',
     Species: '',
