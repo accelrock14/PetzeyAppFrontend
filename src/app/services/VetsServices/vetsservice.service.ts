@@ -15,7 +15,7 @@ import { vetServiceUrl } from '../../Shared/apiUrls';
 export class VetsserviceService {
   private apiUrl = vetServiceUrl + 'api/vets';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllVets(): Observable<IVetCardDTO[]> {
     return this.http.get<IVetCardDTO[]>(this.apiUrl);
@@ -78,25 +78,25 @@ export class VetsserviceService {
 
   uploadPhoto(id: number, photo: File): Observable<any> {
     const formData = new FormData();
-  formData.append('file', photo); 
-    return this.http.post<any>(this.apiUrl + `/upload-photo/${id}`, formData, );
+    formData.append('file', photo);
+    return this.http.post<any>(this.apiUrl + `/upload-photo/${id}`, formData,);
   }
 
 
-  checkNpi(npi:string):Observable<boolean>{
-    const url=`${this.apiUrl}/AllNpi/${npi}`;
-   
+  checkNpi(npi: string): Observable<boolean> {
+    const url = `${this.apiUrl}/AllNpi/${npi}`;
+
     //  result:boolean="true";
-     console.log("checkApi called");    
-     
+    console.log("checkApi called");
 
-   
+
+
     return this.http.get<any>(url)
-    
-       
 
-    
-    
-     
+
+
+
+
+
   }
 }

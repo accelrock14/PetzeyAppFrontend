@@ -22,7 +22,7 @@ export class AppointmentPetProfileComponent implements OnInit {
     }
     this.petsService.GetPetDetailsByID(this.PetId).subscribe( pet => {
       this.Pet = pet;
-      console.log(this.Pet)
+      console.log("here" +this.Pet)
     })
     // call service and get pet details
   }

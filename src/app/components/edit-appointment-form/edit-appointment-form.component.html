@@ -63,8 +63,8 @@
         </div>
         <div class="dropdown-container" *ngIf="inputForSelectingPetParent.value.length && inputForSelectingPetParent.touched
         ">
-            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.id,pp.name)" class="petparentdiv">
-                {{pp.name}}
+            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.PetParentID,pp.PetParentName)" class="petparentdiv">
+                {{pp.PetParentName}}
             </div>
         </div>
     </div>
