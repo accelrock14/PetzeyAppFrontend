@@ -39,7 +39,7 @@
               <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()">Cancel</button>
               <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
               
-              <button *ngIf="!isPatient()" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
+              <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
           </div>

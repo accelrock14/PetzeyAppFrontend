@@ -1,4 +1,4 @@
-body {
+/* body {
     background: #f4f4f4;
 }
 
@@ -27,4 +27,40 @@ body {
   
   .form-control-file {
     margin-top: 10px; 
-  }
+  } */
+
+  body {
+    background: #f4f4f4;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.img-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid #dee2e6;
+}
+
+.info p {
+    margin-bottom: 0.5rem;
+}
+
+.info h6 {
+    margin-bottom: 0.25rem;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
