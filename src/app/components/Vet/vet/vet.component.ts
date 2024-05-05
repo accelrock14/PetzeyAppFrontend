@@ -6,6 +6,7 @@ import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class VetComponent implements OnInit{
   pageSize: number = 4; 
   totalPages: number = 1; 
  
-  constructor(private vetService: VetsserviceService,private router: Router) { 
+  constructor(private vetService: VetsserviceService,private router: Router,  public auth : AuthService) { 
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -96,6 +97,9 @@ export class VetComponent implements OnInit{
           vet.Speciality.toLowerCase().includes (this.searchQuery.toLowerCase()) 
         );
       }
+      this.currentPage = 1; // Reset to first page
+      this.totalPages = Math.ceil(this.filteredVets.length / this.pageSize);
+      this.updateFilteredVets();
     }
     
 
@@ -129,13 +133,19 @@ export class VetComponent implements OnInit{
         this.vetService.getVetsBySpecialty(this.selectedSpecialties).subscribe({
           next: (vets) => {
             this.fVets = vets;
+            this.currentPage = 1;
             console.log(this.fVets)
+            this.totalPages = Math.ceil(this.fVets.length / this.pageSize);
+            this.updateFilteredVets(); 
           },
           
           error: (err) => console.error(err)
         });
       } else {
         this.fVets = [];
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.updateFilteredVets();
       }
     }
 

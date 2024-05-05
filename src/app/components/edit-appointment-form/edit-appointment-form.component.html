@@ -21,8 +21,8 @@
                 <i class="fas fa-search search-icon"></i>
             </div>
             <div class="dropdown-container" *ngIf="inputForSelectingVet.value.length>0 && inputForSelectingVet.touched">
-                <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.id,vet.name)" class="vetdiv">
-                    {{vet.name}}
+                <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.VetId,vet.Name)" class="vetdiv">
+                    {{vet.Name}}
                 </div>
             </div>
         </div>
@@ -32,8 +32,9 @@
             Your currently have appointment on <strong class="text-primary">{{appointmentDetail.ScheduleDate | date}}</strong>.
             Select another to change.
         </div>
-        
-        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length && isReceptionist || isDoctor" >
+        <!-- *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" -->
+        <!-- old one *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length && isReceptionist || isDoctor" -->
+        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" >
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
             </div>
@@ -52,6 +53,7 @@
     <!-- end of slots displayer -->
     <br>
 
+    <div  *ngIf="isDoctor || isReceptionist" >  
     <h6>Patient Details</h6>
 
     <div class="search-box">
@@ -63,12 +65,14 @@
         </div>
         <div class="dropdown-container" *ngIf="inputForSelectingPetParent.value.length && inputForSelectingPetParent.touched
         ">
-            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.id,pp.name)" class="petparentdiv">
-                {{pp.name}}
+            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.PetParentID,pp.PetParentName)" class="petparentdiv">
+                {{pp.PetParentName}}
             </div>
         </div>
     </div>
-    <br>
+
+</div>
+   
     <div class="search-box">
         <div class="input-wrapper">
             <label for="petname">Pet Name</label>
@@ -76,9 +80,9 @@
             <i class="fas fa-search search-icon"></i>
         </div>
         <div class="dropdown-container" *ngIf="inputForSelectingPet.value.length && inputForSelectingPet.touched">
-            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.id,pet.name)"
+            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.PetID,pet.PetName)"
             class="petdiv">
-            {{pet.name}}
+            {{pet.PetName}}
         </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 import { IAddress } from "./IAddress";
 
 export interface IVet {
-    vetId: number;
+    VetId: number;
     LName: string;
     FName: string;
     npiNumber: string;
@@ -11,7 +11,7 @@ export interface IVet {
     speciality: string;
     shortBio: string;
     status: boolean;
-    photo: string;
+    Photo: string;
     gender: string;
     dob: Date;
     rating: number;

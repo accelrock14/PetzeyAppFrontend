@@ -1,44 +1,150 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { Veterinarian } from '../../models/Veterinarian';
-import { PetParent } from '../../models/PetParent';
-import { Pet } from '../../models/Pet';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
+import { PetsService } from '../PetsServices/pets.service';
+import { IPet } from '../../models/Pets/IPet';
+import { VetsserviceService } from '../VetsServices/vetsservice.service';
+import { AuthService } from '../UserAuthServices/auth.service';
+import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
+import { IVet } from '../../models/Vets/IVet';
+import { TempPetParent } from '../../models/TempPetParent';
+import { forkJoin } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppointmentFormService {
 
-  constructor(private backendClient:HttpClient) { }
-  private generalPetIssuesUrl = 'https://localhost:44327/api/AppointmentDetails/GeneralPetIssues';
-  private myJsonServerUrl='http://localhost:3000/';
-  private postAppointmentUrl="https://localhost:44327/api/Appointment";
-  private getScheduleSlotsUrl="https://localhost:44327/api/AppointmentDetails/schedules/";
-  private getAppointmentByIdUrl='https://localhost:44327/api/Appointment/';
-  private editAppointmentUrl = "https://localhost:44327/api/Appointment/";
+  TempAllGetPetParents() {
+    
+  }
+
+
+  petService = inject(PetsService);
+  vetService = inject(VetsserviceService);
+  authService = inject(AuthService);
+
+  constructor(private backendClient:HttpClient) {
+      this.petService = inject(PetsService);
+      this.vetService = inject(VetsserviceService);
+      this.authService = inject(AuthService);
+   }
+
+
+  private generalPetIssuesUrl = 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/GeneralPetIssues';
+  //private myJsonServerUrl='http://localhost:3000/';
+  private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
+  private getScheduleSlotsUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/schedules/";
+  private getAppointmentByIdUrl='https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/';
+  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
   }
 
-  getVeternarians():Observable<Veterinarian[]>{
-    return this.backendClient.get<Veterinarian[]>(this.myJsonServerUrl+"Veterinarians");
+  getVeternarians():Observable<IVetCardDTO[]>{
+    return this.vetService.getAllVets();
   }
 
-  getPetParents():Observable<PetParent[]>{
-    return this.backendClient.get<PetParent[]>(this.myJsonServerUrl+"PetParents");
+  getVet(): Observable<IVet> {
+    // this is correct vpi number.
+
+    // tomorrow I should do that now I am sleepy.
+
+    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).pipe(
+      catchError((err) => {
+        console.error(err);
+        throw 'Error fetching vet details'; // Rethrow or handle as per your error handling strategy
+      })
+    );
+
+    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken());
   }
 
-  getPets():Observable<Pet[]>{
-    return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets");
+  getPetParents(): Observable<TempPetParent[]> {
+    // Observable to fetch all users and map them
+    const users$ = this.authService.getAllUsers().pipe(
+      map(data => Object.entries(data).map(([id, name]) => ({ id, name })))
+    );
+
+    // Observable to fetch all pets
+    const pets$ = this.petService.GetAllPets();
+
+    // Using forkJoin to wait for both requests to complete
+    return forkJoin([users$, pets$]).pipe(
+      map(([users, pets]) => {
+        const parents: TempPetParent[] = [];
+        users.forEach(user => {
+          pets.forEach(pet => {
+            if (user.id === pet.PetParentID) {
+              parents.push({
+                PetParentID: pet.PetParentID,
+                PetParentName: user.name as string
+              });
+            }
+          });
+        });
+        return parents;
+      })
+    );
   }
 
-  getAllPetsOfOwener(OwnerID:string):Observable<Pet[]>{
-    return this.backendClient.get<Pet[]>(this.myJsonServerUrl+"Pets/"+OwnerID);
-  }
+  // getPetParents():Observable<TempPetParent[]>{
+  //   //return this.backendClient.get<TempPetParent[]>(this.myJsonServerUrl+"PetParents");
+  //   // here call the auth service method to either retrieve all the pet parents or all the users and then filter them.
+
+  //   // first fetch all users
+  //   let users:any[];
+  //   this.authService.getAllUsers().subscribe({
+  //     next: (data) => {
+  //       users = Object.entries(data).map(([id, name]) => ({ id, name }));
+  //       console.log(users);
+
+  //       // next fetch all pets from
+  //   let pets:IPet[];
+  //   this.petService.GetAllPets().subscribe({
+  //     next:(data)=>{
+  //       pets=data;
+  //       console.log("fetched all pets in service to retrieve the parents");
+
+  //       // now filter accordingly
+  //   let Parents:TempPetParent[]=[];
+  //   for(let i=0;i<users.length;i++){
+  //       for(let j=0;j<pets.length;j++){
+  //         if(users[i].id == pets[j].PetParentId){
+  //           let par:TempPetParent={
+  //             PetParentID: pets[j].PetParentId,
+  //             PetParentName: users[i].name
+  //           };
+  //           Parents.push(par);
+  //         }
+  //       }
+  //   }
+  //   return Parents;
+
+  //     },
+  //     error:(err)=>{
+  //       console.log(err+" error occured ");
+  //     }
+  //   });
+
+  //     },
+  //     error: (error) => {
+  //       console.error('There was an error!', error);
+  //     }
+  //   });
+
+  // }
+
+  // no use of this method now.
+  // getPets():Observable<IPet[]>{
+  //   return this.backendClient.get<IPet[]>(this.myJsonServerUrl+"Pets");
+  // }
 
   getScheduleSlotStatuses(doctorID:string,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
@@ -46,7 +152,7 @@ export class AppointmentFormService {
     return this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+doctorID+"/"+formattedDate);
   }
 
-  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{ 
+  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{
     // alert("inside post appointment");
     return this.backendClient.post<AppointmentDetail>(this.postAppointmentUrl,appointment);
   }
@@ -56,9 +162,11 @@ export class AppointmentFormService {
   }
 
   putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
+    // console.log("put url here"+this.editAppointmentUrl+AppointmentID);
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 
-  
-
+  getAllPetsOfOwener(OwnerID: string):Observable<IPet[]> {
+    return this.petService.GetPetsByParentID(OwnerID);
+  }
 }

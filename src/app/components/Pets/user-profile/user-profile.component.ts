@@ -18,6 +18,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class UserProfileComponent implements OnInit {
 
+
   petParentID:any;
   NewPet?: IPet;
   newPetForm: FormGroup;
@@ -25,7 +26,7 @@ export class UserProfileComponent implements OnInit {
   ToBeUpdatedPet?: IPet;
   // user!: User ;
   pets: IPet[] = [];
-  petToDelete!: IPet;
+  petToDelete!: IPet ;
   user!: any;
 
 
@@ -237,7 +238,7 @@ export class UserProfileComponent implements OnInit {
 
 
     SavePetDetails() {
-      this.NewPet!.PetParentId = this.auth.getUIDFromToken();
+      this.NewPet!.PetParentID = this.auth.getUIDFromToken();
       console.log(this.NewPet)
       this.petsService.AddPet(this.NewPet!).subscribe({
         next: updatedPet => {
@@ -272,6 +273,12 @@ export class UserProfileComponent implements OnInit {
       });
 
     }
+
+    clickedCancelEditButton() {
+      this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+        this.pets = data;
+    });
+  }
 }
 
 
