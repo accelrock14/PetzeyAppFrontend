@@ -26,7 +26,6 @@
                 [settings]="medicineSettings"
                 [placeholder]="'Select Medicine'"
                 [data]="medicines"
-                formControlName="medicine"
                 (onSelect)="selectMedicine($event)"
               >
               </ng-multiselect-dropdown>
@@ -113,6 +112,7 @@
         <button
           data-bs-dismiss="modal"
           class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+          id="updatePres"
           (click)="updatePrescription()"
         >
           Confirm
@@ -152,6 +152,7 @@
           </button>
           <button
             class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+            id="delPres"
             (click)="confirmDeleteMedicine()"
             data-bs-dismiss="modal"
           >
@@ -178,6 +179,7 @@
       <button
         *ngIf="!isEditing"
         class="btn rounded-2 border shadow-sm mb-1 me-2 fw-bold"
+        id="reportbtn"
         (click)="callToastThenExport()"
       >
         <i class="fa-solid fa-download me-2"></i>Report
@@ -186,6 +188,7 @@
       <button
         *ngIf="!isEditing && isDoctor"
         class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+        id="editbtn"
         (click)="enableEdit()"
       >
         <i class="fa-solid fa-pen-to-square me-2"></i>Edit
@@ -193,6 +196,7 @@
       <button
         *ngIf="isEditing && isDoctor"
         class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+        id="savebtn"
         (click)="save()"
       >
         <i class="fa-solid fa-floppy-disk me-2"></i>Save
@@ -215,6 +219,7 @@
               <button
                 *ngIf="isEditing"
                 class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+                id="updateModal"
                 (click)="activatePrescriptionModal(0)"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModalCenter"
