@@ -22,11 +22,11 @@ export class AdminDashboardComponent implements OnInit {
   offset : number = 0;
   selectedStatus: string = "";
   selectedDate!: Date;
-  selectedDoctor: string | null = null;
+  selectedDoctor: string = "";
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: "",
-    DoctorID: null
+    DoctorID: ""
   };
   page:number = 1;
   doctorsList: VetDTO[] = [];

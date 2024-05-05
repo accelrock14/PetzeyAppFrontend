@@ -21,7 +21,7 @@ export class PatientDashboardComponent implements OnInit {
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: '',
-    DoctorID: null
+    DoctorID: ""
   }
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
