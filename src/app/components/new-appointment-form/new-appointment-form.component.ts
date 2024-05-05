@@ -177,7 +177,7 @@ export class NewAppointmentFormComponent implements OnInit {
       this.aptService.TempAllGetPetParents();
     }
 
-  }
+  } // end of ngOninit()
   // modal popup code for submission
   openModal() {
     this.formModal.show();
@@ -346,6 +346,7 @@ export class NewAppointmentFormComponent implements OnInit {
     this.appointmentDetail.Status = Status.Pending;
     this.appointmentDetail.Report = null;
     this.appointmentDetail.ScheduleTimeSlot = this.selectedIndex!;
+    if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
