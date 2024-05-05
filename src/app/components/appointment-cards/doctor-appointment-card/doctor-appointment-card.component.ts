@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-doctor-appointment-card',
@@ -26,13 +27,24 @@ openPopup(arg0: string) {
   @Input()
   user!:string;
 
-  constructor(private snackBar: MatSnackBar,  private service:FeedbackService){}
+  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private toastservice:ToastrService){}
 
 selectedappointmentid:number=0;
+showmodal:boolean=false;
+feedbacklist:Feedback[]=[];
   clicked(obj: number) {
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
-    console.log(this.selectedappointmentid)
+    console.log(this.selectedappointmentid);
+    this.showmodal=false;
+    if(!this.feedbacklist.find(f=>f.AppointmentId==obj)){
+      this.showmodal=true;
+   
+    }
+    else{
+      this.showmodal=false;
+      this.toastservice.info("feedback can be submitted only once")
+    }
    
  }
    
@@ -59,6 +71,10 @@ selectedappointmentid:number=0;
       //        FeedbackQuestionId: question.FeedbackQuestionId,
       //        Rating: 0
       //      }));
+
+      this.service.getAllFeedback().subscribe((f)=>{
+        this.feedbacklist=f;
+       })
        }
      
        
@@ -87,7 +103,7 @@ selectedappointmentid:number=0;
         }));
        this.feedback.Comments='';
        this.feedback.Recommendation='';
-       
+       this.showmodal=false;
          
          }
          
