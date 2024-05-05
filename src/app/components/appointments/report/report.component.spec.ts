@@ -25,10 +25,22 @@ fdescribe('ReportComponent', () => {
   });
 
   it('should call the enableEdit function on clicking edit button', () => {
+    component.isDoctor = true
     let myFunctionSpy = spyOn(component, 'enableEdit');
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#editbtn'));
+    button.triggerEventHandler('click', null);
+    expect(myFunctionSpy).toHaveBeenCalled();
+  });
+
+  it('should call the save function on clicking save button', () => {
+    component.isDoctor = true
+    component.isEditing = true
+    let myFunctionSpy = spyOn(component, 'save');
+    fixture.detectChanges();
+
+    const button = fixture.debugElement.query(By.css('#savebtn'));
     button.triggerEventHandler('click', null);
     expect(myFunctionSpy).toHaveBeenCalled();
   });
