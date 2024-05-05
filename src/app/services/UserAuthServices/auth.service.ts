@@ -75,13 +75,4 @@ export class AuthService {
         UID
     );
   }
-
-  getUserByID(UID: string) {
-  //  let username: string ="";
-    return this.http.get<string>(
-      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth/' +
-        UID
-    )
-    
-  }
 }
