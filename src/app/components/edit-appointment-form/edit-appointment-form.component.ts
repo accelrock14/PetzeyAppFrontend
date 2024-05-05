@@ -413,8 +413,6 @@ this.location.back();
     this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
     if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
-    if(this.isDoctor)
-      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
     // alert("inside booking");
     // finally call the service post method.
 
