@@ -7,7 +7,7 @@ import { ReportService } from '../../../services/appointment/report.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup } from '@angular/forms';
 
-fdescribe('ReportComponent', () => {
+describe('ReportComponent', () => {
   let component: ReportComponent;
   let fixture: ComponentFixture<ReportComponent>;
   let mockhttp: HttpTestingController

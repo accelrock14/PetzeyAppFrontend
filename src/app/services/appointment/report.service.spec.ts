@@ -46,7 +46,7 @@ describe('ReportService', () => {
       expect(med).toEqual(mockMedicine);
     });
 
-    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/medicines');
+    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/medicines');
     expect(apirul.request.method).toBe('GET');
     apirul.flush(mockMedicine);
   })
@@ -68,7 +68,7 @@ describe('ReportService', () => {
       expect(sym).toEqual(mockSymptom);
     });
 
-    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/symptoms');
+    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/symptoms');
     expect(apirul.request.method).toBe('GET');
     apirul.flush(mockSymptom);
   })
@@ -90,7 +90,7 @@ describe('ReportService', () => {
       expect(test).toEqual(mockTest);
     });
 
-    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/tests');
+    const apirul = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/tests');
     expect(apirul.request.method).toBe('GET');
     apirul.flush(mockTest);
   })
@@ -115,7 +115,7 @@ describe('ReportService', () => {
       expect(report).toEqual(mockReport);
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/report/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/report/1');
     expect(apiurl.request.method).toBe('GET');
     apiurl.flush(mockReport);
   })
@@ -135,7 +135,7 @@ describe('ReportService', () => {
       expect(pres).toEqual(1);
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/prescription/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/prescription/1');
     expect(apiurl.request.method).toBe('POST');
     expect(apiurl.request.body).toBe(mockPrecription)
     apiurl.flush(1);
@@ -156,7 +156,7 @@ describe('ReportService', () => {
       expect(pres).toEqual(mockPrecription);
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/prescription/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/prescription/1');
     expect(apiurl.request.method).toBe('PATCH');
     expect(apiurl.request.body).toBe(mockPrecription)
     apiurl.flush(mockPrecription);
@@ -167,7 +167,7 @@ describe('ReportService', () => {
       expect(pres).toEqual("prescription deleted successfully");
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/prescription/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/prescription/1');
     expect(apiurl.request.method).toBe('DELETE');
     apiurl.flush("prescription deleted successfully");
   })
@@ -192,7 +192,7 @@ describe('ReportService', () => {
       expect(report).toEqual(mockReport);
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/report/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/report/1');
     expect(apiurl.request.method).toBe('PATCH');
     expect(apiurl.request.body).toBe(mockReport)
     apiurl.flush(mockReport);
@@ -213,7 +213,7 @@ describe('ReportService', () => {
       expect(report).toEqual(mockReport);
     })
 
-    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/appointment/reporthistory/1');
+    const apiurl = httpMock.expectOne('https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/appointment/reporthistory/1');
     expect(apiurl.request.method).toBe('GET');
     apiurl.flush(mockReport);
   })
