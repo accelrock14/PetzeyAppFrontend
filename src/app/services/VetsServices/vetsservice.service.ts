@@ -72,6 +72,7 @@ export class VetsserviceService {
   getVetsAndIds(): Observable<VetDTO[]> {
     return this.http.get<VetDTO[]>(`${this.apiUrl}/vetsandids`);
   }
+  
   getVetsByNPINumber(id: string): Observable<IVet> {
     return this.http.get<IVet>(`${this.apiUrl}/npiNumber/${id}`);
   }

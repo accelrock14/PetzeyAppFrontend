@@ -19,6 +19,9 @@ import { catchError, map } from 'rxjs/operators';
 })
 
 export class AppointmentFormService {
+  TempAllGetPetParents() {
+    
+  }
  
 
   petService = inject(PetsService); 
@@ -49,105 +52,15 @@ export class AppointmentFormService {
 
   getVet(): Observable<IVet> {
     // this is correct vpi number.
-    console.log(this.authService.getVPIFromToken()); 
-    console.log(this.vetService.getVetsByNPINumber(1234)); // here I need to subscribe...
-    // tomorrow I should do that now I am sleepy
-    // this.vetService.getVetsByNPINumber(parseInt(this.authService.getVPIFromToken())).subscribe({
-    //   next:(data)=>{
-    //     return data;
-    //   },
-    //   error:(err)=>{
-    //     console.log(err);
-    //   }
-    // });
+    // tomorrow I should do that now I am sleepy.
     return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).pipe(
       catchError((err) => {
         console.error(err);
         throw 'Error fetching vet details'; // Rethrow or handle as per your error handling strategy
       })
     );
-    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken() as number);
+    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken());
   }
-
-  getPetParents(): Observable<TempPetParent[]> {
-    // Observable to fetch all users and map them
-    const users$ = this.authService.getAllUsers().pipe(
-      map(data => Object.entries(data).map(([id, name]) => ({ id, name })))
-    );
-
-    // Observable to fetch all pets
-    const pets$ = this.petService.GetAllPets();
-
-    // Using forkJoin to wait for both requests to complete
-    return forkJoin([users$, pets$]).pipe(
-      map(([users, pets]) => {
-        const parents: TempPetParent[] = [];
-        users.forEach(user => {
-          pets.forEach(pet => {
-            if (user.id === pet.PetParentId) {
-              parents.push({
-                PetParentID: pet.PetParentId,
-                PetParentName: user.name as string
-              });
-            }
-          });
-        });
-        return parents;
-      })
-    );
-  }
-
-  // getPetParents():Observable<TempPetParent[]>{
-  //   //return this.backendClient.get<TempPetParent[]>(this.myJsonServerUrl+"PetParents");
-  //   // here call the auth service method to either retrieve all the pet parents or all the users and then filter them.
-
-  //   // first fetch all users
-  //   let users:any[];
-  //   this.authService.getAllUsers().subscribe({
-  //     next: (data) => {
-  //       users = Object.entries(data).map(([id, name]) => ({ id, name }));
-  //       console.log(users);
-
-  //       // next fetch all pets from
-  //   let pets:IPet[];
-  //   this.petService.GetAllPets().subscribe({
-  //     next:(data)=>{
-  //       pets=data;
-  //       console.log("fetched all pets in service to retrieve the parents");
-
-  //       // now filter accordingly 
-  //   let Parents:TempPetParent[]=[];
-  //   for(let i=0;i<users.length;i++){
-  //       for(let j=0;j<pets.length;j++){
-  //         if(users[i].id == pets[j].PetParentId){
-  //           let par:TempPetParent={
-  //             PetParentID: pets[j].PetParentId,
-  //             PetParentName: users[i].name
-  //           };
-  //           Parents.push(par);
-  //         }
-  //       }
-  //   }
-  //   return Parents;
-
-  //     },
-  //     error:(err)=>{
-  //       console.log(err+" error occured ");
-  //     }
-  //   });
-
-  //     },
-  //     error: (error) => {
-  //       console.error('There was an error!', error);
-  //     }
-  //   });
- 
-  // }
-
-  // no use of this method now.
-  // getPets():Observable<IPet[]>{
-  //   return this.backendClient.get<IPet[]>(this.myJsonServerUrl+"Pets");
-  // }
 
   getScheduleSlotStatuses(doctorID:string,schDate:Date):Observable<boolean[]>{
     const formattedDate = schDate.toISOString().split('T')[0];
