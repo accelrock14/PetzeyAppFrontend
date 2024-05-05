@@ -6,7 +6,9 @@
       <div class="row">
         <div class="col-lg-6 col-md-12 mx-auto left-part">
           <div class="vitals border shadow mb-4 p-3 pe-0 rounded-3">
-            <h4>Vitals</h4>
+            <div class="d-flex align-items-center">
+            <h4>Vitals </h4> <small class="fw-lighter ms-2">(last recorded)</small>
+          </div>
             <div class="icons mt-4 ps-3">
               <div class="icon-container me-5 d-inline-block">
                 <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
@@ -33,19 +35,38 @@
             </div>
           </div>
           <div class="symptoms border shadow mb-4 p-3 pe-0 rounded-3">
-            <h4>Symptoms</h4>
+            <div class="d-flex align-items-center">
+            <h4>Symptoms</h4><small class="fw-lighter ms-2">(last recorded)</small>
+          </div>
             <div class="all-item-list mt-4 ps-3">
-              @for (symptoms of petHistory.Symptoms; track $index) {
-              <div class="capsule">{{ symptoms.Symptom?.SymptomName }}</div>
+              @if (petHistory.Symptoms.length>0){
+
+                @for (symptoms of petHistory.Symptoms; track $index) {
+                <div class="capsule">{{ symptoms.Symptom?.SymptomName }}</div>
+                }
+              }@else {
+                <div class="text-center text-danger">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <p>No Symptoms found</p>
+                </div>
               }
             </div>
           </div>
           <div class="tests border shadow mb-4 p-3 pe-0 rounded-3">
-            <h4>Tests</h4>
+            <div class="d-flex align-items-center">
+            <h4>Tests</h4><small class="fw-lighter ms-2">(last recorded)</small>
+          </div>
             <div class="all-item-list mt-4 ps-3">
+              @if (petHistory.Tests.length>0){
               @for (test of petHistory.Tests; track $index) {
               <div class="capsule">{{ test.Test?.TestName }}</div>
               }
+            }@else {
+              <div class="text-center text-danger">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Tests found</p>
+              </div>
+            }
             </div>
           </div>
         </div>
@@ -70,6 +91,7 @@
               </mat-form-field>
             </div>
             <div class="row all-item-list p-3">
+              @if (petHistory.Prescriptions.length>0){
               @for (prescription of petHistory.Prescriptions; track $index) {
               <div
                 class="precription-item col-12 p-2 d-flex justify-content-between border rounded-3 shadow-sm mt-2"
@@ -91,6 +113,11 @@
                   }}</small>
                 </div>
               </div>
+              }}@else {
+                <div class="text-center text-danger mt-4">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <p>No Prescriptions found</p>
+                </div>
               }
             </div>
           </div>

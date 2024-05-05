@@ -7,19 +7,26 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-report-history',
   standalone: true,
-  imports: [DatePipe, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, FormsModule],
+  imports: [
+    DatePipe,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+  ],
   templateUrl: './report-history.component.html',
-  styleUrl: './report-history.component.css'
+  styleUrl: './report-history.component.css',
 })
 export class ReportHistoryComponent implements OnInit {
+  @Input() petId: number = 1;
 
-  @Input() petId: number = 1
-
-  selectedDate: Date | undefined
+  selectedDate: Date | undefined;
 
   petHistory: ReportHistoryDTO = {
     HeartRate: 0,
@@ -28,26 +35,36 @@ export class ReportHistoryComponent implements OnInit {
     Tests: [],
     Symptoms: [],
     Prescriptions: [],
-    ScheduleDate: []
-  }
-  existingPrescriptions: any[] = []
+    ScheduleDate: [],
+  };
+  existingPrescriptions: any[] = [];
 
-  constructor(private reportService: ReportService) { }
+  constructor(
+    private reportService: ReportService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.petId)
-    this.reportService.getPetHistory(this.petId).subscribe(h => {
-      this.petHistory = h
-      this.existingPrescriptions = this.petHistory.Prescriptions
-    })
+    console.log(this.petId);
+    this.reportService.getPetHistory(this.petId).subscribe(
+      (h) => {
+        this.petHistory = h;
+        this.existingPrescriptions = this.petHistory.Prescriptions;
+      },
+      (error) => {
+        this.toastr.error(
+          'Could not fetch pet history, Please try after sometime'
+        );
+      }
+    );
   }
 
   onDateChange() {
-    this.petHistory.Prescriptions = []
+    this.petHistory.Prescriptions = [];
     for (let index = 0; index < this.petHistory.ScheduleDate.length; index++) {
-      let curDate: Date = new Date(this.petHistory.ScheduleDate[index])
+      let curDate: Date = new Date(this.petHistory.ScheduleDate[index]);
       if (curDate.toDateString() == this.selectedDate?.toDateString()) {
-        this.petHistory.Prescriptions.push(this.existingPrescriptions[index])
+        this.petHistory.Prescriptions.push(this.existingPrescriptions[index]);
       }
     }
   }
