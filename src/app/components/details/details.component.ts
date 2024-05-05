@@ -74,6 +74,10 @@ return parseInt(arg0);
     const role=this.authService.getRoleFromToken();
     return role=== 'Doctor';
   }
+  isReceptionist(){
+    const role=this.authService.getRoleFromToken();
+    return role=== 'Receptionist';
+  }
   DoctorName:string='';
   ngOnInit(): void {
 
@@ -84,7 +88,7 @@ return parseInt(arg0);
       .subscribe((appointment: any) => {
         this.appointment = appointment;
         
-        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()&&!this.isDoctor()){
+        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()&&!this.isDoctor()&&!this.isReceptionist()){
           this.router.navigate(['/home']);
         }
   
