@@ -2,7 +2,7 @@
 <div class="card shadow mt-3">
     <div class="row ms-1 align-items-center">
         <div class="col-md-4 col-12 d-flex align-items-center justify-content-center p-0">
-            <img src="https://images.pexels.com/photos/126407/pexels-photo-126407.jpeg" class="card-img-top rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="...">
+            <img [src]="appointmentcard.PetPhoto" class="card-img-top rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="...">
         </div>
         <div class="col-md-8 col-12">
             <div class="card-body">
@@ -25,12 +25,10 @@
     </div>                
     <div class="card-body">
         <a [routerLink]="'/' + user + 'Dashboard/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
-        <!-- <div ngIf="role!='Owner'"> -->
-          <a type="button" class="btn col-md-6 col-12 px-0"   *ngIf="role !== 'Doctor'" [attr.data-bs-toggle]="role === 'Doctor' ? null : 'modal'" 
+        <!-- code edited -->
+        <a type="button" class="btn col-md-6 col-12 px-0"   *ngIf="role !== 'Doctor'" [attr.data-bs-toggle]="role === 'Doctor' ? null : 'modal'" 
           [attr.data-bs-target]="role === 'Doctor' ? null : '#feedbackModal'"  (click)="clicked(appointmentcard.AppointmentID)" >Feedback</a>
-        <!-- </div> -->
-        
-        
+
     </div>
 </div> 
 
@@ -82,3 +80,5 @@
             </div> 
        
           </div> 
+
+          

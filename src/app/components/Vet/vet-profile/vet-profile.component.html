@@ -4,9 +4,12 @@
       <div class="card-header">
         <div class="row">
           <h5 class="col-9 mx-2 p-0">Account Details</h5>
-        
-        <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-        <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        @if(role=="Doctor"||role=="Receptionist"){
+          <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+          <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+        }
+        <!-- <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button> -->
+        <!-- <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button> -->
         <!-- <p class="text-muted col-5">Manage your account details here</p> -->
 
       </div>
@@ -50,7 +53,7 @@
               <img src="{{ vetProfile!.Photo }}" alt="Image" class="img-thumbnail mb-3" style="width: 100px; height: auto;">
             
               <!-- File Input for New Image -->
-              <input type="file" id="profileImage" (change)="onImageSelected($event)" class="form-control-file">
+              <input type="file" id="profileImage" (change)="onImageSelected($event)"  [(ngModel)]="vetProfile!.Photo" name="Photo"class="form-control-file">
             
               <!-- Preview of New Image -->
               <img [src]="imageSrc" *ngIf="imageSrc" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
@@ -110,18 +113,10 @@
           </div>
           <div class="col-2 p-2 mx-2 ">
             <!-- Disable the button if the successMessage variable is falsy -->
-            <button type="button" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
+            <button type="submit" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
           </div>
         </div>
-      </div>
-      <!-- Display the success message if the successMessage variable is truthy -->
-      <ng-container *ngIf="deleteMessage">
-        <div class="modal-footer">
-          <div class="alert alert-success" role="alert">
-            Vet profile deleted successfully!
-          </div>
-        </div>
-      </ng-container>
+      </div>      
     </div>
   </div>
 </div>

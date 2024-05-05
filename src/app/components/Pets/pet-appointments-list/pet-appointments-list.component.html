@@ -4,7 +4,7 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
     <div class="col mb-4" *ngFor="let appointment of appointmentcard">
       <app-doctor-appointment-card
-        [appointmentcard]="appointment"
+        [appointmentcard]="appointment" [user]="'Patient'"
       ></app-doctor-appointment-card>
     </div>
   </div>

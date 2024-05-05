@@ -32,7 +32,7 @@ export class PatientDashboardComponent implements OnInit {
   constructor(private service: DashboardService,public authService: AuthService) {}
   ngOnInit(): void {
     console.log(this.authService.getUIDFromToken());
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
     })
   }
@@ -41,7 +41,7 @@ export class PatientDashboardComponent implements OnInit {
     
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
     })
   }
@@ -55,7 +55,7 @@ export class PatientDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, "1").subscribe(data => {
+    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
     })
   }

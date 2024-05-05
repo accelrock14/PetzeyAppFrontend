@@ -28,6 +28,8 @@ export class PetAppointmentCardComponent {
   user!:string;
 
   constructor(private snackBar: MatSnackBar, private service :FeedbackService,private authservice:AuthService){}
+//from this new code is added
+
   selectedappointmentid:number=0;
   role:string="";
   clicked(obj: number) {
@@ -126,8 +128,57 @@ export class PetAppointmentCardComponent {
              // Check if all questions have been rated
              return this.feedback.Questions.every(q => q.Rating !== 0);
            }
-          
-          
 
-}
+
+          }
+
+
+  //   feedbackDetails: any[]=[];
+//   feedbackquestions!: FeedbackQuestion[];
+//   viewFeedbackfor!:number;
+//   feedback:Feedback={
+//     FeedbackID: 0,
+//     Questions: [],
+//     Recommendation: '',
+//     Comments: '',
+//     AppointmentId: 0
+//   }
+//   feedbacklist: Feedback[] = [];
+//   feedbackClicked(appointmentId: number) {
+//   //   console.log("done --")
+//   //  console.log(appointmentId)
+//     const fb=this.feedbacklist.find(f=>f.AppointmentId===appointmentId)
+    
+//   if(fb){
+//     this.feedback=fb;
+//   }
+//   // console.log(this.feedback)
+//   this.feedbackDetails = this.feedback.Questions.map(question => {
+//     const feedbackQuestion = this.feedbackquestions.find(q => q.FeedbackQuestionId === question.FeedbackQuestionId);
+    
+//     return {
+     
+//       QuestionName: feedbackQuestion ? feedbackQuestion.FeedbackQuestionName : 'Unknown Question',
+//       Rating: question.Rating
+//     };
+//   });
+//   console.log(this.feedback)
+  
+
+
+
+  
+// }
+
+//   ngOnInit(): void {
+//     this.service.getAllFeedback().subscribe((q:Feedback[])=>{
+//       this.feedbacklist=q;
+//       console.log(this.feedbacklist)
+//     })
+//     this.service.getQuestions().subscribe((q:FeedbackQuestion[])=>{
+//       this.feedbackquestions=q
+    
+//     });
+//   }
+  
 

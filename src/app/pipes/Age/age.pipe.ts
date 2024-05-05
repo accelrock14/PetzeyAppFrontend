@@ -18,7 +18,7 @@ export class AgePipe implements PipeTransform {
     }
 
     if(age==1 || age==0 )
-    return age + " year";
+    return   "1 year";
     else
     return age + " years";
   }

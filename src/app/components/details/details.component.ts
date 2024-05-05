@@ -17,6 +17,8 @@ import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-app
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { PetsService } from '../../services/PetsServices/pets.service';
+import { AuthService } from '../../services/UserAuthServices/auth.service';
+import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
 
 declare var window: any;
 @Component({
@@ -35,6 +37,9 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
+parseToInt(arg0: string): number {
+return parseInt(arg0);
+}
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
@@ -51,37 +56,59 @@ export class DetailsComponent implements OnInit {
   };
   formModal: any;
   formModal2: any;
+  formModal3: any;
+  
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
     private route: ActivatedRoute,
-    private prtSetvice: PetsService
+    private prtSetvice: PetsService,
+    private authService:AuthService,
+    private vetService:VetsserviceService,
+    private router:Router
   ) {}
+  isPatient(): boolean {
+    const role = this.authService.getRoleFromToken();
+    return role === 'Owner';
+  }
+  isDoctor():boolean{
+    const role=this.authService.getRoleFromToken();
+    return role=== 'Doctor';
+  }
+  DoctorName:string='';
   ngOnInit(): void {
-    const ID: any = this.route.snapshot.paramMap.get('id');
-    this.appointmentDetailsService
-      .GetAppointmentDetail(ID)
-      .subscribe((appointment: any) => (this.appointment = appointment));
 
-    // this.appointmentDetailsService.GetAllPetIDByVetId(1)
-    // .subscribe({
-    //   next:(data)=>{
-    //     this.petIds = data;
-
-    //   },
-    //   error:(err)=>{
-    //     console.log("error while fetching",err);
-
-    //   }
-    // });
-
+    const ID: string= this.route.snapshot.paramMap.get('id')!;
+    
+      this.appointmentDetailsService
+      .GetAppointmentDetail(parseInt(ID))
+      .subscribe((appointment: any) => {
+        this.appointment = appointment;
+        
+        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()&&!this.isDoctor()){
+          this.router.navigate(['/home']);
+        }
+  
+        if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
+          console.log(appointment.DoctorID + " DOCccc");
+          this.vetService.getVetById(parseInt(appointment.DoctorID))
+            .subscribe((doc) => this.DoctorName = (doc.FName + " " + doc.LName));
+          console.log(this.DoctorName + " DOC");
+        }
+      });
+    
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('exampleModal2')
     );
     this.formModal2 = new window.bootstrap.Modal(
       document.getElementById('exampleModal3')
     );
+    this.formModal3 = new window.bootstrap.Modal(
+      document.getElementById('exampleModal4')
+    );
+
   }
 
+  
   openModal() {
     this.formModal.show();
   }
@@ -94,9 +121,16 @@ export class DetailsComponent implements OnInit {
   closeModal2() {
     this.formModal2.hide();
   }
+  openModal3() {
+    this.formModal3.show();
+  }
+  closeModal3() {
+    this.formModal3.hide();
+  }
+
   closeAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 3) 
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
@@ -117,8 +151,8 @@ export class DetailsComponent implements OnInit {
       .AddLastAppointmentDate(
         this.appointment.PetID,
         this.appointment.ScheduleDate
-      )
-      .subscribe();
+      );
+      
   }
   cancelAppointment() {
     this.appointmentDetailsService
@@ -127,6 +161,29 @@ export class DetailsComponent implements OnInit {
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
           this.closeModal2();
+
+          // this.confirmed=true;
+
+          this.appointmentDetailsService
+            .GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe(
+              (updatedAppointment) => (this.appointment = updatedAppointment)
+            );
+        },
+        (error) => {
+          // Handle error scenario (e.g., show error message)
+        }
+      );
+  }
+
+
+  acceptAppointment() {
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 1)
+      .subscribe(
+        (response) => {
+          // Handle successful closing of appointment (e.g., show success message)
+          this.closeModal3();
 
           // this.confirmed=true;
 
