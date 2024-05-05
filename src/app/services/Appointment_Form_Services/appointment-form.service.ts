@@ -40,7 +40,7 @@ export class AppointmentFormService {
   private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
   private getScheduleSlotsUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/schedules/";
   private getAppointmentByIdUrl='https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/';
-  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/https://localhost:44327/api/Appointment/";
+  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
@@ -78,6 +78,7 @@ export class AppointmentFormService {
   }
 
   putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
+    // console.log("put url here"+this.editAppointmentUrl+AppointmentID);
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 

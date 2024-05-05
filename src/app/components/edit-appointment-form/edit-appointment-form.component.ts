@@ -61,7 +61,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private userService:AuthService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -90,12 +90,12 @@ this.location.back();
   isOwner:boolean=false;
 
   ngOnInit(): void {
-
-    if(!this.userService.isLoggedIn()){
+    
+    if(!this.authService.isLoggedIn()){
       this.route.navigate(['/signin']);
     }
 
-    this.What_Flow = this.userService.getRoleFromToken() as string;
+    this.What_Flow = this.authService.getRoleFromToken() as string;
     if(this.What_Flow=='Owner'){
       this.isOwner = true;
     }
@@ -105,8 +105,6 @@ this.location.back();
     else{
       this.isReceptionist=true;
     }
-
-
 
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
@@ -219,6 +217,23 @@ this.location.back();
       error: (err) => { console.error('there was error in vets fetch', err); }
     });
 
+    // this is the method for fetching pets
+    if (this.isOwner) {
+      this.aptService.getAllPetsOfOwener(this.authService.getUIDFromToken()).subscribe({
+        next: (data) => {
+          this.pets = data;
+          this.filteredPets = this.pets;
+          data.forEach((d)=>{
+            if(d.PetID==this.appointmentDetail.PetID){
+              this.petSearchText = d.PetName;
+            }
+          });
+          console.log('pets are ', this.pets);
+        },
+        error: (err) => { console.log('eror in fetching pets', err); }
+      });
+    }
+
     // end of oninit
   }
 
@@ -292,7 +307,7 @@ this.location.back();
     }
     // by default it should fetch the schedules for today.
     this.appointmentDetail.DoctorID = vid as unknown as string;
-    // this.selectedScheduleDate = new Date();
+    
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
         this.slotStatuses = data, console.log("default date schedules success", data);
@@ -392,12 +407,25 @@ this.location.back();
     this.appointmentDetail.Status = Status.Pending;
     this.appointmentDetail.Report = null;
     this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
+    if(this.isOwner)
+    this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
     // alert("inside booking");
     // finally call the service post method.
+
+    // console.log("printing before putting "+ this.appointmentDetail);
+    // console.log("appointment id = "+this.appointmentDetail.AppointmentID);
+    // console.log("docid= "+this.appointmentDetail.DoctorID);
+    // console.log("ownerid = "+this.appointmentDetail.OwnerID);
+    // console.log("petid = "+this.appointmentDetail.PetID);
+    // console.log(this.appointmentDetail.BookingDate);
+    // console.log(this.appointmentDetail.ScheduleTimeSlot);
+    // console.log(this.appointmentDetail.PetIssues);
+    // console.log(this.appointmentDetail.Report);
+    
     this.aptService.putAppointmentByIdandObj(this.appointmentDetail.AppointmentID,this.appointmentDetail).subscribe({
       next:(data)=>{
         let editedAppointment = data;
-        console.log("I am loggin edited appointment for our reference"+editedAppointment);
+        console.log("edit success --- "+editedAppointment);
         
       },
       error:(err)=>{
