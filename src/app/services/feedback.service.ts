@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Feedback, Question, FeedbackQuestion } from '../models/appoitment-models/IFeedback';
+import { appointmentServiceUrl } from '../Shared/apiUrls';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +13,18 @@ export class FeedbackService {
 constructor(private http:HttpClient){}
 getData(id:number): Observable<Feedback> {
   
-  return this.http.get<Feedback>(`https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback/${id}`);
+  return this.http.get<Feedback>(appointmentServiceUrl+"api/Feedback/${id}");
 }
 postData(obj:Feedback):Observable<Feedback>{
   console.log("Done");
-  return this.http.post<Feedback>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback",obj);
+  return this.http.post<Feedback>(appointmentServiceUrl+"api/Feedback",obj);
   
 }
 getQuestions():Observable<FeedbackQuestion[]>{
-  return this.http.get<FeedbackQuestion[]>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/FeedbackQuestions");
+  return this.http.get<FeedbackQuestion[]>(appointmentServiceUrl+"api/FeedbackQuestions");
 }
 getAllFeedback():Observable<Feedback[]>{
-  return this.http.get<Feedback[]>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Feedback");
+  return this.http.get<Feedback[]>(appointmentServiceUrl+"api/Feedback");
 }
 
 
