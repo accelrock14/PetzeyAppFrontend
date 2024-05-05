@@ -166,7 +166,7 @@ export class NewAppointmentFormComponent implements OnInit {
         next:(data)=>{
           this.pets=data;
           this.filteredPets =data;
-            
+          
         },
         error:(err)=>{
           console.log("error while fething the currently logged in users pets"+err);

@@ -252,7 +252,7 @@ this.location.back();
             if(user.Role=="Owner")
               this.petParents.push({ PetParentID: user.Id,
                 PetParentName: user.Name});
-            // console.log({ Id: user.Id, Name: user.Name });
+             console.log("success getting all parents "+users);
           });
         },
         error: (err) => {
