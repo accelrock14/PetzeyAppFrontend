@@ -1,5 +1,5 @@
 export interface VetDTO {
-    id: number;
-    name: string;
+    VetId: number;
+    Name: string;
     // Add other properties as needed
   }

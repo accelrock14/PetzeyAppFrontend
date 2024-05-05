@@ -281,17 +281,17 @@ export class ReportComponent implements OnInit {
   }
 
   onSelectDoctor(doctor: ListItem) {
-    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
     var recommendedDoctor: RecommendedDoctor = {
-      DoctorID: newDoctor.DoctorID,
+      DoctorID: newDoctor.VetId.toString(),
       ID: 1,
     };
     this.report.RecommendedDoctors.push(recommendedDoctor);
   }
   onDeselectDoctor(doctor: ListItem) {
-    let newDoctor: DoctorDTO = doctor as unknown as DoctorDTO;
+    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
     let index: number = this.report.RecommendedDoctors.findIndex(
-      (d) => d.DoctorID == newDoctor.DoctorID
+      (d) => d.DoctorID == newDoctor.VetId.toString()
     );
     this.report.RecommendedDoctors.splice(index, 1);
   }

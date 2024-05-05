@@ -300,7 +300,6 @@
                   <div class="modal-body">
                     <form
                       [formGroup]="petDetailsForm"
-                      (ngSubmit)="onSubmitEdit()"
                     >
                       <div class="row">
                         <h5 class="modal-title" id="exampleModalLongTitle">
@@ -575,14 +574,14 @@
                         <button
                           type="button"
                           class="btn btn-outline-secondary col-5"
-                          data-bs-dismiss="modal"
+                          data-bs-dismiss="modal" (click)="clickedCancelEditButton()"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           class="btn orange-color-bg col-5"
-                          data-bs-dismiss="modal"
+                          data-bs-dismiss="modal" (click)="onSubmitEdit()"
                         >
                           Confirm
                         </button>
@@ -618,7 +617,7 @@
   <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form [formGroup]="newPetForm" (ngSubmit)="onSubmitAdd()">
+        <form [formGroup]="newPetForm">
           <div class="row">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Add Pet Profile
@@ -872,6 +871,7 @@
               type="submit"
               class="btn orange-color-bg col-5"
               data-bs-dismiss="modal"
+              (click)="onSubmitAdd()"
             >
               Confirm
             </button>

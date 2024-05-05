@@ -45,8 +45,8 @@
     margin-bottom: 20px;
   }
   .contact-card img {
-    width: 70px; /* Adjust as needed */
-    height: 70px; /* Adjust as needed */
+    width: 70px !important; 
+    height: 70px !important; 
     object-fit: cover;
     border-radius: 50%;
     padding: 0.2rem;

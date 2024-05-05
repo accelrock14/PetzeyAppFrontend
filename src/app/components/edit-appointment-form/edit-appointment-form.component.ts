@@ -61,7 +61,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private userService:AuthService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -90,12 +90,12 @@ this.location.back();
   isOwner:boolean=false;
 
   ngOnInit(): void {
-
-    if(!this.userService.isLoggedIn()){
+    
+    if(!this.authService.isLoggedIn()){
       this.route.navigate(['/signin']);
     }
 
-    this.What_Flow = this.userService.getRoleFromToken() as string;
+    this.What_Flow = this.authService.getRoleFromToken() as string;
     if(this.What_Flow=='Owner'){
       this.isOwner = true;
     }
@@ -106,8 +106,6 @@ this.location.back();
       this.isReceptionist=true;
     }
 
-
-
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
@@ -115,23 +113,27 @@ this.location.back();
         this.AppointmentID = this.appointmentDetail.AppointmentID;
         this.selectedScheduleDate = this.appointmentDetail.ScheduleDate;
         this.selectedSlotIndex=this.appointmentDetail.ScheduleTimeSlot;
+        
         this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.appointmentDetail.ScheduleDate)).subscribe({
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
             this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
+            console.log("printing time slot here"+this.appointmentDetail.ScheduleTimeSlot+" "+this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]);
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
             
           }
-        });
+        });//
         console.log("feteched appointmetnDetail for editing", data);
       },
       error: (err) => {
         console.log("error occured while fetching appointment detail by id in edit appointment component", err);
       }
     });
+
+    
 
     this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
     this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('cancelEditModal'));
@@ -150,17 +152,7 @@ this.location.back();
       error: (err) => { console.log("error in getting vets data", err); }
     });
 
-    this.aptService.getPetParents().subscribe({
-      next: (data) => {
-        const foundItem = data.find((pp) => pp.PetParentID == this.appointmentDetail.OwnerID);
-        if (foundItem) {
-          this.petParentSearchText = foundItem.PetParentName;
-        } else {
-          this.petParentSearchText = 'Default owner Name'; // Or handle the undefined case differently
-        }
-      }
-    });
-
+    // temporarily fetch all pets.
     // this.aptService.getPets().subscribe({
     //   next:(data)=>{
     //     const foundItem = data.find((p) => p.id == this.appointmentDetail.PetID);
@@ -229,18 +221,24 @@ this.location.back();
       error: (err) => { console.error('there was error in vets fetch', err); }
     });
 
-    // this is the method for pet parents 
-    this.aptService.getPetParents().subscribe({
-      next: (data) => {
-        this.petParents = data;
-        this.filteredPetParents = this.petParents;
-        console.log(this.petParents);
-      },
-      error: (err) => { console.log('error in fetching petParents', err); }
-    });
-
-    // end of oninit
-  }
+    // this is the method for fetching pets
+    if (this.isOwner) {
+      this.aptService.getAllPetsOfOwener(this.authService.getUIDFromToken()).subscribe({
+        next: (data) => {
+          this.pets = data;
+          this.filteredPets = this.pets;
+          data.forEach((d)=>{
+            if(d.PetID==this.appointmentDetail.PetID){
+              this.petSearchText = d.PetName;
+            }
+          });
+          console.log('pets are ', this.pets);
+        },
+        error: (err) => { console.log('eror in fetching pets', err); }
+      });
+    }
+    
+  }// end of oninit
 
   // modal popup code for submission
   openModal() {
@@ -312,7 +310,7 @@ this.location.back();
     }
     // by default it should fetch the schedules for today.
     this.appointmentDetail.DoctorID = vid as unknown as string;
-    // this.selectedScheduleDate = new Date();
+    
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
         this.slotStatuses = data, console.log("default date schedules success", data);
@@ -329,6 +327,7 @@ this.location.back();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
         this.slotStatuses = data, console.log("fetched the slots boolean array success", data);
+        this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
       },
       error: (err) => {
         console.log("error occured while fetching the slots bool array", err);
@@ -412,13 +411,27 @@ this.location.back();
     this.appointmentDetail.Status = Status.Pending;
     this.appointmentDetail.Report = null;
     this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
+    if(this.isOwner)
+    this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
+    if(this.isDoctor)
+      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
     // alert("inside booking");
     // finally call the service post method.
+
+    // console.log("printing before putting "+ this.appointmentDetail);
+    // console.log("appointment id = "+this.appointmentDetail.AppointmentID);
+    // console.log("docid= "+this.appointmentDetail.DoctorID);
+    // console.log("ownerid = "+this.appointmentDetail.OwnerID);
+    // console.log("petid = "+this.appointmentDetail.PetID);
+    // console.log(this.appointmentDetail.BookingDate);
+    // console.log(this.appointmentDetail.ScheduleTimeSlot);
+    // console.log(this.appointmentDetail.PetIssues);
+    // console.log(this.appointmentDetail.Report);
+    
     this.aptService.putAppointmentByIdandObj(this.appointmentDetail.AppointmentID,this.appointmentDetail).subscribe({
       next:(data)=>{
         let editedAppointment = data;
-        console.log("I am loggin edited appointment for our reference"+editedAppointment);
-        
+        console.log("edit success --- "+editedAppointment);
       },
       error:(err)=>{
         console.log("errooor occured while sending put request",err);

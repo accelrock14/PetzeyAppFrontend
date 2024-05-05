@@ -32,8 +32,9 @@
             Your currently have appointment on <strong class="text-primary">{{appointmentDetail.ScheduleDate | date}}</strong>.
             Select another to change.
         </div>
-        
-        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length && isReceptionist || isDoctor" >
+        <!-- *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" -->
+        <!-- old one *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length && isReceptionist || isDoctor" -->
+        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" >
             <div class="mydate-picker">
                 <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
             </div>
@@ -52,6 +53,7 @@
     <!-- end of slots displayer -->
     <br>
 
+    <div  *ngIf="isDoctor || isReceptionist" >  
     <h6>Patient Details</h6>
 
     <div class="search-box">
@@ -68,7 +70,9 @@
             </div>
         </div>
     </div>
-    <br>
+
+</div>
+   
     <div class="search-box">
         <div class="input-wrapper">
             <label for="petname">Pet Name</label>

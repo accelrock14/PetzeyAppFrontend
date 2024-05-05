@@ -3,7 +3,10 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 import { IVet } from '../../../models/Vets/IVet';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 import { ToastrModule, ToastrService, provideToastr } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -12,22 +15,17 @@ bootstrapApplication(Component, {
   providers: [
     provideAnimations(), // required animations providers
     provideToastr(), // Toastr providers
-  ]
+  ],
 });
-
-
 
 @Component({
   selector: 'app-add-vet',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  
+
   templateUrl: './add-vet.component.html',
   styleUrl: './add-vet.component.css',
 })
-
-
-
 export class AddVetComponent {
   vet: IVet = {
     VetId: 0,
@@ -54,8 +52,10 @@ export class AddVetComponent {
     },
   };
   selectedFile: File | null = null;
-  constructor(private vetService: VetsserviceService,     private toastr: ToastrService,    private router: Router,
-
+  constructor(
+    private vetService: VetsserviceService,
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   onImageSelected(event: any): void {
@@ -72,42 +72,47 @@ export class AddVetComponent {
     console.log(vet);
     this.vetService.addVet(vet).subscribe({
       next: (response) => {
-        vet.VetId = response.VetId;
-        console.log('Full Vet: ', vet);
+        console.log('Vet added successfully:', response);
+        vet.VetId = response.VetId;  // Ensure response includes VetId
+
+        if (this.selectedFile) {
+          this.vetService.uploadPhoto(vet.VetId, this.selectedFile).subscribe({
+            next: (fileResponse) => {
+              console.log('File uploaded successfully:', fileResponse);
+              vet.Photo = `${fileResponse.fileName}`;  // Assuming fileName is the key in response
+              console.log('Full Vet after photo upload: ', vet);
+              this.sendProfileUpdate(vet.VetId, vet);
+            },
+            error: (fileError) => {
+              console.error('Error uploading file:', fileError);
+            }
+          });
+        } else {
+          console.log('No file selected for upload.');
+          this.sendProfileUpdate(vet.VetId, vet);
+        }
+      },
+      error: (addVetError) => {
+        console.error('Error adding vet:', addVetError);
+      }
+    });
+}
+
+
+
+    
+
+  private sendProfileUpdate(vetId: number, fullVet: IVet) {
+    this.vetService.updateVet(vetId, fullVet).subscribe({
+      next: () => {
+        this.toastr.success('Vet added successfully');
+        this.router.navigate(['/vet']);
+        // Optionally, perform any other post-update actions here
       },
       error: (error) => {
-        console.error('Error uploading file:', error);
+        console.error('Error updating vet profile:', error);
+        // Optionally, handle the error specific to profile update
       },
     });
-
-    if (this.selectedFile) {
-      this.vetService.uploadPhoto(this.vet.VetId, this.selectedFile).subscribe({
-        next: (response) => {
-          console.log('File uploaded successfully:', response);
-          // Update the Photo property in the vetProfile
-          vet.Photo = `${response.fileName}`;
-          console.log('Full Vet: ', vet);
-          this.sendProfileUpdate(this.vet.VetId, vet);
-
-        },
-        error: (error) => {
-          console.error('Error uploading file:', error);
-        },
-      });
-    
   }
-}
-private sendProfileUpdate(vetId: number, fullVet: IVet) {
-  this.vetService.updateVet(vetId, fullVet).subscribe({
-    next: () => {
-      this.toastr.success('Vet added successfully');
-        this.router.navigate(['/vet']);
-      // Optionally, perform any other post-update actions here
-    },
-    error: (error) => {
-      console.error('Error updating vet profile:', error);
-      // Optionally, handle the error specific to profile update
-    }
-  });
-}
 }

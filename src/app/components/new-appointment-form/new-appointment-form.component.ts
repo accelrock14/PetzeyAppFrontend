@@ -59,7 +59,7 @@ export class NewAppointmentFormComponent implements OnInit {
   selectedScheduleDate: Date = new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private userService: AuthService,private vetService:VetsserviceService) { }
+  constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private authService: AuthService,private vetService:VetsserviceService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -72,7 +72,8 @@ export class NewAppointmentFormComponent implements OnInit {
   filteredVets: IVetCardDTO[] = [];
   vetDateAndSlotPicker: boolean = false;
 
-  //// for pet parents
+  // for pet parents
+  // change this TempPetParent to the one that the pets team will provide after meeting
   petParents: TempPetParent[] = [];
   petParentSearchText = '';
   filteredPetParents: TempPetParent[] = [];
@@ -93,21 +94,23 @@ export class NewAppointmentFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (!this.userService.isLoggedIn()) {
+    if (!this.authService.isLoggedIn()) {
       this.route.navigate(['/signin']);
     }
 
-    this.What_Flow = this.userService.getRoleFromToken() as string;
+    this.What_Flow = this.authService.getRoleFromToken() as string;
     if (this.What_Flow == 'Owner') {
       console.log("logged in as " + this.What_Flow);
       this.isOwner = true;
-      this.appointmentDetail.OwnerID = this.userService.getUIDFromToken();
+      this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
     }
     else if (this.What_Flow == 'Doctor') {
       this.isDoctor = true;
       console.log("logged in as " + this.What_Flow);
       
-      let npiNumber = parseInt(this.userService.getVPIFromToken());
+      let npiNumber = this.authService.getVPIFromToken();
+      console.log("vpi no = "+npiNumber);
+      
       
       this.vetService.getVetsByNPINumber(npiNumber).subscribe({
         next:(data)=>{
@@ -119,24 +122,7 @@ export class NewAppointmentFormComponent implements OnInit {
         }
       });
 
-      // this.aptService.getVet().subscribe({
-      //   next:(data)=>{
-      //     this.appointmentDetail.DoctorID = data.VetId.toString();
-      //     console.log("data hereeee"+data);
-      //     // here only get the current doctors slots of current day initially. later downside you get them accordingly after changing.
-      //     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
-      //       next: (data) => {
-      //         this.slotStatuses = data, console.log("initial date schedules success", data);
-      //       },
-      //       error: (err) => {
-      //         console.log("error occured while getting slot statuses array fetch", err);
-      //       }
-      //     });
-      //   },
-      //   error:(err)=>{
-      //     console.log("error occured while fetching the currently logged in doctor id",err);
-      //   }
-      // });
+      // window.stop();
     }
     else {
       this.isReceptionist = true;
@@ -175,21 +161,9 @@ export class NewAppointmentFormComponent implements OnInit {
       });
     }
 
-    // this is the method for pet parents 
-    if (!this.isOwner) {  // only do this if logged in user is a recep or doctor
-      this.aptService.getPetParents().subscribe({
-        next: (data) => {
-          this.petParents = data;
-          this.filteredPetParents = this.petParents;
-          console.log(this.petParents);
-        },
-        error: (err) => { console.log('error in fetching petParents', err); }
-      });
-    }
-
     // this is the method for fetching pets
     if (this.isOwner) {
-      this.aptService.getAllPetsOfOwener(this.userService.getUIDFromToken()).subscribe({
+      this.aptService.getAllPetsOfOwener(this.authService.getUIDFromToken()).subscribe({
         next: (data) => {
           this.pets = data;
           this.filteredPets = this.pets;
@@ -199,7 +173,11 @@ export class NewAppointmentFormComponent implements OnInit {
       });
     }
 
-  }
+    if(this.isDoctor || this.isReceptionist){
+      this.aptService.TempAllGetPetParents();
+    }
+
+  } // end of ngOninit()
   // modal popup code for submission
   openModal() {
     this.formModal.show();
@@ -368,7 +346,10 @@ export class NewAppointmentFormComponent implements OnInit {
     this.appointmentDetail.Status = Status.Pending;
     this.appointmentDetail.Report = null;
     this.appointmentDetail.ScheduleTimeSlot = this.selectedIndex!;
-    this.appointmentDetail.OwnerID = this.userService.getUIDFromToken();
+    if(this.isOwner)
+    this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
+    if(this.isDoctor)
+      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.

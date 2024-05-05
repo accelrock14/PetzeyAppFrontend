@@ -19,14 +19,18 @@ import { catchError, map } from 'rxjs/operators';
 })
 
 export class AppointmentFormService {
- 
 
-  petService = inject(PetsService); 
+  TempAllGetPetParents() {
+    
+  }
+
+
+  petService = inject(PetsService);
   vetService = inject(VetsserviceService);
   authService = inject(AuthService);
 
   constructor(private backendClient:HttpClient) {
-      this.petService = inject(PetsService); 
+      this.petService = inject(PetsService);
       this.vetService = inject(VetsserviceService);
       this.authService = inject(AuthService);
    }
@@ -37,7 +41,7 @@ export class AppointmentFormService {
   private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
   private getScheduleSlotsUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/schedules/";
   private getAppointmentByIdUrl='https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/';
-  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/https://localhost:44327/api/Appointment/";
+  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
@@ -49,24 +53,17 @@ export class AppointmentFormService {
 
   getVet(): Observable<IVet> {
     // this is correct vpi number.
-    console.log(this.authService.getVPIFromToken()); 
-    console.log(this.vetService.getVetsByNPINumber(1234)); // here I need to subscribe...
-    // tomorrow I should do that now I am sleepy
-    // this.vetService.getVetsByNPINumber(parseInt(this.authService.getVPIFromToken())).subscribe({
-    //   next:(data)=>{
-    //     return data;
-    //   },
-    //   error:(err)=>{
-    //     console.log(err);
-    //   }
-    // });
+
+    // tomorrow I should do that now I am sleepy.
+
     return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).pipe(
       catchError((err) => {
         console.error(err);
         throw 'Error fetching vet details'; // Rethrow or handle as per your error handling strategy
       })
     );
-    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken() as number);
+
+    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken());
   }
 
   getPetParents(): Observable<TempPetParent[]> {
@@ -84,9 +81,9 @@ export class AppointmentFormService {
         const parents: TempPetParent[] = [];
         users.forEach(user => {
           pets.forEach(pet => {
-            if (user.id === pet.PetParentId) {
+            if (user.id === pet.PetParentID) {
               parents.push({
-                PetParentID: pet.PetParentId,
+                PetParentID: pet.PetParentID,
                 PetParentName: user.name as string
               });
             }
@@ -115,7 +112,7 @@ export class AppointmentFormService {
   //       pets=data;
   //       console.log("fetched all pets in service to retrieve the parents");
 
-  //       // now filter accordingly 
+  //       // now filter accordingly
   //   let Parents:TempPetParent[]=[];
   //   for(let i=0;i<users.length;i++){
   //       for(let j=0;j<pets.length;j++){
@@ -141,7 +138,7 @@ export class AppointmentFormService {
   //       console.error('There was an error!', error);
   //     }
   //   });
- 
+
   // }
 
   // no use of this method now.
@@ -155,7 +152,7 @@ export class AppointmentFormService {
     return this.backendClient.get<boolean[]>(this.getScheduleSlotsUrl+doctorID+"/"+formattedDate);
   }
 
-  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{ 
+  postAppointment(appointment:AppointmentDetail):Observable<AppointmentDetail>{
     // alert("inside post appointment");
     return this.backendClient.post<AppointmentDetail>(this.postAppointmentUrl,appointment);
   }
@@ -165,6 +162,7 @@ export class AppointmentFormService {
   }
 
   putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
+    // console.log("put url here"+this.editAppointmentUrl+AppointmentID);
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 
