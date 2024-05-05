@@ -29,7 +29,7 @@ describe('PetsService', () => {
     const mockPets: IPet[] = [
       {
         PetID: 1, PetName: 'Fluffy',
-        PetParentId: '1',
+        PetParentID: '1',
         PetImage: '',
         Species: 'Dog',
         Breed: 'dog',
@@ -42,7 +42,7 @@ describe('PetsService', () => {
       }, 
       {
         PetID: 2, PetName: 'Spot',
-        PetParentId: '1',
+        PetParentID: '1',
         PetImage: '',
         Species: 'Cat',
         Breed: 'cat',
@@ -69,7 +69,7 @@ describe('PetsService', () => {
     const mockPets: IPet[] = [
       {
         PetID: 1, PetName: 'Fluffy',
-        PetParentId: '1',
+        PetParentID: '1',
         PetImage: '',
         Species: 'Dog',
         Breed: 'dog',

@@ -18,7 +18,7 @@ describe('AppointmentPetProfileComponent', () => {
       imports: [CommonModule, AppointmentPetProfileComponent, AgePipe, HttpClientTestingModule] // Import CommonModule here
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(AppointmentPetProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -41,7 +41,7 @@ describe('AppointmentPetProfileComponent', () => {
   it('should load pet details when PetId is provided', () => {
     const mockPet: IPet = {
       PetID: 1,
-      PetParentId: 'parent123',
+      PetParentID: 'parent123',
       PetName: 'Fluffy',
       PetImage: 'fluffy.jpg',
       Species: 'Cat',

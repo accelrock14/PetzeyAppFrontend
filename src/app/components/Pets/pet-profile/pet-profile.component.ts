@@ -39,7 +39,6 @@ export class PetProfileComponent implements OnInit {
       console.log(this.Owner);
     }
 
-
     const id = this.activatedRoute.snapshot.paramMap.get('id');
 
     console.log(id);
