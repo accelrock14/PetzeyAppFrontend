@@ -37,7 +37,8 @@
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
               <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
               <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
-              <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
+              
+              <button *ngIf="!isPatient()" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
           </div>
@@ -54,7 +55,8 @@
       <p>{{ appointment.ReasonForVisit }}</p>
     </div>
     <div class="confirmed-by">
-      <p style="color:gray;">Confirmed by Jane Doe</p>
+
+      <p style="color:gray;">Confirmed by {{DoctorName}}</p>
     </div>
   </div>
 

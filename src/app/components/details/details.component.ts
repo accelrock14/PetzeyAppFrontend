@@ -17,6 +17,8 @@ import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-app
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { PetsService } from '../../services/PetsServices/pets.service';
+import { AuthService } from '../../services/UserAuthServices/auth.service';
+import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
 
 declare var window: any;
 @Component({
@@ -54,34 +56,35 @@ return parseInt(arg0);
   };
   formModal: any;
   formModal2: any;
-  //vetId:number=0;
+  
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
     private route: ActivatedRoute,
-    private prtSetvice: PetsService
+    private prtSetvice: PetsService,
+    private authService:AuthService,
+    private vetService:VetsserviceService
   ) {}
+  isPatient(): boolean {
+    const role = this.authService.getRoleFromToken();
+    return role === 'Owner';
+  }
+  DoctorName:string=''
   ngOnInit(): void {
     const ID: string= this.route.snapshot.paramMap.get('id')!;
-    //console.log(ID+" "+typeof(parseInt(ID)))
     
-    this.appointmentDetailsService
+      this.appointmentDetailsService
       .GetAppointmentDetail(parseInt(ID))
-      .subscribe((appointment: any) => (this.appointment = appointment));
-//this.vetId =parseInt(this.appointment.DoctorID)
-// console.log(this.appointment)
-// console.log("in details"+this.vetId)
-    // this.appointmentDetailsService.GetAllPetIDByVetId(1)
-    // .subscribe({
-    //   next:(data)=>{
-    //     this.petIds = data;
-
-    //   },
-    //   error:(err)=>{
-    //     console.log("error while fetching",err);
-
-    //   }
-    // });
-
+      .subscribe((appointment: any) => {
+        this.appointment = appointment;
+  
+        if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
+          console.log(appointment.DoctorID + " DOCccc");
+          this.vetService.getVetById(parseInt(appointment.DoctorID))
+            .subscribe((doc) => this.DoctorName = (doc.FName + " " + doc.LName));
+          console.log(this.DoctorName + " DOC");
+        }
+      });
+    
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('exampleModal2')
     );
@@ -90,6 +93,7 @@ return parseInt(arg0);
     );
   }
 
+  
   openModal() {
     this.formModal.show();
   }
