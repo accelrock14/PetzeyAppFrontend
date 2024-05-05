@@ -799,6 +799,9 @@
               placeholder="Enter Breed of Pet"
               [class.custom-invalid]="newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched"
               />
+            
+          </div>
+          <div class="ms-3">
             @if (newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched) {
               <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
             } 
@@ -885,6 +888,9 @@
               placeholder="Blood Group of the Pet"
               [class.custom-invalid]="newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched"
             />
+            @if (newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched) {
+              <small class="text-danger ms-1" style="font-size:x-small">BloodGroup of the pet is Mandatory!</small>
+            }
           </div>
           <div class="row ms-2 mt-3">
             <h6 class="text-muted" style="font-size: small">Allergies</h6>
@@ -896,7 +902,7 @@
             placeholder="Allergies related to the pet"
             [class.custom-invalid]="newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched"
           />
-          @if (newPetForm.get('Gender')?.invalid && newPetForm.get('Gender')?.touched) {
+          @if (newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched) {
             <small class="text-danger ms-1" style="font-size:x-small">Allergies of the pet is Mandatory!</small>
           }
           <div class="modal-footer justify-content-center">
