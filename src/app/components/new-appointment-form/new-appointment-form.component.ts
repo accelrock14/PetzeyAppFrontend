@@ -109,11 +109,13 @@ export class NewAppointmentFormComponent implements OnInit {
       console.log("logged in as " + this.What_Flow);
       
       let npiNumber = this.authService.getVPIFromToken();
+      console.log("vpi no = "+npiNumber);
+      
       
       this.vetService.getVetsByNPINumber(npiNumber).subscribe({
         next:(data)=>{
           this.appointmentDetail.DoctorID = data.VetId.toString();
-          console.log("doc id is "+ this.appointmentDetail.DoctorID+" - "+data.VetId);
+          console.log("doc id is "+ this.appointmentDetail.DoctorID);
         },
         error:(err)=>{
           console.log("errrr"+err);

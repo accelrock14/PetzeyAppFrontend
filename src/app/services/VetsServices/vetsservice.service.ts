@@ -74,7 +74,7 @@ export class VetsserviceService {
   }
   
   getVetsByNPINumber(id: string): Observable<IVet> {
-    return this.http.get<IVet>(`${this.apiUrl}/npiNumber/${id}`);
+    return this.http.get<IVet>(`${this.apiUrl}/npiNumber?npiNumber=${id}`);
   }
 
   uploadPhoto(id: number, photo: File): Observable<any> {
