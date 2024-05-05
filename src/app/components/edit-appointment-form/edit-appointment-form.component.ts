@@ -113,23 +113,27 @@ this.location.back();
         this.AppointmentID = this.appointmentDetail.AppointmentID;
         this.selectedScheduleDate = this.appointmentDetail.ScheduleDate;
         this.selectedSlotIndex=this.appointmentDetail.ScheduleTimeSlot;
+        
         this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.appointmentDetail.ScheduleDate)).subscribe({
           next:(data)=>{
             console.log(data+"data here");
             this.slotStatuses = data;
             this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
+            console.log("printing time slot here"+this.appointmentDetail.ScheduleTimeSlot+" "+this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]);
           },
           error:(err)=>{
             console.log("error in oninit slot status fetching",err);
             
           }
-        });
+        });//
         console.log("feteched appointmetnDetail for editing", data);
       },
       error: (err) => {
         console.log("error occured while fetching appointment detail by id in edit appointment component", err);
       }
     });
+
+    
 
     this.formModal= new window.bootstrap.Modal(document.getElementById("exampleModal"));
     this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('cancelEditModal'));
@@ -233,9 +237,8 @@ this.location.back();
         error: (err) => { console.log('eror in fetching pets', err); }
       });
     }
-
-    // end of oninit
-  }
+    
+  }// end of oninit
 
   // modal popup code for submission
   openModal() {
@@ -324,6 +327,7 @@ this.location.back();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
         this.slotStatuses = data, console.log("fetched the slots boolean array success", data);
+        this.slotStatuses[this.appointmentDetail.ScheduleTimeSlot]=false;
       },
       error: (err) => {
         console.log("error occured while fetching the slots bool array", err);
@@ -409,6 +413,8 @@ this.location.back();
     this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
     if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
+    if(this.isDoctor)
+      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
     // alert("inside booking");
     // finally call the service post method.
 
@@ -426,7 +432,6 @@ this.location.back();
       next:(data)=>{
         let editedAppointment = data;
         console.log("edit success --- "+editedAppointment);
-        
       },
       error:(err)=>{
         console.log("errooor occured while sending put request",err);
