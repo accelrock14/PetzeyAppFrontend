@@ -130,9 +130,7 @@ export class NewAppointmentFormComponent implements OnInit {
     }
 
     // modal popup code 
-    this.formModal = new window.bootstrap.Modal(
-      document.getElementById("myModalPopup")
-    );
+    this.formModal = new window.bootstrap.Modal(document.getElementById("myModalPopup"));
     this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('myModalPopup-2'));
     //
     this.selectedScheduleDate = new Date();
@@ -174,7 +172,9 @@ export class NewAppointmentFormComponent implements OnInit {
     }
 
     if(this.isDoctor || this.isReceptionist){
-      this.aptService.TempAllGetPetParents();
+      console.log("logging all pet owneres here = "+this.authService.getAllPetOwners());
+      console.log("jfjfjfjf");
+      
     }
 
   } // end of ngOninit()
@@ -348,6 +348,8 @@ export class NewAppointmentFormComponent implements OnInit {
     this.appointmentDetail.ScheduleTimeSlot = this.selectedIndex!;
     if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
+    if(this.isDoctor)
+      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.

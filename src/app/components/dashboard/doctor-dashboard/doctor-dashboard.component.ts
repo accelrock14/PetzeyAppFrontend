@@ -28,7 +28,7 @@ export class DoctorDashboardComponent implements OnInit {
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: '',
-    DoctorID: null
+    DoctorID: ""
   };
   appointmentStatus: AppointmentStatusCountsDto = {
     Pending: 0,

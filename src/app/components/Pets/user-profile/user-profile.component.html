@@ -156,7 +156,7 @@
 
         </div> -->
 
-        <div class="pet-cards">
+        <div class="pet-cards p-1">
           <ng-container *ngFor="let pet of pets; let i = index">
             <section
               class="pet-card col-lg-3 col-md-4 col-sm-6 col-12 p-0 d-inline"
@@ -217,7 +217,7 @@
               </div>
               <div
                 class="details"
-                style="padding-left: 10px; padding-bottom: 10px"
+                
               >
                 <div>
                   <img
@@ -300,7 +300,6 @@
                   <div class="modal-body">
                     <form
                       [formGroup]="petDetailsForm"
-                      (ngSubmit)="onSubmitEdit()"
                     >
                       <div class="row">
                         <h5 class="modal-title" id="exampleModalLongTitle">
@@ -386,7 +385,11 @@
                               class="text-box"
                               formControlName="PetName"
                               placeholder="Enter Name"
+                              [class.custom-invalid]="petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched"
                             />
+                            @if (petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched) {
+                              <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+                            }
                           </div>
                         </div>
                       </div>
@@ -460,6 +463,9 @@
                             >Other</label
                           >
                         </div>
+                        @if (petDetailsForm.get('Species')?.invalid && petDetailsForm.get('Species')?.touched) {
+                          <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+                        }
                       </div>
                       <div class="row ms-2 mt-3">
                         <h6 class="text-muted" style="font-size: small">
@@ -472,7 +478,11 @@
                           class="text-box-end"
                           formControlName="Breed"
                           placeholder="Enter Breed of Pet"
+                          [class.custom-invalid]="petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched"
                         />
+                        @if (petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched) {
+                          <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+                        }
                       </div>
                       <div class="row mt-3 ms-2">
                         <h6 class="text-muted" style="font-size: small">
@@ -529,6 +539,13 @@
                         </div>
                       </div>
                       <div class="row mt-3 ms-2">
+                        <div class="col4">
+                          @if (petDetailsForm.get('Gender')?.invalid && petDetailsForm.get('Gender')?.touched) {
+                            <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+                          }
+                        </div>
+                      </div>
+                      <div class="row mt-3 ms-2">
                         <div class="col-5">
                           <h6 class="text-muted" style="font-size: small">
                             Date of Birth
@@ -557,6 +574,7 @@
                           class="text-box"
                           formControlName="BloodGroup"
                           placeholder="Blood Group of the Pet"
+                          [class.custom-invalid]="petDetailsForm.get('BloodGroup')?.invalid && petDetailsForm.get('BloodGroup')?.touched"
                         />
                       </div>
                       <div class="row ms-2 mt-3">
@@ -569,6 +587,7 @@
                         class="text-box-end ms-3 mb-2"
                         formControlName="Allergies"
                         placeholder="Allergies related to the pet"
+                        [class.custom-invalid]="petDetailsForm.get('Allergies')?.invalid && petDetailsForm.get('Allergies')?.touched"
                       />
 
                       <div class="modal-footer justify-content-center">
@@ -582,7 +601,7 @@
                         <button
                           type="submit"
                           class="btn orange-color-bg col-5"
-                          data-bs-dismiss="modal" (click)="clickedCancelEditButton()"
+                          data-bs-dismiss="modal" (click)="onSubmitEdit()"
                         >
                           Confirm
                         </button>
@@ -618,7 +637,7 @@
   <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form [formGroup]="newPetForm" (ngSubmit)="onSubmitAdd()">
+        <form [formGroup]="newPetForm" class="needs-validation" novalidate>
           <div class="row">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Add Pet Profile
@@ -689,8 +708,12 @@
                   class="text-box"
                   formControlName="PetName"
                   placeholder="Enter Name"
+                  [class.custom-invalid]="newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched"
                 />
               </div>
+              @if (newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched) {
+                <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+              }
             </div>
           </div>
           <div class="row mt-3 ms-2">
@@ -762,6 +785,9 @@
               >
             </div>
           </div>
+          @if (newPetForm.get('Species')?.invalid && newPetForm.get('Species')?.touched) {
+            <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+          }          
           <div class="row ms-2 mt-3">
             <h6 class="text-muted" style="font-size: small">Breed</h6>
           </div>
@@ -771,7 +797,14 @@
               class="text-box-end"
               formControlName="Breed"
               placeholder="Enter Breed of Pet"
-            />
+              [class.custom-invalid]="newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched"
+              />
+            
+          </div>
+          <div class="ms-3">
+            @if (newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched) {
+              <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+            } 
           </div>
           <div class="row mt-3 ms-2">
             <h6 class="text-muted" style="font-size: small">Gender</h6>
@@ -823,6 +856,11 @@
                 >Neutered</label
               >
             </div>
+            <div class="col-4">
+              @if (newPetForm.get('Gender')?.invalid && newPetForm.get('Gender')?.touched) {
+                <small class="text-danger ms-1" style="font-size:x-small">Gender of the pet is Mandatory!</small>
+              }
+            </div>            
           </div>
           <div class="row mt-3 ms-2">
             <div class="col-5">
@@ -848,7 +886,11 @@
               class="text-box"
               formControlName="BloodGroup"
               placeholder="Blood Group of the Pet"
+              [class.custom-invalid]="newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched"
             />
+            @if (newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched) {
+              <small class="text-danger ms-1" style="font-size:x-small">BloodGroup of the pet is Mandatory!</small>
+            }
           </div>
           <div class="row ms-2 mt-3">
             <h6 class="text-muted" style="font-size: small">Allergies</h6>
@@ -858,8 +900,11 @@
             class="text-box-end ms-3 mb-2"
             formControlName="Allergies"
             placeholder="Allergies related to the pet"
+            [class.custom-invalid]="newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched"
           />
-
+          @if (newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched) {
+            <small class="text-danger ms-1" style="font-size:x-small">Allergies of the pet is Mandatory!</small>
+          }
           <div class="modal-footer justify-content-center">
             <button
               type="button"
@@ -872,6 +917,7 @@
               type="submit"
               class="btn orange-color-bg col-5"
               data-bs-dismiss="modal"
+              (click)="onSubmitAdd()"
             >
               Confirm
             </button>
