@@ -3,6 +3,7 @@ import domtoimage from 'dom-to-image';
 
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   NgModel,
@@ -136,7 +137,9 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
-  myForm!: FormGroup;
+  myForm: FormGroup = new FormGroup({
+    medicine: new FormControl()
+  })
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
@@ -151,7 +154,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
-  isDoctor: boolean = false;
+  isDoctor: boolean = true;
 
   ngOnInit(): void {
     this.reportService.getReport(this.reportId).subscribe((r) => {
@@ -226,7 +229,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   isEditing = false;
 
