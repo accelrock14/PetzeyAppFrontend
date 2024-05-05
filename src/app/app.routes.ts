@@ -8,7 +8,6 @@ import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/
 import { DoctorDashboardComponent } from './components/dashboard/doctor-dashboard/doctor-dashboard.component';
 import { PatientDashboardComponent } from './components/dashboard/patient-dashboard/patient-dashboard.component';
 import { AppointmentPetProfileComponent } from './components/Pets/appointment-pet-profile/appointment-pet-profile.component';
-import { CreateOrEditPetComponent } from './components/Pets/create-or-edit-pet/create-or-edit-pet.component';
 import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-list-grid.component';
 import { UserProfileComponent } from './components/Pets/user-profile/user-profile.component';
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
@@ -20,7 +19,6 @@ import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
 import { EditAppointmentFormComponent } from './components/edit-appointment-form/edit-appointment-form.component';
 
-import { CreatePetComponent } from './components/Pets/create-pet/create-pet.component';
 import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-profile-appt.component';
 import { doctorGuard } from './guards/doctor.guard';
 import { receptionistGuard } from './guards/receptionist.guard';
@@ -49,10 +47,6 @@ export const routes: Routes = [
     component: PatientDashboardComponent,
     title: 'PatientDashboard',
   },
-  {
-    path: 'createandedittemp',
-    component: CreateOrEditPetComponent,
-  },
 
   {
     path: 'pets-list/:page',
@@ -71,13 +65,6 @@ export const routes: Routes = [
   { path: 'appointmentPetDetails', component: AppointmentPetProfileComponent },
 
   { path: 'user', component: UserProfileComponent },
-  {
-    path: 'editpet/:id',
-    component: CreateOrEditPetComponent,
-  },
-  {
-      path: 'newPet', component:CreatePetComponent
-  },
   {
     path: 'profile',
     component: UserProfileComponent,
