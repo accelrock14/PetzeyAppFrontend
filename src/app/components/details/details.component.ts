@@ -56,6 +56,7 @@ return parseInt(arg0);
   };
   formModal: any;
   formModal2: any;
+  formModal3: any;
   
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
@@ -67,6 +68,10 @@ return parseInt(arg0);
   isPatient(): boolean {
     const role = this.authService.getRoleFromToken();
     return role === 'Owner';
+  }
+  isDoctor():boolean{
+    const role=this.authService.getRoleFromToken();
+    return role=== 'Doctor';
   }
   DoctorName:string=''
   ngOnInit(): void {
@@ -91,6 +96,10 @@ return parseInt(arg0);
     this.formModal2 = new window.bootstrap.Modal(
       document.getElementById('exampleModal3')
     );
+    this.formModal3 = new window.bootstrap.Modal(
+      document.getElementById('exampleModal4')
+    );
+
   }
 
   
@@ -106,6 +115,13 @@ return parseInt(arg0);
   closeModal2() {
     this.formModal2.hide();
   }
+  openModal3() {
+    this.formModal3.show();
+  }
+  closeModal3() {
+    this.formModal3.hide();
+  }
+
   closeAppointment() {
     this.appointmentDetailsService
       .PatchAppointmentStatus(this.appointment.AppointmentID, 3) 
@@ -139,6 +155,29 @@ return parseInt(arg0);
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
           this.closeModal2();
+
+          // this.confirmed=true;
+
+          this.appointmentDetailsService
+            .GetAppointmentDetail(this.appointment.AppointmentID)
+            .subscribe(
+              (updatedAppointment) => (this.appointment = updatedAppointment)
+            );
+        },
+        (error) => {
+          // Handle error scenario (e.g., show error message)
+        }
+      );
+  }
+
+
+  acceptAppointment() {
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 1)
+      .subscribe(
+        (response) => {
+          // Handle successful closing of appointment (e.g., show success message)
+          this.closeModal3();
 
           // this.confirmed=true;
 
