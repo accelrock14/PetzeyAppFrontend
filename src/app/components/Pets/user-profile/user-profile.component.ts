@@ -22,10 +22,23 @@ export class UserProfileComponent implements OnInit {
 
   petParentID:any;
 
-  NewPet: IPet = {} as IPet;
+  NewPet: IPet = {
+    PetID: 0,
+    PetParentID: '',
+    PetName: '',
+    PetImage: '',
+    Species: '',
+    Breed: '',
+    BloodGroup: '',
+    Gender: '',
+    Neutered: false,
+    DateOfBirth: new Date(),
+    Allergies: '',
+    LastAppointmentDate: new Date()
+  };
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
-  ToBeUpdatedPet?: IPet;
+  ToBeUpdatedPet: IPet = {} as IPet;
   // user!: User ;
   pets: IPet[] = [];
   petToDelete!: IPet;
@@ -51,15 +64,15 @@ export class UserProfileComponent implements OnInit {
     });
 
     this.petDetailsForm = this.fb.group({
-      PetImage: [this.ToBeUpdatedPet?.PetImage],
-      PetName: ([this.ToBeUpdatedPet?.PetName,Validators.required]),
-      Species: ([this.ToBeUpdatedPet?.Species,Validators.required]),
-      Breed: ([this.ToBeUpdatedPet?.Breed, Validators.required]),
-      BloodGroup: ([this.ToBeUpdatedPet?.BloodGroup,Validators.required]),
-      Gender: ([this.ToBeUpdatedPet?.Gender, Validators.required]),
-      DateOfBirth: ([this.ToBeUpdatedPet?.DateOfBirth]),
-      Neutered: [this.ToBeUpdatedPet?.Neutered, Validators.required],
-      Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
+      PetImage: [this.ToBeUpdatedPet.PetImage],
+      PetName: ([this.ToBeUpdatedPet.PetName,Validators.required]),
+      Species: ([this.ToBeUpdatedPet.Species,Validators.required]),
+      Breed: ([this.ToBeUpdatedPet.Breed, Validators.required]),
+      BloodGroup: ([this.ToBeUpdatedPet.BloodGroup,Validators.required]),
+      Gender: ([this.ToBeUpdatedPet.Gender, Validators.required]),
+      DateOfBirth: ([this.ToBeUpdatedPet.DateOfBirth]),
+      Neutered: [this.ToBeUpdatedPet.Neutered, Validators.required],
+      Allergies: [this.ToBeUpdatedPet.Allergies, Validators.required],
     });
   }
 
