@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 
+import { Renderer2 } from '@angular/core';
 @Component({
   selector: 'app-doctor-appointment-card',
   standalone: true,
@@ -16,6 +17,7 @@ import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
   styleUrl: './doctor-appointment-card.component.css'
 })
 export class DoctorAppointmentCardComponent {
+
 openPopup(arg0: string) {
   this.snackBar.open(`${arg0} service will be available soon`, "Close", {
     verticalPosition: 'bottom'
@@ -26,14 +28,20 @@ openPopup(arg0: string) {
   @Input()
   user!:string;
 
-  constructor(private snackBar: MatSnackBar,  private service:FeedbackService){}
+  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private renderer:Renderer2){}
 
 selectedappointmentid:number=0;
+showmodal:boolean=false
+feedbacklist:Feedback[]=[]
   clicked(obj: number) {
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
     console.log(this.selectedappointmentid)
-   
+    if(!this.feedbacklist.find(f=>f.AppointmentId==obj)){
+      this.showmodal=true;
+
+    }
+
  }
    
      feedbackForm: any;
@@ -53,6 +61,9 @@ selectedappointmentid:number=0;
            FeedbackQuestionId: question.FeedbackQuestionId,
            Rating: 0
          }));
+       })
+       this.service.getAllFeedback().subscribe((f)=>{
+        this.feedbacklist=f;
        })
       //  this.feedback.Questions = this.feedbackquestions.map(question => ({
       //        QuestionId:0,
@@ -87,7 +98,7 @@ selectedappointmentid:number=0;
         }));
        this.feedback.Comments='';
        this.feedback.Recommendation='';
-       
+       this.showmodal=false;
          
          }
          

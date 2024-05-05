@@ -31,7 +31,7 @@
     </div>
 </div> 
 
- <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+ <div class="modal fade" #feedbackModal id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true" *ngIf="showmodal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <form #feedbackForm="ngForm"  novalidate>
