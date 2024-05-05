@@ -10,44 +10,31 @@ import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentSt
 })
 export class DashboardService {
 
-  apiUrl: string = `https://localhost:44327/api/dashboard`;
-  // apiUrl: string = `https://localhost:44327/api/appointment`;
-
+  apiUrl: string = `https://petzeybackendappointmentapi20240502214622.azurewebsites.net`;
 
   constructor(private http: HttpClient) { }
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
-    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/appointments/filter/${offset}`, filters);
+    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/appointments/filter/${offset}`, filters);
   }
   GetStatusCounts(vetid: string): Observable<AppointmentStatusCountsDto> {
-    return this.http.get<AppointmentStatusCountsDto>(`https://localhost:44327/api/dashboard/statuscounts/${vetid}`);
+    return this.http.get<AppointmentStatusCountsDto>(`${this.apiUrl}/api/dashboard/statuscounts/${vetid}`);
   }
   GetPatientAppointmentsWithFilters(filters: FilterParamsDto, offset: number, ownerid: string): Observable<AppointmentCardDto[]> {
-    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/petappointments/filter/${ownerid}/${offset}`, filters)
+    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/petappointments/filter/${ownerid}/${offset}`, filters)
   }
   GetVetAppointmentsWithFilters(filters: FilterParamsDto, offset: number, vetid: string): Observable<AppointmentCardDto[]> {
-    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/vetappointments/filter/${vetid}/${offset}`, filters)
+    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/vetappointments/filter/${vetid}/${offset}`, filters)
   }
 
-
-
-  GetAllAppointments(): Observable<AppointmentCardDto[]> {
-    return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/all`);
-  }
-  GetPatientAppointments(ownerid: number): Observable<AppointmentCardDto[]> {
-    return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/pets/${ownerid}`)
-  }
-  GetVetAppointments(vetid: number): Observable<AppointmentCardDto[]> {
-    return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/vets/${vetid}`)
-  }
 
   //service for pets team (appointment history)
   GetAllClosedAppointmentByPetID(petid: number): Observable<AppointmentCardDto[]> {
-    return this.http.get<AppointmentCardDto[]>(`https://localhost:44327/api/AppointmentDetails/allappointmentsbypetid/${petid}`);
+    return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/api/AppointmentDetails/allappointmentsbypetid/${petid}`);
   }
 
   //service for doctor team (appointment history)
   GetAllClosedAppointmentByVetID(vetid: number): Observable<AppointmentCardDto[]> {
-    return this.http.get<AppointmentCardDto[]>(`https://localhost:44327/api/AppointmentDetails/allappointmentsbyvetid/${vetid}`);
+    return this.http.get<AppointmentCardDto[]>(`${this.apiUrl}/api/AppointmentDetails/allappointmentsbyvetid/${vetid}`);
   }
 
 }

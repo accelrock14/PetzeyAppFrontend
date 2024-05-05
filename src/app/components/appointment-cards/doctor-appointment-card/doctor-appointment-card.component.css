@@ -6,11 +6,18 @@
   }
 .card-content {
     text-align: left;
+    font-size:medium;
+  }
+  .text-left {
+    text-align: left;
   }
 
   /* Media query for small screens */
   @media (max-width: 767px) {
     .card-content {
+      text-align: center;
+    }
+    .text-left {
       text-align: center;
     }
 }

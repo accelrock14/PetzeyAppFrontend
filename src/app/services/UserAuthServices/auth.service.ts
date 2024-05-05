@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -6,6 +7,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   userPayload: any;
+
+  constructor(private http:HttpClient) {
+  }
 
   logOut() {
     localStorage.clear();
@@ -56,5 +60,18 @@ export class AuthService {
         return this.userPayload.extension_NPINumber;
       }
     }
+  }
+
+  getAllUsers(){
+    return this.http.get<any>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net//api/Auth")
+  }
+
+  getUserByID(UID: string) {
+  //  let username: string ="";
+    return this.http.get<string>(
+      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth/' +
+        UID
+    )
+    
   }
 }

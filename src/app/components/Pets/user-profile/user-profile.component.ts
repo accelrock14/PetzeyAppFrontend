@@ -196,7 +196,7 @@ export class UserProfileComponent implements OnInit {
       this.convertImageToBase64Add(file);
     }
   }
-                                    
+
     convertImageToBase64Add(file: File): void {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -238,7 +238,7 @@ export class UserProfileComponent implements OnInit {
 
 
     SavePetDetails() {
-      this.NewPet!.PetParentId = this.auth.getUIDFromToken();
+      this.NewPet!.PetParentID = this.auth.getUIDFromToken();
       console.log(this.NewPet)
       this.petsService.AddPet(this.NewPet!).subscribe({
         next: updatedPet => {

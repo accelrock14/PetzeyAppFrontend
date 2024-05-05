@@ -4,15 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { Status } from '../../models/Status';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { Veterinarian } from '../../models/Veterinarian';
-import { PetParent } from '../../models/PetParent';
-import { Pet } from '../../models/Pet';
 import { PetIssue } from '../../models/PetIssue';
 import { AppointmentFormService } from '../../services/Appointment_Form_Services/appointment-form.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
+import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
+import { IPet } from '../../models/Pets/IPet';
+import { TempPetParent } from '../../models/TempPetParent';
 
 declare var window:any;
 @Component({
@@ -69,20 +69,20 @@ this.location.back();
   filteredpetIssues: GeneralPetIssue[] = [];
 
   // variable data for vets
-  veternarians: Veterinarian[] = []; // to be fetched from backend or dummy json server and assigned in oninit method
+  veternarians: IVetCardDTO[] = []; // to be fetched from backend or dummy json server and assigned in oninit method
   veternarianSearchText = '';
-  filteredVets: Veterinarian[] = [];
+  filteredVets: IVetCardDTO[] = [];
   vetDateAndSlotPicker: boolean = false;
 
   //// for pet parents
-  petParents: PetParent[] = [];
+  petParents: TempPetParent[] = [];
   petParentSearchText = '';
-  filteredPetParents: PetParent[] = [];
+  filteredPetParents: TempPetParent[] = [];
 
   // for pets
-  pets: Pet[] = [];
+  pets: IPet[] = [];
   petSearchText = '';
-  filteredPets: Pet[] = [];
+  filteredPets: IPet[] = [];
 
   What_Flow:string='';
   isReceptionist:boolean=false;
@@ -105,6 +105,9 @@ this.location.back();
     else{
       this.isReceptionist=true;
     }
+
+
+
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
       next: (data) => {
@@ -135,12 +138,12 @@ this.location.back();
     //
 
     this.aptService.getVeternarians().subscribe({
-      next: (data: Veterinarian[]) => {
+      next: (data: IVetCardDTO[]) => {
         for (let i = 0; i < data.length; i++) {
           //console.log(typeof data[i].id + " and "+typeof this.appointmentDetail.DoctorID);
           // LATER I HAVE TO MAKE IT AS ===
-          if (data[i].id == this.appointmentDetail.DoctorID) {
-            this.veternarianSearchText = data[i].name;
+          if (data[i].VetId as unknown as string == this.appointmentDetail.DoctorID) {
+            this.veternarianSearchText = data[i].Name;
           }
         }
       },
@@ -149,28 +152,28 @@ this.location.back();
 
     this.aptService.getPetParents().subscribe({
       next: (data) => {
-        const foundItem = data.find((pp) => pp.id == this.appointmentDetail.OwnerID);
+        const foundItem = data.find((pp) => pp.PetParentID == this.appointmentDetail.OwnerID);
         if (foundItem) {
-          this.petParentSearchText = foundItem.name;
+          this.petParentSearchText = foundItem.PetParentName;
         } else {
           this.petParentSearchText = 'Default owner Name'; // Or handle the undefined case differently
         }
       }
     });
 
-    this.aptService.getPets().subscribe({
-      next:(data)=>{
-        const foundItem = data.find((p) => p.id == this.appointmentDetail.PetID);
-        if (foundItem) {
-          this.petSearchText = foundItem.name;
-        } else {
-          this.petSearchText = 'Default pet Name'; // Or handle the undefined case differently
-        }
-      },
-      error:(err)=>{
-        console.log("errorrrrr",err);
-      }
-    });
+    // this.aptService.getPets().subscribe({
+    //   next:(data)=>{
+    //     const foundItem = data.find((p) => p.id == this.appointmentDetail.PetID);
+    //     if (foundItem) {
+    //       this.petSearchText = foundItem.name;
+    //     } else {
+    //       this.petSearchText = 'Default pet Name'; // Or handle the undefined case differently
+    //     }
+    //   },
+    //   error:(err)=>{
+    //     console.log("errorrrrr",err);
+    //   }
+    // });
 
     this.aptService.getGeneralPetIssues().subscribe({
       next: (data) => {
@@ -236,17 +239,9 @@ this.location.back();
       error: (err) => { console.log('error in fetching petParents', err); }
     });
 
-    // this is the method for  fetching pets 
-    this.aptService.getPets().subscribe({
-      next: (data) => {
-        this.pets = data;
-        this.filteredPets = this.pets;
-        console.log('pets are ', this.pets);
-      },
-      error: (err) => { console.log('eror in fetching pets', err); }
-    });
-
+    // end of oninit
   }
+
   // modal popup code for submission
   openModal() {
     // alert("here");
@@ -298,7 +293,7 @@ this.location.back();
       }
     }
     else {
-      this.filteredVets = this.veternarians.filter(v => v.name.toLowerCase().includes(this.veternarianSearchText.toLowerCase()));
+      this.filteredVets = this.veternarians.filter(v => v.Name.toLowerCase().includes(this.veternarianSearchText.toLowerCase()));
       if (this.veternarianSearchText) {
         this.vetDateAndSlotPicker = true;
       } else {
@@ -306,7 +301,7 @@ this.location.back();
       }
     }
   }
-  selectVeternarian(vid: string, vname: string): void {
+  selectVeternarian(vid: number, vname: string): void {
     // we need to assign for the respective variable in the appointment object
     this.veternarianSearchText = vname;
     this.filteredVets = [];
@@ -316,7 +311,7 @@ this.location.back();
       this.vetDateAndSlotPicker = false;
     }
     // by default it should fetch the schedules for today.
-    this.appointmentDetail.DoctorID = vid;
+    this.appointmentDetail.DoctorID = vid as unknown as string;
     // this.selectedScheduleDate = new Date();
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
@@ -363,12 +358,12 @@ this.location.back();
     // this.appointmentDetail.ScheduleTimeSlot = index;
     return index === this.selectedSlotIndex;
   }
-  filterPetParents(): void {
+  filterPetParents():void {
     if (!this.petParentSearchText.length) {
       this.filteredPetParents = [];
     }
     else {
-      this.filteredPetParents = this.petParents.filter(pp => pp.name.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
+      this.filteredPetParents = this.petParents.filter(pp => pp.PetParentName.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
     }
   }
 
@@ -376,6 +371,18 @@ this.location.back();
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID = ppid;
+
+    this.aptService.getAllPetsOfOwener(ppid).subscribe({
+      next:(data)=>{
+        this.pets = data;
+        console.log("data recieved from getAllPetsOfOwner id = "+ppid+" pets =  " +data);
+        console.log(this.pets);
+      },
+      error:(err)=>{
+        console.log("error occured while fetching the pets of owner "+err);
+      }
+    });
+
   }
 
   // methods for pets 
@@ -384,7 +391,7 @@ this.location.back();
       this.filteredPets = [];
     }
     else {
-      this.filteredPets = this.pets.filter(p => p.name.toLowerCase().includes(this.petSearchText.toLowerCase()));
+      this.filteredPets = this.pets.filter(p => p.PetName.toLowerCase().includes(this.petSearchText.toLowerCase()));
     }
   }
   selectPet(petid: number, petname: string) {

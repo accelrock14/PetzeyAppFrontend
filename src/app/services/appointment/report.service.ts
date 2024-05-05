@@ -2,23 +2,22 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
 import { IReport } from '../../models/appoitment-models/Report';
-import { Test } from "../../models/appoitment-models/Test";
-import { Symptom } from "../../models/appoitment-models/Symptom";
-import { PrescribedMedicine } from "../../models/appoitment-models/PrescribedMedicine";
-import { Medicine } from "../../models/appoitment-models/Medicine";
+import { Test } from '../../models/appoitment-models/Test';
+import { Symptom } from '../../models/appoitment-models/Symptom';
+import { PrescribedMedicine } from '../../models/appoitment-models/PrescribedMedicine';
+import { Medicine } from '../../models/appoitment-models/Medicine';
 import { ReportHistoryDTO } from '../../models/appoitment-models/ReportHistoryDTO';
-
+import { appointmentServiceUrl } from '../../Shared/apiUrls';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReportService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  reportURL: string = "https://localhost:44327/api/appointment/"
+  reportURL: string = appointmentServiceUrl + 'api/appointment/';
 
   getReport(reportID: number): Observable<IReport> {
-    return this.http.get<IReport>(this.reportURL + "report/" + reportID)
+    return this.http.get<IReport>(this.reportURL + 'report/' + reportID);
   }
 
   getAllSymptoms(): Observable<Symptom[]> {
@@ -28,23 +27,33 @@ export class ReportService {
     return this.http.get<Test[]>(this.reportURL + 'tests');
   }
   getAllMedicines(): Observable<Medicine[]> {
-    return this.http.get<Medicine[]>(this.reportURL + "medicines")
+    return this.http.get<Medicine[]>(this.reportURL + 'medicines');
   }
 
   getPetHistory(PetID: number): Observable<ReportHistoryDTO> {
-    return this.http.get<ReportHistoryDTO>(this.reportURL + "reporthistory/" + PetID)
+    return this.http.get<ReportHistoryDTO>(
+      this.reportURL + 'reporthistory/' + PetID
+    );
   }
 
   patchReport(id: number, report: IReport) {
-    return this.http.patch(this.reportURL + "report/" + id, report)
+    return this.http.patch(this.reportURL + 'report/' + id, report);
   }
   UpdatePrescription(id: number, PrescribedMedicine: PrescribedMedicine) {
-    return this.http.patch(this.reportURL + "prescription/" + id, PrescribedMedicine)
+    return this.http.patch(
+      this.reportURL + 'prescription/' + id,
+      PrescribedMedicine
+    );
   }
   AddPrescription(prescriptionID: number, prescription: PrescribedMedicine) {
-    return this.http.post(this.reportURL + "prescription/" + prescriptionID, prescription)
+    return this.http.post(
+      this.reportURL + 'prescription/' + prescriptionID,
+      prescription
+    );
   }
   DeletePrescription(prescribedMedicineID: number) {
-    return this.http.delete(this.reportURL + "prescription/" + prescribedMedicineID)
+    return this.http.delete(
+      this.reportURL + 'prescription/' + prescribedMedicineID
+    );
   }
 }

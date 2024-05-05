@@ -6,12 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AppointmentDetailsService {
-  private apiUrl = 'https://localhost:44327/api/Appointment';
-  private apiUrl2= 'https://localhost:44327/api/AppointmentDetails';
-  private apiUrl3= 'https://localhost:44327/api/PetIdByDocId';
+  private apiUrl = 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment';
+  private apiUrl2= 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails';
+  private apiUrl3= 'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/PetIdByDocId';
 
   constructor(private http: HttpClient) { }
   GetAppointmentDetail(AppointmentID: number):Observable<any> {
+    //console.log(AppointmentID+"in service"+typeof(AppointmentID))
     const url = `${this.apiUrl}/${AppointmentID}`;
     return this.http.get<any>(url);
   }
