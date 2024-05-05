@@ -43,9 +43,12 @@
         </svg>
       </div>
     </div>
-    <div class="col">
-      <button class="btn btn-edit" (click) = "navigateToAddVet()">Add Vet</button>
-    </div>
+    @if(auth.isLoggedIn() && auth.getRoleFromToken() == "Receptionist"){
+      <div class="col">
+        <button class="btn btn-edit" (click) = "navigateToAddVet()">Add Vet</button>
+      </div>
+    }
+    
   </div>
   <!--Top Rated Vets Display-->
   <div *ngIf="selectedSpecialties.length === 0 && searchQuery == ''">
