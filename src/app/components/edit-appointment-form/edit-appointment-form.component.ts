@@ -150,17 +150,7 @@ this.location.back();
       error: (err) => { console.log("error in getting vets data", err); }
     });
 
-    this.aptService.getPetParents().subscribe({
-      next: (data) => {
-        const foundItem = data.find((pp) => pp.PetParentID == this.appointmentDetail.OwnerID);
-        if (foundItem) {
-          this.petParentSearchText = foundItem.PetParentName;
-        } else {
-          this.petParentSearchText = 'Default owner Name'; // Or handle the undefined case differently
-        }
-      }
-    });
-
+    // temporarily fetch all pets.
     // this.aptService.getPets().subscribe({
     //   next:(data)=>{
     //     const foundItem = data.find((p) => p.id == this.appointmentDetail.PetID);
@@ -227,16 +217,6 @@ this.location.back();
         console.log(this.veternarians);
       },
       error: (err) => { console.error('there was error in vets fetch', err); }
-    });
-
-    // this is the method for pet parents 
-    this.aptService.getPetParents().subscribe({
-      next: (data) => {
-        this.petParents = data;
-        this.filteredPetParents = this.petParents;
-        console.log(this.petParents);
-      },
-      error: (err) => { console.log('error in fetching petParents', err); }
     });
 
     // end of oninit
