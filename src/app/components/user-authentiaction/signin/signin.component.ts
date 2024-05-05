@@ -15,7 +15,7 @@ export class SigninComponent implements OnInit {
   constructor(private route: ActivatedRoute,private auth: AuthService,private router: Router,) { }
 
   ngOnInit(): void {
-    // Subscribe to route params to get the id_token
+    if(this.route.fragment)
     this.route.fragment.subscribe(fragment => {
       if (fragment) {
         const params = new URLSearchParams(fragment);
