@@ -63,7 +63,8 @@ return parseInt(arg0);
     private route: ActivatedRoute,
     private prtSetvice: PetsService,
     private authService:AuthService,
-    private vetService:VetsserviceService
+    private vetService:VetsserviceService,
+    private router:Router
   ) {}
   isPatient(): boolean {
     const role = this.authService.getRoleFromToken();
@@ -75,12 +76,18 @@ return parseInt(arg0);
   }
   DoctorName:string=''
   ngOnInit(): void {
+
     const ID: string= this.route.snapshot.paramMap.get('id')!;
     
       this.appointmentDetailsService
       .GetAppointmentDetail(parseInt(ID))
       .subscribe((appointment: any) => {
         this.appointment = appointment;
+        console.log("oid= "+this.appointment.OwnerID + " uid from auth= "+this.authService.getUIDFromToken());
+        
+        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()){
+          this.router.navigate(['/home']);
+        }
   
         if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
           console.log(appointment.DoctorID + " DOCccc");
