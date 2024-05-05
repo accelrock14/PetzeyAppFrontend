@@ -19,11 +19,6 @@ import { appointmentServiceUrl } from '../../Shared/apiUrls';
 
 export class AppointmentFormService {
 
-  TempAllGetPetParents() {
-    
-  }
-
-
   petService = inject(PetsService);
   vetService = inject(VetsserviceService);
   authService = inject(AuthService);
