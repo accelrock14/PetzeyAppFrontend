@@ -84,7 +84,7 @@ return parseInt(arg0);
       .subscribe((appointment: any) => {
         this.appointment = appointment;
         
-        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()){
+        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()&&!this.isDoctor()){
           this.router.navigate(['/home']);
         }
   
