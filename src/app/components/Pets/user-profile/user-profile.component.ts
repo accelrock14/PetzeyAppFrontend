@@ -16,7 +16,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule],
 })
 export class UserProfileComponent implements OnInit {
-  petParentID: any;
+
+
+
+  petParentID:any;
+
   NewPet: IPet = {} as IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
