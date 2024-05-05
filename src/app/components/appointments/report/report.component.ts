@@ -138,7 +138,7 @@ export class ReportComponent implements OnInit {
     comment: '',
   };
   myForm: FormGroup = new FormGroup({
-    medicine: new FormControl()
+
   })
   ShowFilter = true;
   limitSelection = false;
