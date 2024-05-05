@@ -12,13 +12,10 @@ export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
   FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
-  GetPetsByIDs(petIDs:number[]):Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
-  GetMorePets(pageNumber:number):Observable<IPet[]>;
   AddPet(petToBeAdded:IPet):Observable<IPet>;
   EditPet(petToBeEdited:IPet):Observable<IPet>;
   GetPetsByParentID(petParentID:string):Observable<IPet[]>;
-  GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):void;
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
@@ -47,18 +44,12 @@ export class PetsService implements IPetsService{
     const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
-  GetPetsByIDs(petIDs: number[]): Observable<IPet[]> {
-    const apiUrlGetPetsByIDs = "";
-    return this.apiService.post<IPet[]>(apiUrlGetPetsByIDs,petIDs)
-  }
+  
   GetPetDetailsByID(petID: number): Observable<IPet> {
     const apiUrlGetPetDetailsByID =`${petsServiceUrl}/details/${petID}`;
     return this.apiService.get<IPet>(apiUrlGetPetDetailsByID);
   }
-  GetMorePets(pageNumber: number): Observable<IPet[]> {
-    const apiUrlGetMorePets ="";
-    return this.apiService.post<IPet[]>(apiUrlGetMorePets,pageNumber);
-  }
+ 
   AddPet(petToBeAdded: IPet): Observable<IPet> {
     const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
@@ -71,10 +62,7 @@ export class PetsService implements IPetsService{
     const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/${petParentID}`;
     return this.apiService.get<IPet[]>(apiUrlGetPetsbyParentId)
   }
-  GetPetsByPetIDinDTO(petIDs:number[]):Observable<IPet[]>{
-    const apiUrlGetPetsInDTO = "";
-    return this.apiService.post<IPet[]>(apiUrlGetPetsInDTO,petIDs)
-  }
+ 
   DeletePetByPetID(petID: number): Observable<object> {
     const apiUrlDeletePetbyID=`${petsServiceUrl}/${petID}`;
     return this.apiService.delete(apiUrlDeletePetbyID)
