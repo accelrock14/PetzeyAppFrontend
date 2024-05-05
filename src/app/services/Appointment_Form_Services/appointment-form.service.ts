@@ -9,8 +9,6 @@ import { VetsserviceService } from '../VetsServices/vetsservice.service';
 import { AuthService } from '../UserAuthServices/auth.service';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IVet } from '../../models/Vets/IVet';
-import { TempPetParent } from '../../models/TempPetParent';
-import { forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
 
