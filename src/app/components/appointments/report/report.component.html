@@ -363,7 +363,9 @@
               <div class="icon-container me-5 d-inline-block">
                 <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.HeartRate }}</b>
+                  <b *ngIf="!isEditing" id="heartRate">{{
+                    report.HeartRate
+                  }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
@@ -381,7 +383,9 @@
                   <i class="fa-solid fa-thermometer icon"></i>
                 </div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.Temperature }}</b>
+                  <b *ngIf="!isEditing" id="temperature">{{
+                    report.Temperature
+                  }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
@@ -398,7 +402,7 @@
               <div class="icon-container d-inline-block">
                 <div class="mb-2"><i class="fa-solid fa-lungs icon"></i></div>
                 <span class="icon-text">
-                  <b *ngIf="!isEditing">{{ report.OxygenLevel }}</b>
+                  <b *ngIf="!isEditing" id="oxygen">{{ report.OxygenLevel }}</b>
                   <input
                     *ngIf="isEditing"
                     type="text"
@@ -493,7 +497,7 @@
                   {{ getDoctorById(doctorId)?.Name }}
                 </p>
                 @if (report.Comment!=null && report.Comment!='') {
-                <p>{{ report.Comment }}</p>
+                <p id="comment">{{ report.Comment }}</p>
                 } @else {
                 <div class="text-center text-danger mt-1">
                   <i class="fa-solid fa-circle-exclamation"></i>

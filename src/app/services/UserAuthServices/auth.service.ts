@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
 import { User } from '../../models/User-Authentication/User';
+import { TokenDTO } from '../../models/User-Authentication/TokenDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +14,32 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   logOut() {
-    localStorage.clear();
+    localStorage.removeItem("token")
+    localStorage.removeItem("JWTtoken")
   }
 
   storeToken(tokenValue: string) {
     localStorage.setItem('token', tokenValue);
   }
 
+  storeJWTToken(obj:TokenDTO) {
+    this.http.post<string>("https://petzeypetwebapi20240505153103.azurewebsites.net/jwttoken",obj).subscribe({
+      next: (res)=>{
+        localStorage.setItem('JWTtoken', res);
+      },
+      error: (err)=>{
+        console.log(err.error.Message);
+      }
+    }
+    )
+  }
+
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getJWTToken() {
+    return localStorage.getItem('JWTtoken');
   }
 
   isLoggedIn(): boolean {
