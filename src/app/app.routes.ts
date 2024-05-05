@@ -23,15 +23,14 @@ import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-p
 import { doctorGuard } from './guards/doctor.guard';
 import { receptionistGuard } from './guards/receptionist.guard';
 import { loggedInGuard } from './guards/logged-in.guard';
-VetProfileApptComponent
+VetProfileApptComponent;
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
-    { path: '',redirectTo:'home', pathMatch:'full' },
-    { path: 'AdminDashboard/details/:id', component: DetailsComponent},
-    { path: 'DoctorDashboard/details/:id', component: DetailsComponent},
-    { path: 'PatientDashboard/details/:id', component: DetailsComponent},
-  { path: 'report', component: ReportComponent },
-  { path: 'reporthistory', component: ReportHistoryComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'AdminDashboard/details/:id', component: DetailsComponent },
+  { path: 'DoctorDashboard/details/:id', component: DetailsComponent },
+  { path: 'PatientDashboard/details/:id', component: DetailsComponent },
+
   {
     path: 'AdminDashboard',
     component: AdminDashboardComponent,
@@ -68,26 +67,37 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: UserProfileComponent,
-    title: "UserProfile",
+    title: 'UserProfile',
   },
   {
     path: 'signin',
     component: SigninComponent,
-    title: "SignIn",
-  },
-  {path:'add-vet',component:AddVetComponent,canActivate:[loggedInGuard,receptionistGuard]},
-  {path:'vet', component:VetComponent},
-
-  {path:'vet-profile/:id', component:VetProfileComponent,title:'VetProfile'},
-
-  {
-    path:'addAppointment',component:NewAppointmentFormComponent
+    title: 'SignIn',
   },
   {
-    path:'editAppointment/:AppointmentID',component:EditAppointmentFormComponent
+    path: 'add-vet',
+    component: AddVetComponent,
+    canActivate: [loggedInGuard, receptionistGuard],
+  },
+  { path: 'vet', component: VetComponent },
+
+  {
+    path: 'vet-profile/:id',
+    component: VetProfileComponent,
+    title: 'VetProfile',
+  },
+
+  {
+    path: 'addAppointment',
+    component: NewAppointmentFormComponent,
+  },
+  {
+    path: 'editAppointment/:AppointmentID',
+    component: EditAppointmentFormComponent,
   },
   //Added
   {
-    path:'home',component:HomeComponent
-  }
+    path: 'home',
+    component: HomeComponent,
+  },
 ];
