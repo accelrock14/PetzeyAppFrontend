@@ -22,7 +22,20 @@ describe('ReportComponent', () => {
     TestBed.inject(ToastrService)
     fixture = TestBed.createComponent(ReportComponent);
     component = fixture.componentInstance;
-
+    component.report = {
+      ReportID: 1,
+      Prescription: {
+        PrescriptionID: 1,
+        PrescribedMedicines: []
+      },
+      Symptoms: [],
+      Tests: [],
+      HeartRate: 79,
+      Temperature: 37,
+      OxygenLevel: 14,
+      RecommendedDoctors: [],
+      Comment: 'this is a comment',
+    };
     component.myForm = new FormGroup({
       symptom: new FormControl(),
       test: new FormControl(),
@@ -88,5 +101,24 @@ describe('ReportComponent', () => {
     const button = fixture.debugElement.query(By.css('#updateModal'));
     button.triggerEventHandler('click', null);
     expect(myFunctionSpy).toHaveBeenCalledWith(0);
+  });
+
+
+  it('should display the correct heartrate from report', () => {
+    const nameElement = fixture.debugElement.query(By.css('#heartRate'));
+    expect(nameElement.nativeElement.textContent).toEqual('79');
+  });
+  it('should display the correct temperature from report', () => {
+    const nameElement = fixture.debugElement.query(By.css('#temperature'));
+    expect(nameElement.nativeElement.textContent).toEqual('37');
+  });
+  it('should display the correct oxygemLevel from report', () => {
+    const nameElement = fixture.debugElement.query(By.css('#oxygen'));
+    expect(nameElement.nativeElement.textContent).toEqual('14');
+  });
+
+  it('should display the correct comment from report', () => {
+    const nameElement = fixture.debugElement.query(By.css('#comment'));
+    expect(nameElement.nativeElement.textContent).toEqual('this is a comment');
   });
 });
