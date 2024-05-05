@@ -75,7 +75,7 @@ export class AuthService {
 
   //returns any type of user based on User ID
   getOwnerByID(UID: string) {
-    this.http.get<User[]>("").subscribe({
+    this.http.get<User[]>(appointmentServiceUrl + 'api/Auth').subscribe({
       next: (users) => {
         return users.find((user)=>user.Id === UID);
       },
@@ -87,7 +87,7 @@ export class AuthService {
 
   // returns Doctor based on NPI id or null if the NPI id is not found
   getDoctorByNPI(NPI: string) {
-    this.http.get<User[]>("").subscribe({
+    this.http.get<User[]>(appointmentServiceUrl + 'api/Auth').subscribe({
       next: (users) => {
         return users.find((user)=>user.Npi === NPI);
       },
@@ -98,7 +98,7 @@ export class AuthService {
   }
 
   getAllPetOwners(){
-    this.http.get<User[]>("").subscribe({
+    this.http.get<User[]>(appointmentServiceUrl + 'api/Auth').subscribe({
       next: (users) => {
         return users.filter((user)=>user.Role==="Owner")
       },
