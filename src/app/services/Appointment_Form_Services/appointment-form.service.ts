@@ -20,6 +20,10 @@ import { catchError, map } from 'rxjs/operators';
 
 export class AppointmentFormService {
 
+  TempAllGetPetParents() {
+    
+  }
+
 
   petService = inject(PetsService);
   vetService = inject(VetsserviceService);
@@ -37,7 +41,7 @@ export class AppointmentFormService {
   private postAppointmentUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment";
   private getScheduleSlotsUrl="https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/AppointmentDetails/schedules/";
   private getAppointmentByIdUrl='https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/';
-  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/https://localhost:44327/api/Appointment/";
+  private editAppointmentUrl = "https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{
     return this.backendClient.get<GeneralPetIssue[]>(this.generalPetIssuesUrl);
@@ -49,24 +53,17 @@ export class AppointmentFormService {
 
   getVet(): Observable<IVet> {
     // this is correct vpi number.
-    console.log(this.authService.getVPIFromToken());
-    console.log(this.vetService.getVetsByNPINumber(1234)); // here I need to subscribe...
-    // tomorrow I should do that now I am sleepy
-    // this.vetService.getVetsByNPINumber(parseInt(this.authService.getVPIFromToken())).subscribe({
-    //   next:(data)=>{
-    //     return data;
-    //   },
-    //   error:(err)=>{
-    //     console.log(err);
-    //   }
-    // });
+
+    // tomorrow I should do that now I am sleepy.
+
     return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).pipe(
       catchError((err) => {
         console.error(err);
         throw 'Error fetching vet details'; // Rethrow or handle as per your error handling strategy
       })
     );
-    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken() as number);
+
+    return this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken());
   }
 
   getPetParents(): Observable<TempPetParent[]> {
@@ -165,6 +162,7 @@ export class AppointmentFormService {
   }
 
   putAppointmentByIdandObj(AppointmentID:number,AppointmentDetailObj:AppointmentDetail):Observable<AppointmentDetail>{
+    // console.log("put url here"+this.editAppointmentUrl+AppointmentID);
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 

@@ -3,13 +3,12 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   userPayload: any;
 
-  constructor(private http:HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   logOut() {
     localStorage.clear();
@@ -34,36 +33,47 @@ export class AuthService {
     else return null;
   }
 
-  getLoggedInUserObject(){
+  getLoggedInUserObject() {
     this.userPayload = this.decodedToken();
-    if(this.userPayload){
-    return this.userPayload;
+    if (this.userPayload) {
+      return this.userPayload;
+    }
   }
+
+  getUIDFromToken() {
+    this.userPayload = this.decodedToken();
+    if (this.userPayload) {
+      return this.userPayload.oid;
+    }
   }
 
-  getUIDFromToken(){
+  getRoleFromToken() {
     this.userPayload = this.decodedToken();
-    if(this.userPayload){
-    return this.userPayload.oid;
-  }}
+    if (this.userPayload) {
+      return this.userPayload.extension_role;
+    }
+  }
 
-  getRoleFromToken(){
-    this.userPayload = this.decodedToken();
-    if(this.userPayload){
-    return this.userPayload.extension_role;
-  }}
-
-  getVPIFromToken(){
-    if(this.getRoleFromToken()=='Doctor'){
+  getVPIFromToken() {
+    if (this.getRoleFromToken() == 'Doctor') {
       this.userPayload = this.decodedToken();
-      if (this.userPayload){
+      if (this.userPayload) {
         return this.userPayload.extension_NPINumber;
       }
     }
   }
 
-  getAllUsers(){
-    return this.http.get<any>("https://petzeybackendappointmentapi20240502214622.azurewebsites.net//api/Auth")
+  getAllUsers() {
+    return this.http.get<any>(
+      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth'
+    );
+  }
+
+  getUserByID(UID: string) {
+    return this.http.get<string>(
+      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth/' +
+        UID
+    );
   }
 
   getUserByID(UID: string) {

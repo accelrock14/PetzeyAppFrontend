@@ -35,9 +35,11 @@
           </div>
           <div class="col-sm-6">
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
-              <button class="btn btn-sm btn-outline-secondary me-2" (click)="openModal2()">Cancel</button>
-              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
-              <button type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
+              <button *ngIf="isDoctor() && appointment.Status==0" type="button" class="btn btn-sm btn-outline-secondary me-2" (click)="openModal3()">Accept</button>
+              <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()">Cancel</button>
+              <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
+              
+              <button *ngIf="!isPatient()" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
           </div>
@@ -54,7 +56,8 @@
       <p>{{ appointment.ReasonForVisit }}</p>
     </div>
     <div class="confirmed-by">
-      <p style="color:gray;">Confirmed by Jane Doe</p>
+
+      <p style="color:gray;" *ngIf="appointment.Status!=0">Confirmed by {{DoctorName}}</p>
     </div>
   </div>
 
@@ -78,7 +81,21 @@
   </div>
 
 
-
+  <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">  <div class="alert alert"> <i class="fas fa-check"></i>
+          </div>
+          <h4>Accept Appointment</h4>
+          <p>Are you sure you want to accept this appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal3()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="acceptAppointment()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
