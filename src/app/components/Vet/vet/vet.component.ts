@@ -6,6 +6,7 @@ import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 import { Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class VetComponent implements OnInit{
   pageSize: number = 4; 
   totalPages: number = 1; 
  
-  constructor(private vetService: VetsserviceService,private router: Router) { 
+  constructor(private vetService: VetsserviceService,private router: Router,  public auth : AuthService) { 
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',

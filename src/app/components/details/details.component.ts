@@ -37,9 +37,9 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
-parseToInt(arg0: string): number {
-return parseInt(arg0);
-}
+  parseToInt(arg0: string): number {
+    return parseInt(arg0);
+  }
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
@@ -57,49 +57,55 @@ return parseInt(arg0);
   formModal: any;
   formModal2: any;
   formModal3: any;
-  
+
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
     private route: ActivatedRoute,
     private prtSetvice: PetsService,
-    private authService:AuthService,
-    private vetService:VetsserviceService,
-    private router:Router
+    private authService: AuthService,
+    private vetService: VetsserviceService,
+    private router: Router
   ) {}
   isPatient(): boolean {
     const role = this.authService.getRoleFromToken();
     return role === 'Owner';
   }
-  isDoctor():boolean{
-    const role=this.authService.getRoleFromToken();
-    return role=== 'Doctor';
+  isDoctor(): boolean {
+    const role = this.authService.getRoleFromToken();
+    return role === 'Doctor';
   }
-  isReceptionist(){
-    const role=this.authService.getRoleFromToken();
-    return role=== 'Receptionist';
+  isReceptionist() {
+    const role = this.authService.getRoleFromToken();
+    return role === 'Receptionist';
   }
-  DoctorName:string='';
+  DoctorName: string = '';
   ngOnInit(): void {
+    const ID: string = this.route.snapshot.paramMap.get('id')!;
 
-    const ID: string= this.route.snapshot.paramMap.get('id')!;
-    
-      this.appointmentDetailsService
+    this.appointmentDetailsService
       .GetAppointmentDetail(parseInt(ID))
       .subscribe((appointment: any) => {
         this.appointment = appointment;
-        
-        if(this.appointment.OwnerID!=this.authService.getUIDFromToken()&&!this.isDoctor()&&!this.isReceptionist()){
+
+        if (
+          this.appointment.OwnerID != this.authService.getUIDFromToken() &&
+          !this.isDoctor() &&
+          !this.isReceptionist()
+        ) {
           this.router.navigate(['/home']);
         }
-  
+
         if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
-          console.log(appointment.DoctorID + " DOCccc");
-          this.vetService.getVetById(parseInt(appointment.DoctorID))
-            .subscribe((doc) => this.DoctorName = (doc.FName + " " + doc.LName));
-          console.log(this.DoctorName + " DOC");
+          console.log(appointment.DoctorID + ' DOCccc');
+          this.vetService
+            .getVetById(parseInt(appointment.DoctorID))
+            .subscribe(
+              (doc) => (this.DoctorName = doc.FName + ' ' + doc.LName)
+            );
+          console.log(this.DoctorName + ' DOC');
         }
       });
-    
+
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('exampleModal2')
     );
@@ -109,10 +115,8 @@ return parseInt(arg0);
     this.formModal3 = new window.bootstrap.Modal(
       document.getElementById('exampleModal4')
     );
-
   }
 
-  
   openModal() {
     this.formModal.show();
   }
@@ -134,7 +138,7 @@ return parseInt(arg0);
 
   closeAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 3) 
+      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
@@ -151,12 +155,10 @@ return parseInt(arg0);
           // Handle error scenario (e.g., show error message)
         }
       );
-    this.prtSetvice
-      .AddLastAppointmentDate(
-        this.appointment.PetID,
-        this.appointment.ScheduleDate
-      );
-      
+    this.prtSetvice.AddLastAppointmentDate(
+      this.appointment.PetID,
+      this.appointment.ScheduleDate
+    );
   }
   cancelAppointment() {
     this.appointmentDetailsService
@@ -179,7 +181,6 @@ return parseInt(arg0);
         }
       );
   }
-
 
   acceptAppointment() {
     this.appointmentDetailsService
@@ -234,6 +235,8 @@ return parseInt(arg0);
     pdf.addImage($event, 'PNG', 0, imgHeight + 2, pdfWidth, 150);
 
     // Save PDF
-    pdf.save('report' + this.appointment.AppointmentID + '.pdf');
+    pdf.save(
+      'report(appointmentID-' + this.appointment.AppointmentID + ')' + '.pdf'
+    );
   }
 }
