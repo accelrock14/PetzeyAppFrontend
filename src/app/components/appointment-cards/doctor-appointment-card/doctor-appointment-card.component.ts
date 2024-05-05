@@ -43,7 +43,7 @@ feedbacklist:Feedback[]=[];
     }
     else{
       this.showmodal=false;
-      this.toastservice.info("feedback can be submitted only once")
+      this.toastservice.info("feedback can be submitted only once");
     }
    
  }
@@ -75,6 +75,7 @@ feedbacklist:Feedback[]=[];
       this.service.getAllFeedback().subscribe((f)=>{
         this.feedbacklist=f;
        })
+
        }
      
        
@@ -88,6 +89,7 @@ feedbacklist:Feedback[]=[];
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
+            this.toastservice.info("feedback can be submitted successfully");
              console.log('Response:', response);
              
            },
@@ -104,6 +106,7 @@ feedbacklist:Feedback[]=[];
        this.feedback.Comments='';
        this.feedback.Recommendation='';
        this.showmodal=false;
+       this.feedbacklist.push(feedbackToSubmit);
          
          }
          
