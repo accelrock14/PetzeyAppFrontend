@@ -10,7 +10,7 @@ import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentSt
 })
 export class DashboardService {
 
-  apiUrl: string = `https://petzeybackendappointmentapi20240502214622.azurewebsites.net`;
+  apiUrl: string = `https://petzeybackendappointmentapi20240505153736.azurewebsites.net/`;
 
   constructor(private http: HttpClient) { }
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
