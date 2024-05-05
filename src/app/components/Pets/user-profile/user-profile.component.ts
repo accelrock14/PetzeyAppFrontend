@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit {
 
 
   petParentID:any;
-  NewPet?: IPet;
+  NewPet: IPet = {} as IPet;
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
   ToBeUpdatedPet?: IPet;
