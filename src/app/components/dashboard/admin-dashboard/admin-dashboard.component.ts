@@ -21,18 +21,20 @@ export class AdminDashboardComponent implements OnInit {
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
   selectedStatus: string = "";
-  selectedDate!: Date;
-  selectedDoctor: string = "";
+  selectedDate: Date | null = null;
+  selectedDoctor: string | null = null;
   filters: FilterParamsDto = {
     ScheduleDate: null,
     Status: "",
-    DoctorID: ""
+    DoctorID: null
   };
   page:number = 1;
   doctorsList: VetDTO[] = [];
 
   constructor(public service: DashboardService, private vetService: VetsserviceService) {}
   ngOnInit(): void {
+    console.log("oninit");
+    console.log(this.filters);
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
     })

@@ -8,6 +8,7 @@ import { FeedbackService } from '../../../services/feedback.service';
 import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pet-appointment-card',
@@ -27,15 +28,25 @@ export class PetAppointmentCardComponent {
   @Input()
   user!:string;
 
-  constructor(private snackBar: MatSnackBar, private service :FeedbackService,private authservice:AuthService){}
+  constructor(private snackBar: MatSnackBar, private service :FeedbackService,private authservice:AuthService,private toastservice:ToastrService){}
 //from this new code is added
 
   selectedappointmentid:number=0;
+  showmodal:boolean=false;
+feedbacklist:Feedback[]=[];
   role:string="";
   clicked(obj: number) {
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
-    console.log(this.selectedappointmentid)
+    this.showmodal=false;
+    if(!this.feedbacklist.find(f=>f.AppointmentId==obj)){
+      this.showmodal=true;
+   
+    }
+    else{
+      this.showmodal=false;
+      this.toastservice.info("feedback can be submitted only once")
+    }
    
  }
    
@@ -63,6 +74,10 @@ export class PetAppointmentCardComponent {
       //        FeedbackQuestionId: question.FeedbackQuestionId,
       //        Rating: 0
       //      }));
+      this.service.getAllFeedback().subscribe((f)=>{
+        this.feedbacklist=f;
+       })
+
       
        }
      
@@ -92,7 +107,8 @@ export class PetAppointmentCardComponent {
         }));
        this.feedback.Comments='';
        this.feedback.Recommendation='';
-       
+       this.showmodal=false;
+
          
          }
          
