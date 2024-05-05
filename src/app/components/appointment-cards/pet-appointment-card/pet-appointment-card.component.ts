@@ -92,10 +92,12 @@ feedbacklist:Feedback[]=[];
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
+            this.toastservice.success("feedback can be submitted successfully")
              console.log('Response:', response);
              
            },
            (error) => {
+            this.toastservice.error("Feedback not submitted");
              console.error('Error:', error);
              // Handle error
            }
@@ -108,6 +110,7 @@ feedbacklist:Feedback[]=[];
        this.feedback.Comments='';
        this.feedback.Recommendation='';
        this.showmodal=false;
+       this.feedbacklist.push(feedbackToSubmit)
 
          
          }
