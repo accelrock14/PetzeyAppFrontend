@@ -12,11 +12,17 @@ import { provideToastr } from 'ngx-toastr';
 import { tokenInterceptor } from './interceptors/token.interceptor';
 import { errorInterceptorInterceptor } from './interceptors/error-interceptor.interceptor';
 import { GlobalErrorHandler } from './GlobalErrorHandler';
+import { cachingInterceptor } from './interceptors/caching.interceptor';
+import { ErrorLoggingService } from './services/ErrorLogging/error-logging.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([tokenInterceptor, errorInterceptorInterceptor])
+      withInterceptors([
+        tokenInterceptor,
+        cachingInterceptor,
+        errorInterceptorInterceptor,
+      ])
     ),
     provideAnimationsAsync('noop'),
     DashboardService,
