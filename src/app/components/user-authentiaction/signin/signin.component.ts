@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { TokenDTO } from '../../../models/User-Authentication/TokenDTO';
 
 @Component({
   selector: 'app-signin',
@@ -22,6 +23,13 @@ export class SigninComponent implements OnInit {
         this.idToken = params.get('id_token')!;
         if(this.idToken){
           this.auth.storeToken(this.idToken);
+          const user = this.auth.getLoggedInUserObject()
+          const tokenObj:TokenDTO = {
+            UID: user.oid,
+            Name: user.name,
+            Role: user.extension_role
+          }
+          this.auth.storeJWTToken(tokenObj);
           this.router.navigate(['/profile']);
         }
       }
