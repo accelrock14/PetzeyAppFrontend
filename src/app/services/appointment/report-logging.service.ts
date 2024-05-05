@@ -5,13 +5,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ReportLoggingService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  logError(data: LogData) {
+  logError() {
     this.http
       .post(
-        'https://errorlogging-f37b2-default-rtdb.firebaseio.com/errologs.json',
-        data
+        'https://petzeyappointments-default-rtdb.asia-southeast1.firebasedatabase.app/errorlog.json',
+        { error: "this string should be posted as error" }
       )
       .subscribe(
         (response) => console.log('Data posted successfully:', response),
@@ -22,7 +22,7 @@ export class ReportLoggingService {
   fetchErrors() {
     this.http
       .get(
-        'https://errorlogging-f37b2-default-rtdb.firebaseio.com/errologs.json'
+        'https://petzeyappointments-default-rtdb.asia-southeast1.firebasedatabase.app/errorlog.json'
       )
       .subscribe((d) => console.log(d));
   }
