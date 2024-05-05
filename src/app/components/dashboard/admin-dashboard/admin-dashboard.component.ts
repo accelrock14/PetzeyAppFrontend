@@ -33,12 +33,12 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(public service: DashboardService, private vetService: VetsserviceService) {}
   ngOnInit(): void {
-    console.log(this.filters);
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
     })
     this.vetService.getVetsAndIds().subscribe(data => {
       this.doctorsList = data;
+      console.log(this.doctorsList);
     })
   }
 
@@ -46,6 +46,7 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.DoctorID = this.selectedDoctor;
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    console.log(this.filters);
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
       console.log(this.appointmentCards);
