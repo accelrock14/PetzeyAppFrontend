@@ -19,7 +19,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class UserProfileComponent implements OnInit {
 
 
-
   petParentID:any;
   NewPet?: IPet;
   newPetForm: FormGroup;
@@ -284,7 +283,7 @@ export class UserProfileComponent implements OnInit {
         this.pets = data;
     });
   }
-  
+
 }
 
 

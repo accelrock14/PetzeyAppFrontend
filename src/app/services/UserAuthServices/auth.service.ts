@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { appointmentServiceUrl } from '../../Shared/apiUrls';
 
 @Injectable({
   providedIn: 'root',
@@ -64,15 +65,10 @@ export class AuthService {
   }
 
   getAllUsers() {
-    return this.http.get<any>(
-      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth'
-    );
+    return this.http.get<any>(appointmentServiceUrl + 'api/Auth');
   }
 
   getUserByID(UID: string) {
-    return this.http.get<string>(
-      'https://petzeybackendappointmentapi20240502214622.azurewebsites.net/api/Auth/' +
-        UID
-    );
+    return this.http.get<string>(appointmentServiceUrl + 'api/Auth/' + UID);
   }
 }
