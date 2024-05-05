@@ -198,6 +198,7 @@ body {
     padding: 8px 0; /* Add padding to keep text away from border */
     transition: border-bottom-color 0.3s;
 }
+
 .text-box-end {
     width: 300px; /* Adjust width as needed */
     border: none;
@@ -216,6 +217,10 @@ body {
 /* Style for the text box when focused */
 .text-box:focus {
     border-bottom-color: #b84f17; /* Change border color when focused */
+}
+.custom-invalid{
+  border-bottom-color: red; 
+  position: relative;
 }
 .rounded-circle-img {
     width: 100px; /* Maximum width for the image */

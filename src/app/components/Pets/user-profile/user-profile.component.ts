@@ -6,7 +6,8 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 import { AgePipe } from '../../../pipes/Age/age.pipe';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
@@ -34,31 +35,32 @@ export class UserProfileComponent implements OnInit {
     private petsService: PetsService,
     public auth: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toaster:ToastrService
   ) {
 
     this.newPetForm = this.fb.group({
       PetImage: [this.NewPet?.PetImage],
-      PetName: [this.NewPet?.PetName],
-      Species: [this.NewPet?.Species],
-      Breed: [this.NewPet?.Breed],
-      BloodGroup: [this.NewPet?.BloodGroup],
-      Gender: [this.NewPet?.Gender],
+      PetName: ([this.NewPet?.PetName, Validators.required]),
+      Species: ([this.NewPet?.Species, Validators.required]),
+      Breed: ([this.NewPet?.Breed, Validators.required]),
+      BloodGroup: ([this.NewPet?.BloodGroup,Validators.required]),
+      Gender: ([this.NewPet?.Gender, Validators.required]),
       DateOfBirth: [this.NewPet?.DateOfBirth],
-      Neutered: [this.NewPet?.Neutered],
-      Allergies: [this.NewPet?.Allergies],
+      Neutered: ([this.NewPet?.Neutered, Validators.required]),
+      Allergies: ([this.NewPet?.Allergies, Validators.required]),
     });
 
     this.petDetailsForm = this.fb.group({
       PetImage: [this.ToBeUpdatedPet?.PetImage],
-      PetName: [this.ToBeUpdatedPet?.PetName],
-      Species: [this.ToBeUpdatedPet?.Species],
-      Breed: [this.ToBeUpdatedPet?.Breed],
-      BloodGroup: [this.ToBeUpdatedPet?.BloodGroup],
-      Gender: [this.ToBeUpdatedPet?.Gender],
-      DateOfBirth: [this.ToBeUpdatedPet?.DateOfBirth],
-      Neutered: [this.ToBeUpdatedPet?.Neutered],
-      Allergies: [this.ToBeUpdatedPet?.Allergies],
+      PetName: ([this.ToBeUpdatedPet?.PetName,Validators.required]),
+      Species: ([this.ToBeUpdatedPet?.Species,Validators.required]),
+      Breed: ([this.ToBeUpdatedPet?.Breed, Validators.required]),
+      BloodGroup: ([this.ToBeUpdatedPet?.BloodGroup,Validators.required]),
+      Gender: ([this.ToBeUpdatedPet?.Gender, Validators.required]),
+      DateOfBirth: ([this.ToBeUpdatedPet?.DateOfBirth]),
+      Neutered: [this.ToBeUpdatedPet?.Neutered, Validators.required],
+      Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
     });
   }
 
@@ -176,6 +178,11 @@ export class UserProfileComponent implements OnInit {
         ...this.newPetForm.value
       };
       this.SavePetDetails()
+      this.toaster.success("Pet Successfully Added!")
+      this.NewPet = {} as IPet
+    }
+    else {
+      this.toaster.error("Pet Failed To Be Added!")
     }
   }
   onSubmitEdit(): void {
@@ -186,10 +193,14 @@ export class UserProfileComponent implements OnInit {
         ...this.petDetailsForm.value
       };
       this.SaveUpdatedPetDetails()
+      this.toaster.success("Pet Successfully Edited")
       this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
         this.pets = data;
     });
       
+    }
+    else {
+      this.toaster.error("Pet Failed To Be Edited!")
     }
   }
   handleFileAdd(event: any): void {
