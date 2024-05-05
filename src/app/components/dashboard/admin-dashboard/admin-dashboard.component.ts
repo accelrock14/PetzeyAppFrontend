@@ -36,7 +36,6 @@ export class AdminDashboardComponent implements OnInit {
     console.log(this.filters);
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
-      console.log(this.appointmentCards);
     })
     this.vetService.getVetsAndIds().subscribe(data => {
       this.doctorsList = data;

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnChanges, OnInit, SimpleChanges, ViewChild, } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
-import { PetParent } from '../../models/PetParent';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { Status } from '../../models/Status';
 import { PetIssue } from "../../models/PetIssue"
@@ -13,12 +12,14 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
 import { IPet } from '../../models/Pets/IPet';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
+import { TempPetParent } from '../../models/TempPetParent';
+import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
 
-declare var window:any;
+declare var window: any;
 @Component({
   selector: 'app-new-appointment-form',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterLink,MatSnackBarModule],
+  imports: [FormsModule, CommonModule, RouterLink, MatSnackBarModule],
   templateUrl: './new-appointment-form.component.html',
   styleUrl: './new-appointment-form.component.css'
 })
@@ -26,22 +27,22 @@ export class NewAppointmentFormComponent implements OnInit {
   GoBackSimply() {
     this.formModal.hide();
     this.cancelAptModal.hide();
-  this.location.back();
+    this.location.back();
   }
-  
-  GoBackWithMsg(msg:string){
+
+  GoBackWithMsg(msg: string) {
     this.snackBar.open(msg, '', {
       duration: 3000 // message will disappear after 3000ms
     });
     this.formModal.hide();
     this.cancelAptModal.hide();
-  this.location.back();
+    this.location.back();
   }
-  
-  formModal:any;
-  cancelAptModal:any;
 
-  appointmentDetail:AppointmentDetail={
+  formModal: any;
+  cancelAptModal: any;
+
+  appointmentDetail: AppointmentDetail = {
     AppointmentID: 0,
     DoctorID: "",
     PetID: 0,
@@ -52,13 +53,13 @@ export class NewAppointmentFormComponent implements OnInit {
     ReasonForVisit: '',
     Status: Status.Pending,
     Report: null,
-    PetIssues:[]
+    PetIssues: []
   };
-  slotStatuses:boolean[]=[];
-  selectedScheduleDate:Date=new Date();
+  slotStatuses: boolean[] = [];
+  selectedScheduleDate: Date = new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location: Location,private snackBar: MatSnackBar,private userService:AuthService) { }
+  constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private userService: AuthService,private vetService:VetsserviceService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -69,55 +70,86 @@ export class NewAppointmentFormComponent implements OnInit {
   veternarians: IVetCardDTO[] = []; // to be fetched from backend or dummy json server and assigned in oninit method
   veternarianSearchText = '';
   filteredVets: IVetCardDTO[] = [];
-  vetDateAndSlotPicker:boolean=false;
+  vetDateAndSlotPicker: boolean = false;
 
   //// for pet parents
-  petParents: PetParent[] = [];
+  petParents: TempPetParent[] = [];
   petParentSearchText = '';
-  filteredPetParents:PetParent[]=[];
+  filteredPetParents: TempPetParent[] = [];
 
   // for pets
   pets: IPet[] = [];
   petSearchText = '';
-  filteredPets:IPet[]=[];
+  filteredPets: IPet[] = [];
 
   @ViewChild('inputForSelectingVet') inputForSelectingVet?: NgModel;
 
 
-  What_Flow:string='';
-  isReceptionist:boolean=false;
-  isDoctor:boolean=false;
-  isOwner:boolean=false;
+  What_Flow: string = '';
+  isReceptionist: boolean = false;
+  isDoctor: boolean = false;
+  isOwner: boolean = false;
 
 
   ngOnInit(): void {
 
-    if(!this.userService.isLoggedIn()){
+    if (!this.userService.isLoggedIn()) {
       this.route.navigate(['/signin']);
     }
 
     this.What_Flow = this.userService.getRoleFromToken() as string;
-    if(this.What_Flow=='Owner'){
-      console.log("logged in as "+this.What_Flow);
-      
+    if (this.What_Flow == 'Owner') {
+      console.log("logged in as " + this.What_Flow);
       this.isOwner = true;
+      this.appointmentDetail.OwnerID = this.userService.getUIDFromToken();
     }
-    else if(this.What_Flow=='Doctor'){
+    else if (this.What_Flow == 'Doctor') {
       this.isDoctor = true;
-      console.log("logged in as "+this.What_Flow);
+      console.log("logged in as " + this.What_Flow);
+      
+      let npiNumber = parseInt(this.userService.getVPIFromToken());
+      
+      this.vetService.getVetsByNPINumber(npiNumber).subscribe({
+        next:(data)=>{
+          this.appointmentDetail.DoctorID = data.VetId.toString();
+          console.log("doc id is "+ this.appointmentDetail.DoctorID);
+        },
+        error:(err)=>{
+          console.log("errrr"+err);
+        }
+      });
+
+      // this.aptService.getVet().subscribe({
+      //   next:(data)=>{
+      //     this.appointmentDetail.DoctorID = data.VetId.toString();
+      //     console.log("data hereeee"+data);
+      //     // here only get the current doctors slots of current day initially. later downside you get them accordingly after changing.
+      //     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
+      //       next: (data) => {
+      //         this.slotStatuses = data, console.log("initial date schedules success", data);
+      //       },
+      //       error: (err) => {
+      //         console.log("error occured while getting slot statuses array fetch", err);
+      //       }
+      //     });
+      //   },
+      //   error:(err)=>{
+      //     console.log("error occured while fetching the currently logged in doctor id",err);
+      //   }
+      // });
     }
-    else{
-      this.isReceptionist=true;
-      console.log("logged in as "+this.What_Flow);
+    else {
+      this.isReceptionist = true;
+      console.log("logged in as " + this.What_Flow);
     }
-    
+
     // modal popup code 
-    this.formModal= new window.bootstrap.Modal(
+    this.formModal = new window.bootstrap.Modal(
       document.getElementById("myModalPopup")
     );
     this.cancelAptModal = new window.bootstrap.Modal(document.getElementById('myModalPopup-2'));
     //
-    this.selectedScheduleDate=new Date();
+    this.selectedScheduleDate = new Date();
     // this is the method to getGeneralPetIssues from backend server
     this.aptService.getGeneralPetIssues().subscribe({
       next: (data) => {
@@ -132,7 +164,7 @@ export class NewAppointmentFormComponent implements OnInit {
     });
 
     // this is the method to get Veternarians from the backend of other teams api
-    if(!this.isDoctor){
+    if (!this.isDoctor) {
       this.aptService.getVeternarians().subscribe({ // to get all vets. for patient and receptionist
         next: (data) => {
           this.veternarians = data;
@@ -142,50 +174,49 @@ export class NewAppointmentFormComponent implements OnInit {
         error: (err) => { console.error('there was error in vets fetch', err); }
       });
     }
-    
 
     // this is the method for pet parents 
-    if(!this.isOwner){  // only do this if logged in user is a recep or doctor
-    this.aptService.getPetParents().subscribe({
-      next: (data) => {
-        this.petParents = data;
-        this.filteredPetParents=this.petParents;
-        console.log(this.petParents);
-      },
-      error: (err) => { console.log('error in fetching petParents', err); }
-    });
-  }
+    if (!this.isOwner) {  // only do this if logged in user is a recep or doctor
+      this.aptService.getPetParents().subscribe({
+        next: (data) => {
+          this.petParents = data;
+          this.filteredPetParents = this.petParents;
+          console.log(this.petParents);
+        },
+        error: (err) => { console.log('error in fetching petParents', err); }
+      });
+    }
 
     // this is the method for fetching pets
-    if(this.isOwner){
+    if (this.isOwner) {
       this.aptService.getAllPetsOfOwener(this.userService.getUIDFromToken()).subscribe({
         next: (data) => {
           this.pets = data;
-          this.filteredPets=this.pets;
+          this.filteredPets = this.pets;
           console.log('pets are ', this.pets);
         },
         error: (err) => { console.log('eror in fetching pets', err); }
       });
     }
-    
+
   }
-// modal popup code for submission
-openModal(){
-  this.formModal.show();
-}
-closeModal(){
-  this.formModal.hide();
-}
-// cancel model
-openCancelModal() {
-  this.cancelAptModal.show();
-}
-closeCancelModal(){
-  this.cancelAptModal.hide();
-}
+  // modal popup code for submission
+  openModal() {
+    this.formModal.show();
+  }
+  closeModal() {
+    this.formModal.hide();
+  }
+  // cancel model
+  openCancelModal() {
+    this.cancelAptModal.show();
+  }
+  closeCancelModal() {
+    this.cancelAptModal.hide();
+  }
 
   filterPetIssues(): void {
-    if (!this.petIssueSearchText.length){
+    if (!this.petIssueSearchText.length) {
       this.filteredpetIssues = [];
     }
     else {
@@ -196,34 +227,34 @@ closeCancelModal(){
   selectPetIssue(petIssue: string): void {
     this.petIssueSearchText = '';
     // remove element from the general pet issues.
-    this.generalPetIssues = this.generalPetIssues.filter(gpi=>gpi.IssueName!==petIssue);
+    this.generalPetIssues = this.generalPetIssues.filter(gpi => gpi.IssueName !== petIssue);
     this.filteredpetIssues = [];
-    let tempPetIssue:PetIssue ={
+    let tempPetIssue: PetIssue = {
       PetIssueID: 0,
       IssueName: petIssue,
     }
     this.appointmentDetail.PetIssues.push(tempPetIssue);
   }
-  
-  onDisSelectPetIssue(Pi:PetIssue) {
-    this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
+
+  onDisSelectPetIssue(Pi: PetIssue) {
+    this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi => pi.IssueName !== Pi.IssueName);
   }
 
   // veternarian methods 
   filterVeternarians(): void {
     if (!this.veternarianSearchText.length) {
       this.filteredVets = [];
-      if(this.veternarianSearchText){
-        this.vetDateAndSlotPicker=true;
-      }else{
+      if (this.veternarianSearchText) {
+        this.vetDateAndSlotPicker = true;
+      } else {
         this.vetDateAndSlotPicker = false;
       }
     }
     else {
       this.filteredVets = this.veternarians.filter(v => v.Name.toLowerCase().includes(this.veternarianSearchText.toLowerCase()));
-      if(this.veternarianSearchText){
-        this.vetDateAndSlotPicker=true;
-      }else{
+      if (this.veternarianSearchText) {
+        this.vetDateAndSlotPicker = true;
+      } else {
         this.vetDateAndSlotPicker = false;
       }
     }
@@ -232,21 +263,21 @@ closeCancelModal(){
     // we need to assign for the respective variable in the appointment object
     this.veternarianSearchText = vname;
     this.filteredVets = [];
-    if(this.veternarianSearchText){
-      this.vetDateAndSlotPicker=true;
-    }else{
-      this.vetDateAndSlotPicker=false;
+    if (this.veternarianSearchText) {
+      this.vetDateAndSlotPicker = true;
+    } else {
+      this.vetDateAndSlotPicker = false;
     }
     // by default it should fetch the schedules for today.
     //||||||||||||||||||||||||||| major change in vet ID |||||||||||||||||||||||||||||||||||||
-    this.appointmentDetail.DoctorID=vid.toString();
+    this.appointmentDetail.DoctorID = vid.toString();
     this.selectedScheduleDate = new Date();
-    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.selectedScheduleDate)).subscribe({
-      next:(data)=>{
-        this.slotStatuses=data,console.log("default date schedules success",data);
+    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
+      next: (data) => {
+        this.slotStatuses = data, console.log("default date schedules success", data);
       },
-      error:(err)=>{
-        console.log("error occured array fetch",err);
+      error: (err) => {
+        console.log("error occured array fetch", err);
       }
     });
   }
@@ -254,75 +285,75 @@ closeCancelModal(){
   onDateChange() {
     //alert("scheduled date"+this.selectedScheduleDate);
     this.appointmentDetail.ScheduleDate = this.selectedScheduleDate;
-    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID,new Date(this.selectedScheduleDate)).subscribe({
-      next:(data)=>{
-        this.slotStatuses=data,console.log("fetched the slots boolean array success",data);
+    this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
+      next: (data) => {
+        this.slotStatuses = data, console.log("fetched the slots boolean array success", data);
       },
-      error:(err)=>{
-        console.log("error occured while fetching the slots bool array",err);
+      error: (err) => {
+        console.log("error occured while fetching the slots bool array", err);
       }
     });
   }
 
-  isDisabled(index: number):boolean {
+  isDisabled(index: number): boolean {
     return this.slotStatuses[index];
   }
 
   isSelected(index: number): boolean {
-    this.appointmentDetail.ScheduleTimeSlot=index;
+    this.appointmentDetail.ScheduleTimeSlot = index;
     return index === this.selectedIndex;
   }
 
   onSlotClick(slot: string, index: number,): void {
     if (!this.isDisabled(index)) {
       console.log('Slot selected:', slot);
-      console.log('selected slot index',index);
+      console.log('selected slot index', index);
       this.selectedIndex = index;
-      this.appointmentDetail.ScheduleTimeSlot=index;
+      this.appointmentDetail.ScheduleTimeSlot = index;
       // alert("slot index is "+index);
     }
   }
 
-  filterPetParents():void{
-    if(!this.petParentSearchText.length){
+  filterPetParents(): void {
+    if (!this.petParentSearchText.length) {
       this.filteredPetParents = [];
     }
-    else{
-      this.filteredPetParents = this.petParents.filter(pp=>pp.name.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
+    else {
+      this.filteredPetParents = this.petParents.filter(pp => pp.PetParentName.toLowerCase().includes(this.petParentSearchText.toLowerCase()));
     }
   }
 
-  selectPetParent(ppid:string,ppname:string):void{
+  selectPetParent(ppid: string, ppname: string): void {
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
-    this.appointmentDetail.OwnerID=ppid;
+    this.appointmentDetail.OwnerID = ppid;
 
     // get pets of particular parent.
     // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
     // ALSO DO THIS IN EDIT THING.
     this.aptService.getAllPetsOfOwener(this.appointmentDetail.OwnerID).subscribe({
-      next:(data)=>{
-        this.pets=data;
+      next: (data) => {
+        this.pets = data;
       },
-      error:(err)=>{
-        console.log("error while fetching pets of a owener",err);
+      error: (err) => {
+        console.log("error while fetching pets of a owener", err);
       }
     });
   }
 
   // methods for pets 
-  filterPets():void{
-    if(!this.petSearchText.length){
-      this.filteredPets=[];
+  filterPets(): void {
+    if (!this.petSearchText.length) {
+      this.filteredPets = [];
     }
-    else{
-      this.filteredPets = this.pets.filter(p=>p.PetName.toLowerCase().includes(this.petSearchText.toLowerCase()));
+    else {
+      this.filteredPets = this.pets.filter(p => p.PetName.toLowerCase().includes(this.petSearchText.toLowerCase()));
     }
   }
-  selectPet(petid: number,petname: string) {
-    this.petSearchText=petname;
-    this.filteredPets=[];
-    this.appointmentDetail.PetID=petid;
+  selectPet(petid: number, petname: string) {
+    this.petSearchText = petname;
+    this.filteredPets = [];
+    this.appointmentDetail.PetID = petid;
   }
 
   timeSlotRows: string[][] = [
@@ -331,12 +362,12 @@ closeCancelModal(){
     ['16:00', '16:30', '17:00', '17:30', '18:00', '18:30']
   ];
 
-  onBook(reasonforvisit:string) {
+  onBook(reasonforvisit: string) {
     this.appointmentDetail.BookingDate = new Date();
     this.appointmentDetail.ReasonForVisit = reasonforvisit;
-    this.appointmentDetail.Status=Status.Pending;
-    this.appointmentDetail.Report=null;
-    this.appointmentDetail.ScheduleTimeSlot=this.selectedIndex!;
+    this.appointmentDetail.Status = Status.Pending;
+    this.appointmentDetail.Report = null;
+    this.appointmentDetail.ScheduleTimeSlot = this.selectedIndex!;
     this.appointmentDetail.OwnerID = this.userService.getUIDFromToken();
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
@@ -351,8 +382,8 @@ closeCancelModal(){
     // console.log(this.appointmentDetail.PetIssues);
     // console.log(this.appointmentDetail.Report);
     this.aptService.postAppointment(this.appointmentDetail).subscribe({
-      next:(response)=>{console.log("success---posting",response);},
-      error:(err)=>{console.log("got error while posting",err);}
+      next: (response) => { console.log("success---posting", response); },
+      error: (err) => { console.log("got error while posting", err); }
     });
     this.closeModal();
     this.GoBackWithMsg('your appointment is added successfully');

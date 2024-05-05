@@ -110,6 +110,7 @@
         </a>
       </li>
     }
+    @if(auth.isLoggedIn() && auth.getRoleFromToken()=="Doctors"){
       <li class="sidebar-item">
         <a
           routerLink="/vet"
@@ -145,6 +146,7 @@
           <span>Doctors</span>
         </a>
       </li>
+    }
 
       <!-- @if(auth.getRoleFromToken() == "Owner")
       { -->
