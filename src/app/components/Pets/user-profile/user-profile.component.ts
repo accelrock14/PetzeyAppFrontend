@@ -19,6 +19,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class UserProfileComponent implements OnInit {
 
 
+
   petParentID:any;
   NewPet?: IPet;
   newPetForm: FormGroup;
@@ -186,6 +187,10 @@ export class UserProfileComponent implements OnInit {
         ...this.petDetailsForm.value
       };
       this.SaveUpdatedPetDetails()
+      this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
+        this.pets = data;
+    });
+      
     }
   }
   handleFileAdd(event: any): void {
@@ -263,15 +268,15 @@ export class UserProfileComponent implements OnInit {
           next: updatedPet => {
             // Handle success, if needed
             console.log('Pet updated successfully:', updatedPet);
-
+           
 
         },
         error: error => {
             // Handle error, if needed
             console.error('Error updating pet:', error);
         }
+        
       });
-
     }
 
     clickedCancelEditButton() {
@@ -279,6 +284,7 @@ export class UserProfileComponent implements OnInit {
         this.pets = data;
     });
   }
+  
 }
 
 
