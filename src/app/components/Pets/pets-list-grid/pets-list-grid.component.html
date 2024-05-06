@@ -53,7 +53,7 @@
 <div *ngIf="errorMessage == ''">
   <div class="row">
     @for(pet of recentlyConsultedPets; track $index){
-    
+
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
       <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
     </div>
@@ -70,7 +70,7 @@
 </div>
 <hr />
 
-<div class="container">
+
   <div *ngIf="errorMessage == ''">
     <div class="row">
       @for(pet of pets; track $index){
@@ -79,7 +79,7 @@
       </div>
       }
     </div>
-  </div>
+
 
   <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
     {{ errorMessage }}
