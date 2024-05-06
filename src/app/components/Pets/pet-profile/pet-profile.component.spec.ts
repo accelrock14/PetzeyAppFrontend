@@ -11,7 +11,7 @@ describe('PetProfileComponent', () => {
       imports: [PetProfileComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(PetProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -21,3 +21,5 @@ describe('PetProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+

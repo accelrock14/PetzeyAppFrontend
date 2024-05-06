@@ -22,7 +22,7 @@ export class PetAppointmentsListComponent implements OnInit {
       this.appointmentcard = data
     })
   }
-
+  
   @Input()
   PetID: number = 0;
   appointmentcard: AppointmentCardDto[] = []
