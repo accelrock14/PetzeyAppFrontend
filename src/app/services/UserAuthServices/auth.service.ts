@@ -84,7 +84,7 @@ export class AuthService {
   }
 
   getAllUsers() {
-    return this.http.get<any>(appointmentServiceUrl + 'api/Auth');
+    return this.http.get<any>(appointmentServiceUrl + 'api/getalluseridsandname');
   }
 
   getUserByID(UID: string) {

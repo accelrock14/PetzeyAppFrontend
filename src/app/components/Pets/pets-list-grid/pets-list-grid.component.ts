@@ -57,7 +57,7 @@ export class PetsListGridComponent implements OnInit {
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
     private appointmentDetailsService: AppointmentDetailsService) { }
 
 
@@ -78,13 +78,13 @@ export class PetsListGridComponent implements OnInit {
 
         this.authService.getAllUsers().subscribe(users => {
           this.users = users
-        }) 
+        })
+
+        console.log("users "+this.users);
       }
 
       // this.searchPets();
     }
-
-
 
   private ReceptionistFlow() {
 
