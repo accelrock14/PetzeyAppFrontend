@@ -105,6 +105,8 @@ export class UserProfileComponent implements OnInit {
             }
           );
         });
+
+        this.toaster.success("Pet Deleted Successfully!")
     }
     // this.petsService
     //   .GetPetsByParentID(`${this.petParentID}`)
