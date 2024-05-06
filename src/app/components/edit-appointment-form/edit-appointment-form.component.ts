@@ -13,6 +13,7 @@ import { AuthService } from '../../services/UserAuthServices/auth.service';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IPet } from '../../models/Pets/IPet';
 import { TempPetParent } from '../../models/TempPetParent';
+import { PetsService } from '../../services/PetsServices/pets.service';
 
 declare var window:any;
 @Component({
@@ -61,7 +62,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService,private petService:PetsService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -223,18 +224,40 @@ this.location.back();
 
     // this is the method for fetching pets
     if (this.isOwner) {
-      this.aptService.getAllPetsOfOwener(this.authService.getUIDFromToken()).subscribe({
-        next: (data) => {
-          this.pets = data;
-          this.filteredPets = this.pets;
-          data.forEach((d)=>{
-            if(d.PetID==this.appointmentDetail.PetID){
-              this.petSearchText = d.PetName;
-            }
+      // get pets of particular parent.
+    // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
+    // ALSO DO THIS IN EDIT THING.
+    this.petService.GetPetsByParentID(this.authService.getUIDFromToken()).subscribe({
+      next:(data)=>{
+        this.pets = data;
+        this.filteredPets = this.pets;
+        data.forEach((d)=>{
+          if(d.PetID==this.appointmentDetail.PetID){
+            this.petSearchText = d.PetName;
+          }
+        });
+        console.log(" fetched the pets of ownere "+data);
+      },
+      error:(err)=>{
+        console.log("error occured while fetching the pet for parent + "+this.authService.getUIDFromToken()+" "+err);
+      }
+    });
+
+    }
+
+    if(this.isDoctor || this.isReceptionist){
+      this.authService.getAllUsers().subscribe({
+        next: (users) => {
+          users.forEach((user: { Id: any; Name: any; Role:any }) => {
+            if(user.Role=="Owner")
+              this.petParents.push({ PetParentID: user.Id,
+                PetParentName: user.Name});
+             console.log("success getting all parents "+users);
           });
-          console.log('pets are ', this.pets);
         },
-        error: (err) => { console.log('eror in fetching pets', err); }
+        error: (err) => {
+          console.error('Error fetching users:', err);
+        }
       });
     }
     
@@ -371,14 +394,16 @@ this.location.back();
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID = ppid;
 
-    this.aptService.getAllPetsOfOwener(ppid).subscribe({
+    // get pets of particular parent.
+    // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
+    // ALSO DO THIS IN EDIT THING.
+    this.petService.GetPetsByParentID(ppid).subscribe({
       next:(data)=>{
         this.pets = data;
-        console.log("data recieved from getAllPetsOfOwner id = "+ppid+" pets =  " +data);
-        console.log(this.pets);
+        console.log("success fetching all the pets of the owner "+ppname + " pets = "+data);
       },
       error:(err)=>{
-        console.log("error occured while fetching the pets of owner "+err);
+        console.log("error occured while fetching the pets of owner + "+ppid+ " -- "+err);
       }
     });
 

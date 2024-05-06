@@ -4,7 +4,7 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
 
         @for (appointment of appointmentcard; track $index) {
-            <app-pet-appointment-card [appointmentcard]="appointment"></app-pet-appointment-card>
+            <app-pet-appointment-card [appointmentcard]="appointment" [user]="'Doctor'"></app-pet-appointment-card>
         }
     </div>
 </div>

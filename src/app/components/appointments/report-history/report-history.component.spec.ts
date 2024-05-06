@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportHistoryComponent } from './report-history.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 fdescribe('ReportHistoryComponent', () => {
   let component: ReportHistoryComponent;
@@ -11,11 +12,14 @@ fdescribe('ReportHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportHistoryComponent, HttpClientTestingModule],
-      providers: provideAnimations()
-    })
-      .compileComponents();
-    mockhttp = TestBed.inject(HttpTestingController)
+      imports: [
+        ReportHistoryComponent,
+        HttpClientTestingModule,
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule,
+      ],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ReportHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

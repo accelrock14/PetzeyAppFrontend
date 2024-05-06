@@ -1,9 +1,8 @@
 <div id="all-appointment">
 
-
 <div class="appointment container" *ngIf="appointment">
   <span class="appointment-heading" routerLink="../..">
-  <i class="fas fa-arrow-left"></i>  
+  <i class="fas fa-arrow-left"></i>
 
   <h6 class="appointment-title" >Back to appointments</h6>
 </span>
@@ -38,7 +37,7 @@
               <button *ngIf="isDoctor() && appointment.Status==0" type="button" class="btn btn-sm btn-outline-secondary me-2" (click)="openModal3()">Accept</button>
               <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()">Cancel</button>
               <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button>
-              
+
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
@@ -131,7 +130,7 @@
 
 
 @if(appointment.Report!=null){
-  <app-report [reportId]="appointment.Report.ReportID" (messageEvent)="exportToPDF($event)"></app-report>
+  <app-report [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF($event)"></app-report>
 
 }
 
