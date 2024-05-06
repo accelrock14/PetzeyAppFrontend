@@ -13,7 +13,7 @@ class LocationMock {
   back() {}
 }
 
-fdescribe('EditAppointmentFormComponent', () => {
+describe('EditAppointmentFormComponent', () => {
   let component: EditAppointmentFormComponent;
   let fixture: ComponentFixture<EditAppointmentFormComponent>;
   let snackBar: MatSnackBar;
