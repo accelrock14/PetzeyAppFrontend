@@ -90,7 +90,7 @@ export class PetsListGridComponent implements OnInit {
       // this.searchPets();
     }
 
-  private ReceptionistFlow() {
+  public ReceptionistFlow() {
 
     this.calculateTotalPages();
 
@@ -106,7 +106,7 @@ export class PetsListGridComponent implements OnInit {
 
   }
 
-  private DoctorsFlow() {
+  public DoctorsFlow() {
     console.log("doctor");
     console.log(this.authService.getUIDFromToken());
 
