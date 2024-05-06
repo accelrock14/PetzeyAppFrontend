@@ -87,15 +87,17 @@ export class AuthService {
     return this.http.get<any>(appointmentServiceUrl + 'api/Auth');
   }
 
-  getUserByID(UID: string) {
-    return this.http.get<string>(appointmentServiceUrl + 'api/Auth/' + UID);
-  }
+  // getUserByID(UID: string) {
+  //   return this.http.get<string>(appointmentServiceUrl + 'api/Auth/' + UID);
+  // }
 
   //returns any type of user based on User ID
   getOwnerByID(UID: string) {
+    let Users:User[];
     this.http.get<User[]>(appointmentServiceUrl + 'api/Auth').subscribe({
       next: (users) => {
-        return users.find((user)=>user.Id === UID);
+        Users = users;
+        return Users.find(user=>user.Id === UID);
       },
       error: (error)=>{
         console.error(error.error.Message);
