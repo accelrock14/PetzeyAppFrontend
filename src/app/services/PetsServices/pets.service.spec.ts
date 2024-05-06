@@ -5,7 +5,7 @@ import { IPet } from '../../models/Pets/IPet';
 import { IPetFilterParams } from '../../models/Pets/IPetFilterParams';
 import { petsServiceUrl } from '../../Shared/apiUrls';
 
-fdescribe('PetsService', () => {
+describe('PetsService', () => {
   let service: PetsService;
   let httpMock: HttpTestingController;
 
