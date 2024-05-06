@@ -14,6 +14,7 @@ import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IPet } from '../../models/Pets/IPet';
 import { TempPetParent } from '../../models/TempPetParent';
 import { PetsService } from '../../services/PetsServices/pets.service';
+import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
 
 declare var window:any;
 @Component({
@@ -62,7 +63,7 @@ this.location.back();
   selectedScheduleDate: Date = new Date();
   selectedSlotIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService,private petService:PetsService) { }
+  constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService,private petService:PetsService,private vetService:VetsserviceService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -102,6 +103,17 @@ this.location.back();
     }
     else if(this.What_Flow=='Doctor'){
       this.isDoctor = true;
+      
+        this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
+          next:(data)=>{
+            this.appointmentDetail.DoctorID = data.VetId.toString();
+            console.log("doctor id assigned success");
+          },
+          error:(err)=>{
+            console.log("error occured while getting vet"+err);
+          }
+        });
+      
     }
     else{
       this.isReceptionist=true;
@@ -438,8 +450,17 @@ this.location.back();
     this.appointmentDetail.ScheduleTimeSlot=this.selectedSlotIndex!;
     if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
-    if(this.isDoctor)
-      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
+    if(this.isDoctor){
+      this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
+        next:(data)=>{
+          this.appointmentDetail.DoctorID = data.VetId.toString();
+          console.log("doctor id assigned success");
+        },
+        error:(err)=>{
+          console.log("error occured while getting vet"+err);
+        }
+      });
+    }
     // alert("inside booking");
     // finally call the service post method.
 
