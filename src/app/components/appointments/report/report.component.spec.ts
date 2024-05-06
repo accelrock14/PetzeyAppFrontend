@@ -45,6 +45,10 @@ describe('ReportComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
   it('should call the enableEdit function on clicking edit button', () => {
     component.isDoctor = true
     let myFunctionSpy = spyOn(component, 'enableEdit');
