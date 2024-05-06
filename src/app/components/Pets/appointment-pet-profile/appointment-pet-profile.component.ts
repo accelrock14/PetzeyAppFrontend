@@ -4,6 +4,7 @@ import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { CommonModule } from '@angular/common';
+import { User } from '../../../models/User-Authentication/User';
 
 @Component({
     selector: 'app-appointment-pet-profile',
@@ -14,11 +15,21 @@ import { CommonModule } from '@angular/common';
 })
 export class AppointmentPetProfileComponent implements OnInit {
   Owner: any | null;
+  petOwner:User | any={} as User ;
+
+  allUsers: User[]=[]
   constructor(private petsService: PetsService,public auth: AuthService) {}
   ngOnInit(): void {
     if (this.auth.isLoggedIn()) {
-      this.Owner = this.auth.getLoggedInUserObject();
-      console.log(this.Owner);
+      this.auth.getAllUsers().subscribe(
+        (data) =>
+          {
+            console.log(data);
+            this.allUsers=data;
+            this.petOwner=this.allUsers.find(u => u.Id==this.Pet.PetParentID)
+            console.log("else "+this.petOwner);
+          }
+      )
     }
     this.petsService.GetPetDetailsByID(this.PetId).subscribe( pet => {
       this.Pet = pet;

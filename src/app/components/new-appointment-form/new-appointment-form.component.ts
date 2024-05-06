@@ -150,6 +150,16 @@ export class NewAppointmentFormComponent implements OnInit {
 
     // this is the method to get Veternarians from the backend of other teams api
     if (!this.isDoctor) {
+      this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
+        next:(data)=>{
+          this.appointmentDetail.DoctorID = data.VetId.toString();
+          console.log("doctor id assigned success");
+        },
+        error:(err)=>{
+          console.log("error occured while getting vet"+err);
+        }
+      });
+      // this.appointmentDetail.DoctorID = 
       this.aptService.getVeternarians().subscribe({ // to get all vets. for patient and receptionist
         next: (data) => {
           this.veternarians = data;
@@ -366,8 +376,18 @@ export class NewAppointmentFormComponent implements OnInit {
     this.appointmentDetail.ScheduleTimeSlot = this.selectedIndex!;
     if(this.isOwner)
     this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
-    if(this.isDoctor)
-      this.appointmentDetail.DoctorID=this.authService.getUIDFromToken();
+  if(this.isDoctor){
+    this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
+      next:(data)=>{
+        this.appointmentDetail.DoctorID = data.VetId.toString();
+        console.log("doctor id assigned success");
+      },
+      error:(err)=>{
+        console.log("error occured while getting vet"+err);
+      }
+    });
+  }
+    
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // alert("inside booking"+this.appointmentDetail.ScheduleTimeSlot+" - "+this.selectedIndex);
     // finally call the service post method.

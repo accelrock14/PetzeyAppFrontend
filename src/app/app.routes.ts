@@ -11,14 +11,13 @@ import { AppointmentPetProfileComponent } from './components/Pets/appointment-pe
 import { PetsListGridComponent } from './components/Pets/pets-list-grid/pets-list-grid.component';
 import { UserProfileComponent } from './components/Pets/user-profile/user-profile.component';
 import { PetProfileComponent } from './components/Pets/pet-profile/pet-profile.component';
-import { PetsListGridPagedComponent } from './components/Pets/pets-list-grid-paged/pets-list-grid-paged.component';
+
 import { SigninComponent } from './components/user-authentiaction/signin/signin.component';
 import { VetComponent } from './components/Vet/vet/vet.component';
 import { VetProfileComponent } from './components/Vet/vet-profile/vet-profile.component';
 import { AddVetComponent } from './components/Vet/add-vet/add-vet.component';
 import { NewAppointmentFormComponent } from './components/new-appointment-form/new-appointment-form.component';
 import { EditAppointmentFormComponent } from './components/edit-appointment-form/edit-appointment-form.component';
-
 import { VetProfileApptComponent } from './components/Vet/vet-profile-appt/vet-profile-appt.component';
 import { doctorGuard } from './guards/doctor.guard';
 import { receptionistGuard } from './guards/receptionist.guard';
@@ -59,8 +58,6 @@ export const routes: Routes = [
     path: 'profile/pets-profile/:id',
     component: PetProfileComponent,
   },
-  { path: 'pets/:page', component: PetsListGridPagedComponent }, // Route for the component with page number parameter
-
   { path: 'appointmentPetDetails', component: AppointmentPetProfileComponent },
 
   { path: 'user', component: UserProfileComponent },
