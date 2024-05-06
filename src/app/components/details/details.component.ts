@@ -89,21 +89,30 @@ export class DetailsComponent implements OnInit {
 
         if (
           this.appointment.OwnerID != this.authService.getUIDFromToken() &&
-          !this.isDoctor() &&
-          !this.isReceptionist()
+          this.isPatient()
         ) {
           this.router.navigate(['/home']);
         }
-
+        
+        
         if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
-          console.log(appointment.DoctorID + ' DOCccc');
           this.vetService
             .getVetById(parseInt(appointment.DoctorID))
             .subscribe(
-              (doc) => (this.DoctorName = doc.FName + ' ' + doc.LName)
+              (doc) => {this.DoctorName = doc.FName + ' ' + doc.LName
+              console.log( doc.NPINumber +" ids  "+ this.authService.getVPIFromToken())
+              if( doc.NPINumber != this.authService.getVPIFromToken() &&
+              this.isDoctor()){
+                this.router.navigate(['/home']);
+              }
+              }
             );
           console.log(this.DoctorName + ' DOC');
+          
+        
         }
+
+        
       });
 
     this.formModal = new window.bootstrap.Modal(

@@ -19,11 +19,6 @@ import { appointmentServiceUrl } from '../../Shared/apiUrls';
 
 export class AppointmentFormService {
 
-  TempAllGetPetParents() {
-    
-  }
-
-
   petService = inject(PetsService);
   vetService = inject(VetsserviceService);
   authService = inject(AuthService);
@@ -85,7 +80,4 @@ export class AppointmentFormService {
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 
-  getAllPetsOfOwener(OwnerID: string):Observable<IPet[]> {
-    return this.petService.GetPetsByParentID(OwnerID);
-  }
 }

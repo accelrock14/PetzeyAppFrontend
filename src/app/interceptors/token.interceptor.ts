@@ -7,7 +7,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
   const auth = inject(AuthService);
-  const token = auth.getToken();
+  const token = auth.getJWTToken();
   if (token) {
     req = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },

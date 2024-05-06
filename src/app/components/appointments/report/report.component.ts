@@ -3,6 +3,7 @@ import domtoimage from 'dom-to-image';
 
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   NgModel,
@@ -35,6 +36,8 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { error } from 'jquery';
+import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 
 @Component({
   selector: 'app-report',
@@ -136,7 +139,7 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
-  myForm!: FormGroup;
+  myForm: FormGroup = new FormGroup({});
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
@@ -151,7 +154,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
-  isDoctor: boolean = false;
+  isDoctor: boolean = true;
 
   ngOnInit(): void {
     this.reportService.getReport(this.reportId).subscribe((r) => {
@@ -190,19 +193,48 @@ export class ReportComponent implements OnInit {
         allowSearchFilter: this.ShowFilter,
       };
 
-      this.reportService.getAllSymptoms().subscribe((s) => {
-        this.symptoms = s;
-      });
+      this.reportService.getAllSymptoms().subscribe(
+        (s) => {
+          this.symptoms = s;
+        },
+        (error) => {
+          this.toastr.error(
+            'Could not load the Symptoms. Plese visit after some time'
+          );
+        }
+      );
 
-      this.reportService.getAllTests().subscribe((t) => {
-        this.tests = t;
-      });
-      this.reportService.getAllMedicines().subscribe((m) => {
-        this.medicines = m;
-      });
-      this.vetService.getAllVets().subscribe((v) => {
-        this.doctors = v;
-      });
+      this.reportService.getAllTests().subscribe(
+        (t) => {
+          this.tests = t;
+        },
+        (error) => {
+          this.toastr.error(
+            'Could not load the Tests. Plese visit after some time'
+          );
+        }
+      );
+      this.reportService.getAllMedicines().subscribe(
+        (m) => {
+          this.medicines = m;
+        },
+        (error) => {
+          this.toastr.error(
+            'Could not load the Medicines. Plese visit after some time'
+          );
+        }
+      );
+      this.vetService.getAllVets().subscribe(
+        (v) => {
+          this.doctors = v;
+        },
+        (error) => {
+          this.toastr.error(
+            'Could not load the Vets. Plese visit after some time'
+          );
+        }
+      );
+
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
       this.selectedDoctors = this.report.RecommendedDoctors.map(
@@ -226,7 +258,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   isEditing = false;
 
@@ -236,11 +268,17 @@ export class ReportComponent implements OnInit {
 
   save(): void {
     this.isEditing = false;
-    this.reportService
-      .patchReport(this.reportId, this.report)
-      .subscribe((p) => {
+    this.reportService.patchReport(this.reportId, this.report).subscribe(
+      (p) => {
         console.log(p);
-      });
+        this.toastr.success('Data saved successfully');
+      },
+      (error) => {
+        this.toastr.error(
+          'Could not save the data, Please try after some time'
+        );
+      }
+    );
   }
 
   onSelectSymptom(symptom: ListItem) {
@@ -348,6 +386,7 @@ export class ReportComponent implements OnInit {
       .subscribe((p) => {
         this.reportService.getReport(this.reportId).subscribe((r) => {
           this.report = r;
+          this.toastr.success('Medicine removed successfully');
         });
       });
   }
@@ -449,10 +488,20 @@ export class ReportComponent implements OnInit {
           this.report.Prescription.PrescriptionID,
           prescribedMedicine
         )
-        .subscribe((p) => {
-          prescribedMedicine.PrescribedMedicineID = parseInt(p.toString());
-          this.report.Prescription.PrescribedMedicines.push(prescribedMedicine);
-        });
+        .subscribe(
+          (p) => {
+            this.toastr.success('Medicine added to Prescription');
+            prescribedMedicine.PrescribedMedicineID = parseInt(p.toString());
+            this.report.Prescription.PrescribedMedicines.push(
+              prescribedMedicine
+            );
+          },
+          (error) => {
+            this.toastr.error(
+              'Medicine could be added to Prescription, Please try after sometime'
+            );
+          }
+        );
     } else {
       this.reportService
         .UpdatePrescription(
@@ -460,9 +509,17 @@ export class ReportComponent implements OnInit {
           prescribedMedicine
         )
         .subscribe((p) => {
-          this.reportService.getReport(this.reportId).subscribe((r) => {
-            this.report = r;
-          });
+          this.toastr.success('Prescription updated successfully');
+          this.reportService.getReport(this.reportId).subscribe(
+            (r) => {
+              this.report = r;
+            },
+            (error) => {
+              this.toastr.error(
+                'Prescription could not be updated, Please try after sometime'
+              );
+            }
+          );
         });
     }
   }

@@ -17,21 +17,12 @@ export class VetProfileApptComponent {
     
     ngOnInit(): void {
       
-      // Get the vet ID from the route parameter
-      //const idParam = this.route.snapshot.paramMap.get('id');
-      
-      // if (idParam !== null) {
-      //   const vetId = parseInt(idParam);
-        // Fetch vet profile details by ID
         console.log("vets"+this.VetId);
         this.vetService.getVetById(parseInt(this.VetId)).subscribe(profile => {
           this.vetProfile = profile;
           
         });
-      // } else {
-      //   // Handle the case when the route parameter is null
-      //   console.error('Vet ID parameter is null.');
-      // }
+      
       console.log("vet here"+this.vetProfile);
     }
     @Input()
