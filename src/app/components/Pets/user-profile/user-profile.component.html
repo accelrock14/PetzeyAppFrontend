@@ -91,70 +91,7 @@
           </div>
         </div>
 
-        <!-- <div class="pet-cards">
-        <ng-container *ngFor="let pet of pets; let i = index">
-          <section class="pet-card col-lg-3 col-md-5 col-sm-6 col-12 p-0 " (click)="testClick()">
-            <div class="dropdown d-inline mt-0 ">
-              <div class="dropdown-wrapper threedot d-flex justify-content-end " (click)="toggleDropdown($event)">
-                <button class="border-0 bg-white" style="width: auto;" type="button"
-                  id="dropdownMenuButton{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  &#8942;
-                </button>
-              </div>
-              <div class="dropdown-menu dropdown-menu-right" [attr.aria-labelledby]="'dropdownMenuButton' + i" style="position: absolute; right: 0; top: 100%;">
-                <div>
-                    <button type="button" class="btn btn-light border-0" data-bs-toggle="modal"
-                        [attr.data-bs-target]="'#mymodal_' + i" (click)="setPetToDelete(pet, $event)">
-                        Delete
-                    </button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" (click)="preventCardClick($event)">
-                        Edit
-                      </button>
-                </div>
-              </div>
-            </div>
-            <div class="details" style="padding-left: 10px; padding-bottom: 10px;">
-              <div>
-                <img [src]="pet.PetImage" alt="Pet Image" class="img-fluid rounded-circle">
-              </div>
-              <div>
-                <ul>
-                  <li><strong>{{pet.PetName}}</strong></li>
-                  <li>{{pet.Gender}}, {{pet.DateOfBirth}} years</li>
-                </ul>
-              </div>
-
-            </div>
-
-          </section> -->
-
-        <!-- Modal for deleting -->
-        <!--<div class="modal" [id]="'mymodal_' + i" tabindex="-1" role="dialog" aria-labelledby="mymodal"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <div class="row">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
-                  </div>
-                  <div class="row">
-                    <p class="mt-2">Are you sure you want to delete {{pet.PetName}}?</p>
-                  </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-secondary col-5" data-bs-dismiss="modal"
-                    (click)="closeDeleteModal($event)">Cancel</button>
-                  <button type="button" class="btn btn-danger col-5" data-bs-dismiss="modal"
-                    (click)="deleteConfirmedPet($event)">Delete</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-
-        </div> -->
+       
 
         <div class="pet-cards p-1">
           <ng-container *ngFor="let pet of pets; let i = index">
