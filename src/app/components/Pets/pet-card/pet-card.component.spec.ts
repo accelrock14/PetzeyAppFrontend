@@ -4,6 +4,7 @@ import { PetCardComponent } from './pet-card.component';
 import { AgePipe } from "../../../pipes/Age/age.pipe";
 import { EllipsisPipe } from "../../../pipes/Ellipsis/ellipsis.pipe";
 import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
 describe('PetCardComponent', () => {
@@ -19,10 +20,32 @@ describe('PetCardComponent', () => {
 
     fixture = TestBed.createComponent(PetCardComponent);
     component = fixture.componentInstance;
+
+    component.pet = {
+      PetID: 1,
+      PetParentID: 'parent123',
+      PetName: 'Fluffy',
+      PetImage: 'fluffy.jpg',
+      Species: 'Cat',
+      Breed: 'Persian',
+      BloodGroup: 'A+',
+      Gender: 'Male',
+      Neutered: false,
+      DateOfBirth: new Date('2019-05-06'),
+      Allergies: 'None',
+      LastAppointmentDate: new Date()
+    };
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should contain a link to pet profile', () => {
+    const linkDebugElement = fixture.debugElement.query(By.css('.card'));
+    const routerLink = linkDebugElement.nativeElement.getAttribute('routerLink');
+    expect(routerLink).toEqual(`pets-profile/${component.pet.PetID}`);
   });
 
   it('should render pet information', () => {
@@ -45,8 +68,29 @@ describe('PetCardComponent', () => {
 
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.card-title').textContent).toContain('Fluffy');
+  });
 
-});
+  it('should not display owner information when petOwner is not provided', () => {
+    component.pet = {
+      PetID: 2,
+      PetName: 'Test Pet',
+      PetParentID: "1",
+      Gender: 'Male',
+      DateOfBirth: new Date('2019-01-01'),
+      PetImage: 'fluffy.jpg',
+      Species: 'Cat',
+      Breed: 'Persian',
+      BloodGroup: 'A+',
+      Neutered: false,
+      Allergies: 'None',
+      LastAppointmentDate: new Date()
+    };
+    component.petOwner = '';
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.card-text').textContent).not.toContain('Owner:');
+  });
 
 });
 
