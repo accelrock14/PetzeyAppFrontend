@@ -30,8 +30,8 @@ declare var window: any;
     DatePipe,
     RouterLink,
     ReportComponent,
-    AppointmentPetProfileComponent,
-    VetProfileApptComponent,
+    AppointmentPetProfileComponent, //pet
+    VetProfileApptComponent, //vet
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
