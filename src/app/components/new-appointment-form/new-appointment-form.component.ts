@@ -14,6 +14,7 @@ import { IPet } from '../../models/Pets/IPet';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { TempPetParent } from '../../models/TempPetParent';
 import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
+import { PetsService } from '../../services/PetsServices/pets.service';
 
 declare var window: any;
 @Component({
@@ -59,7 +60,7 @@ export class NewAppointmentFormComponent implements OnInit {
   selectedScheduleDate: Date = new Date();
   selectedIndex: number | null = null;
 
-  constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private authService: AuthService,private vetService:VetsserviceService) { }
+  constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private authService: AuthService,private vetService:VetsserviceService,private petService:PetsService) { }
 
   generalPetIssues: GeneralPetIssue[] = [];
   petIssueSearchText = '';
@@ -161,20 +162,33 @@ export class NewAppointmentFormComponent implements OnInit {
 
     // this is the method for fetching pets
     if (this.isOwner) {
-      this.aptService.getAllPetsOfOwener(this.authService.getUIDFromToken()).subscribe({
-        next: (data) => {
-          this.pets = data;
-          this.filteredPets = this.pets;
-          console.log('pets are ', this.pets);
+      this.petService.GetPetsByParentID(this.authService.getUIDFromToken()).subscribe({
+        next:(data)=>{
+          this.pets=data;
+          this.filteredPets =data;
+          
         },
-        error: (err) => { console.log('eror in fetching pets', err); }
+        error:(err)=>{
+          console.log("error while fething the currently logged in users pets"+err);
+          
+        }
       });
     }
 
     if(this.isDoctor || this.isReceptionist){
-      console.log("logging all pet owneres here = "+this.authService.getAllPetOwners());
-      console.log("jfjfjfjf");
-      
+      this.authService.getAllUsers().subscribe({
+        next: (users) => {
+          users.forEach((user: { Id: any; Name: any; Role:any }) => {
+            if(user.Role=="Owner")
+              this.petParents.push({ PetParentID: user.Id,
+                PetParentName: user.Name});
+            // console.log({ Id: user.Id, Name: user.Name });
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching users:', err);
+        }
+      });
     }
 
   } // end of ngOninit()
@@ -302,19 +316,23 @@ export class NewAppointmentFormComponent implements OnInit {
   }
 
   selectPetParent(ppid: string, ppname: string): void {
+    
     this.petParentSearchText = ppname;
     this.filteredPetParents = [];
     this.appointmentDetail.OwnerID = ppid;
 
+    console.log(" owner id here --- "+ppid);
+    
     // get pets of particular parent.
     // UNCOMMENT THIS LATER AFTER HOISTING. ALSO PUT THIS IN ON SELECT THE PARENT METHOD.
     // ALSO DO THIS IN EDIT THING.
-    this.aptService.getAllPetsOfOwener(this.appointmentDetail.OwnerID).subscribe({
-      next: (data) => {
+    this.petService.GetPetsByParentID(ppid).subscribe({
+      next:(data)=>{
         this.pets = data;
+        console.log("success fetching all the pets of the owner "+ppname + " pets = "+data);
       },
-      error: (err) => {
-        console.log("error while fetching pets of a owener", err);
+      error:(err)=>{
+        console.log("error occured while fetching the pets of owner + "+ppid+ " -- "+err);
       }
     });
   }

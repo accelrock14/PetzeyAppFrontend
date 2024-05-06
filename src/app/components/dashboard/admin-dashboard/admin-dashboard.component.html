@@ -18,7 +18,7 @@
         <div class="container-box col-md-2 col-sm-6 d-flex align-items-center justify-content-center"> 
             <select name="Doctor" class="form-select" (change)="onDateStatusDoctorChange()" [(ngModel)]="selectedDoctor">
 
-                <option value="">Select Doctor</option> <!-- Added default option -->
+                <option [ngValue]="null">Select Doctor</option> <!-- Added default option -->
 
                 <option *ngFor="let doctor of doctorsList" [value]="doctor.VetId">{{ doctor.Name }}</option>
             </select>

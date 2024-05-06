@@ -43,6 +43,7 @@
 .appointment-heading {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .appointment-id {

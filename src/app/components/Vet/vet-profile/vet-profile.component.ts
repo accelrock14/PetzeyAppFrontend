@@ -147,7 +147,7 @@ throw new Error('Method not implemented.');
               // Update the Photo property in the vetProfile
               fullVet.Photo = `${response.fileName}`;
               console.log('Full Vet: ',fullVet)// Update with the new photo URL
-              
+              this.vetProfile!.Photo = fullVet.Photo;
               // After successful photo upload, update the other profile details
               this.sendProfileUpdate(vetId, fullVet);
             },
