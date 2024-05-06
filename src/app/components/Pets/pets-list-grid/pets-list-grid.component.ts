@@ -108,12 +108,12 @@ export class PetsListGridComponent implements OnInit {
 
   }
 
-  private DoctorsFlow() {
+  public DoctorsFlow() {
     console.log("doctor");
     let vpi = this.authService.getVPIFromToken()
-    
+
     this.vetService.getVetsByNPINumber(vpi as string).subscribe(
-      data => 
+      data =>
         {
           console.log("vid " + data.VetId);
           this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
@@ -153,7 +153,7 @@ export class PetsListGridComponent implements OnInit {
         }
     )
 
-    
+
   }
 
   filterPetsPerPageForDoctor(page: number): void {

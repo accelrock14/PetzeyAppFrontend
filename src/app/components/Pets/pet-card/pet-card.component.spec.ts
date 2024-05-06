@@ -42,12 +42,6 @@ describe('PetCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should contain a link to pet profile', () => {
-  //   const linkDebugElement = fixture.debugElement.query(By.css('.card'));
-  //   const routerLink = linkDebugElement.nativeElement.getAttribute('routerLink');
-  //   expect(routerLink).toEqual(`pets-profile/${component.pet.PetID}`);
-  // });
-
   it('should render pet information', () => {
     component.pet = {
       PetID: 1,
