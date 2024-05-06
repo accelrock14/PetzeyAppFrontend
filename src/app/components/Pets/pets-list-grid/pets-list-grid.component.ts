@@ -9,6 +9,7 @@ import { PetCardComponent } from "../pet-card/pet-card.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentDetailsService } from '../../../services/appointment-details.service';
+import { User } from '../../../models/User-Authentication/User';
 
 @Component({
   selector: 'app-pets-list-grid',
@@ -57,7 +58,7 @@ export class PetsListGridComponent implements OnInit {
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
     private appointmentDetailsService: AppointmentDetailsService) { }
 
 
@@ -76,15 +77,18 @@ export class PetsListGridComponent implements OnInit {
           this.ReceptionistFlow();
         }
 
-        this.authService.getAllUsers().subscribe(users => {
+        this.authService.getAllUserIDsandNames().subscribe(users => {
           this.users = users
-        }) 
+
+
+        })
+
+
+
       }
 
       // this.searchPets();
     }
-
-
 
   private ReceptionistFlow() {
 
