@@ -8,15 +8,15 @@ export class ErrorLoggingService {
   constructor(private http: HttpClient) {}
 
   logError(data: HttpLogData | GeneralLogData) {
-    // this.http
-    //   .post(
-    //     'https://petzeyerrorlogging-300bc-default-rtdb.asia-southeast1.firebasedatabase.app/errologs.json',
-    //     data
-    //   )
-    //   .subscribe(
-    //     (response) => console.log('Data posted successfully:', response),
-    //     (error) => console.error('Error posting data:', error)
-    //   );
+    this.http
+      .post(
+        'https://petzeyerrorlogging-300bc-default-rtdb.asia-southeast1.firebasedatabase.app/errologs.json',
+        data
+      )
+      .subscribe(
+        (response) => console.log('Error logged successfully in firebase:'),
+        (error) => console.error('Error occured while logging data:', error)
+      );
   }
 
   fetchErrors() {

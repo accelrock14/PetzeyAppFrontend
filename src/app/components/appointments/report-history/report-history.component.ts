@@ -52,9 +52,7 @@ export class ReportHistoryComponent implements OnInit {
         this.existingPrescriptions = this.petHistory.Prescriptions;
       },
       (error) => {
-        this.toastr.error(
-          'Could not fetch pet history, Please try after sometime'
-        );
+        this.toastr.error('No Appointment History Found');
       }
     );
   }

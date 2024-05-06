@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 import { User } from '../../../models/User-Authentication/User';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 
 @Component({
   selector: 'app-pets-list-grid',
@@ -59,6 +60,7 @@ export class PetsListGridComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
+    private vetService: VetsserviceService,
     private appointmentDetailsService: AppointmentDetailsService) { }
 
 
@@ -90,7 +92,7 @@ export class PetsListGridComponent implements OnInit {
       // this.searchPets();
     }
 
-  public ReceptionistFlow() {
+  private ReceptionistFlow() {
 
     this.calculateTotalPages();
 
@@ -108,9 +110,13 @@ export class PetsListGridComponent implements OnInit {
 
   public DoctorsFlow() {
     console.log("doctor");
-    console.log(this.authService.getUIDFromToken());
+    let vpi = this.authService.getVPIFromToken()
 
-    this.appointmentDetailsService.GetAllPetIDByVetId(this.authService.getUIDFromToken())
+    this.vetService.getVetsByNPINumber(vpi as string).subscribe(
+      data =>
+        {
+          console.log("vid " + data.VetId);
+          this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
       .subscribe({
         next: (data) => {
           console.log('data', data);
@@ -128,7 +134,7 @@ export class PetsListGridComponent implements OnInit {
             const pageNumber = +params['page'];
             if (!isNaN(pageNumber) && pageNumber > 0) {
               this.currentPage = pageNumber;
-              this.filterPetsPerPage(pageNumber);
+              this.filterPetsPerPageForDoctor(pageNumber);
             } else {
               this.updateRoute(1);
             }
@@ -144,6 +150,35 @@ export class PetsListGridComponent implements OnInit {
           }
         }
       });
+        }
+    )
+
+
+  }
+
+  filterPetsPerPageForDoctor(page: number): void {
+    this.calculateTotalPages()
+    console.log('filter', this.petsFilter.PetIDs)
+    this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
+      .subscribe(pets => {
+        this.pets = pets;
+        console.log('Original pets:', this.pets);
+        this.recentlyConsultedPets = this.pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+
+        this.errorMessage = ''; // Clear error message on successful retrieval
+
+        this.currentPage = page;
+      },
+        error => {
+          if (error.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
+          }
+        }
+      );
+
   }
 
   filterPetsPerPage(page: number): void {
@@ -153,7 +188,6 @@ export class PetsListGridComponent implements OnInit {
       .subscribe(pets => {
         this.pets = pets;
         console.log('Original pets:', this.pets);
-
         this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
