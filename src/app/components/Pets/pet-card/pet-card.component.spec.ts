@@ -6,7 +6,7 @@ import { EllipsisPipe } from "../../../pipes/Ellipsis/ellipsis.pipe";
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
-fdescribe('PetCardComponent', () => {
+describe('PetCardComponent', () => {
   let component: PetCardComponent;
   let fixture: ComponentFixture<PetCardComponent>;
 
