@@ -88,7 +88,7 @@
     </div>
   </div>
 
-  @if(auth.getRoleFromToken() == "Owner") {
+  <!-- @if(auth.getRoleFromToken() == "Owner") { -->
   <div class="card shadow" style="max-width: 400px; margin: auto">
     <div class="card-body">
       <div class="row">
@@ -97,7 +97,7 @@
             <small class="text-muted">Pet Owner</small>
           </p>
           <h3 class="card-title mb-0">
-            {{ Owner.name }} {{ Owner.family_name }}
+            {{ petOwner.Name }}
           </h3>
         </div>
       </div>
@@ -109,7 +109,7 @@
             <i class="fa-regular fa-envelope"></i>
           </div>
           <div class="col-10">
-            {{ Owner.emails }}
+            {{ petOwner.Email }}
           </div>
         </div>
 
@@ -118,7 +118,7 @@
             <i class="fa-solid fa-phone"></i>
           </div>
           <div class="col-10">
-            {{ Owner.extension_PhoneNumber }}
+            {{ petOwner.Phone }}
           </div>
         </div>
 
@@ -127,13 +127,13 @@
             <i class="fa-solid fa-house"></i>
           </div>
           <div class="col-10">
-            {{ Owner.city }}, {{ Owner.state }}-{{ Owner.postalCode }}
+            {{ petOwner.Country }}, {{ petOwner.City }}, {{ petOwner.State }}
           </div>
         </div>
       </small>
     </div>
   </div>
-  }
+
 </div>
 
 

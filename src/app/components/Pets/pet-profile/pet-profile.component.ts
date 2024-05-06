@@ -8,6 +8,7 @@ import { DatePipe, NgIf, formatDate } from '@angular/common';
 import { FormatDatePipe } from '../../../pipes/Date/format-date.pipe';
 import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { User } from '../../../models/User-Authentication/User';
 
 @Component({
   selector: 'app-pet-profile',
@@ -26,7 +27,11 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
   ],
 })
 export class PetProfileComponent implements OnInit {
-  Owner: any | null;
+
+
+  petOwner:User | any={} as User ;
+
+  allUsers: User[]=[]
   constructor(
     private petsService: PetsService,
     private activatedRoute: ActivatedRoute,
@@ -34,11 +39,6 @@ export class PetProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn()) {
-      this.Owner = this.auth.getLoggedInUserObject();
-      console.log(this.Owner);
-    }
-
     const id = this.activatedRoute.snapshot.paramMap.get('id');
 
     console.log(id);
@@ -47,6 +47,22 @@ export class PetProfileComponent implements OnInit {
       console.log(pet.PetName);
       console.log(this.Pet.PetID);
     });
+
+     if (this.auth.isLoggedIn() ){
+
+      this.auth.getAllUsers().subscribe(
+        (data) =>
+          {
+            console.log(data);
+            this.allUsers=data;
+            this.petOwner=this.allUsers.find(u => u.Id==this.Pet.PetParentID)
+            console.log("else "+this.petOwner);
+          }
+      )
+
+
+   }
+
   }
 
   Pet: IPet = {} as IPet;
