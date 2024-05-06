@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('ReportHistoryComponent', () => {
+describe('ReportHistoryComponent', () => {
   let component: ReportHistoryComponent;
   let fixture: ComponentFixture<ReportHistoryComponent>;
   let mockhttp: HttpTestingController
