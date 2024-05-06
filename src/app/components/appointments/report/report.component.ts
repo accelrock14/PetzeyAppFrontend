@@ -139,7 +139,7 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
-  myForm: FormGroup = new FormGroup({});
+  myForm!: FormGroup
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
@@ -244,7 +244,7 @@ export class ReportComponent implements OnInit {
       this.myForm = this.fb.group({
         symptom: [this.selectedSymptoms],
         test: [this.selectedTests],
-        medicine: [],
+        medicine: [[]],
         doctor: [this.selectedDoctors],
       });
       this.isDoctor = this.authService.getRoleFromToken() == 'Doctor';
@@ -258,7 +258,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   isEditing = false;
 
@@ -392,7 +392,7 @@ export class ReportComponent implements OnInit {
   }
 
   activatePrescriptionModal(id: number) {
-    this.myForm.get('medicine')?.reset();
+    this.myForm.get('medicine')?.reset()
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
       this.prescriptionForm.medicine = 0;
@@ -411,6 +411,7 @@ export class ReportComponent implements OnInit {
         this.prescriptionForm.medicine = prescribedMedicine.MedicineID;
         this.prescriptionForm.days = prescribedMedicine.NumberOfDays;
         this.prescriptionForm.dosage = [false, false, false];
+        this.myForm.get('medicine')?.setValue([this.getMedicineById(prescribedMedicine.MedicineID)])
         //morning
         if (
           prescribedMedicine.Dosages == 0 ||
