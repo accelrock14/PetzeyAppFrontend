@@ -1,8 +1,6 @@
 <div class="container my-4">
     <h5 class="mb-3 p-2">Appointment History</h5>
-    <div id="appointmentCarousel" class="carousel slide" data-bs-ride="carousel">
-      
-      <!-- Carousel inner (wrapper for slides) -->
+    <div id="appointmentCarousel" class="carousel slide" data-bs-ride="carousel">      
       <div class="carousel-inner">
         <ng-container *ngFor="let group of groupedAppointments(); let isFirst = first">
           <div class="carousel-item" [class.active]="isFirst">
@@ -18,7 +16,7 @@
       <!-- Controls -->
       <button class="carousel-control-prev" type="button" data-bs-target="#appointmentCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+        <span>Previous</span>
       </button>
       <button class="carousel-control-next" type="button" data-bs-target="#appointmentCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
