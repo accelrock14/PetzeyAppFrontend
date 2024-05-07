@@ -28,12 +28,15 @@ export class PatientDashboardComponent implements OnInit {
   selectedStatus: string = "";
   selectedDate!: Date;
   page:number = 1;
+  loadingAppointments: boolean = false;
 
   constructor(private service: DashboardService,public authService: AuthService) {}
   ngOnInit(): void {
     console.log(this.authService.getUIDFromToken());
+    this.loadingAppointments = true;
     this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
   }
 
@@ -41,12 +44,14 @@ export class PatientDashboardComponent implements OnInit {
     
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    this.loadingAppointments = true;
     this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
   }
   pageClick(pageInput:number) {
-    this.offset = (pageInput-1)*3;
+    this.offset = (pageInput-1)*4;
     if(pageInput == this.page - 1){
       this.page--;
     }
@@ -55,8 +60,10 @@ export class PatientDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    this.loadingAppointments = true;
     this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
   }
   isPreviousPageDisabled() {

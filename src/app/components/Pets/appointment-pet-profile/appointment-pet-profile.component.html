@@ -49,59 +49,61 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-            <div class="col-md-6" *ngIf="auth.getRoleFromToken() == 'Owner'">
+            <div class="col-md-6">
                 <div class="row column-gap-md-5">
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <img
                         src=""
                         style="height: 80px; width: 80px;"
                         onerror="this.onerror=null; this.src='https://placehold.co/80x80';"
                         class="rounded-circle">
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+
+                    <div class="col-md-6 ms-4">
                         <div class="row small ">
                             Pet Owner
                         </div>
                         <div class="row fw-bold">
-                            {{ Owner.name }} {{ Owner.family_name }}
+                            {{ petOwner.Name }}
                         </div>
                     </div>
                 </div>
+
                 <div class="col p-3">
 
                     <div class="row small">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="row"><i class="fa-solid fa-envelope" style="color: rgb(255, 111, 0);"></i></div>
                         </div>
                         <div class="col-md-1">
                             <div class="row">:</div>
                         </div>
                         <div class="col-md-1">
-                            <div class="row">{{ Owner.emails }}</div>
+                            <div class="row">{{ petOwner.Email }}</div>
                         </div>
                     </div>
                     <div class="row small">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="row"><i class="fas fa-phone" style="color: rgb(255, 111, 0);"></i></div>
                         </div>
                         <div class="col-md-1">
                             <div class="row">:</div>
                         </div>
                         <div class="col-md-5">
-                            <div class="row">{{ Owner.extension_PhoneNumber }}</div>
+                            <div class="row">{{ petOwner.Phone}}</div>
                         </div>
                     </div>
                     <div class="row small">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="row"><i class="fa-solid fa-house" style="color: rgb(255, 111, 0);"></i></div>
                         </div>
                         <div class="col-md-1">
                             <div class="row">:</div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">{{ Owner.city }}, {{ Owner.state }}-{{ Owner.postalCode }}</div>
+                            <div class="row">{{ petOwner.Country }}, {{ petOwner.City }}, {{ petOwner.State }}</div>
                         </div>
                     </div>
                 </div>

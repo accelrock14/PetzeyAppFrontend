@@ -110,7 +110,10 @@ feedbacklist:Feedback[]=[];
        this.feedback.Comments='';
        this.feedback.Recommendation='';
        this.showmodal=false;
-       this.feedbacklist.push(feedbackToSubmit)
+ 
+       this.service.getAllFeedback().subscribe((f)=>{
+              this.feedbacklist=f;
+             })
 
          
          }
@@ -147,7 +150,16 @@ feedbacklist:Feedback[]=[];
              // Check if all questions have been rated
              return this.feedback.Questions.every(q => q.Rating !== 0);
            }
-
+           close() {
+            this.feedback.Questions = this.feedbackquestions.map(question => ({
+              QuestionId:0,
+              FeedbackQuestionId: question.FeedbackQuestionId,
+              Rating: 0
+            }));
+           this.feedback.Comments='';
+           this.feedback.Recommendation='';
+           this.showmodal=false;
+            }
 
           }
 

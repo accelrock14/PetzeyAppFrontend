@@ -30,13 +30,16 @@ export class AdminDashboardComponent implements OnInit {
   };
   page:number = 1;
   doctorsList: VetDTO[] = [];
+  loadingAppointments: boolean = false;
 
   constructor(public service: DashboardService, private vetService: VetsserviceService) {}
   ngOnInit(): void {
     console.log("oninit");
     console.log(this.filters);
+    this.loadingAppointments = true;
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
     this.vetService.getVetsAndIds().subscribe(data => {
       this.doctorsList = data;
@@ -49,15 +52,17 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
     console.log(this.filters);
+    this.loadingAppointments = true;
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
       console.log(this.appointmentCards);
+      this.loadingAppointments = false;
     })
     
   }
 
   pageClick(pageInput:number) {
-    this.offset = (pageInput-1)*3;
+    this.offset = (pageInput-1)*4;
     if(pageInput == this.page - 1){
       this.page--;
     }
@@ -68,9 +73,11 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.DoctorID = this.selectedDoctor;
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    this.loadingAppointments = true;
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
       console.log(this.appointmentCards);
+      this.loadingAppointments = false;
     })
   }
   isPreviousPageDisabled() {

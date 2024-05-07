@@ -7,7 +7,7 @@
         <div class="col-md-8 col-12">
             <div class="card-body">
                 <h5 class="card-title card-content">{{ appointmentcard.PetName | ellipsis}}</h5>
-                <p class="text-muted" style="font-size: 0.9rem;">{{ appointmentcard.PetGender }} ({{appointmentcard.PetAge}}) </p>
+                <p class="text-muted" style="font-size: 0.9rem;">{{ appointmentcard.PetGender }} {{appointmentcard.PetAge}} </p>
                 <p class="text-muted card-text" style="font-size: 0.9rem;">Owner: {{ appointmentcard.OwnerName | ellipsis}}</p>
             </div>
         </div>
@@ -38,9 +38,9 @@
       <form #feedbackForm="ngForm"  novalidate>
         <div class="modal-header">
           <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <!-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button> -->
         </div>
         <div class="modal-body">
           <div *ngIf="!isFormValid()" class="text-danger">
@@ -75,7 +75,7 @@
          
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
               <button type="submit" class="btn btn-primary" [disabled]="!isFormValid()"  (click)="onSubmit(appointmentcard.AppointmentID)" data-dismiss="modal" data-bs-dismiss="modal">Submit Feedback</button>
             </div> 
        
