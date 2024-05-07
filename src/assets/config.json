@@ -1,0 +1,11 @@
+{
+    "pet":{
+        "url":"https://petzeypetwebapi20240505153103.azurewebsites.net/api/pets"
+    },
+    "vet":{
+        "url":"https://petzyvetapi20240505160604.azurewebsites.net/"
+    },
+    "appointment":{
+        "url":"https://petzeybackendappointmentapi20240505153736.azurewebsites.net/"
+    }
+}
