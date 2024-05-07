@@ -119,7 +119,7 @@
         <app-appointment-pet-profile [PetId]="appointment.PetID" *ngIf="appointment.PetID != undefined && appointment.PetID != 0"></app-appointment-pet-profile>
     </div>
     <!-- Second Child Component -->
-    <div class="col-md-4 ps-1">
+    <div class="col-md-4">
 
         <app-vet-profile-appt [VetId]="appointment.DoctorID" *ngIf="appointment.DoctorID != undefined && appointment.DoctorID != ''"></app-vet-profile-appt>
         <!-- <p>{{appointment.DoctorID}}</p> -->
