@@ -16,3 +16,19 @@
     padding-top: 16px;
     font-size: 1.5rem;
 }
+
+/* admin-dashboard.component.css */
+
+/* Center the loading spinner vertically and horizontally */
+.loading-spinner-container {
+    position: fixed;
+    top: 50%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}
+
+/* Style the loading spinner */
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+}

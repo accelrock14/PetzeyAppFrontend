@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { GeneralPetIssue } from '../../models/GeneralPetIssue';
 import { AppointmentDetail } from '../../models/AppointmentDetail';
 import { PetsService } from '../PetsServices/pets.service';
-import { IPet } from '../../models/Pets/IPet';
 import { VetsserviceService } from '../VetsServices/vetsservice.service';
 import { AuthService } from '../UserAuthServices/auth.service';
 import { IVetCardDTO } from '../../models/Vets/IVetCardDto';

@@ -39,37 +39,38 @@ export class DoctorDashboardComponent implements OnInit {
   }
   page: number = 1;
   doctorIdFromNPI: string = "";
+  loadingAppointments: boolean = false;
 
   constructor(private service: DashboardService, public authService: AuthService, private vetService: VetsserviceService) { }
   ngOnInit(): void {
     // console.log(this.authService.getUIDFromToken());
 
     let npi: any = this.authService.getVPIFromToken()
-
     let doc: IVet;
+    this.loadingAppointments = true;
     this.vetService.getVetsByNPINumber(npi).subscribe(data => {
       doc = data;
       this.doctorIdFromNPI = String(doc.VetId);
       console.log('doc', this.doctorIdFromNPI)
       this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(vet => {
         this.appointmentCards = vet;
-
+        this.loadingAppointments = false;
       })
       this.service.GetStatusCounts(this.doctorIdFromNPI).subscribe(count => {
         this.appointmentStatus = count;
       })
+     
     })
-
-
-
   }
 
   onDateStatusChange() {
 
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    this.loadingAppointments = true;
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
   }
 
@@ -83,8 +84,10 @@ export class DoctorDashboardComponent implements OnInit {
     }
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
+    this.loadingAppointments = true;
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
+      this.loadingAppointments = false;
     })
   }
   isPreviousPageDisabled() {
