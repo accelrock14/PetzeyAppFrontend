@@ -152,10 +152,6 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  preventCardClick(event: MouseEvent) {
-    event.stopPropagation();
-    console.log('hi');
-  }
   preventCardClickEdit($event: MouseEvent, arg1: number) {
     $event.stopPropagation();
     this.petsService.GetPetDetailsByID(arg1).subscribe(
