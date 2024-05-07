@@ -1,0 +1,144 @@
+
+<span class="appointment-heading" routerLink="../..">
+  <i class="fas fa-arrow-left"></i>
+
+  <h6 class="appointment-title" >Back to Pets</h6>
+</span>
+<br />
+<br />
+
+
+<div class="row">
+  <div class="card mb-4 shadow" style="max-width: 600px; margin: auto">
+    <div class="row">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4 d-flex justify-content-center align-items-center">
+            <img
+              src="{{ Pet.PetImage }}"
+              class="img-fluid rounded-circle"
+              style="width: 80px; height: 80px; object-fit: cover"
+              alt="pet image"
+            />
+          </div>
+          <div class="col-4">
+            <p class="card-text mb-1 mt-2">
+              <small class="text-muted">Patient</small>
+            </p>
+            <h3 class="card-title mb-0">{{ Pet.PetName }}</h3>
+            <p class="card-text">
+              <small class="text-muted">{{ Pet.Species }}, {{ Pet.Breed }}</small>
+            </p>
+          </div>
+          <div class="col-4">
+            <small class="d-flex justify-content-end me-2">
+              <button
+                routerLink="/addAppointment"
+                class="btn btn-sm"
+                style="
+                  background-color: rgb(233, 56, 11);
+                  color: white;
+                  white-space: nowrap;
+                "
+              >
+                Book Appointment
+              </button>
+            </small>
+          </div>
+        </div>
+        <br />
+
+        <div class="row ms-4">
+          <div class="col-4">
+            <small class="text-muted">Gender</small><br />
+            <small class="text-muted">Age</small><br />
+            <small class="text-muted">Blood Group </small><br />
+            <small class="text-muted">Date of Birth</small><br />
+            <small class="text-muted">Allergies</small><br />
+          </div>
+
+          <div class="col-1 px-0 text-start">
+            <small class="text-muted">:</small><br />
+            <small class="text-muted">:</small><br />
+            <small class="text-muted">:</small><br />
+            <small class="text-muted">:</small><br />
+            <small class="text-muted">:</small><br />
+          </div>
+
+
+          <div class="col-6 px-0 text-start">
+
+            <small class="text-muted" style="font-weight: bold">{{
+              Pet.Gender
+              }}</small><br />
+            <small class="text-muted" style="font-weight: bold">{{ Pet.DateOfBirth | age }} </small><br />
+            <small class="text-muted" style="font-weight: bold">{{
+              Pet.BloodGroup
+              }}</small><br />
+            <small class="text-muted" style="font-weight: bold">{{
+              Pet.DateOfBirth | formatDate
+
+            }}</small
+            ><br />
+            <small class="text-muted" style="font-weight: bold">{{
+              Pet.Allergies
+            }}</small>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- @if(auth.getRoleFromToken() == "Owner") { -->
+  <div class="card shadow" style="max-width: 400px; margin: auto">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <p class="card-text mb-1 mt-2">
+            <small class="text-muted">Pet Owner</small>
+          </p>
+          <h3 class="card-title mb-0">
+            {{ petOwner.Name }}
+          </h3>
+        </div>
+      </div>
+      <br />
+
+      <small class="text-muted" style="font-weight: bold">
+        <div class="row">
+          <div class="col-1">
+            <i class="fa-regular fa-envelope"></i>
+          </div>
+          <div class="col-10">
+            {{ petOwner.Email }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-1">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="col-10">
+            {{ petOwner.Phone }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-1">
+            <i class="fa-solid fa-house"></i>
+          </div>
+          <div class="col-10">
+            {{ petOwner.Country }}, {{ petOwner.City }}, {{ petOwner.State }}
+          </div>
+        </div>
+      </small>
+    </div>
+  </div>
+
+</div>
+
+
+<app-report-history *ngIf="Pet.PetID != undefined" [petId]="Pet.PetID"></app-report-history>
+<hr />
+<app-pet-appointments-list *ngIf="Pet.PetID != undefined" [PetID]="Pet.PetID"></app-pet-appointments-list>

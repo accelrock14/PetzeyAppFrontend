@@ -1,0 +1,199 @@
+<style>
+  .card-link {
+    text-decoration: none;
+    /* Remove underline */
+    color: inherit;
+    /* Inherit text color */
+  }
+</style>
+
+<div class="container mt-2">
+  <div class="row column-gap-1 p-0 m-0">
+    <h5 class="col-4 ms-3 py-0">All Vets</h5>
+    <div class="col-3">
+      <div class="dropdown">
+        <ng-multiselect-dropdown
+          [placeholder]="'Filter'"
+          [data]="specialties"
+          [(ngModel)]="selectedSpecialties"
+          [settings]="dropdownSettings"
+          (onSelect)="filteringVets()"
+          (onDeSelect)="filteringVets()"
+          (onSelectAll)="selectall()"
+          (onDeSelectAll)="unselectall()"
+         
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="input-container">
+        <input
+          type="text"
+          class="form-control search-input"
+          placeholder="Search..."
+          [(ngModel)]="searchQuery"
+          (input)="filterVets()"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 50 50"
+          class="search-icon"
+        >
+          <path
+            d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"
+          />
+        </svg>
+      </div>
+    </div>
+    @if(auth.isLoggedIn() && auth.getRoleFromToken() == "Receptionist"){
+      <div class="col">
+        <button class="btn btn-edit" (click) = "navigateToAddVet()">Add Vet</button>
+      </div>
+    }
+    
+  </div>
+  <!--Top Rated Vets Display-->
+  <div *ngIf="selectedSpecialties.length === 0 && searchQuery == ''">
+    <div class="container">
+      <hr class="p-0 my-2" />
+      <h6 class="text-muted my-2 mt-5 p-0">High Rated Vets</h6>
+      <hr class="mt-0" />
+      <div class="row">
+        <!-- Repeat this block for each profile -->
+        <div *ngFor="let vet of topRatedVets" class="col-md-3 col-sm-6">
+          <a
+            href="javascript:void(0);"
+            class="card-link"
+            (click)="openVetProfile(vet.VetId)"
+          >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--All Vets Display-->
+  <div class="container">
+    <h6 class="text-muted my-2 mt-3 p-0">All Vets</h6>
+  <hr class="mt-0"/>
+    <div *ngIf="selectedSpecialties.length === 0">
+      <div class="row">
+        <!-- Original loop for displaying all veterinarians -->
+        <div class="col-md-3 col-sm-6" *ngFor="let vet of filteredVets">
+          <a
+            href="javascript:void(0);"
+            class="card-link"
+            (click)="openVetProfile(vet.VetId)"
+          >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display filtered veterinarians -->
+    <div *ngIf="selectedSpecialties.length > 0">
+      <div class="row">
+        <div *ngFor="let vet of fVets" class="col-md-3 col-sm-6">
+          <a
+            href="javascript:void(0);"
+            class="card-link"
+            (click)="openVetProfile(vet.VetId)"
+          >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <ng-template #noVets>
+      <p>No veterinarians found for the selected specialties.</p>
+    </ng-template>
+  </div>
+</div>
+
+<div *ngIf="totalPages > 1" class="pagination">
+  <button
+    (click)="onPageChange(currentPage - 1)"
+    [disabled]="currentPage === 1"
+  >
+    &laquo;
+  </button>
+  <button
+    *ngFor="let page of totalPagesArray"
+    (click)="onPageChange(page)"
+    [class.active]="currentPage === page"
+  >
+    {{ page }}
+  </button>
+  <button
+    (click)="onPageChange(currentPage + 1)"
+    [disabled]="currentPage === totalPages"
+  >
+    &raquo;
+  </button>
+</div>

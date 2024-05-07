@@ -1,0 +1,10 @@
+.pet-card {
+  background-color: #13133d;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

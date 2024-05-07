@@ -1,0 +1,15 @@
+
+<div class="card shadow" routerLink="pets-profile/{{pet.PetID}}" routerLinkActive="router-link-active" style="width: 250px;" >
+  <div class="d-flex align-items-center">
+    <div class="col-5 px-0 py-3 d-flex justify-content-center align-items-center">
+      <img src="{{pet.PetImage}}" class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" onerror="this.onerror=null; this.src='https://placehold.co/100x100';"
+      >
+    </div>
+    <div class="col-7 px-1 py-3">
+        <h6 class="card-title mb-0">{{pet.PetName}}</h6>
+        <p class="card-text mb-2"><small class="text-muted">{{pet.Gender}}, {{pet.DateOfBirth | age}} </small></p>
+        <p class="card-text" *ngIf="petOwner"><small class="text-muted">Owner: {{ petOwner | ellipsis}}</small></p>
+    </div>
+  </div>
+</div>
+

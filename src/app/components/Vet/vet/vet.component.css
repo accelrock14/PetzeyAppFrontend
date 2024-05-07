@@ -1,0 +1,118 @@
+.container.my-5 {
+  display: inline-block;
+}
+/* Customizing the ng-multiselect-dropdown */
+::ng-deep .dropdown-multiselect__caret {
+  display: none !important;
+  }
+
+  .input-container {
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    fill: #0b0a0f; /* Change the color as needed */
+    width: 20px;
+    height: 20px;
+    pointer-events: none; /* Prevents the icon from being clickable */
+  }
+  
+  .search-input {
+    padding-right: 30px; /* Adjust the padding to accommodate the icon */
+  }
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    gap: 32px;
+    background: #FFFFFF;
+    /* Shadow/md */
+    box-shadow: 0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+    border-radius: 8px;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  .contact-card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  .contact-card img {
+    width: 70px !important; 
+    height: 70px !important; 
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 0.2rem;
+  }
+  .contact-card .card-body {
+    padding: 0.1rem;
+  }
+  .contact-card h6, .contact-card p {
+    margin: 0;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination button {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #495057;
+    padding: 6px 12px;
+    margin: 0 2px;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    background-color: #122235;
+    color: white;
+  }
+  
+  .pagination button:hover:not(.active) {
+    background-color: #e9ecef;
+  }
+  
+  .pagination button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .btn-edit{
+    background-color: #FF4405;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 768px) {
+    .card {
+      width: 300px; /* Adjust width for smaller screens */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .card {
+      width: 250px; /* Adjust width for even smaller screens */
+    }
+  }

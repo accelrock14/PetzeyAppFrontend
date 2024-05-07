@@ -1,0 +1,181 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<!-- this above is the cloudflare link for search icon magnifying glass -->
+<div class="new-appointment-form">
+    <div class="back btn">
+        <i class="fas fa-arrow-left"></i>
+        <pre class="pre" (click)="GoBackSimply()"> Back to Appointments</pre>
+    </div>
+    <h1>Edit Appointment</h1>
+    <hr>
+
+    <div *ngIf="!isDoctor">
+    <h6>Veternarian Details</h6>
+
+    <div class="vet-cal-slots">
+        <div class="search-box">
+            <div class="input-wrapper">
+                <label for="vet">Veternarian</label>
+                <input type="text" name="vet" placeholder="Search..." [(ngModel)]="veternarianSearchText"
+                    #inputForSelectingVet="ngModel" (input)="filterVeternarians()">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="dropdown-container" *ngIf="inputForSelectingVet.value.length>0 && inputForSelectingVet.touched">
+                <div *ngFor="let vet of filteredVets" (click)="selectVeternarian(vet.VetId,vet.Name)" class="vetdiv">
+                    {{vet.Name}}
+                </div>
+            </div>
+        </div>
+    </div>
+        <br>
+        <div class="alert alert-info p-3" style="width: 750px;">
+            Your currently have appointment on <strong class="text-primary">{{appointmentDetail.ScheduleDate | date}}</strong>.
+            Select another to change.
+        </div>
+        <!-- *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" -->
+        <!-- old one *ngIf="vetDateAndSlotPicker && inputForSelectingVet.value.length && isReceptionist || isDoctor" -->
+        <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor" >
+            <div class="mydate-picker">
+                <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" id="schDatePicker" #schDatePicker="ngModel" (ngModelChange)="onDateChange()">
+            </div>
+            <div class="myslots">
+                <div class="time-slots">
+                    <div class="row" *ngFor="let slots of timeSlotRows; let rowIndex = index">
+                        <div class="slot btn" *ngFor="let slot of slots; let slotIndex = index" id="slot-{{ rowIndex * slots.length + slotIndex }}" [class.disabled]="isDisabled(rowIndex * slots.length + slotIndex)" [class.selected]="isSelected(rowIndex * slots.length + slotIndex)" (click)="!isDisabled(rowIndex * slots.length + slotIndex) && onSlotClick(slot, rowIndex * slots.length + slotIndex)">
+                            <span>{{ slot }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end of slots displayer -->
+    <br>
+
+    <div  *ngIf="isDoctor || isReceptionist" >  
+    <h6>Patient Details</h6>
+
+    <div class="search-box">
+        <div class="input-wrapper">
+            <label for="petparent">Pet Parent</label>
+            <input type="text" name="petparent" placeholder="Search..." [(ngModel)]="petParentSearchText"
+                #inputForSelectingPetParent="ngModel" (input)="filterPetParents()">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPetParent.value.length && inputForSelectingPetParent.touched
+        ">
+            <div *ngFor="let pp of filteredPetParents" (click)="selectPetParent(pp.PetParentID,pp.PetParentName)" class="petparentdiv">
+                {{pp.PetParentName}}
+            </div>
+        </div>
+    </div>
+
+</div>
+   
+    <div class="search-box">
+        <div class="input-wrapper">
+            <label for="petname">Pet Name</label>
+            <input type="text" name="petname" placeholder="Search..." [(ngModel)]="petSearchText" (input)="filterPets()" #inputForSelectingPet="ngModel" >
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPet.value.length && inputForSelectingPet.touched">
+            <div *ngFor="let pet of filteredPets" (click)="selectPet(pet.PetID,pet.PetName)"
+            class="petdiv">
+            {{pet.PetName}}
+        </div>
+        </div>
+    </div>
+    <br>
+    <h6>Other Details</h6>
+    <div class="search-box">
+        <div class="input-wrapper">
+
+            <label for="petissue">Pet Issues</label>
+            <input type="text" name="petissue" placeholder="Search..." [(ngModel)]="petIssueSearchText"
+                (input)="filterPetIssues()" #inputForSelectingPetIssues="ngModel">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="dropdown-container" *ngIf="inputForSelectingPetIssues.value.length && inputForSelectingPetIssues.touched">
+            <div *ngFor="let petissue of filteredpetIssues" (click)="selectPetIssue(petissue.IssueName)"
+                class="petissuediv">
+                {{petissue.IssueName}}
+            </div>
+        </div>
+    </div>
+    <div class="dycapsules">
+        <div *ngFor="let pi of appointmentDetail.PetIssues" class="capsule">{{pi.IssueName}}
+            <i class="fas fa-times" (click)="onDisSelectPetIssue(pi)" ></i>
+        </div>
+    </div>
+
+    <br>
+    <h6>Reason for Visit</h6>
+    <textarea name="reasonforvisit" id="reasonforvisit" cols="50" rows="2" class="reasonforvisit" #reasonforvisit [(ngModel)]="appointmentDetail.ReasonForVisit" ></textarea>
+    <br>
+    <br>
+    <div>
+        <button class="btn btn-secondary cancel" (click)="openCancelModal()">Cancel</button>
+        <!-- (click)="onBook(reasonforvisit.value)" -->
+        <!-- [disabled]="isSubmitDisabled" -->
+        <button class="btn btn-primary bookappointment" (click)="openModal()">Edit Appointment</button>
+    </div>
+</div>
+<hr>
+
+
+<!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||
+modal popup code for confirmation
+-->
+<!-- edit confirm modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Confirm Edit Appointment</h4>
+            <p>Do you want to confirm edit appointment?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="background-color: white; color: black;">Cancel</button>
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="onBookEditBooking(reasonforvisit.value)" >Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ||||||||||||||||||||||||||||||||||||||||||||| -->
+<!-- modal popup code for cancel confirmation -->
+<div class="modal fade" id="cancelEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeCancelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="alert">
+                <i class="fas fa-exclamation-triangle" style="color: orangered;"></i>
+            </div>
+        
+            <h4>Discard Changes</h4>
+            <p>Are you sure you want to discard changes?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancelModal()" style="background-color: white; color: black;">Cancel</button>
+          <!-- later add a method here to navigate to the previous window -->
+          <button type="button" class="btn btn-primary" style="background-color: orangered;" (click)="GoBackSimply()" >Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>

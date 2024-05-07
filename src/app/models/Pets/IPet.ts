@@ -1,13 +1,14 @@
 export interface IPet {
     PetID:number,
-    PetParentId:number,
+    PetParentID:string,
     PetName:string,
-    PetImage:BinaryType,
+    PetImage:string,
     Species:string,
     Breed:string,
+    BloodGroup:string,
     Gender:string,
+    Neutered : boolean,
     DateOfBirth:Date,
-    Age:number,
     Allergies:string,
-    LastAppointmentdate:string
+    LastAppointmentDate:Date
 }

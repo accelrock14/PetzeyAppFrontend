@@ -1,0 +1,38 @@
+.container-box {
+    border: 1px solid transparent; /* Invisible border */
+    padding: 5px;
+}
+
+.container {
+    text-align: center;
+}
+
+.heading {
+    padding-top: 16px;
+    font-size: 1.5rem;
+}
+
+.message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545; /* Red color for emphasis */
+}
+
+.illustration {
+    margin-top: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.loading-spinner-container {
+    position: fixed;
+    top: 50%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}
+
+/* Style the loading spinner */
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+}

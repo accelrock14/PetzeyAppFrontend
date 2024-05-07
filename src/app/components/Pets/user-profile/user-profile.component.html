@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile</title>
+    <link rel="stylesheet" href="user-profile.component.css" />
+  </head>
+
+  <body>
+    <header class="container-fluid">
+      <div class="row justify-content-end align-items-center px-3 py-2">
+        <div class="col-auto">
+          <span class="user-name">{{ user.name }} {{ user.family_name }}</span>
+          <br />
+          <span class="user-info">
+            <button class="btn btn-danger" (click)="OnLogout()">SignOut</button>
+          </span>
+        </div>
+        <div class="col-auto">
+          <!-- <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="User Profile Image" class="img-fluid rounded-circle user-image"> -->
+        </div>
+      </div>
+    </header>
+
+    <main class="container-fluid py-4">
+      <section class="user-info">
+        <div class="row heading-and-button">
+          <div class="col-9">
+            <h2>Account Details</h2>
+          </div>
+          <!-- <div class="col-3 text-right">
+          <a href="#" class="btn btn-primary edit-btn">Edit</a>
+        </div> -->
+        </div>
+        <div class="details">
+          <div class="row">
+            <!-- <div class="col-4 ">
+            <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="Profile Image" class="img-fluid rounded-circle">
+          </div> -->
+            <div class="col-14">
+              <ul>
+                <li>
+                  Name: <strong>{{ user.name }} {{ user.family_name }}</strong>
+                </li>
+                <li>
+                  Mobile: <strong>{{ user.extension_PhoneNumber }}</strong>
+                </li>
+                <li>
+                  Location:
+                  <strong
+                    >{{ user.city }}, {{ user.state }}-{{
+                      user.postalCode
+                    }}</strong
+                  >
+                </li>
+                <li>
+                  Country: <strong>{{ user.country }}</strong>
+                </li>
+                @if(auth.getRoleFromToken()=='Doctor'){
+                <li>
+                  VPI Number: <strong>{{ user.extension_NPINumber }}</strong>
+                </li>
+                <li>
+                  Specialty: <strong>{{ user.extension_Speciality }}</strong>
+                </li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      @if(auth.getRoleFromToken() === "Owner")
+      {
+      <section class="user-info">
+        <div class="row heading-and-button">
+          <div class="col-10">
+            <h2>Pet Details</h2>
+          </div>
+          <div class="col-2">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModalCenterCreate"
+
+            >
+              + Add Pet
+            </button>
+          </div>
+        </div>
+
+       
+
+        <div class="pet-cards p-1">
+          <ng-container *ngFor="let pet of pets; let i = index">
+            <section
+              class="pet-card col-lg-3 col-md-4 col-sm-6 col-12 p-0 d-inline"
+              routerLink="pets-profile/{{ pet.PetID }}"
+              routerLinkActive="router-link-active"
+            >
+              <div class="dropdown">
+                <div
+                  class="dropdown-wrapper d-flex justify-content-end"
+                  (click)="toggleDropdown($event)"
+                >
+                  <button
+                    class="border-0 bg-light"
+                    style="width: auto"
+                    type="button"
+                    id="dropdownMenuButton{{ i }}"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    &#8942;
+                  </button>
+                </div>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  [attr.aria-labelledby]="'dropdownMenuButton' + i"
+                  style="
+                    position: absolute;
+                    right: 0;
+                    top: calc(100% + 30px);
+                    overflow-y: auto;
+                    max-height: 90px;
+                  "
+                >
+                  <div>
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      [attr.data-bs-target]="'#mymodal_' + i"
+                      (click)="setPetToDelete(pet, $event)"
+                      style="border: 0; background: none"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalCenter"
+                      (click)="preventCardClickEdit($event, pet.PetID)"
+                      style="border: 0; background: none"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="details"
+                
+              >
+                <div>
+                  <img
+                    src="{{ pet.PetImage }}"
+                    onerror="this.onerror=null; this.src='https://placehold.co/100x100';"
+                    class="img-fluid rounded-circle"
+                  />
+                </div>
+                <div>
+                  <ul>
+                    <li>
+                      <strong>{{ pet.PetName }}</strong>
+                    </li>
+                    <li>{{ pet.Gender }}, {{ pet.DateOfBirth | age }}</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <!-- Modal for deleting -->
+            <div
+              class="modal"
+              [id]="'mymodal_' + i"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="mymodal"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="row">
+                      <h5 class="modal-title" id="exampleModalLongTitle">
+                        Confirmation
+                      </h5>
+                    </div>
+                    <div class="row">
+                      <p class="mt-2">
+                        Are you sure you want to delete {{ pet.PetName }}?
+                      </p>
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-secondary col-5"
+                      data-bs-dismiss="modal"
+                      (click)="closeDeleteModal($event)"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger col-5"
+                      data-bs-dismiss="modal"
+                      (click)="deleteConfirmedPet($event)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal for edit -->
+            <div
+              class="modal fade"
+              style="backdrop-filter: blur(100%)"
+              id="exampleModalCenter"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalCenterTitle"
+              aria-hidden="true"
+              style="border-radius: 20%"
+            >
+              <div
+                class="modal-dialog modal-dialog-centered custom-modal"
+                role="document"
+              >
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <form
+                      [formGroup]="petDetailsForm"
+                    >
+                      <div class="row">
+                        <h5 class="modal-title" id="exampleModalLongTitle">
+                          Edit Pet Profile
+                        </h5>
+                      </div>
+                      <div class="row">
+                        <h6 class="text-muted mt-2" style="font-size: small">
+                          Update Pet Details
+                        </h6>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-5 ms-3">
+                          <div
+                            style="position: relative; display: inline-block"
+                          >
+                            <img
+                              src="{{ petDetailsForm.get('PetImage')?.value }}"
+                              class="img-fluid rounded-circle-img"
+                              onerror="this.onerror=null; this.src='https://placehold.co/100x100';"
+                              style="position: relative; z-index: 1"
+                            />
+                            <div class="form-group"></div>
+                            <div
+                              class="custom-file"
+                              style="
+                                position: absolute;
+                                bottom: 0;
+                                right: 0;
+                                z-index: 2;
+                              "
+                            >
+                              <input
+                                type="file"
+                                id="inputGroupFileEdit"
+                                (change)="handleFileEdit($event)"
+                                accept=".jpeg, .jpg"
+                                style="opacity: 0; width: 100%; height: 100%"
+                              />
+                              <button
+                                class="btn orange-color-bg p-1"
+                                style="
+                                  border-radius: 50%;
+                                  position: absolute;
+                                  bottom: 0;
+                                  right: 0;
+                                "
+                                onclick="document.getElementById('inputGroupFileEdit').click()"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  fill="currentColor"
+                                  class="bi bi-camera-fill"
+                                  viewBox="0 0 16 16"
+                                  style="display: block; margin: auto"
+                                >
+                                  <path
+                                    d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"
+                                  />
+                                  <path
+                                    d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="row">
+                            <h6
+                              class="text-muted ms-1"
+                              style="font-size: small"
+                            >
+                              Name
+                            </h6>
+                          </div>
+                          <div class="row ms-1 me-3">
+                            <input
+                              type="text"
+                              class="text-box"
+                              formControlName="PetName"
+                              placeholder="Enter Name"
+                              [class.custom-invalid]="petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched"
+                            />
+                            @if (petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched) {
+                              <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-3 ms-2">
+                        <h6 class="text-muted" style="font-size: small">
+                          Species
+                        </h6>
+                      </div>
+                      <div class="row ms-4">
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Species"
+                            id="radio1edit"
+                            formControlName="Species"
+                            value="Dog"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radio1edit"
+                            >Dog</label
+                          >
+                        </div>
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Species"
+                            formControlName="Species"
+                            id="radio2edit"
+                            value="Cat"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radio2edit"
+                            >Cat</label
+                          >
+                        </div>
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Species"
+                            formControlName="Species"
+                            id="radio3edit"
+                            value="Reptile"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radio3edit"
+                            >Reptile</label
+                          >
+                        </div>
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Species"
+                            formControlName="Species"
+                            id="radio4edit"
+                            value="Other"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radio4edit"
+                            >Other</label
+                          >
+                        </div>
+                        @if (petDetailsForm.get('Species')?.invalid && petDetailsForm.get('Species')?.touched) {
+                          <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+                        }
+                      </div>
+                      <div class="row ms-2 mt-3">
+                        <h6 class="text-muted" style="font-size: small">
+                          Breed
+                        </h6>
+                      </div>
+                      <div class="row ms-3">
+                        <input
+                          type="text"
+                          class="text-box-end"
+                          formControlName="Breed"
+                          placeholder="Enter Breed of Pet"
+                          [class.custom-invalid]="petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched"
+                        />
+                        @if (petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched) {
+                          <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+                        }
+                      </div>
+                      <div class="row mt-3 ms-2">
+                        <h6 class="text-muted" style="font-size: small">
+                          Gender
+                        </h6>
+                      </div>
+                      <div class="row ms-4">
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Gender"
+                            id="radiomaleedit"
+                            formControlName="Gender"
+                            value="Male"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radiomaleedit"
+                            >Male</label
+                          >
+                        </div>
+                        <div class="col-2 form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="Gender"
+                            formControlName="Gender"
+                            id="radiofemaleedit"
+                            value="Female"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="radiofemaleedit"
+                            >Female</label
+                          >
+                        </div>
+                        <div class="col-2 form-check form-check-inline ms-5">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="Neutered"
+                            id="Neuterededit"
+                            formControlName="Neutered"
+                          />
+                          <label
+                            class="form-check-label"
+                            style="font-size: small"
+                            for="Neuterededit"
+                            >Neutered</label
+                          >
+                        </div>
+                      </div>
+                      <div class="row mt-3 ms-2">
+                        <div class="col4">
+                          @if (petDetailsForm.get('Gender')?.invalid && petDetailsForm.get('Gender')?.touched) {
+                            <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+                          }
+                        </div>
+                      </div>
+                      <div class="row mt-3 ms-2">
+                        <div class="col-5">
+                          <h6 class="text-muted" style="font-size: small">
+                            Date of Birth
+                          </h6>
+                        </div>
+                        
+                      </div>
+                      <div class="row ms-2 mt-0">
+                        <div class="col-5">
+                          <input
+                            type="date"
+                            id="DateOfBirth"
+                            formControlName="DateOfBirth"
+                            class="text-box"
+                          />
+                        </div>
+                      </div>
+                      <div class="row mt-3 ms-2">
+                        <h6 class="text-muted" style="font-size: small">
+                          Blood Group
+                        </h6>
+                      </div>
+                      <div class="row ms-3">
+                        <input
+                          type="text"
+                          class="text-box"
+                          formControlName="BloodGroup"
+                          placeholder="Blood Group of the Pet"
+                          [class.custom-invalid]="petDetailsForm.get('BloodGroup')?.invalid && petDetailsForm.get('BloodGroup')?.touched"
+                        />
+                      </div>
+                      <div class="row ms-2 mt-3">
+                        <h6 class="text-muted" style="font-size: small">
+                          Allergies
+                        </h6>
+                      </div>
+                      <input
+                        type="text"
+                        class="text-box-end ms-3 mb-2"
+                        formControlName="Allergies"
+                        placeholder="Allergies related to the pet"
+                        [class.custom-invalid]="petDetailsForm.get('Allergies')?.invalid && petDetailsForm.get('Allergies')?.touched"
+                      />
+
+                      <div class="modal-footer justify-content-center">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary col-5"
+                          data-bs-dismiss="modal" (click)="clickedCancelEditButton()"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn orange-color-bg col-5"
+                          data-bs-dismiss="modal" (click)="onSubmitEdit()"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </section>
+    }
+    </main>
+  </body>
+</html>
+
+
+
+
+
+<!--Create pet Modal-->
+<div
+  class="modal fade"
+  style="backdrop-filter: blur(100%)"
+  id="exampleModalCenterCreate"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+  style="border-radius: 20%"
+>
+  <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form [formGroup]="newPetForm" class="needs-validation" novalidate>
+          <div class="row">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Add Pet Profile
+            </h5>
+          </div>
+          <div class="row">
+            <h6 class="text-muted mt-2" style="font-size: small">
+              Add Pet Details
+            </h6>
+          </div>
+          <div class="row mt-3">
+            <div class="col-5 ms-3">
+              <div style="position: relative; display: inline-block">
+                <img
+                  src="{{ newPetForm.get('PetImage')?.value }}"
+                  class="img-fluid rounded-circle-img-e"
+                  onerror="this.onerror=null; this.src='https://placehold.co/100x100';"
+                  style="position: relative; z-index: 1"
+                />
+                <div class="form-group"></div>
+                <div
+                  class="custom-file"
+                  style="position: absolute; bottom: 0; right: 0; z-index: 2"
+                >
+                  <input
+                    type="file"
+                    id="inputGroupFileadd"
+                    (change)="handleFileAdd($event)"
+                    accept=".jpeg, .jpg"
+                    style="opacity: 0; width: 100%; height: 100%"
+                  />
+                  <button
+                    class="btn orange-color-bg p-1"
+                    style="
+                      border-radius: 50%;
+                      position: absolute;
+                      bottom: 0;
+                      right:0;
+                    "
+                    onclick="document.getElementById('inputGroupFileadd').click()"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-camera-fill"
+                      viewBox="0 0 16 16"
+                      style="display: block; margin: auto"
+                    >
+                      <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                      <path
+                        d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="row">
+                <h6 class="text-muted ms-1" style="font-size: small">Name</h6>
+              </div>
+              <div class="row ms-1 me-3">
+                <input
+                  type="text"
+                  class="text-box"
+                  formControlName="PetName"
+                  placeholder="Enter Name"
+                  [class.custom-invalid]="newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched"
+                />
+              </div>
+              @if (newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched) {
+                <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+              }
+            </div>
+          </div>
+          <div class="row mt-3 ms-2">
+            <h6 class="text-muted" style="font-size: small">Species</h6>
+          </div>
+          <div class="row ms-4">
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Species"
+                id="radio1"
+                formControlName="Species"
+                value="Dog"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radio1"
+                >Dog</label
+              >
+            </div>
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Species"
+                formControlName="Species"
+                id="radio2"
+                value="Cat"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radio2"
+                >Cat</label
+              >
+            </div>
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Species"
+                formControlName="Species"
+                id="radio3"
+                value="Reptile"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radio3"
+                >Reptile</label
+              >
+            </div>
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Species"
+                formControlName="Species"
+                id="radio4"
+                value="Other"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radio4"
+                >Other</label
+              >
+            </div>
+          </div>
+          @if (newPetForm.get('Species')?.invalid && newPetForm.get('Species')?.touched) {
+            <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+          }          
+          <div class="row ms-2 mt-3">
+            <h6 class="text-muted" style="font-size: small">Breed</h6>
+          </div>
+          <div class="row ms-3">
+            <input
+              type="text"
+              class="text-box-end"
+              formControlName="Breed"
+              placeholder="Enter Breed of Pet"
+              [class.custom-invalid]="newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched"
+              />
+            
+          </div>
+          <div class="ms-3">
+            @if (newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched) {
+              <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+            } 
+          </div>
+          <div class="row mt-3 ms-2">
+            <h6 class="text-muted" style="font-size: small">Gender</h6>
+          </div>
+          <div class="row ms-4">
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Gender"
+                id="radiomale"
+                formControlName="Gender"
+                value="Male"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radiomale"
+                >Male</label
+              >
+            </div>
+            <div class="col-2 form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="Gender"
+                formControlName="Gender"
+                id="radiofemale"
+                value="Female"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="radiofemale"
+                >Female</label
+              >
+            </div>
+            <div class="col-2 form-check form-check-inline ms-5">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="Neutered"
+                formControlName="Neutered"
+              />
+              <label
+                class="form-check-label"
+                style="font-size: small"
+                for="Neutered"
+                >Neutered</label
+              >
+            </div>
+            <div class="col-4">
+              @if (newPetForm.get('Gender')?.invalid && newPetForm.get('Gender')?.touched) {
+                <small class="text-danger ms-1" style="font-size:x-small">Gender of the pet is Mandatory!</small>
+              }
+            </div>            
+          </div>
+          <div class="row mt-3 ms-2">
+            <div class="col-5">
+              <h6 class="text-muted" style="font-size: small">Date of Birth</h6>
+            </div>
+            
+          </div>
+          <div class="row ms-2 mt-0">
+            <div class="col-5">
+              <input
+                type="date"
+                formControlName="DateOfBirth"
+                class="text-box"
+              />
+            </div>
+          </div>
+          <div class="row mt-3 ms-2">
+            <h6 class="text-muted" style="font-size: small">Blood Group</h6>
+          </div>
+          <div class="row ms-3">
+            <input
+              type="text"
+              class="text-box"
+              formControlName="BloodGroup"
+              placeholder="Blood Group of the Pet"
+              [class.custom-invalid]="newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched"
+            />
+            @if (newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched) {
+              <small class="text-danger ms-1" style="font-size:x-small">BloodGroup of the pet is Mandatory!</small>
+            }
+          </div>
+          <div class="row ms-2 mt-3">
+            <h6 class="text-muted" style="font-size: small">Allergies</h6>
+          </div>
+          <input
+            type="text"
+            class="text-box-end ms-3 mb-2"
+            formControlName="Allergies"
+            placeholder="Allergies related to the pet"
+            [class.custom-invalid]="newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched"
+          />
+          @if (newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched) {
+            <small class="text-danger ms-1" style="font-size:x-small">Allergies of the pet is Mandatory!</small>
+          }
+          <div class="modal-footer justify-content-center">
+            <button
+              type="button"
+              class="btn btn-outline-secondary col-5"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn orange-color-bg col-5"
+              data-bs-dismiss="modal"
+              (click)="onSubmitAdd()"
+            >
+              Confirm
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
