@@ -51,7 +51,7 @@ export class PatientDashboardComponent implements OnInit {
     })
   }
   pageClick(pageInput:number) {
-    this.offset = (pageInput-1)*3;
+    this.offset = (pageInput-1)*4;
     if(pageInput == this.page - 1){
       this.page--;
     }
