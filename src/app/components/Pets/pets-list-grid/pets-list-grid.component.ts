@@ -36,33 +36,12 @@ export class PetsListGridComponent implements OnInit {
   totalPages = 0;
   pages: number[] = [];
 
-  searchPets() {
-    this.petsService.FilterPets(this.petsFilter)
-      .subscribe(pets => {
-
-        console.log('Original pets:', this.pets);
-
-        this.recentlyConsultedPets = pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
-        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
-
-        this.errorMessage = ''; // Clear error message on successful retrieval
-      },
-        error => {
-          if (error.status === 404) {
-            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-          } else {
-            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-          }
-        })
-  }
-
   constructor(private petsService: PetsService,
     private route: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
     private vetService: VetsserviceService,
     private appointmentDetailsService: AppointmentDetailsService) { }
-
 
     users!:any;
 
@@ -75,7 +54,6 @@ export class PetsListGridComponent implements OnInit {
         if (this.authService.getRoleFromToken() == 'Doctor') {
           this.DoctorsFlow();
         }
-
         if (this.authService.getRoleFromToken() == 'Receptionist') {
           this.ReceptionistFlow();
         }
@@ -84,23 +62,21 @@ export class PetsListGridComponent implements OnInit {
         this.authService.getAllUserIDsandNames().subscribe(users => {
           this.users = users
         })
-
       }
 
-      // this.searchPets();
     }
 
   public ReceptionistFlow() {
 
     this.calculateTotalPages();   // To Calculate Total Number of Pages
 
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => { 
       const pageNumber = +params['page'];
       if (!isNaN(pageNumber) && pageNumber > 0) {
         this.currentPage = pageNumber;
         this.filterPetsPerPage(pageNumber);
       } else {
-        this.updateRoute(1);
+        this.updateRoute(1); 
       }
     });
 
@@ -116,44 +92,41 @@ export class PetsListGridComponent implements OnInit {
           console.log("vid " + data.VetId);
           // Get All pet Ids consulted by the currently logged in Doctor
           this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
-          .subscribe({
-          next: (data) => {
-          console.log('data', data);
+            .subscribe({
+            next: (data) => {
+            console.log('data', data);
 
-          if (data.length != 0) {
-            this.petsFilter.PetIDs = data;
-            this.errorMessage = '';
-
-          }
-          else {
-            this.petsFilter.PetIDs = [-1];
-          }
-          this.calculateTotalPages();
-
-          this.route.params.subscribe(params => {
-            const pageNumber = +params['page'];
-            if (!isNaN(pageNumber) && pageNumber > 0) {
-              this.currentPage = pageNumber;
-              this.filterPetsPerPageForDoctor(pageNumber);
-            } else {
-              this.updateRoute(1);
+            if (data.length != 0) {
+              this.petsFilter.PetIDs = data;
+              this.errorMessage = '';
             }
-          });
+            else {
+              this.petsFilter.PetIDs = [-1];
+            }
+            this.calculateTotalPages();
+
+            this.route.params.subscribe(params => {
+              const pageNumber = +params['page'];
+              if (!isNaN(pageNumber) && pageNumber > 0) {
+                this.currentPage = pageNumber;
+                this.filterPetsPerPageForDoctor(pageNumber);
+              } else {
+                this.updateRoute(1);
+              }
+            });
         },
-        error: (err) => {
-          this.petsFilter.PetIDs = [-1];
-          console.log("error while fetching", err);
-          if (err.status === 404) {
-            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-          } else {
-            this.errorMessage = 'An error occurred while fetching pets.';
+          error: (err) => {
+            this.petsFilter.PetIDs = [-1];
+            console.log("error while fetching", err);
+            if (err.status === 404) {
+              this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+            } else {
+              this.errorMessage = 'An error occurred while fetching pets.';
+            }
           }
-        }
-      });
-        }
+        });
+      }
     )
-
-
   }
 
   filterPetsPerPageForDoctor(page: number): void {
