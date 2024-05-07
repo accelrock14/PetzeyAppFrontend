@@ -1,75 +1,209 @@
-// import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-// import { AdminDashboardComponent } from './admin-dashboard.component';
-
-// describe('AdminDashboardComponent', () => {
-//   let component: AdminDashboardComponent;
-//   let fixture: ComponentFixture<AdminDashboardComponent>;
-
-//   beforeEach(async () => {
-//     await TestBed.configureTestingModule({
-//       imports: [AdminDashboardComponent]
-//     })
-//     .compileComponents();
-    
-//     fixture = TestBed.createComponent(AdminDashboardComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { AdminDashboardComponent } from './admin-dashboard.component';
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
   let fixture: ComponentFixture<AdminDashboardComponent>;
-  let dashboardServiceSpy: jasmine.SpyObj<DashboardService>;
+  let dashboardService: jasmine.SpyObj<DashboardService>;
+  let vetService: jasmine.SpyObj<VetsserviceService>;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('DashboardService', ['GetAllAppointmentsWithFilters']);
+    const dashboardServiceSpy = jasmine.createSpyObj('DashboardService', ['GetAllAppointmentsWithFilters']);
+    const vetServiceSpy = jasmine.createSpyObj('VetsserviceService', ['getVetsAndIds']);
 
     await TestBed.configureTestingModule({
-      declarations: [AdminDashboardComponent],
-      imports: [FormsModule, CommonModule, RouterTestingModule, HttpClientModule],
-      providers: [{ provide: DashboardService, useValue: spy }]
+      imports: [FormsModule, CommonModule, RouterTestingModule], // Import the module here
+      providers: [
+        { provide: DashboardService, useValue: dashboardServiceSpy },
+        { provide: VetsserviceService, useValue: vetServiceSpy }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminDashboardComponent);
     component = fixture.componentInstance;
-    dashboardServiceSpy = TestBed.inject(DashboardService) as jasmine.SpyObj<DashboardService>;
-    fixture.detectChanges();
+    dashboardService = TestBed.inject(DashboardService) as jasmine.SpyObj<DashboardService>;
+    vetService = TestBed.inject(VetsserviceService) as jasmine.SpyObj<VetsserviceService>;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with default values', () => {
-    // Test initialization here
-  });
+  it('should initialize component', () => {
+    const mockAppointments = [
+      {
+        AppointmentID: 1, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Smith',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      },
+      {
+        AppointmentID: 2, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Johnson',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      }
+    ];
+    const mockDoctors = [{ VetId: 1, Name: "Dr. Smith" },{ VetId: 2, Name: "Dr. Johnson" }];
 
-  it('should fetch appointments on initialization', () => {
-    dashboardServiceSpy.GetAllAppointmentsWithFilters.and.returnValue(of([])); // Mock service method
+    dashboardService.GetAllAppointmentsWithFilters.and.returnValue(of(mockAppointments));
+    vetService.getVetsAndIds.and.returnValue(of(mockDoctors));
+
     component.ngOnInit();
-    expect(dashboardServiceSpy.GetAllAppointmentsWithFilters).toHaveBeenCalled();
+
+    expect(component.loadingAppointments).toBe(false);
+    expect(component.appointmentCards).toEqual(mockAppointments);
+    expect(component.doctorsList).toEqual(mockDoctors);
   });
 
-  it('should update appointments on date, status, or doctor change', () => {
-    dashboardServiceSpy.GetAllAppointmentsWithFilters.and.returnValue(of([])); // Mock service method
+  it('should filter appointments', () => {
+    const mockAppointments = [
+      {
+        AppointmentID: 1, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Smith',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      },
+      {
+        AppointmentID: 2, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Johnson',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      }
+    ];
+    const selectedDate = new Date();
+    const selectedStatus = 'Scheduled';
+    const selectedDoctor = 'Dr. Smith';
+
+    dashboardService.GetAllAppointmentsWithFilters.and.returnValue(of(mockAppointments));
+
+    component.selectedDate = selectedDate;
+    component.selectedStatus = selectedStatus;
+    component.selectedDoctor = selectedDoctor;
     component.onDateStatusDoctorChange();
-    expect(dashboardServiceSpy.GetAllAppointmentsWithFilters).toHaveBeenCalled();
+
+    expect(component.loadingAppointments).toBe(false);
+    expect(component.appointmentCards).toEqual(mockAppointments);
+  });
+  
+  it('should disable previous page button correctly', () => {
+    // Set component properties
+    component.page = 1;
+
+    // Call method
+    const result = component.isPreviousPageDisabled();
+
+    // Assertions
+    expect(result).toBeTrue();
+  });
+  
+  it('should disable next page button correctly', () => {
+    // Mock data
+    const mockAppointments: AppointmentCardDto[] = [];
+
+    // Set component properties
+    component.appointmentCards = mockAppointments;
+
+    // Call method
+    const result = component.isNextPageDisabled();
+
+    // Assertions
+    expect(result).toBeTrue();
   });
 
-  // Add more test cases for other functionalities as needed
+  it('should not disable next page button when appointments are present', () => {
+    // Mock data
+    const mockAppointments: AppointmentCardDto[] = [
+      {
+        AppointmentID: 1, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Smith',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      },
+      {
+        AppointmentID: 2, 
+        ScheduleDate: new Date(), 
+        DoctorName: 'Dr. Johnson',
+        DoctorID: '',
+        PetID: 0,
+        PetName: '',
+        PetAge: 0,
+        PetGender: '',
+        OwnerName: '',
+        OwnerID: '',
+        PetPhoto: '',
+        VetSpecialization: 'Vaccination',
+        DoctorPhoto: '',
+        Status: ''
+      }
+    ];
+
+    // Set component properties
+    component.appointmentCards = mockAppointments;
+
+    // Call method
+    const result = component.isNextPageDisabled();
+
+    // Assertions
+    expect(result).toBeFalse();
+  });
+
 });
