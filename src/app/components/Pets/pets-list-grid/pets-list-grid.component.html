@@ -97,7 +97,7 @@
       *ngFor="let page of pages"
       [class.active]="currentPage === page"
     >
-      <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+      <a class="page-link" (click)="updateRoute(page)">{{ page }}</a>
     </li>
     <li
       class="page-item"

@@ -75,4 +75,7 @@ describe('PetsListGridComponent', () => {
     expect(getPetsCountSpy).toHaveBeenCalled();
   });
 
+
+
+
 });

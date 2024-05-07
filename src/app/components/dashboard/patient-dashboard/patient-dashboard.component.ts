@@ -32,7 +32,7 @@ export class PatientDashboardComponent implements OnInit {
 
   constructor(private service: DashboardService,public authService: AuthService) {}
   ngOnInit(): void {
-    console.log(this.authService.getUIDFromToken());
+    // using auth service to get appointments according to OWNER ID
     this.loadingAppointments = true;
     this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
@@ -41,7 +41,7 @@ export class PatientDashboardComponent implements OnInit {
   }
 
   onDateStatusChange() {
-    
+    //re setting the filters on filter changes
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
     this.loadingAppointments = true;
@@ -51,6 +51,7 @@ export class PatientDashboardComponent implements OnInit {
     })
   }
   pageClick(pageInput:number) {
+    //set offset for pagination
     this.offset = (pageInput-1)*4;
     if(pageInput == this.page - 1){
       this.page--;
@@ -58,6 +59,7 @@ export class PatientDashboardComponent implements OnInit {
     else if(pageInput == this.page + 1) {
       this.page++;
     }
+    //set filters and get appointments from service
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
     this.loadingAppointments = true;
