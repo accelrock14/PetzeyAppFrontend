@@ -9,11 +9,12 @@ import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { FirstNamePipe } from '../../../pipes/FirstName/first-name.pipe';
 
 @Component({
   selector: 'app-pet-appointment-card',
   standalone: true,
-  imports: [DatePipe, RouterLink, RouterOutlet, RouterLinkActive, FormsModule, CommonModule, EllipsisPipe],
+  imports: [DatePipe, RouterLink, RouterOutlet, RouterLinkActive, FormsModule, CommonModule, EllipsisPipe, FirstNamePipe],
   templateUrl: './pet-appointment-card.component.html',
   styleUrl: './pet-appointment-card.component.css'
 })
