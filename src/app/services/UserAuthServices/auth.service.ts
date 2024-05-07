@@ -15,36 +15,36 @@ export class AuthService {
 
   logOut() {
     localStorage.removeItem('token');
-    localStorage.removeItem('JWTtoken');
+    // localStorage.removeItem('JWTtoken');
   }
 
   storeToken(tokenValue: string) {
     localStorage.setItem('token', tokenValue);
   }
 
-  storeJWTToken(obj: TokenDTO) {
-    this.http
-      .post<string>(
-        'https://petzeypetwebapi20240505153103.azurewebsites.net/jwttoken',
-        obj
-      )
-      .subscribe({
-        next: (res) => {
-          localStorage.setItem('JWTtoken', res);
-        },
-        error: (err) => {
-          console.log(err.error.Message);
-        },
-      });
-  }
+  // storeJWTToken(obj: TokenDTO) {
+  //   this.http
+  //     .post<string>(
+  //       'https://petzeypetwebapi20240505153103.azurewebsites.net/jwttoken',
+  //       obj
+  //     )
+  //     .subscribe({
+  //       next: (res) => {
+  //         localStorage.setItem('JWTtoken', res);
+  //       },
+  //       error: (err) => {
+  //         console.log(err.error.Message);
+  //       },
+  //     });
+  // }
 
   getToken() {
     return localStorage.getItem('token');
   }
 
-  getJWTToken() {
-    return localStorage.getItem('JWTtoken');
-  }
+  // getJWTToken() {
+  //   return localStorage.getItem('JWTtoken');
+  // }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
