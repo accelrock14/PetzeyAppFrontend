@@ -24,7 +24,7 @@ export class PetAppointmentsListComponent implements OnInit {
       this.appointmentcard = data
     })
 
-    // control flow of ui based on logged in user
+    // control the flow of ui based on the user logged in
     let role = this.authService.getRoleFromToken()
     if (role == "Doctor") {
       this.user = "Doctor"

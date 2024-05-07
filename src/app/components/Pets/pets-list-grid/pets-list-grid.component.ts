@@ -21,6 +21,36 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 })
 export class PetsListGridComponent implements OnInit {
 
+  constructor(private petsService: PetsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public authService: AuthService,
+    private vetService: VetsserviceService,
+    private appointmentDetailsService: AppointmentDetailsService
+  ) 
+  { }
+
+  ngOnInit(): void {
+
+    // This Component is only for LoggedIn Users
+    if (this.authService.isLoggedIn()) {
+      console.log("logged in");
+
+      if (this.authService.getRoleFromToken() == 'Doctor') {
+        this.DoctorsFlow();
+      }
+      if (this.authService.getRoleFromToken() == 'Receptionist') {
+        this.ReceptionistFlow();
+      }
+
+      // Get All User Objects - Required To display the Pet Owner Details
+      this.authService.getAllUserIDsandNames().subscribe(users => {
+        this.users = users
+      })
+    }
+
+  }
+
   pets: IPet[] = []
   recentlyConsultedPets: IPet[] = []
   petsFilter: IPetFilterParams = {
@@ -29,47 +59,19 @@ export class PetsListGridComponent implements OnInit {
     PetIDs: []
   };
 
-  speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
-  errorMessage: string = '';
-  currentPage = 1;
-  itemsPerPage = 8; // Change this value as per your requirement (No of Pets per page)
-  totalPages = 0;
   pages: number[] = [];
-
-  constructor(private petsService: PetsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    public authService: AuthService,
-    private vetService: VetsserviceService,
-    private appointmentDetailsService: AppointmentDetailsService) { }
-
-    users!:any;
-
-    ngOnInit(): void {
-
-      // This Component is only for LoggedIn Users
-      if (this.authService.isLoggedIn()) {
-        console.log("logged in");
-
-        if (this.authService.getRoleFromToken() == 'Doctor') {
-          this.DoctorsFlow();
-        }
-        if (this.authService.getRoleFromToken() == 'Receptionist') {
-          this.ReceptionistFlow();
-        }
-
-        // Get All User Objects - Required To display the Pet Owner Details
-        this.authService.getAllUserIDsandNames().subscribe(users => {
-          this.users = users
-        })
-      }
-
-    }
+  currentPage = 1;
+  itemsPerPage = 8; // Number of Pets per page
+  speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
+  users!:any;
+  totalPages = 0;
+  errorMessage: string = '';
 
   public ReceptionistFlow() {
 
     this.calculateTotalPages();   // To Calculate Total Number of Pages
 
+    // fetch pet details based on page number
     this.route.params.subscribe(params => { 
       const pageNumber = +params['page'];
       if (!isNaN(pageNumber) && pageNumber > 0) {
@@ -90,17 +92,19 @@ export class PetsListGridComponent implements OnInit {
       data =>
         {
           console.log("vid " + data.VetId);
+          
           // Get All pet Ids consulted by the currently logged in Doctor
           this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
             .subscribe({
             next: (data) => {
             console.log('data', data);
-
+            
+            // if doctor has consulted pets before
             if (data.length != 0) {
               this.petsFilter.PetIDs = data;
               this.errorMessage = '';
             }
-            else {
+            else { // doctor has not consulted any pets 
               this.petsFilter.PetIDs = [-1];
             }
             this.calculateTotalPages();
@@ -181,11 +185,11 @@ export class PetsListGridComponent implements OnInit {
 
   }
 
+  // Get the count of pages that will be needed to display all pets
   calculateTotalPages(): void {
-    // Get the Count of Total Number of Pets
     this.petsService.GetPetsCount(this.petsFilter).subscribe(count => {
       this.totalPages = Math.ceil(count / this.itemsPerPage);  // Calculate the total no of pages based on number of pets per page
-      console.log(this.totalPages)
+      // console.log(this.totalPages)
       this.generatePageNumbers();
     });
   }
@@ -197,16 +201,18 @@ export class PetsListGridComponent implements OnInit {
     }
   }
 
-  goToPage(page: number): void {
-    this.updateRoute(page);
-  }
+  // goToPage(page: number): void {
+  //   this.updateRoute(page);
+  // }
 
+  // navigate to previous page
   prevPage(): void {
     if (this.currentPage > 1) {
       this.updateRoute(this.currentPage - 1);
     }
   }
 
+  // navigate to next page
   nextPage(): void {
     if (this.currentPage < this.pages[this.pages.length - 1]) {
       this.updateRoute(this.currentPage + 1);
@@ -214,6 +220,7 @@ export class PetsListGridComponent implements OnInit {
     console.log(this.pets)
   }
 
+  // nevigate to a specific page number
   updateRoute(page: number): void {
     this.router.navigateByUrl(`/pets-list/${page}`);
   }
