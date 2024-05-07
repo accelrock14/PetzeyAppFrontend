@@ -22,10 +22,12 @@
           <div class="search-box">
             <form [formGroup]="myForm">
               <ng-multiselect-dropdown
+                *ngIf="myForm != null"
                 name="medicine"
                 [settings]="medicineSettings"
                 [placeholder]="'Select Medicine'"
                 [data]="medicines"
+                formControlName="medicine"
                 (onSelect)="selectMedicine($event)"
               >
               </ng-multiselect-dropdown>
@@ -215,7 +217,7 @@
               class="precription-heading d-flex justify-content-between"
               id="precriptionHeading"
             >
-              <h4>Precription</h4>
+              <h4>Prescription</h4>
               <button
                 *ngIf="isEditing"
                 class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
@@ -495,7 +497,9 @@
               <div class="comment-info ms-3">
                 <p class="m-0 d-inline-block fw-bolder">
                   {{ getDoctorById(doctorId)?.Name }}
-                  <small class="fw-lighter">({{ getDoctorById(doctorId)?.Speciality }})</small>
+                  <small class="fw-lighter"
+                    >({{ getDoctorById(doctorId)?.Speciality }})</small
+                  >
                 </p>
                 @if (report.Comment!=null && report.Comment!='') {
                 <p id="comment">{{ report.Comment }}</p>

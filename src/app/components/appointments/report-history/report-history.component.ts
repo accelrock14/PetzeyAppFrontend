@@ -24,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './report-history.component.css',
 })
 export class ReportHistoryComponent implements OnInit {
+  // pass the petID to get the pet's report history
   @Input() petId: number = 1;
 
   selectedDate: Date | undefined;
@@ -42,7 +43,7 @@ export class ReportHistoryComponent implements OnInit {
   constructor(
     private reportService: ReportService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     console.log(this.petId);
@@ -52,13 +53,12 @@ export class ReportHistoryComponent implements OnInit {
         this.existingPrescriptions = this.petHistory.Prescriptions;
       },
       (error) => {
-        this.toastr.error(
-          'Could not fetch pet history, Please try after sometime'
-        );
+        this.toastr.error('No Appointment History Found');
       }
     );
   }
 
+  // filter the report history based on selected date
   onDateChange() {
     this.petHistory.Prescriptions = [];
     for (let index = 0; index < this.petHistory.ScheduleDate.length; index++) {

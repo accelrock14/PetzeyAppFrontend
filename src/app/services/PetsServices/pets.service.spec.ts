@@ -5,7 +5,7 @@ import { IPet } from '../../models/Pets/IPet';
 import { IPetFilterParams } from '../../models/Pets/IPetFilterParams';
 import { petsServiceUrl } from '../../Shared/apiUrls';
 
-fdescribe('PetsService', () => {
+describe('PetsService', () => {
   let service: PetsService;
   let httpMock: HttpTestingController;
 
@@ -37,7 +37,7 @@ fdescribe('PetsService', () => {
         DateOfBirth: new Date(),
         Allergies: '',
         LastAppointmentDate: new Date()
-      }, 
+      },
       {
         PetID: 2, PetName: 'Spot',
         PetParentID: '1',
@@ -172,7 +172,7 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}/filter`);
     expect(req.request.method).toBe('POST');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
@@ -215,13 +215,13 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}/details/${petID}`);
     expect(req.request.method).toBe('GET');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
   it('should add a new pet successfully', () => {
     const dummyPet: IPet = {
-      
+
       PetID: 1, PetName: 'Fluffy',
       PetParentID: '1',
       PetImage: '',
@@ -243,7 +243,7 @@ fdescribe('PetsService', () => {
     expect(req.request.method).toBe('POST');
     req.flush(dummyPet);
   });
-  
+
   it('should handle bad request during add new pet', () => {
     const dummyPet: IPet = {
       PetID: 1, PetName: 'Fluffy',
@@ -269,7 +269,7 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}/addnewpet`);
     expect(req.request.method).toBe('POST');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
@@ -323,7 +323,7 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}`);
     expect(req.request.method).toBe('PUT');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
@@ -381,7 +381,7 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}/parentid/${petParentID}`);
     expect(req.request.method).toBe('GET');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
@@ -411,7 +411,7 @@ fdescribe('PetsService', () => {
 
     const req = httpMock.expectOne(`${petsServiceUrl}/${petID}`);
     expect(req.request.method).toBe('DELETE');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });
@@ -428,7 +428,7 @@ fdescribe('PetsService', () => {
     expect(req.request.body).toEqual(date);
     req.flush({});
   });
- 
+
   it('should get pets count successfully', () => {
     const dummyFilterParams: IPetFilterParams = {
       PetName: "", PetIDs:[], Species:""
@@ -461,7 +461,7 @@ fdescribe('PetsService', () => {
     const apiUrl = `${petsServiceUrl}/filters/count`;
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('POST');
-    
+
     // Simulate a bad request response
     req.flush('Bad request', { status: 400, statusText: 'Bad Request' });
   });

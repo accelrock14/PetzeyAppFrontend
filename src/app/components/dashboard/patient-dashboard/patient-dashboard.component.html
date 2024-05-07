@@ -24,6 +24,14 @@
     <hr>
 </div>
 
+<div class="loading-spinner-container" *ngIf="loadingAppointments">
+    <!-- Loading spinner -->
+    <div class="spinner-border text-primary loading-spinner" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
 @if(appointmentCards.length == 0){
     <div class="container">
         <div class="message">Oops! Looks like you have reached the end of appointments.</div>

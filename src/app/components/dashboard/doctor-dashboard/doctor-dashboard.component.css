@@ -73,3 +73,16 @@ select[name="Status"]::-ms-expand {
     max-width: 400px;
     width: 100%;
 }
+
+.loading-spinner-container {
+    position: fixed;
+    top: 50%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}
+
+/* Style the loading spinner */
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+}

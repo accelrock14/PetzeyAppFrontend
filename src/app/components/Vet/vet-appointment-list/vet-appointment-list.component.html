@@ -4,16 +4,10 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
 
         @for (appointment of appointmentcard; track $index) {
-            @if(auth.getRoleFromToken()=="Doctor"){
-            <app-pet-appointment-card [appointmentcard]="appointment" [user]="'Doctor'"></app-pet-appointment-card>
-            }
-            @else if (auth.getRoleFromToken()=="Receptionist") {
-                <app-pet-appointment-card [appointmentcard]="appointment" [user]="'Admin'"></app-pet-appointment-card>
-            }
-            @else if (auth.getRoleFromToken()=="Owner") {
-                <app-pet-appointment-card [appointmentcard]="appointment" [user]="'Patient'"></app-pet-appointment-card>
-            }
+
+            <app-pet-appointment-card [appointmentcard]="appointment" [user]=user></app-pet-appointment-card>
+            
         }
     </div>
-</div>
+  </div>
 </div>

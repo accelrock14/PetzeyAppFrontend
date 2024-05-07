@@ -5,6 +5,7 @@ import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-a
 import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardDto';
 import { DashboardService } from '../../../services/DashboardServices/dashboard.service';
 import { NgFor } from '@angular/common';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-pet-appointments-list',
@@ -14,13 +15,23 @@ import { NgFor } from '@angular/common';
   styleUrl: './pet-appointments-list.component.css'
 })
 export class PetAppointmentsListComponent implements OnInit {
+  user!: string
 
-
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private authService: AuthService) { }
   ngOnInit(): void {
     this.dashboardService.GetAllClosedAppointmentByPetID(this.PetID).subscribe(data => {
       this.appointmentcard = data
     })
+    let role = this.authService.getRoleFromToken()
+    if (role == "Doctor") {
+      this.user = "Doctor"
+    }
+    else if (role == "Owner") {
+      this.user = "Patient"
+    }
+    else {
+      this.user = "Receptionist"
+    }
   }
 
   @Input()
