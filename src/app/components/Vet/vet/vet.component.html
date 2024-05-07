@@ -18,7 +18,10 @@
           [(ngModel)]="selectedSpecialties"
           [settings]="dropdownSettings"
           (onSelect)="filteringVets()"
-          (onDeselect)="filteringVets()"
+          (onDeSelect)="filteringVets()"
+          (onSelectAll)="selectall()"
+          (onDeSelectAll)="unselectall()"
+         
         >
         </ng-multiselect-dropdown>
       </div>

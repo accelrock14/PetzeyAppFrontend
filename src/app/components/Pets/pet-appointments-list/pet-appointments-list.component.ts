@@ -19,9 +19,12 @@ export class PetAppointmentsListComponent implements OnInit {
 
   constructor(private dashboardService: DashboardService, private authService: AuthService) { }
   ngOnInit(): void {
+    // fetch all appointments list based on petid
     this.dashboardService.GetAllClosedAppointmentByPetID(this.PetID).subscribe(data => {
       this.appointmentcard = data
     })
+
+    // control the flow of ui based on the user logged in
     let role = this.authService.getRoleFromToken()
     if (role == "Doctor") {
       this.user = "Doctor"

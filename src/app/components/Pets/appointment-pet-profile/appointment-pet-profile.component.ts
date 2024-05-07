@@ -20,7 +20,11 @@ export class AppointmentPetProfileComponent implements OnInit {
   allUsers: User[]=[]
   constructor(private petsService: PetsService,public auth: AuthService) {}
   ngOnInit(): void {
+
+
     if (this.auth.isLoggedIn()) {
+      
+      // get user details if they are logged in
       this.auth.getAllUsers().subscribe(
         (data) =>
           {
@@ -31,11 +35,12 @@ export class AppointmentPetProfileComponent implements OnInit {
           }
       )
     }
+    
+    // call service and get pet details
     this.petsService.GetPetDetailsByID(this.PetId).subscribe( pet => {
       this.Pet = pet;
       console.log("here" +this.Pet)
     })
-    // call service and get pet details
   }
 
   @Input()

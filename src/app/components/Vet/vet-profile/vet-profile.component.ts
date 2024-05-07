@@ -127,6 +127,10 @@ throw new Error('Method not implemented.');
       reader.readAsDataURL(file);
     }
   }
+  goToVet(){
+    this.router.navigate(['/vet']);
+  
+  }
   updateVet(vetId: number, vetPro: IVetProfileDTO) {
     // Fetch the full vet profile first
     this.vetService.getFullVetById(vetId).subscribe({
