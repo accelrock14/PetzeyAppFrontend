@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h5 class="card-title card-content">{{ appointmentcard.PetName | ellipsis}}</h5>
                 <p class="text-muted" style="font-size: 0.9rem;">{{ appointmentcard.PetGender }} {{appointmentcard.PetAge}} </p>
-                <p class="text-muted card-text" style="font-size: 0.9rem;">Owner: {{ appointmentcard.OwnerName | ellipsis}}</p>
+                <p class="text-muted card-text" style="font-size: 0.9rem;">Owner: {{ appointmentcard.OwnerName | firstName}}</p>
             </div>
         </div>
     </div>
