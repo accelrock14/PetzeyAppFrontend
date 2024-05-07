@@ -83,43 +83,48 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
+  // Sets pet to be deleted
   setPetToDelete(pet: IPet, event: MouseEvent) {
-    event.stopPropagation();
+    event.stopPropagation(); // Prevents the card from being clicked
     this.petToDelete = pet;
-    this.openDeleteModal();
+    this.openDeleteModal(); // this method opens the modal of deleting pet
   }
 
   deleteConfirmedPet(event: MouseEvent) {
     event.stopPropagation();
 
+    // Check if the petToDelete is notNull 
     if (this.petToDelete) {
+      // Call the method in the service to delete the pet 
       this.petsService
         .DeletePetByPetID(this.petToDelete.PetID)
         .subscribe(() => {
+          // To auto-update the pets without refreshing the page
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe(
             (data) => {
               this.pets = data;
             },
+            // In case of network issue or server errors the pets array is set to empty array
+            // In order not to display the incorrect data
             (error) => {
               this.pets = [];
             }
           );
         });
 
+        // Provide a toast notification service for the user
         this.toaster.success("Pet Deleted Successfully!")
     }
-    // this.petsService
-    //   .GetPetsByParentID(`${this.petParentID}`)
-    //   .subscribe((data) => {
-    //     this.pets = data;
-    //   });
+    
     this.closeDeleteModal(event);
   }
 
   toggleDropdown(event: MouseEvent) {
-    event.stopPropagation(); // This thing is to prevent the card from clicking
+    event.stopPropagation(); 
+    // closest method traverse up the DOM tree untill it element with specifed class (.dropdown)
     const dropdown = (event.target as HTMLElement).closest('.dropdown');
     if (dropdown) {
+      // querySelector selects the first element that matches the specified CSS selector ".dropdown-menu"
       const dropdownMenu = dropdown.querySelector('.dropdown-menu');
       if (dropdownMenu) {
         dropdownMenu.classList.toggle('show');
@@ -136,15 +141,15 @@ export class UserProfileComponent implements OnInit {
 
   closeDeleteModal(event: MouseEvent) {
     event.stopPropagation();
-    const editModal: HTMLElement | null = document.querySelector('.modal');
+    const editModal: HTMLElement | null = document.querySelector('.modal'); // Get reference to the modal
     if (editModal) {
       editModal.style.display = 'none'; // Hide the modal
     }
-    // this.petsService
-    //   .GetPetsByParentID(`${this.petParentID}`)
-    //   .subscribe((data) => {
-    //     this.pets = data;
-    //   });
+    this.petsService
+      .GetPetsByParentID(`${this.petParentID}`)
+      .subscribe((data) => {
+        this.pets = data;
+      });
   }
 
   preventCardClick(event: MouseEvent) {
@@ -157,11 +162,13 @@ export class UserProfileComponent implements OnInit {
       (pet) => {
         this.ToBeUpdatedPet = pet;
         console.log(this.ToBeUpdatedPet);
+        // Patches the form with the values of ToBeUpdatedPet
         this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
         console.log(pet);
       },
 
       (error) => {
+        // Logs the error on to the console
         console.log(error);
       }
     );
@@ -173,6 +180,7 @@ export class UserProfileComponent implements OnInit {
 
   OnLogout() {
     this.auth.logOut();
+    // navigates back to home page on logout
     this.router.navigate(['/']);
   }
 
@@ -185,10 +193,12 @@ export class UserProfileComponent implements OnInit {
         ...this.newPetForm.value,
       };
       this.SavePetDetails()
+      // Provide a toastr notification to the user
       this.toaster.success("Pet Successfully Added!")
       this.NewPet = {} as IPet
     }
     else {
+      // Incase of any error provide the necessary message to the user
       this.toaster.error("Pet Failed To Be Added!")
     }
   }
@@ -207,6 +217,7 @@ export class UserProfileComponent implements OnInit {
 
     }
     else {
+      // Incase of any error provide the necessary message to the user
       this.toaster.error("Pet Failed To Be Edited!")
     }
   }
@@ -242,6 +253,7 @@ export class UserProfileComponent implements OnInit {
   convertImageToBase64Edit(file: File): void {
     const reader = new FileReader();
     reader.onload = (e) => {
+      // Extracts the base64 encoded string of file from the result property of the fileReader
       const base64String: string | null = e.target?.result as string;
       if (base64String) {
         // Store the base64String in your object or send it to the backend
@@ -254,6 +266,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   SavePetDetails() {
+    // Gets the userID and assigns it to petParentID
     this.NewPet!.PetParentID = this.auth.getUIDFromToken();
     console.log(this.NewPet);
     this.petsService.AddPet(this.NewPet!).subscribe({
@@ -289,6 +302,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   clickedCancelEditButton() {
+    // To auto-update the cards without refreshing
     this.petsService
       .GetPetsByParentID(`${this.petParentID}`)
       .subscribe((data) => {
