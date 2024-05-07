@@ -13,7 +13,7 @@ import { Test } from '../../../models/appoitment-models/Test';
 import { ReportSymptom } from '../../../models/appoitment-models/ReportSymptom';
 import { Symptom } from '../../../models/appoitment-models/Symptom';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ReportService } from '../../../services/appointment/report.service';
+import { ReportService, reportToken } from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
@@ -21,6 +21,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnInit,
   Output,
@@ -186,7 +187,7 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private reportService: ReportService,
+    @Inject(reportToken) private reportService: ReportService,
     private elementRef: ElementRef,
     private vetService: VetsserviceService,
     private authService: AuthService,

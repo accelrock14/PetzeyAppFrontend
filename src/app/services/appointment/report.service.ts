@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, retry } from 'rxjs';
 import { IReport } from '../../models/appoitment-models/Report';
 import { Test } from '../../models/appoitment-models/Test';
@@ -8,11 +8,28 @@ import { PrescribedMedicine } from '../../models/appoitment-models/PrescribedMed
 import { Medicine } from '../../models/appoitment-models/Medicine';
 import { ReportHistoryDTO } from '../../models/appoitment-models/ReportHistoryDTO';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
+
+
+export interface IReportService {
+  getReport(reportID: number): Observable<IReport>
+  getAllSymptoms(): Observable<Symptom[]>
+  getAllTests(): Observable<Test[]>
+  getAllMedicines(): Observable<Medicine[]>
+  getPetHistory(PetID: number): Observable<ReportHistoryDTO>
+  patchReport(id: number, report: IReport): Observable<any>
+  UpdatePrescription(id: number, PrescribedMedicine: PrescribedMedicine): Observable<any>
+  AddPrescription(prescriptionID: number, prescription: PrescribedMedicine): Observable<any>
+  DeletePrescription(prescribedMedicineID: number): Observable<any>
+}
+
+export let reportToken = new InjectionToken<IReportService>('IReportToken')
+
+
 @Injectable({
   providedIn: 'root',
 })
-export class ReportService {
-  constructor(private http: HttpClient) {}
+export class ReportService implements IReportService {
+  constructor(private http: HttpClient) { }
 
   reportURL: string = appointmentServiceUrl + 'api/appointment/';
 
