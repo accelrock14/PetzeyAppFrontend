@@ -32,7 +32,7 @@ export class PetsListGridComponent implements OnInit {
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
   errorMessage: string = '';
   currentPage = 1;
-  itemsPerPage = 8 // Change this value as per your requirement
+  itemsPerPage = 8; // Change this value as per your requirement (No of Pets per page)
   totalPages = 0;
   pages: number[] = [];
 
@@ -68,6 +68,7 @@ export class PetsListGridComponent implements OnInit {
 
     ngOnInit(): void {
 
+      // This Component is only for LoggedIn Users
       if (this.authService.isLoggedIn()) {
         console.log("logged in");
 
@@ -79,22 +80,19 @@ export class PetsListGridComponent implements OnInit {
           this.ReceptionistFlow();
         }
 
+        // Get All User Objects - Required To display the Pet Owner Details
         this.authService.getAllUserIDsandNames().subscribe(users => {
           this.users = users
-
-
         })
-
-
 
       }
 
       // this.searchPets();
     }
 
-  private ReceptionistFlow() {
+  public ReceptionistFlow() {
 
-    this.calculateTotalPages();
+    this.calculateTotalPages();   // To Calculate Total Number of Pages
 
     this.route.params.subscribe(params => {
       const pageNumber = +params['page'];
@@ -116,10 +114,12 @@ export class PetsListGridComponent implements OnInit {
       data =>
         {
           console.log("vid " + data.VetId);
+          // Get All pet Ids consulted by the currently logged in Doctor
           this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
-      .subscribe({
-        next: (data) => {
+          .subscribe({
+          next: (data) => {
           console.log('data', data);
+
           if (data.length != 0) {
             this.petsFilter.PetIDs = data;
             this.errorMessage = '';
@@ -186,8 +186,10 @@ export class PetsListGridComponent implements OnInit {
     console.log('filter', this.petsFilter.PetIDs)
     this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
       .subscribe(pets => {
-        this.pets = pets;
+        this.pets = pets;   // Get All the Pets based on Current Filter
         console.log('Original pets:', this.pets);
+
+        // Get Recently Consulted Pets based on Last Appointment Date
         this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
@@ -207,9 +209,9 @@ export class PetsListGridComponent implements OnInit {
   }
 
   calculateTotalPages(): void {
-
+    // Get the Count of Total Number of Pets
     this.petsService.GetPetsCount(this.petsFilter).subscribe(count => {
-      this.totalPages = Math.ceil(count / this.itemsPerPage);
+      this.totalPages = Math.ceil(count / this.itemsPerPage);  // Calculate the total no of pages based on number of pets per page
       console.log(this.totalPages)
       this.generatePageNumbers();
     });
