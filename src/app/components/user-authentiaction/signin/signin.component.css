@@ -1,40 +1,10 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .bg-image {
-    background-image: url('../../../../assets/images/back.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 100%;
-  }
-  
-  .content {
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: #fff;
-  }
-  
-  .btn-custom {
-    color: #fff;
-    background-color: antiquewhite;
-    border-color: #007bff;
-  }
-  
-  .btn-custom:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-  
+.pet-card {
+  background-color: #13133d;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

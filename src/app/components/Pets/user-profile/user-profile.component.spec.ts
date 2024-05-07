@@ -5,23 +5,34 @@ import { PetsService } from '../../../services/PetsServices/pets.service';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { CommonModule } from '@angular/common';
 import { UserProfileComponent } from './user-profile.component';
-import { Operator, Observable, of } from 'rxjs';
 import { IPet } from '../../../models/Pets/IPet';
+import { ToastrModule } from 'ngx-toastr';
+import { of } from 'rxjs';
 
 
-describe('UserProfileComponent', () => {
+fdescribe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
+  let petsService: PetsService; // Declare a variable to hold PetsService instance
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({// Import AgePipe here
-      providers: [PetsService, AuthService], // Provide necessary services here
-      imports: [CommonModule, UserProfileComponent, AgePipe, HttpClientTestingModule] // Import CommonModule here
+      //providers: [PetsService, AuthService], // Provide necessary services here
+      providers: [
+        { provide: AuthService, useValue: { 
+          isLoggedIn: () => true,
+          getLoggedInUserObject: () => ({}),
+          getUIDFromToken: () => ({}),
+          getRoleFromToken: () => 'user' // Mock implementation of getRoleFromToken
+        } }
+      ],
+      imports: [CommonModule, UserProfileComponent, AgePipe, HttpClientTestingModule, ToastrModule.forRoot()] // Import CommonModule here
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(UserProfileComponent);
     component = fixture.componentInstance;
+    petsService = TestBed.inject(PetsService); // Inject PetsService
     fixture.detectChanges();
   });
 
@@ -29,83 +40,66 @@ describe('UserProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('setPetToDelete sets petToDelete and stops propagation', () => {
-  //   // Arrange
-  //   const mockPet: IPet = {
-  //     PetID: 1,
-  //     PetParentId: 'parent123',
-  //     PetName: 'Fluffy',
-  //     PetImage: 'fluffy.jpg',
-  //     Species: 'Cat',
-  //     Breed: 'Persian',
-  //     BloodGroup: 'A+',
-  //     Gender: 'Male',
-  //     Neutered: false,
-  //     DateOfBirth: new Date(),
-  //     Allergies: 'None',
-  //     LastAppointmentDate: new Date()
-  //   };
-  //   const mockEvent = new MouseEvent('click');
-  //   const spyStopPropagation = jest.spyOn(mockEvent, 'stopPropagation');
-  //   //component.petToDelete = null; // Ensure petToDelete is initially undefined
+  it('setPetToDelete sets petToDelete and stops propagation', () => {
+    // Arrange
+    const mockPet: IPet = {
+      PetID: 1,
+      PetParentID: 'parent123',
+      PetName: 'Fluffy',
+      PetImage: 'fluffy.jpg',
+      Species: 'Cat',
+      Breed: 'Persian',
+      BloodGroup: 'A+',
+      Gender: 'Male',
+      Neutered: false,
+      DateOfBirth: new Date(),
+      Allergies: 'None',
+      LastAppointmentDate: new Date()
+    };
+    const mockEvent = new MouseEvent('click');
+    spyOn(component, 'openDeleteModal'); // Spy on the method
   
-  //   // Act
-  //   component.setPetToDelete(mockPet, mockEvent);
+    // Act
+    component.setPetToDelete(mockPet, mockEvent);
   
-  //   // Assert
-  //   expect(component.petToDelete).toEqual(mockPet);
-  //   expect(spyStopPropagation).toHaveBeenCalled();
-  //   expect(component.openDeleteModal).toHaveBeenCalled();
-  // });
+    // Assert
+    expect(component.petToDelete).toEqual(mockPet);
+    expect(component.openDeleteModal).toHaveBeenCalled();
+  });
 
-  // it('deleteConfirmedPet deletes pet and refreshes pet list', fakeAsync(() => {
-  //   // Arrange
-  //   const mockPet: IPet = {
-  //     PetID: 1,
-  //     PetParentId: 'parent123',
-  //     PetName: 'Fluffy',
-  //     PetImage: 'fluffy.jpg',
-  //     Species: 'Cat',
-  //     Breed: 'Persian',
-  //     BloodGroup: 'A+',
-  //     Gender: 'Male',
-  //     Neutered: false,
-  //     DateOfBirth: new Date(),
-  //     Allergies: 'None',
-  //     LastAppointmentDate: new Date()
-  //   };
-  //   const mockEvent = new MouseEvent('click');
-  //   const spyStopPropagation = jest.spyOn(mockEvent, 'stopPropagation');
-  //   const mockPetsService = new MockPetsService(); // Create the testing double
-  
-  //   TestBed.configureTestingModule({
-  //     declarations: [UserProfileComponent], // Replace with your component path
-  //     providers: [
-  //       { provide: PetsService, useValue: mockPetsService } // Provide the testing double
-  //     ]
-  //   })
-  //   .compileComponents();
-  
-  //   const component = TestBed.inject(UserProfileComponent); // Inject the component
-  
-  //   component.petToDelete = mockPet;
-  
-  //   // Act
-  //   component.deleteConfirmedPet(mockEvent);
-  //   tick(500); // Simulate asynchronous operations
-  
-  //   // Assert
-  //   expect(spyStopPropagation).toHaveBeenCalled();
-  //   expect(mockPetsService.deletePetByPetID).toHaveBeenCalledWith(mockPet.PetID);
-  //   expect(mockPetsService.getPetsByParentID).toHaveBeenCalledWith(`${component.petParentID}`);
-  //   expect(component.pets).toEqual([mockPet]);
-  //   expect(component.petToDelete).toBeUndefined(); // Ensure petToDelete is reset
-  
-  //   // Cleanup (optional)
-  //   spyStopPropagation.calls.reset();
-  // });
-  
-  
-  
+  it('deleteConfirmedPet deletes pet, updates pets array, and displays success message', () => {
+    // Arrange
+    const mockPet: IPet = {
+      PetID: 1,
+      PetParentID: 'parent123',
+      PetName: 'Fluffy',
+      PetImage: 'fluffy.jpg',
+      Species: 'Cat',
+      Breed: 'Persian',
+      BloodGroup: 'A+',
+      Gender: 'Male',
+      Neutered: false,
+      DateOfBirth: new Date(),
+      Allergies: 'None',
+      LastAppointmentDate: new Date()
+    };
+    const mockEvent = new MouseEvent('click');
+    spyOn(mockEvent, 'stopPropagation'); // Spy on stopPropagation method
+    spyOn(petsService, 'DeletePetByPetID').and.returnValue(of({})); // Spy on DeletePetByPetID method
+    spyOn(petsService, 'GetPetsByParentID').and.returnValue(of([])); // Spy on GetPetsByParentID method
+    //spyOn(component.toaster, 'success'); // Spy on toaster success method
 
+    // Set petToDelete
+    component.petToDelete = mockPet;
+
+    // Act
+    component.deleteConfirmedPet(mockEvent);
+
+    // Assert
+    expect(mockEvent.stopPropagation).toHaveBeenCalled(); // Ensure stopPropagation is called
+    expect(petsService.DeletePetByPetID).toHaveBeenCalledWith(mockPet.PetID); // Ensure DeletePetByPetID is called with correct PetID
+    expect(petsService.GetPetsByParentID).toHaveBeenCalledWith(`${component.petParentID}`); // Ensure GetPetsByParentID is called with correct petParentID
+    //expect(component.toaster.success).toHaveBeenCalledWith('Pet Deleted Successfully!'); // Ensure toaster success is called with correct message
+    expect(component.pets).toEqual([]); // Ensure pets array is updated accordingly
+  });
 });

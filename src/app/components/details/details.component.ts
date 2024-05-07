@@ -37,9 +37,9 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
-  parseToInt(arg0: string): number {
-    return parseInt(arg0);
-  }
+  // parseToInt(arg0: string): number {
+  //   return parseInt(arg0);
+  // }
   //petIds:number[]=[]
   appointment: AppointmentDetail = {
     AppointmentID: 0,
@@ -54,8 +54,11 @@ export class DetailsComponent implements OnInit {
     Report: null,
     PetIssues: [],
   };
+  //Modal 1 for close appointment
   formModal: any;
+  //Modal 2 for cancel appointment
   formModal2: any;
+  //Modlal 3 for accept appointment
   formModal3: any;
 
   constructor(
@@ -66,14 +69,23 @@ export class DetailsComponent implements OnInit {
     private vetService: VetsserviceService,
     private router: Router
   ) {}
+  /**
+   * Check if user role is 'Owner' based on auth token
+   */
   isPatient(): boolean {
     const role = this.authService.getRoleFromToken();
     return role === 'Owner';
   }
+  /**
+   * Check if user role is 'Doctor' based on auth token
+   */
   isDoctor(): boolean {
     const role = this.authService.getRoleFromToken();
     return role === 'Doctor';
   }
+  /**
+   * Check if user role is 'Receptionist' based on auth token
+   */
   isReceptionist() {
     const role = this.authService.getRoleFromToken();
     return role === 'Receptionist';
@@ -86,21 +98,21 @@ export class DetailsComponent implements OnInit {
       .GetAppointmentDetail(parseInt(ID))
       .subscribe((appointment: any) => {
         this.appointment = appointment;
-
+        // if any other id entered other than patients appointment id, redirect to home 
         if (
           this.appointment.OwnerID != this.authService.getUIDFromToken() &&
           this.isPatient()
         ) {
           this.router.navigate(['/home']);
         }
-        
-        
-        if (appointment.DoctorID !== undefined && appointment.DoctorID !== '') {
+                
+        if (appointment.DoctorID !== undefined || appointment.DoctorID !== '') {
           this.vetService
             .getVetById(parseInt(appointment.DoctorID))
             .subscribe(
               (doc) => {this.DoctorName = doc.FName + ' ' + doc.LName
               console.log( doc.NPINumber +" ids  "+ this.authService.getVPIFromToken())
+              // currently logged in doctor can see only his/her appointment details
               if( doc.NPINumber != this.authService.getVPIFromToken() &&
               this.isDoctor()){
                 this.router.navigate(['/home']);
@@ -109,7 +121,6 @@ export class DetailsComponent implements OnInit {
             );
           console.log(this.DoctorName + ' DOC');
           
-        
         }
 
         
@@ -144,13 +155,15 @@ export class DetailsComponent implements OnInit {
   closeModal3() {
     this.formModal3.hide();
   }
-
+   /**
+   * Close the appointment by setting status to 'Closed'
+   */
   closeAppointment() {
     this.appointmentDetailsService
       .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
       .subscribe(
         (response) => {
-          // Handle successful closing of appointment (e.g., show success message)
+          // Handle successful closing of appointment
           this.closeModal();
 
           this.appointmentDetailsService
@@ -161,7 +174,7 @@ export class DetailsComponent implements OnInit {
             });
         },
         (error) => {
-          // Handle error scenario (e.g., show error message)
+          console.log("error while closing modal")
         }
       );
     this.prtSetvice.AddLastAppointmentDate(
@@ -169,12 +182,15 @@ export class DetailsComponent implements OnInit {
       this.appointment.ScheduleDate
     );
   }
+  /**
+   * Cancel the appointment by setting status to 'Cancelled'
+   */
   cancelAppointment() {
     this.appointmentDetailsService
       .PatchAppointmentStatus(this.appointment.AppointmentID, 2)
       .subscribe(
         (response) => {
-          // Handle successful closing of appointment (e.g., show success message)
+          // Handle successful closing of appointment 
           this.closeModal2();
 
           // this.confirmed=true;
@@ -186,11 +202,13 @@ export class DetailsComponent implements OnInit {
             );
         },
         (error) => {
-          // Handle error scenario (e.g., show error message)
+          console.log("error while closing modal")
         }
       );
   }
-
+  /**
+   * Accept the appointment by setting status to 'Confirmed'
+   */
   acceptAppointment() {
     this.appointmentDetailsService
       .PatchAppointmentStatus(this.appointment.AppointmentID, 1)
@@ -208,11 +226,11 @@ export class DetailsComponent implements OnInit {
             );
         },
         (error) => {
-          // Handle error scenario (e.g., show error message)
+          console.log("error while closing modal")
         }
       );
   }
-
+// Method to generate & download the pdf 
   receivedMessage: string = '';
 
   async exportToPDF($event: string) {

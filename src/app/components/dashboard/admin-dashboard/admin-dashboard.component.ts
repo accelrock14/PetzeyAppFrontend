@@ -34,8 +34,7 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(public service: DashboardService, private vetService: VetsserviceService) {}
   ngOnInit(): void {
-    console.log("oninit");
-    console.log(this.filters);
+    //initial loading of appointments with empty filters
     this.loadingAppointments = true;
     this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
       this.appointmentCards = data;
@@ -48,6 +47,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onDateStatusDoctorChange() {
+    //re setting the filters on filter changes
     this.filters.DoctorID = this.selectedDoctor;
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
@@ -62,6 +62,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   pageClick(pageInput:number) {
+    //set offset for pagination
     this.offset = (pageInput-1)*4;
     if(pageInput == this.page - 1){
       this.page--;
@@ -69,7 +70,7 @@ export class AdminDashboardComponent implements OnInit {
     else if(pageInput == this.page + 1) {
       this.page++;
     }
-    
+    //set filters and get appointments from service
     this.filters.DoctorID = this.selectedDoctor;
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
