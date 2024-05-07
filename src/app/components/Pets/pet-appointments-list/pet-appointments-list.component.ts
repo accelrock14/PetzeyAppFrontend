@@ -33,7 +33,7 @@ export class PetAppointmentsListComponent implements OnInit {
       this.user = "Patient"
     }
     else {
-      this.user = "Receptionist"
+      this.user = "Admin"
     }
   }
 

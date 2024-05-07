@@ -41,7 +41,7 @@
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
-          </div>
+          </div> 
         </div>
 
         <div class="pet-issues d-flex flex-wrap">
@@ -118,7 +118,6 @@
     <div class="col-md-8 pe-1">
         <app-appointment-pet-profile [PetId]="appointment.PetID" *ngIf="appointment.PetID != undefined && appointment.PetID != 0"></app-appointment-pet-profile>
     </div>
-    <!-- <p>{{appointment.PetID}}</p> -->
     <!-- Second Child Component -->
     <div class="col-md-4 ps-1">
 
