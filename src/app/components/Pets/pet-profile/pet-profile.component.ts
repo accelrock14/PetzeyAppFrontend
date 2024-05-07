@@ -39,9 +39,11 @@ export class PetProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Retrieve pet ID from the route parameters
     const id = this.activatedRoute.snapshot.paramMap.get('id');
 
     console.log(id);
+    // Fetch details of the pet using its ID
     this.petsService.GetPetDetailsByID(Number(id)).subscribe((pet) => {
       this.Pet = pet;
       console.log(pet.PetName);
@@ -49,12 +51,13 @@ export class PetProfileComponent implements OnInit {
     });
 
      if (this.auth.isLoggedIn() ){
-
+      // Fetch details of all users
       this.auth.getAllUsers().subscribe(
         (data) =>
           {
             console.log(data);
             this.allUsers=data;
+            // Find the pet owner from the fetched users based on PetParentID
             this.petOwner=this.allUsers.find(u => u.Id==this.Pet.PetParentID)
             console.log("else "+this.petOwner);
           }
