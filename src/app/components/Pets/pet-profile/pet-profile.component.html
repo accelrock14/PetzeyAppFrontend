@@ -1,7 +1,9 @@
 
-<small routerLink="../../" routerLinkActive="router-link-active">
-  <i class="fas fa-arrow-left"></i> Back to Pets
-</small>
+<span class="appointment-heading" routerLink="../..">
+  <i class="fas fa-arrow-left"></i>
+
+  <h6 class="appointment-title" >Back to Pets</h6>
+</span>
 <br />
 <br />
 
@@ -136,11 +138,6 @@
 
 </div>
 
-
-
-
-
-<!-- Add Report Component-->
 
 <app-report-history *ngIf="Pet.PetID != undefined" [petId]="Pet.PetID"></app-report-history>
 <hr />
