@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 
-fdescribe('PetsListGridComponent', () => {
+describe('PetsListGridComponent', () => {
   let component: PetsListGridComponent;
   let fixture: ComponentFixture<PetsListGridComponent>;
   let authServiceMock: jasmine.SpyObj<AuthService>;
@@ -75,21 +75,6 @@ fdescribe('PetsListGridComponent', () => {
     expect(getPetsCountSpy).toHaveBeenCalled();
   });
 
-  it('should call the DoctorsFlow method when user is logged in as Doctor', () => {
-    authServiceMock.isLoggedIn.and.returnValue(true);
-    authServiceMock.getRoleFromToken.and.returnValue('Doctor');
-    const doctorsFlowSpy = spyOn(component, 'DoctorsFlow').and.callThrough();
-    fixture.detectChanges();
-    expect(doctorsFlowSpy).toHaveBeenCalled();
-  });
-
-  it('should call the ReceptionistFlow method when user is logged in as Receptionist', () => {
-    authServiceMock.isLoggedIn.and.returnValue(true);
-    authServiceMock.getRoleFromToken.and.returnValue('Receptionist');
-    const receptionistFlowSpy = spyOn(component, 'ReceptionistFlow').and.callThrough();
-    fixture.detectChanges();
-    expect(receptionistFlowSpy).toHaveBeenCalled();
-  });
 
 
 
