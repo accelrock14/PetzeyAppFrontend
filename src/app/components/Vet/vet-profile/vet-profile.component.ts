@@ -215,14 +215,13 @@ throw new Error('Method not implemented.');
     this.vetService.deleteVet(vetId).subscribe({
       next: () => {
         alert('Vet deleted');
-        // Optionally, perform any other post-update actions here
       },
       error: (error) => {
         console.error('Error updating vet profile:', error);
         // Optionally, handle the error specific to profile update
       }
     });
-    this.router.navigate(['/vet']);
+    
 
   }
 }
