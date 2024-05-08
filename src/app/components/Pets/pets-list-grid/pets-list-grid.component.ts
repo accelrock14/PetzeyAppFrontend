@@ -21,6 +21,36 @@ import { VetsserviceService } from '../../../services/VetsServices/vetsservice.s
 })
 export class PetsListGridComponent implements OnInit {
 
+  constructor(private petsService: PetsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public authService: AuthService,
+    private vetService: VetsserviceService,
+    private appointmentDetailsService: AppointmentDetailsService
+  ) 
+  { }
+
+  ngOnInit(): void {
+
+    // This Component is only for LoggedIn Users
+    if (this.authService.isLoggedIn()) {
+      console.log("logged in");
+
+      if (this.authService.getRoleFromToken() == 'Doctor') {
+        this.DoctorsFlow();
+      }
+      if (this.authService.getRoleFromToken() == 'Receptionist') {
+        this.ReceptionistFlow();
+      }
+
+      // Get All User Objects - Required To display the Pet Owner Details
+      this.authService.getAllUserIDsandNames().subscribe(users => {
+        this.users = users
+      })
+    }
+
+  }
+
   pets: IPet[] = []
   recentlyConsultedPets: IPet[] = []
   petsFilter: IPetFilterParams = {
@@ -29,80 +59,26 @@ export class PetsListGridComponent implements OnInit {
     PetIDs: []
   };
 
-  speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
-  errorMessage: string = '';
-  currentPage = 1;
-  itemsPerPage = 8 // Change this value as per your requirement
-  totalPages = 0;
   pages: number[] = [];
+  currentPage = 1;
+  itemsPerPage = 8; // Number of Pets per page
+  speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
+  users!:any;
+  totalPages = 0;
+  errorMessage: string = '';
 
-  searchPets() {
-    this.petsService.FilterPets(this.petsFilter)
-      .subscribe(pets => {
+  public ReceptionistFlow() {
 
-        console.log('Original pets:', this.pets);
+    this.calculateTotalPages();   // To Calculate Total Number of Pages
 
-        this.recentlyConsultedPets = pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
-        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
-
-        this.errorMessage = ''; // Clear error message on successful retrieval
-      },
-        error => {
-          if (error.status === 404) {
-            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-          } else {
-            this.errorMessage = 'An error occurred while fetching pets.'; // Generic error message for other cases
-          }
-        })
-  }
-
-  constructor(private petsService: PetsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    public authService: AuthService,
-    private vetService: VetsserviceService,
-    private appointmentDetailsService: AppointmentDetailsService) { }
-
-
-    users!:any;
-
-    ngOnInit(): void {
-
-      if (this.authService.isLoggedIn()) {
-        console.log("logged in");
-
-        if (this.authService.getRoleFromToken() == 'Doctor') {
-          this.DoctorsFlow();
-        }
-
-        if (this.authService.getRoleFromToken() == 'Receptionist') {
-          this.ReceptionistFlow();
-        }
-
-        this.authService.getAllUserIDsandNames().subscribe(users => {
-          this.users = users
-
-
-        })
-
-
-
-      }
-
-      // this.searchPets();
-    }
-
-  private ReceptionistFlow() {
-
-    this.calculateTotalPages();
-
-    this.route.params.subscribe(params => {
+    // fetch pet details based on page number
+    this.route.params.subscribe(params => { 
       const pageNumber = +params['page'];
       if (!isNaN(pageNumber) && pageNumber > 0) {
         this.currentPage = pageNumber;
         this.filterPetsPerPage(pageNumber);
       } else {
-        this.updateRoute(1);
+        this.updateRoute(1); 
       }
     });
 
@@ -116,44 +92,45 @@ export class PetsListGridComponent implements OnInit {
       data =>
         {
           console.log("vid " + data.VetId);
+          
+          // Get All pet Ids consulted by the currently logged in Doctor
           this.appointmentDetailsService.GetAllPetIDByVetId(data.VetId)
-      .subscribe({
-        next: (data) => {
-          console.log('data', data);
-          if (data.length != 0) {
-            this.petsFilter.PetIDs = data;
-            this.errorMessage = '';
-
-          }
-          else {
-            this.petsFilter.PetIDs = [-1];
-          }
-          this.calculateTotalPages();
-
-          this.route.params.subscribe(params => {
-            const pageNumber = +params['page'];
-            if (!isNaN(pageNumber) && pageNumber > 0) {
-              this.currentPage = pageNumber;
-              this.filterPetsPerPageForDoctor(pageNumber);
-            } else {
-              this.updateRoute(1);
+            .subscribe({
+            next: (data) => {
+            console.log('data', data);
+            
+            // if doctor has consulted pets before
+            if (data.length != 0) {
+              this.petsFilter.PetIDs = data;
+              this.errorMessage = '';
             }
-          });
+            else { // doctor has not consulted any pets 
+              this.petsFilter.PetIDs = [-1];
+            }
+            this.calculateTotalPages();
+
+            this.route.params.subscribe(params => {
+              const pageNumber = +params['page'];
+              if (!isNaN(pageNumber) && pageNumber > 0) {
+                this.currentPage = pageNumber;
+                this.filterPetsPerPageForDoctor(pageNumber);
+              } else {
+                this.updateRoute(1);
+              }
+            });
         },
-        error: (err) => {
-          this.petsFilter.PetIDs = [-1];
-          console.log("error while fetching", err);
-          if (err.status === 404) {
-            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
-          } else {
-            this.errorMessage = 'An error occurred while fetching pets.';
+          error: (err) => {
+            this.petsFilter.PetIDs = [-1];
+            console.log("error while fetching", err);
+            if (err.status === 404) {
+              this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+            } else {
+              this.errorMessage = 'An error occurred while fetching pets.';
+            }
           }
-        }
-      });
-        }
+        });
+      }
     )
-
-
   }
 
   filterPetsPerPageForDoctor(page: number): void {
@@ -186,8 +163,10 @@ export class PetsListGridComponent implements OnInit {
     console.log('filter', this.petsFilter.PetIDs)
     this.petsService.FilterPetsPerPage(this.petsFilter, page, this.itemsPerPage)
       .subscribe(pets => {
-        this.pets = pets;
+        this.pets = pets;   // Get All the Pets based on Current Filter
         console.log('Original pets:', this.pets);
+
+        // Get Recently Consulted Pets based on Last Appointment Date
         this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
@@ -206,11 +185,11 @@ export class PetsListGridComponent implements OnInit {
 
   }
 
+  // Get the count of pages that will be needed to display all pets
   calculateTotalPages(): void {
-
     this.petsService.GetPetsCount(this.petsFilter).subscribe(count => {
-      this.totalPages = Math.ceil(count / this.itemsPerPage);
-      console.log(this.totalPages)
+      this.totalPages = Math.ceil(count / this.itemsPerPage);  // Calculate the total no of pages based on number of pets per page
+      // console.log(this.totalPages)
       this.generatePageNumbers();
     });
   }
@@ -222,16 +201,18 @@ export class PetsListGridComponent implements OnInit {
     }
   }
 
-  goToPage(page: number): void {
-    this.updateRoute(page);
-  }
+  // goToPage(page: number): void {
+  //   this.updateRoute(page);
+  // }
 
+  // navigate to previous page
   prevPage(): void {
     if (this.currentPage > 1) {
       this.updateRoute(this.currentPage - 1);
     }
   }
 
+  // navigate to next page
   nextPage(): void {
     if (this.currentPage < this.pages[this.pages.length - 1]) {
       this.updateRoute(this.currentPage + 1);
@@ -239,6 +220,7 @@ export class PetsListGridComponent implements OnInit {
     console.log(this.pets)
   }
 
+  // nevigate to a specific page number
   updateRoute(page: number): void {
     this.router.navigateByUrl(`/pets-list/${page}`);
   }

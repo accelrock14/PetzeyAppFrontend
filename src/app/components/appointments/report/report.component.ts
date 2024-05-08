@@ -187,7 +187,7 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    @Inject(reportToken) private reportService: ReportService,
+    private reportService: ReportService,
     private elementRef: ElementRef,
     private vetService: VetsserviceService,
     private authService: AuthService,

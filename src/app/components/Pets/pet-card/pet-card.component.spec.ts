@@ -6,6 +6,7 @@ import { EllipsisPipe } from "../../../pipes/Ellipsis/ellipsis.pipe";
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { FormatName } from '../../../pipes/Name/format-name.pipe';
 
 describe('PetCardComponent', () => {
   let component: PetCardComponent;
@@ -14,7 +15,7 @@ describe('PetCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
      // declarations: [PetCardComponent, AgePipe, EllipsisPipe],
-      imports: [RouterTestingModule, CommonModule,PetCardComponent, AgePipe, EllipsisPipe]
+      imports: [RouterTestingModule, CommonModule,PetCardComponent, AgePipe, EllipsisPipe,FormatName]
     })
     .compileComponents();
 
