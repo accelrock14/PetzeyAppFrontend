@@ -6,13 +6,14 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { User } from '../../../models/User-Authentication/User';
+import {  FormatName } from "../../../pipes/Name/format-name.pipe";
 
 @Component({
     selector: 'app-pet-card',
     standalone: true,
     templateUrl: './pet-card.component.html',
     styleUrl: './pet-card.component.css',
-    imports: [AgePipe,RouterLink,CommonModule, EllipsisPipe]
+    imports: [AgePipe, RouterLink, CommonModule, EllipsisPipe, FormatName]
 })
 
 // Child Component of Pet-list-grid
@@ -24,7 +25,7 @@ export class PetCardComponent  {
   pet:IPet = {} as IPet;  // Get the Pet Object to be displayed from Parent Component
 
   @Input()
-  petOwner:string = "";   // Get the Owner Name for the pet 
+  petOwner:string = "";   // Get the Owner Name for the pet
 
 
 }

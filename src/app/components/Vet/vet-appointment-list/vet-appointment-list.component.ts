@@ -4,13 +4,14 @@ import { AppointmentCardDto } from '../../../models/Appointment/AppointmentCardD
 import { DoctorAppointmentCardComponent } from "../../appointment-cards/doctor-appointment-card/doctor-appointment-card.component";
 import { PetAppointmentCardComponent } from "../../appointment-cards/pet-appointment-card/pet-appointment-card.component";
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-vet-appointment-list',
   standalone: true,
   templateUrl: './vet-appointment-list.component.html',
   styleUrl: './vet-appointment-list.component.css',
-  imports: [DoctorAppointmentCardComponent, PetAppointmentCardComponent]
+  imports: [DoctorAppointmentCardComponent, PetAppointmentCardComponent, CommonModule]
 })
 export class VetAppointmentListComponent {
   constructor(private dashboardService: DashboardService, private authService: AuthService) { }
@@ -35,5 +36,14 @@ export class VetAppointmentListComponent {
   @Input()
   VetID: number = 0;
   appointmentcard: AppointmentCardDto[] = []
+
+  groupedAppointments() {
+    const grouped = [];
+    const groupSize = 3;
+    for (let i = 0; i < this.appointmentcard.length; i += groupSize) {
+      grouped.push(this.appointmentcard.slice(i, i + groupSize));
+    }
+    return grouped;
+  }
 }
 
