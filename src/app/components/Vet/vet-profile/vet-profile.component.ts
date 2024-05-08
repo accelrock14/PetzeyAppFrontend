@@ -151,9 +151,10 @@ throw new Error('Method not implemented.');
               // Update the Photo property in the vetProfile
               fullVet.Photo = `${response.fileName}`;
               console.log('Full Vet: ',fullVet)// Update with the new photo URL
-              this.vetProfile!.Photo = fullVet.Photo;
+              //this.vetProfile!.Photo = fullVet.Photo;
               // After successful photo upload, update the other profile details
               this.sendProfileUpdate(vetId, fullVet);
+              this.selectedFile= null;
             },
             error: (error) => {
               console.error('Error uploading file:', error);
@@ -163,6 +164,7 @@ throw new Error('Method not implemented.');
         } else {
           // If no file is selected, directly update the profile
           this.sendProfileUpdate(vetId, fullVet);
+          console.log('In update',fullVet);
         }
       },
       error: (error) => {
@@ -176,7 +178,7 @@ throw new Error('Method not implemented.');
     this.vetService.updateVet(vetId, fullVet).subscribe({
       next: () => {
         alert("Successfully Saved the Changes");
-        console.log(fullVet)
+        console.log('sendprofile',fullVet)
         // Optionally, perform any other post-update actions here
       },
       error: (error) => {
@@ -184,6 +186,8 @@ throw new Error('Method not implemented.');
         // Optionally, handle the error specific to profile update
       }
     });
+    console.log('after sending', fullVet)
+    console.log(this.vetService.getFullVetById(vetId).subscribe())
   }
 
   //Added

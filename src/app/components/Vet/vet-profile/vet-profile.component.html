@@ -9,8 +9,10 @@
       
             <div class="col-1">
               <button class="btn btn-light" (click)="goToVet()">
-                <i class="bi bi-arrow-left"></i> 
-              </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+                            </button>
       
           </div>
           <h5 class="col-8 mx-2 p-0">Account Details</h5>
@@ -56,46 +58,68 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #vetForm="ngForm">
           <div class="form-group">
             <div class="form-group">
               <!-- Existing Profile Image -->
               <img src="{{ vetProfile!.Photo }}" alt="Image" class="img-thumbnail mb-3" style="width: 100px; height: auto;">
-            
+        
               <!-- File Input for New Image -->
-              <input type="file" id="profileImage" (change)="onImageSelected($event)"  [(ngModel)]="vetProfile!.Photo" name="Photo"class="form-control-file">
-            
+              <input type="file" id="profileImage" (change)="onImageSelected($event)" [(ngModel)]="vetProfile!.Photo" name="Photo" class="form-control-file">
+        
               <!-- Preview of New Image -->
               <img [src]="imageSrc" *ngIf="imageSrc" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
             </div>
-            
-        </div>       
-           <div class="mb-3">
+          </div>
+          <div class="mb-3">
             <label for="fname" class="form-label">FName</label>
-            <input type="text" class="form-control" id="fname" [(ngModel)]="vetProfile!.FName" name="fname">
+            <input type="text" class="form-control" id="fname" [(ngModel)]="vetProfile!.FName" name="fname" required #fname="ngModel">
+            <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="text-danger">
+              First Name is required.
+            </div>
           </div>
           <div class="mb-3">
             <label for="lname" class="form-label">LName</label>
-            <input type="text" class="form-control" id="lname" [(ngModel)]="vetProfile!.LName" name="lname">
+            <input type="text" class="form-control" id="lname" [(ngModel)]="vetProfile!.LName" name="lname" required #lname="ngModel">
+            <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="text-danger">
+              Last Name is required.
+            </div>
           </div>
           <div class="mb-3">
             <label for="speciality" class="form-label">Speciality</label>
-            <input type="text" class="form-control" id="speciality" [(ngModel)]="vetProfile!.Speciality" name="speciality">
+            <input type="text" class="form-control" id="speciality" [(ngModel)]="vetProfile!.Speciality" name="speciality" required #speciality="ngModel">
+            <div *ngIf="speciality.invalid && (speciality.dirty || speciality.touched)" class="text-danger">
+              Speciality is required.
+            </div>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="vetProfile!.Email" name="email">
+            <input type="email" class="form-control" id="email" [(ngModel)]="vetProfile!.Email" name="email" required email #email="ngModel">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+              <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="phone" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="phone" [(ngModel)]="vetProfile!.Phone" name="phone">
+            <input type="tel" class="form-control" id="phone" [(ngModel)]="vetProfile!.Phone" name="phone" required minlength="10" maxlength="10" pattern="[0-9]*" #phone="ngModel">
+            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
+              <div *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength'] || phone.errors?.['pattern']">Phone Number must be 10 digits.</div>
+            </div>
           </div>
         </form>
+        
+        
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" [disabled]="!successMessage" class="btn btn-edit" data-bs-dismiss="modal" (click)="updateVet(vetProfile!.VetId,vetProfile!)">Confirm</button>
+        <button type="button" [disabled]="!vetForm.valid" class="btn btn-edit" data-bs-dismiss="modal" (click)="updateVet(vetProfile!.VetId, vetProfile!)">Confirm</button>
       </div>
+      <!-- </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" [disabled]="!successMessage" class="btn btn-edit" data-bs-dismiss="modal" (click)="updateVet(vetProfile!.VetId,vetProfile!)">Confirm</button>
+      </div> -->
 
       <ng-template #successMessage>
         <div class="alert alert-success" role="alert">
