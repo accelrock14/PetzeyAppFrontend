@@ -90,7 +90,7 @@ this.location.back();
   isReceptionist:boolean=false;
   isDoctor:boolean=false;
   isOwner:boolean=false;
-
+ 
   ngOnInit(): void {
     
     if(!this.authService.isLoggedIn()){
