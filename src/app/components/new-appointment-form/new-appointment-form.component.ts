@@ -25,6 +25,10 @@ declare var window: any;
   styleUrl: './new-appointment-form.component.css'
 })
 export class NewAppointmentFormComponent implements OnInit {
+  
+isFormValid():boolean {
+  return this.appointmentDetail.DoctorID!==''&&this.appointmentDetail.PetID!==0&&this.appointmentDetail.OwnerID!==''&&this.appointmentDetail.ScheduleTimeSlot!==0&&this.appointmentDetail.ReasonForVisit!=='';
+}
   GoBackSimply() {
     this.formModal.hide();
     this.cancelAptModal.hide();
@@ -56,6 +60,7 @@ export class NewAppointmentFormComponent implements OnInit {
     Report: null,
     PetIssues: []
   };
+
   slotStatuses: boolean[] = [];
   selectedScheduleDate: Date = new Date();
   minDate:string='';

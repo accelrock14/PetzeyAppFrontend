@@ -6,6 +6,7 @@
         <pre class="pre" (click)="GoBackSimply()"> Back to Appointments</pre>
     </div>
     <h1>Edit Appointment</h1>
+    <small [hidden]="isFormValid()" class="text-danger" > all fields are mandatory </small>
     <hr>
 
     <div *ngIf="!isDoctor">
@@ -117,7 +118,7 @@
         <button class="btn btn-secondary cancel" (click)="openCancelModal()">Cancel</button>
         <!-- (click)="onBook(reasonforvisit.value)" -->
         <!-- [disabled]="isSubmitDisabled" -->
-        <button class="btn btn-primary bookappointment" (click)="openModal()">Edit Appointment</button>
+        <button class="btn btn-primary bookappointment" (click)="openModal()" [disabled]="!isFormValid()">Edit Appointment</button>
     </div>
 </div>
 <hr>
