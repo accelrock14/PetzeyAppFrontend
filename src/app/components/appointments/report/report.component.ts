@@ -169,17 +169,7 @@ export class ReportComponent implements OnInit {
       // get list of existing symptoms, tests and doctors in the report
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
-      this.selectedDoctors = this.report.RecommendedDoctors.map(
-        (d) => d.DoctorID
-      );
 
-      // set the default selected values of the forms
-      this.myForm = this.fb.group({
-        symptom: [this.selectedSymptoms],
-        test: [this.selectedTests],
-        medicine: [[]],
-        doctor: [this.selectedDoctors],
-      });
       // check if the user is a doctor
       this.isDoctor = this.authService.getRoleFromToken() == 'Doctor';
     });
@@ -603,7 +593,7 @@ export class ReportComponent implements OnInit {
       allowSearchFilter: this.ShowFilter,
     };
     this.doctorSettings = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'VetId',
       textField: 'Name',
       enableCheckAll: false,
@@ -653,7 +643,35 @@ export class ReportComponent implements OnInit {
     // get all vets from vet service
     this.vetService.getAllVets().subscribe(
       (v) => {
-        this.doctors = v;
+        //this.doctors = v;
+        v.forEach(doc => {
+          this.doctors.push({
+            VetId: doc.VetId,
+            Name: doc.Name + ' - ' + doc.Speciality,
+            PhoneNumber: '',
+            Speciality: '',
+            Photo: ''
+          })
+        });
+        this.report.RecommendedDoctors.forEach(doctor => {
+          this.selectedDoctors.push(this.getDoctorById(doctor.DoctorID))
+        });
+
+        this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe(doc => {
+          let index: number = this.doctors.findIndex(
+            (d) => d.VetId == doc.VetId
+          );
+          // remove doctor recommendation from report object
+          this.doctors.splice(index, 1);
+        })
+
+        // set the default selected values of the forms
+        this.myForm = this.fb.group({
+          symptom: [this.selectedSymptoms],
+          test: [this.selectedTests],
+          medicine: [[]],
+          doctor: [this.selectedDoctors],
+        });
       },
       (error) => {
         this.toastr.error(
