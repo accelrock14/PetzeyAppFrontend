@@ -26,6 +26,7 @@
         <div class="container-box col-md-2 col-sm-6 d-flex align-items-center justify-content-center">
             <select name="Status" class="form-select" (change)="onDateStatusDoctorChange()" [(ngModel)]="selectedStatus">
                 <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Closed">Closed</option>
                 <option value="Cancelled">Cancelled</option>
