@@ -156,6 +156,7 @@ export class ReportComponent implements OnInit {
   deletePrescribedMedicineID: number = 0;
   isDoctor: boolean = true;
   isEditing = false;
+  doctor!: IVetCardDTO
 
   ngOnInit(): void {
     // get report details from report service and set the data in variable
@@ -648,22 +649,22 @@ export class ReportComponent implements OnInit {
           this.doctors.push({
             VetId: doc.VetId,
             Name: doc.Name + ' - ' + doc.Speciality,
-            PhoneNumber: '',
-            Speciality: '',
-            Photo: ''
+            PhoneNumber: doc.PhoneNumber,
+            Speciality: doc.Speciality,
+            Photo: doc.Photo
           })
         });
         this.report.RecommendedDoctors.forEach(doctor => {
           this.selectedDoctors.push(this.getDoctorById(doctor.DoctorID))
         });
 
-        this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe(doc => {
-          let index: number = this.doctors.findIndex(
-            (d) => d.VetId == doc.VetId
-          );
-          // remove doctor recommendation from report object
-          this.doctors.splice(index, 1);
-        })
+        let index: number = this.doctors.findIndex(
+          (d) => d.VetId == parseInt(this.doctorId)
+        );
+        // remove doctor recommendation from report object
+        this.doctor = this.doctors[index]
+        this.doctors.splice(index, 1);
+        console.log(this.doctors)
 
         // set the default selected values of the forms
         this.myForm = this.fb.group({
