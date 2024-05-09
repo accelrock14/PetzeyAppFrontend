@@ -5,7 +5,7 @@
 
 <div class="container mt-4">
     <div class="container-fluid">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -74,6 +74,23 @@
                     </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="fa-solid fa-circle-exclamation" style="color: orange;"></i>
+                            </div>
+                            <div class="col p-0">
+                                <h5 class="card-title">Pending</h5>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h5 class="card-title">{{ appointmentStatus.Pending }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -94,6 +111,7 @@
             <select name="Status" class="form-select" (change)="onDateStatusChange()" [(ngModel)]="selectedStatus">
 
                 <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Closed">Closed</option>
                 <option value="Cancelled">Cancelled</option>

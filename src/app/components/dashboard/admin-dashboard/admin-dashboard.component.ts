@@ -44,6 +44,7 @@ export class AdminDashboardComponent implements OnInit {
       this.doctorsList = data;
       console.log(this.doctorsList);
     })
+    
   }
 
   onDateStatusDoctorChange() {

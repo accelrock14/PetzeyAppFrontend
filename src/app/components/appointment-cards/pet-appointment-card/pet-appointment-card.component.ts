@@ -19,6 +19,21 @@ import { FirstNamePipe } from '../../../pipes/FirstName/first-name.pipe';
   styleUrl: './pet-appointment-card.component.css'
 })
 export class PetAppointmentCardComponent {
+  getStatusColor(status: string): string {
+    switch (status) {
+        case 'Pending':
+            return 'darkgoldenrod';
+        case 'Closed':
+            return 'grey';
+        case 'Cancelled':
+            return 'red';
+        case 'Confirmed':
+            return 'green';
+        default:
+            return 'black'; // Or any default color
+    }
+}
+
   openPopup(arg0: string) {
     this.snackBar.open(`${arg0} service will be available soon`, "Close", {
       verticalPosition: 'bottom'
