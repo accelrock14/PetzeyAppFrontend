@@ -1,4 +1,5 @@
-<!-- Modal -->
+<!-- Modal for adding the medicine -->
+
 <div
   class="modal fade"
   id="exampleModalCenter"
@@ -123,6 +124,9 @@
     </div>
   </div>
 </div>
+<!-- END|| Modal for adding the medicine  || END-->
+
+
 
 <!-- modal for deleting the medicine -->
 <div
@@ -165,6 +169,12 @@
     </div>
   </div>
 </div>
+
+<!-- END || modal for deleting the medicine || END-->
+
+
+
+
 
 <div
   class="appointmentDetailspage ps-3 p-5"
@@ -211,7 +221,12 @@
 
     <div class="report-body">
       <div class="row">
+
+
+        <!-- Left Part of report -->
         <div class="col-lg-6 col-md-12 mx-auto left-part capture-section">
+
+          <!-- precription -->
           <div class="precription border shadow p-3 rounded-3">
             <div
               class="precription-heading d-flex justify-content-between"
@@ -326,102 +341,16 @@
             </div>
           </div>
 
-          <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
-            <h4>Recommended Doctors</h4>
-            <div *ngIf="isEditing" class="search-box ps-3 mt-4">
-              <form *ngIf="isEditing" [formGroup]="myForm">
-                <ng-multiselect-dropdown
-                  name="doctor"
-                  [settings]="doctorSettings"
-                  [placeholder]="'Select Doctors'"
-                  [data]="doctors"
-                  formControlName="doctor"
-                  (onSelect)="onSelectDoctor($event)"
-                  (onDeSelect)="onDeselectDoctor($event)"
-                >
-                </ng-multiselect-dropdown>
-              </form>
-            </div>
-            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
-              @if(report.RecommendedDoctors.length > 0){ @for (doctors of
-              report.RecommendedDoctors; track $index) {
-              <div class="capsule">
-                {{ getDoctorById(doctors.DoctorID)?.Name }}
-              </div>
-              }} @else {
-              <div class="text-center text-danger mt-1">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <p>No Recommendations</p>
-              </div>
-              }
-            </div>
-          </div>
+
         </div>
 
+
+        <!-- right part of report -->
         <div class="col-lg-6 col-md-12 mx-auto right-part capture-section">
-          <div class="vitals border shadow mb-4 p-3 pe-2 rounded-3">
-            <h4>Vitals</h4>
-            <div class="icons mt-4 ps-3">
-              <div class="icon-container me-5 d-inline-block">
-                <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="heartRate">{{
-                    report.HeartRate
-                  }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.HeartRate"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-                  HR</span
-                >
-              </div>
 
-              <div class="icon-container me-5 d-inline-block">
-                <div class="mb-2">
-                  <i class="fa-solid fa-thermometer icon"></i>
-                </div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="temperature">{{
-                    report.Temperature
-                  }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.Temperature"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-
-                  &deg;C</span
-                >
-              </div>
-
-              <div class="icon-container d-inline-block">
-                <div class="mb-2"><i class="fa-solid fa-lungs icon"></i></div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="oxygen">{{ report.OxygenLevel }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.OxygenLevel"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-
-                  BPM</span
-                >
-              </div>
-            </div>
-          </div>
-
+          <!-- Observation (symptoms) -->
           <div class="symptoms border shadow mb-4 p-3 pe-2 rounded-3">
-            <h4>Symptoms</h4>
+            <h4>Observations</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
               <form *ngIf="isEditing" [formGroup]="myForm">
                 <ng-multiselect-dropdown
@@ -451,6 +380,9 @@
             </div>
           </div>
 
+
+
+          <!-- Tests -->
           <div class="tests border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Tests</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
@@ -481,8 +413,47 @@
               }
             </div>
           </div>
+
+
+
+          <!-- Recommended doctors -->
+          <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
+            <h4>Recommended Doctors</h4>
+            <div *ngIf="isEditing" class="search-box ps-3 mt-4">
+              <form *ngIf="isEditing" [formGroup]="myForm">
+                <ng-multiselect-dropdown
+                  name="doctor"
+                  [settings]="doctorSettings"
+                  [placeholder]="'Select Doctors'"
+                  [data]="doctors"
+                  formControlName="doctor"
+                  (onSelect)="onSelectDoctor($event)"
+                  (onDeSelect)="onDeselectDoctor($event)"
+                >
+                </ng-multiselect-dropdown>
+              </form>
+            </div>
+            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
+              @if(report.RecommendedDoctors.length > 0){ @for (doctors of
+              report.RecommendedDoctors; track $index) {
+              <div class="capsule">
+                {{ getDoctorById(doctors.DoctorID)?.Name }}
+              </div>
+              }} @else {
+              <div class="text-center text-danger mt-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Recommendations</p>
+              </div>
+              }
+            </div>
+          </div>
+
+
+
         </div>
 
+
+        <!-- Bottom horizontal part - comment   -->
         <div class="mx-auto bottom-part">
           <div
             class="commentsbydoctor border shadow p-3 rounded-3 capture-section"
@@ -516,6 +487,10 @@
             ></textarea>
           </div>
         </div>
+
+
+
+
       </div>
     </div>
   </div>
