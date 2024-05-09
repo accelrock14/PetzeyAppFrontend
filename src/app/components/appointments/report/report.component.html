@@ -176,6 +176,85 @@
 
 
 
+<!-- modal for adding the recommendd doctors -->
+<div
+  class="modal fade"
+  id="addDoctorModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+    <div class="modal-content rounded-4 p-2">
+      <div class="ms-2 medicinebox">
+        <i class="fa-solid fa-user-nurse"></i>
+      </div>
+      <div class="modal-body ms-2 pt-0">
+
+        <!-- add doctor heading -->
+        <div class="heading mb-2">
+          <h4 class="mb-0 pb-2">
+            Add Doctor
+          </h4>
+        </div>
+
+        <div class="doctorName">
+          <label class="fw-bold">Doctor</label>
+          <div *ngIf="isEditing" class="search-box">
+            <form *ngIf="isEditing" [formGroup]="myForm">
+              <ng-multiselect-dropdown
+                name="doctor"
+                [settings]="doctorSettings"
+                [placeholder]="'Select Doctors'"
+                [data]="doctors"
+                formControlName="doctor"
+                (onSelect)="onSelectDoctor($event)"
+                (onDeSelect)="onDeselectDoctor($event)"
+              >
+              </ng-multiselect-dropdown>
+            </form>
+          </div>
+
+        </div>
+
+
+          <div class="reason mt-2">
+            <p class="fw-bold m-0 p-0">Reason</p>
+            <textarea
+            class="commenttextarea"
+            name=""
+            id=""
+            cols="35"
+            rows="3"
+          ></textarea>
+          </div>
+
+
+        <!-- modal footer -->
+        <div class="d-flex justify-content-around mt-3">
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+            data-bs-dismiss="modal"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END || modal for adding the recommendd doctors || END-->
+
+
+
 <div
   class="appointmentDetailspage ps-3 p-5"
   id="elementToExport"
@@ -418,21 +497,19 @@
 
           <!-- Recommended doctors -->
           <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
+            <div class="d-flex justify-content-between me-2">
             <h4>Recommended Doctors</h4>
-            <div *ngIf="isEditing" class="search-box ps-3 mt-4">
-              <form *ngIf="isEditing" [formGroup]="myForm">
-                <ng-multiselect-dropdown
-                  name="doctor"
-                  [settings]="doctorSettings"
-                  [placeholder]="'Select Doctors'"
-                  [data]="doctors"
-                  formControlName="doctor"
-                  (onSelect)="onSelectDoctor($event)"
-                  (onDeSelect)="onDeselectDoctor($event)"
-                >
-                </ng-multiselect-dropdown>
-              </form>
+            <button
+                *ngIf="isEditing"
+                class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+                data-bs-toggle="modal"
+                data-bs-target="#addDoctorModal"
+              >
+                <i class="fa-solid fa-plus me-2"></i>Add
+              </button>
             </div>
+
+
             <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
               @if(report.RecommendedDoctors.length > 0){ @for (doctors of
               report.RecommendedDoctors; track $index) {

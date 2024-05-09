@@ -218,6 +218,13 @@ left: 2px;
 }
 
 
+/* doctor icon */
+.fa-user-nurse{
+  color: #ff5500;
+  font-size: 30px;
+  padding: 20px;
+}
+
 input[type="checkbox"]:checked{
   background-color: #ff1100;
   color: black;
@@ -238,7 +245,6 @@ border-bottom: 1px black solid;
 outline: none;
 
 }
-
 
 
 
