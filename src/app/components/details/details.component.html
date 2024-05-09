@@ -36,10 +36,10 @@
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
               <button *ngIf="isDoctor() && appointment.Status==0" type="button" class="btn btn-sm btn-outline-secondary me-2" (click)="openModal3()">Accept</button>
               <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()" >Cancel</button>
-              <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" *ngIf="is_Owner">Edit</button>
+              <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" *ngIf="isPatient()">Edit</button>
 
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
-
+ 
             </span>
           </div> 
         </div>

@@ -92,24 +92,24 @@ export class DetailsComponent implements OnInit {
   }
   DoctorName: string = '';
 
-  What_Flow: string = '';
-  is_Receptionist: boolean = false;
-  is_Doctor: boolean = false;
-  is_Owner: boolean = false;
+  // What_Flow: string = '';
+  // is_Receptionist: boolean = false;
+  // is_Doctor: boolean = false;
+  // is_Owner: boolean = false;
 
   ngOnInit(): void {
 
-    this.What_Flow = this.authService.getRoleFromToken() as string;
-    console.log(" current user is " + this.What_Flow);
-    if (this.What_Flow == 'Owner') {
-      this.is_Owner = true;
-    }
-    else if(this.What_Flow == 'Doctor'){
-      this.is_Doctor = true;
-    }
-    else{
-      this.is_Receptionist=true;
-    }
+    // this.What_Flow = this.authService.getRoleFromToken() as string;
+    // console.log(" current user is " + this.What_Flow);
+    // if (this.What_Flow == 'Owner') {
+    //   this.is_Owner = true;
+    // }
+    // else if(this.What_Flow == 'Doctor'){
+    //   this.is_Doctor = true;
+    // }
+    // else{
+    //   this.is_Receptionist=true;
+    // }
 
     const ID: string = this.route.snapshot.paramMap.get('id')!;
 
