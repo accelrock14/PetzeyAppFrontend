@@ -31,11 +31,11 @@
     
     <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor">
         <div>
-            <p class="text-secondary font-weight-bold">Select appointment schedule date</p>
+            <p class="text-secondary font-weight-bold">Select date for your appointment</p>
         </div>
 
         <div class="mydate-picker">
-            <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()">
+            <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()"[min]="minDate">
         </div>
         <div class="myslots">
             <div class="time-slots">

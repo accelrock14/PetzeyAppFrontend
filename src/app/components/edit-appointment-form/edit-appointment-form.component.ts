@@ -61,6 +61,7 @@ this.location.back();
   };
   slotStatuses: boolean[] = [];
   selectedScheduleDate: Date = new Date();
+  minDate:string='';
   selectedSlotIndex: number | null = null;
 
   constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService,private petService:PetsService,private vetService:VetsserviceService) { }
@@ -120,6 +121,13 @@ this.location.back();
       this.route.navigate(['/home']);
       this.isReceptionist=true;
     }
+
+    
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // getMonth() is zero-based
+    let dd = today.getDate();
+    this.minDate = `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}`;
 
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({
