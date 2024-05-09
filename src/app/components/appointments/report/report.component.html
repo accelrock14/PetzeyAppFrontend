@@ -541,13 +541,10 @@
               *ngIf="!isEditing"
               class="comment-body mt-3 ms-2 d-flex all-item-list"
             >
-              <img src="{{ getDoctorById(doctorId)?.Photo }}" alt="" />
+              <img src="{{ doctor.Photo }}" alt="" />
               <div class="comment-info ms-3">
                 <p class="m-0 d-inline-block fw-bolder">
-                  {{ getDoctorById(doctorId)?.Name }}
-                  <small class="fw-lighter"
-                    >({{ getDoctorById(doctorId)?.Speciality }})</small
-                  >
+                  {{ doctor.Name }}
                 </p>
                 @if (report.Comment!=null && report.Comment!='') {
                 <p id="comment">{{ report.Comment }}</p>
