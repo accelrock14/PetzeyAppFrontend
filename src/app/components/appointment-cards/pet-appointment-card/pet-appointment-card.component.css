@@ -27,3 +27,9 @@
 .filled {
   color: gold;
 }
+
+.status-text {
+  margin-left: 5px; /* Add some space between Status label and status text */
+  display: inline; /* Make the status text inline with the label */
+  
+}
