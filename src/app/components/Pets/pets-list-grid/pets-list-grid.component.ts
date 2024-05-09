@@ -76,6 +76,7 @@ export class PetsListGridComponent implements OnInit {
       const pageNumber = +params['page'];
       if (!isNaN(pageNumber) && pageNumber > 0) {
         this.currentPage = pageNumber;
+        this.recentlyConsulted()
         this.filterPetsPerPage(pageNumber);
       } else {
         this.updateRoute(1); 
@@ -113,6 +114,7 @@ export class PetsListGridComponent implements OnInit {
               const pageNumber = +params['page'];
               if (!isNaN(pageNumber) && pageNumber > 0) {
                 this.currentPage = pageNumber;
+                this.recentlyConsulted()
                 this.filterPetsPerPageForDoctor(pageNumber);
               } else {
                 this.updateRoute(1);
@@ -132,6 +134,26 @@ export class PetsListGridComponent implements OnInit {
       }
     )
   }
+  
+  recentlyConsulted() {
+    this.petsService.FilterPets(this.petsFilter)
+      .subscribe(pets => {
+
+        console.log('Original pets:', this.pets);
+
+        this.recentlyConsultedPets = pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+
+        this.errorMessage = ''; // Clear error message on successful retrieval
+      },
+        error => {
+          if (error.status === 404) {
+            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+          } else {
+            this.errorMessage = 'An error occurred while fetching pets.';
+          }
+        });
+  }
 
   filterPetsPerPageForDoctor(page: number): void {
     this.calculateTotalPages()
@@ -140,8 +162,9 @@ export class PetsListGridComponent implements OnInit {
       .subscribe(pets => {
         this.pets = pets;
         console.log('Original pets:', this.pets);
-        this.recentlyConsultedPets = this.pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
-        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+        // this.recentlyConsultedPets = this.pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        // console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+        // this.recentlyConsulted()
 
         this.errorMessage = ''; // Clear error message on successful retrieval
 
@@ -167,9 +190,9 @@ export class PetsListGridComponent implements OnInit {
         console.log('Original pets:', this.pets);
 
         // Get Recently Consulted Pets based on Last Appointment Date
-        this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
-        console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
-
+        // this.recentlyConsultedPets = this.pets.slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
+        // console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
+        // this.recentlyConsulted()
         this.errorMessage = ''; // Clear error message on successful retrieval
 
         this.currentPage = page;

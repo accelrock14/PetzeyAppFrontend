@@ -1,4 +1,5 @@
 .pet-card {
+  margin-bottom: 7px;
   background-color: #13133d;
   color: #fff;
   transition: transform 0.3s ease;
