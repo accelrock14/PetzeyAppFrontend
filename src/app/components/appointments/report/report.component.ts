@@ -13,7 +13,10 @@ import { Test } from '../../../models/appoitment-models/Test';
 import { ReportSymptom } from '../../../models/appoitment-models/ReportSymptom';
 import { Symptom } from '../../../models/appoitment-models/Symptom';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ReportService, reportToken } from '../../../services/appointment/report.service';
+import {
+  ReportService,
+  reportToken,
+} from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
@@ -35,6 +38,7 @@ import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'jquery';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report',
@@ -47,6 +51,7 @@ import { error } from 'jquery';
     NgMultiSelectDropDownModule,
     NgClass,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css',
@@ -139,7 +144,7 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
-  myForm!: FormGroup
+  myForm!: FormGroup;
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
@@ -156,16 +161,16 @@ export class ReportComponent implements OnInit {
   deletePrescribedMedicineID: number = 0;
   isDoctor: boolean = true;
   isEditing = false;
-  doctor!: IVetCardDTO
+  doctor!: IVetCardDTO;
 
   ngOnInit(): void {
     // get report details from report service and set the data in variable
     this.reportService.getReport(this.reportId).subscribe((r) => {
       this.report = r;
 
-      this.configureForms()
+      this.configureForms();
 
-      this.getAllMasterDataForForms()
+      this.getAllMasterDataForForms();
 
       // get list of existing symptoms, tests and doctors in the report
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
@@ -183,8 +188,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) { }
-
+  ) {}
 
   enableEdit(): void {
     this.isEditing = true;
@@ -325,7 +329,7 @@ export class ReportComponent implements OnInit {
   }
 
   activatePrescriptionModal(id: number) {
-    this.myForm.get('medicine')?.reset()
+    this.myForm.get('medicine')?.reset();
     // reset the form if new medicine button was clicked
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
@@ -347,7 +351,9 @@ export class ReportComponent implements OnInit {
         this.prescriptionForm.medicine = prescribedMedicine.MedicineID;
         this.prescriptionForm.days = prescribedMedicine.NumberOfDays;
         this.prescriptionForm.dosage = [false, false, false];
-        this.myForm.get('medicine')?.setValue([this.getMedicineById(prescribedMedicine.MedicineID)])
+        this.myForm
+          .get('medicine')
+          ?.setValue([this.getMedicineById(prescribedMedicine.MedicineID)]);
         //morning
         if (
           prescribedMedicine.Dosages == 0 ||
@@ -604,7 +610,6 @@ export class ReportComponent implements OnInit {
   }
 
   getAllMasterDataForForms() {
-
     // get allsymptoms from service
     this.reportService.getAllSymptoms().subscribe(
       (s) => {
@@ -645,26 +650,26 @@ export class ReportComponent implements OnInit {
     this.vetService.getAllVets().subscribe(
       (v) => {
         //this.doctors = v;
-        v.forEach(doc => {
+        v.forEach((doc) => {
           this.doctors.push({
             VetId: doc.VetId,
             Name: doc.Name + ' - ' + doc.Speciality,
             PhoneNumber: doc.PhoneNumber,
             Speciality: doc.Speciality,
-            Photo: doc.Photo
-          })
+            Photo: doc.Photo,
+          });
         });
-        this.report.RecommendedDoctors.forEach(doctor => {
-          this.selectedDoctors.push(this.getDoctorById(doctor.DoctorID))
+        this.report.RecommendedDoctors.forEach((doctor) => {
+          this.selectedDoctors.push(this.getDoctorById(doctor.DoctorID));
         });
 
         let index: number = this.doctors.findIndex(
           (d) => d.VetId == parseInt(this.doctorId)
         );
         // remove doctor recommendation from report object
-        this.doctor = this.doctors[index]
+        this.doctor = this.doctors[index];
         this.doctors.splice(index, 1);
-        console.log(this.doctors)
+        console.log(this.doctors);
 
         // set the default selected values of the forms
         this.myForm = this.fb.group({
