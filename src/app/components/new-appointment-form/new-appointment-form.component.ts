@@ -106,6 +106,7 @@ export class NewAppointmentFormComponent implements OnInit {
       this.appointmentDetail.OwnerID = this.authService.getUIDFromToken();
     }
     else if (this.What_Flow == 'Doctor') {
+      this.route.navigate(['/home']);
       this.isDoctor = true;
       console.log("logged in as " + this.What_Flow);
       
@@ -123,9 +124,9 @@ export class NewAppointmentFormComponent implements OnInit {
         }
       });
 
-      // window.stop();
     }
     else {
+      this.route.navigate(['/home']);
       this.isReceptionist = true;
       console.log("logged in as " + this.What_Flow);
     }
