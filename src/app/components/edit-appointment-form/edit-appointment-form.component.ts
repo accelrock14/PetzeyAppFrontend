@@ -102,6 +102,7 @@ this.location.back();
       this.isOwner = true;
     }
     else if(this.What_Flow=='Doctor'){
+      this.route.navigate(['/home']);
       this.isDoctor = true;
       
         this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
@@ -116,6 +117,7 @@ this.location.back();
       
     }
     else{
+      this.route.navigate(['/home']);
       this.isReceptionist=true;
     }
 
