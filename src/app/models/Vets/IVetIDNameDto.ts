@@ -1,6 +1,6 @@
 export interface IVetIdNameDTO {
-    vetId: number;
-    name: string;
-    specialization: string;
-    photo: string;
+    VetId: number;
+    Name : string;
+    Specialization : string;
+    Photo: string;
   }
