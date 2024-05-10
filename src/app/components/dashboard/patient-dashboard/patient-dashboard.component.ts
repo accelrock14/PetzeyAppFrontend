@@ -8,6 +8,8 @@ import { DashboardService } from '../../../services/DashboardServices/dashboard.
 import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-appointment-card/doctor-appointment-card.component';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { AppointmentStatusCountsDto } from '../../../models/Dashboard/AppointmentStatusCountsDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IdFiltersDto';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -29,6 +31,17 @@ export class PatientDashboardComponent implements OnInit {
   selectedDate!: Date;
   page:number = 1;
   loadingAppointments: boolean = false;
+  appointmentStatus: AppointmentStatusCountsDto = {
+    Pending: 0,
+    Confirmed: 0,
+    Cancelled: 0,
+    Total: 0,
+    Closed: 0
+  }
+  ids : IDFiltersDto = {
+    DoctorID: '',
+    OwnerID: ''
+  };
 
   constructor(private service: DashboardService,public authService: AuthService) {}
   ngOnInit(): void {
@@ -38,6 +51,11 @@ export class PatientDashboardComponent implements OnInit {
       this.appointmentCards = data;
       this.loadingAppointments = false;
     })
+    this.ids.OwnerID = this.authService.getUIDFromToken();
+    this.service.GetStatusCounts(this.ids).subscribe(count => {
+      this.appointmentStatus = count;
+    })
+    
   }
 
   onDateStatusChange() {

@@ -4,6 +4,7 @@ import { FilterParamsDto } from '../../models/Dashboard/FilterParamsDto';
 import { Observable } from 'rxjs';
 import { AppointmentCardDto } from '../../models/Appointment/AppointmentCardDto';
 import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentStatusCountsDto';
+import { IDFiltersDto } from '../../models/Dashboard/IdFiltersDto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class DashboardService {
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/appointments/filter/${offset}`, filters);
   }
-  GetStatusCounts(vetid: string): Observable<AppointmentStatusCountsDto> {
-    return this.http.get<AppointmentStatusCountsDto>(`${this.apiUrl}/api/dashboard/statuscounts/${vetid}`);
+  GetStatusCounts(ids: IDFiltersDto): Observable<AppointmentStatusCountsDto> {
+    return this.http.post<AppointmentStatusCountsDto>(`${this.apiUrl}/api/dashboard/statuscounts/`,ids);
   }
   GetPatientAppointmentsWithFilters(filters: FilterParamsDto, offset: number, ownerid: string): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/petappointments/filter/${ownerid}/${offset}`, filters)
