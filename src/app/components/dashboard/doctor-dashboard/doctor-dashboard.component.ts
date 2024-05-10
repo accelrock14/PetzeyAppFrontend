@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVet } from '../../../models/Vets/IVet';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -40,6 +41,10 @@ export class DoctorDashboardComponent implements OnInit {
   page: number = 1;
   doctorIdFromNPI: string = "";
   loadingAppointments: boolean = false;
+  ids : IDFiltersDto = {
+    DoctorID: '',
+    OwnerID: ''
+  };
 
   constructor(private service: DashboardService, public authService: AuthService, private vetService: VetsserviceService) { }
   ngOnInit(): void {
@@ -51,12 +56,13 @@ export class DoctorDashboardComponent implements OnInit {
     this.vetService.getVetsByNPINumber(npi).subscribe(data => {
       doc = data;
       this.doctorIdFromNPI = String(doc.VetId);
+      this.ids.DoctorID = this.doctorIdFromNPI;
       console.log('doc', this.doctorIdFromNPI)
       this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(vet => {
         this.appointmentCards = vet;
         this.loadingAppointments = false;
       })
-      this.service.GetStatusCounts(this.doctorIdFromNPI).subscribe(count => {
+      this.service.GetStatusCounts(this.ids).subscribe(count => {
         this.appointmentStatus = count;
       })
      
@@ -71,6 +77,7 @@ export class DoctorDashboardComponent implements OnInit {
     this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
       this.appointmentCards = data;
       this.loadingAppointments = false;
+      console.log("filters" + this.appointmentStatus.Total);
     })
   }
 

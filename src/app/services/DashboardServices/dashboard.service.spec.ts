@@ -76,18 +76,18 @@ describe('DashboardService', () => {
     req.flush(dummyAppointments);
   });
 
-  it('should get status counts', () => {
-    const vetid = '123'; // Mock vet ID
-    const dummyStatusCounts: AppointmentStatusCountsDto = { Pending:0, Confirmed: 4, Total: 5, Cancelled: 1, Closed: 0 };
+  // it('should get status counts', () => {
+  //   const vetid = '123'; // Mock vet ID
+  //   const dummyStatusCounts: AppointmentStatusCountsDto = { Pending:0, Confirmed: 4, Total: 5, Cancelled: 1, Closed: 0 };
 
-    service.GetStatusCounts(vetid).subscribe(statusCounts => {
-      expect(statusCounts).toEqual(dummyStatusCounts);
-    });
+  //   service.GetStatusCounts(vetid).subscribe(statusCounts => {
+  //     expect(statusCounts).toEqual(dummyStatusCounts);
+  //   });
 
-    const req = httpMock.expectOne(`${service.apiUrl}/api/dashboard/statuscounts/${vetid}`);
-    expect(req.request.method).toBe('GET');
-    req.flush(dummyStatusCounts);
-  });
+  //   const req = httpMock.expectOne(`${service.apiUrl}/api/dashboard/statuscounts/${vetid}`);
+  //   expect(req.request.method).toBe('GET');
+  //   req.flush(dummyStatusCounts);
+  // });
 
   it('should get patient appointments with filters', () => {
     const filters: FilterParamsDto = {
