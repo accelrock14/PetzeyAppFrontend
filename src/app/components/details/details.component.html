@@ -104,6 +104,10 @@
           </div>
           <h4>Cancel Appointment</h4>
           <p>Are you sure you want to cancel this appointment?</p>
+          <div class="form-group">
+            <label for="cancellationReason">Reason for Cancellation</label>
+            <textarea class="form-control" id="cancellationReason" rows="3" [(ngModel)]="Reason_for_Cancellation_By_Doc"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal2()" style="background-color: white; color: black;">Cancel</button>
