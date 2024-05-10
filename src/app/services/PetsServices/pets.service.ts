@@ -7,6 +7,7 @@ import { NumberSymbol } from '@angular/common';
 import { petsServiceUrl } from '../../Shared/apiUrls';
 import { defaultEquals } from '@angular/core/primitives/signals';
 import { DYNAMIC_TYPE } from '@angular/compiler';
+import { IPetCardDto } from '../../models/Pets/IPetCardDto';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
@@ -19,7 +20,7 @@ export interface IPetsService{
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):void;
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
-  GetPetsByPetIDs(petIds:number[]): Observable<IPet[]>;
+  GetPetsByPetIDs(petIds:number[]): Observable<IPetCardDto[]>;
 }
 export let petToken = new InjectionToken<IPetsService>('IPetsToken')
 
@@ -79,8 +80,8 @@ export class PetsService implements IPetsService{
     return this.apiService.post<number>(apiUrl,petsFilter)
   }
 
-  GetPetsByPetIDs(petIds:number[]): Observable<IPet[]> {
+  GetPetsByPetIDs(petIds:number[]): Observable<IPetCardDto[]> {
     const apiUrl = `${petsServiceUrl}/getPetsByIDs`;
-    return this.apiService.post<IPet[]>(apiUrl,petIds)
+    return this.apiService.post<IPetCardDto[]>(apiUrl, petIds)
   }
 }
