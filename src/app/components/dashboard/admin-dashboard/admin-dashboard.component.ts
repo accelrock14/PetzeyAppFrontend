@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { VetDTO } from '../../../models/Vets/IVetDTO';
 import { AppointmentStatusCountsDto } from '../../../models/Dashboard/AppointmentStatusCountsDto';
-import { IDFiltersDto } from '../../../models/Dashboard/IdFiltersDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-admin-dashboard',

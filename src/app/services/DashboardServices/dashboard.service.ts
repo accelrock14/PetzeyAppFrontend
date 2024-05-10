@@ -4,7 +4,7 @@ import { FilterParamsDto } from '../../models/Dashboard/FilterParamsDto';
 import { Observable } from 'rxjs';
 import { AppointmentCardDto } from '../../models/Appointment/AppointmentCardDto';
 import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentStatusCountsDto';
-import { IDFiltersDto } from '../../models/Dashboard/IdFiltersDto';
+import { IDFiltersDto } from '../../models/Dashboard/IDFiltersDto';
 
 @Injectable({
   providedIn: 'root'

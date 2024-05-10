@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVet } from '../../../models/Vets/IVet';
-import { IDFiltersDto } from '../../../models/Dashboard/IdFiltersDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-doctor-dashboard',
