@@ -9,7 +9,7 @@ import { DoctorAppointmentCardComponent } from '../../appointment-cards/doctor-a
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentStatusCountsDto } from '../../../models/Dashboard/AppointmentStatusCountsDto';
-import { IDFiltersDto } from '../../../models/Dashboard/IdFiltersDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-patient-dashboard',
