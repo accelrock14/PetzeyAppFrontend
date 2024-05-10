@@ -26,6 +26,9 @@ export class DashboardService {
   GetVetAppointmentsWithFilters(filters: FilterParamsDto, offset: number, vetid: string): Observable<AppointmentCardDto[]> {
     return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/vetappointments/filter/${vetid}/${offset}`, filters)
   }
+  GetUpcomingAppointments(ids: IDFiltersDto): Observable<AppointmentCardDto[]>{
+    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/upcoming/`,ids);
+  }
 
 
   //service for pets team (appointment history)
