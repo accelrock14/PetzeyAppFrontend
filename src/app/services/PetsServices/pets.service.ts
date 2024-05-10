@@ -19,6 +19,7 @@ export interface IPetsService{
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):void;
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
+  GetPetsByPetIDs(petIds:number[]): Observable<IPet[]>;
 }
 export let petToken = new InjectionToken<IPetsService>('IPetsToken')
 
@@ -76,5 +77,10 @@ export class PetsService implements IPetsService{
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>{
     const apiUrl = `${petsServiceUrl}/filters/count`;
     return this.apiService.post<number>(apiUrl,petsFilter)
+  }
+
+  GetPetsByPetIDs(petIds:number[]): Observable<IPet[]> {
+    const apiUrl = `${petsServiceUrl}/getPetsByIDs`;
+    return this.apiService.post<IPet[]>(apiUrl,petIds)
   }
 }
