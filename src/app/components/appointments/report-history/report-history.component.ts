@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report-history',
@@ -19,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    RouterLink,
   ],
   templateUrl: './report-history.component.html',
   styleUrl: './report-history.component.css',
@@ -43,7 +45,7 @@ export class ReportHistoryComponent implements OnInit {
   constructor(
     private reportService: ReportService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     console.log(this.petId);
