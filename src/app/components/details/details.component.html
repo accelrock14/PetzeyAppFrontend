@@ -56,8 +56,10 @@
     </div>
     <div class="confirmed-by">
 
-      <p style="color:gray;" *ngIf="appointment.Status!=0">Confirmed by {{DoctorName}}</p>
+      <p style="color:gray;" *ngIf="appointment.Status!=0 && appointment.Status!=2">Confirmed by {{DoctorName}}</p>
+      <p style="color:maroon;" *ngIf="appointment.Status==2">Reason for cancellation: {{cancellation.Reason_for_cancellation}}</p>
     </div>
+
   </div>
 
 
@@ -104,7 +106,7 @@
           </div>
           <h4>Cancel Appointment</h4>
           <p>Are you sure you want to cancel this appointment?</p>
-          <div class="form-group">
+          <div *ngIf="!isPatient()" class="form-group">
             <label for="cancellationReason">Reason for Cancellation</label>
             <textarea class="form-control" id="cancellationReason" rows="3" [(ngModel)]="Reason_for_Cancellation_By_Doc"></textarea>
           </div>

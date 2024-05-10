@@ -151,8 +151,13 @@ export class DetailsComponent implements OnInit {
           console.log(this.DoctorName + ' DOC');
           
         }
-
-        
+        if(this.appointment.Status==2 ){
+        this.appointmentDetailsService.GetCancellationReason(parseInt(ID))
+        .subscribe((cancel: any) => {
+          this.cancellation = cancel;
+      });
+      console.log("cancelling "+this.cancellation.Reason_for_cancellation)
+    }
       });
 
     this.formModal = new window.bootstrap.Modal(
