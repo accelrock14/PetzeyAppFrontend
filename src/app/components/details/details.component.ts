@@ -40,7 +40,13 @@ declare var window: any;
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
 })
+
 export class DetailsComponent implements OnInit {
+GenerateReport() {
+this.isTobeGenerated=!this.isTobeGenerated
+console.log("hii")
+}
+isTobeGenerated:boolean=false;
   // parseToInt(arg0: string): number {
   //   return parseInt(arg0);
   // }
@@ -235,10 +241,12 @@ export class DetailsComponent implements OnInit {
               (updatedAppointment) => (this.appointment = updatedAppointment)
             );
             // reason for cancellation
+            if(!this.isPatient()){
             this.cancellation.Reason_for_cancellation=this.Reason_for_Cancellation_By_Doc;
             this.cancellation.AppointmentID=this.appointment.AppointmentID
             this.appointmentDetailsService
             .PostCancellationReason(this.cancellation).subscribe()
+            }
         },
         (error) => {
           console.log("error while closing modal")

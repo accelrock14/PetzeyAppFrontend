@@ -53,11 +53,12 @@
     <div class="reasons-for-visit d-flex flex-wrap">
       <h6>Reasons for visit:</h6>
       <p>{{ appointment.ReasonForVisit }}</p>
+      <button class="btn btn-outline-secondary" style="background-color: orangered;" *ngIf="appointment.Status==1 && isDoctor() && !isTobeGenerated" (click)="GenerateReport()">Generate Report</button>
     </div>
     <div class="confirmed-by">
 
       <p style="color:gray;" *ngIf="appointment.Status!=0 && appointment.Status!=2">Confirmed by {{DoctorName}}</p>
-      <p style="color:maroon;" *ngIf="appointment.Status==2">Reason for cancellation: {{cancellation.Reason_for_cancellation}}</p>
+      <p style="color:maroon;" *ngIf="appointment.Status==2 && cancellation.AppointmentID!=0">Reason for cancellation: {{cancellation.Reason_for_cancellation}}</p>
     </div>
 
   </div>
@@ -133,9 +134,8 @@
 </div>
 </div>
 
-
 @if(appointment.Report!=null){
-  <app-report [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF($event)"></app-report>
+  <app-report *ngIf="isTobeGenerated" [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF($event)"></app-report>
 
 }
 
