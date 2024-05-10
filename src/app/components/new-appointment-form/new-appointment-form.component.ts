@@ -25,6 +25,10 @@ declare var window: any;
   styleUrl: './new-appointment-form.component.css'
 })
 export class NewAppointmentFormComponent implements OnInit {
+  
+isFormValid():boolean {
+  return this.appointmentDetail.DoctorID!==''&&this.appointmentDetail.PetID!==0&&this.appointmentDetail.OwnerID!==''&&this.appointmentDetail.ScheduleTimeSlot!==0&&this.appointmentDetail.ReasonForVisit!=='';
+}
   GoBackSimply() {
     this.formModal.hide();
     this.cancelAptModal.hide();
@@ -56,8 +60,10 @@ export class NewAppointmentFormComponent implements OnInit {
     Report: null,
     PetIssues: []
   };
+
   slotStatuses: boolean[] = [];
   selectedScheduleDate: Date = new Date();
+  minDate:string='';
   selectedIndex: number | null = null;
 
   constructor(private aptService: AppointmentFormService, private route: Router, private routeTo: ActivatedRoute, private location: Location, private snackBar: MatSnackBar, private authService: AuthService,private vetService:VetsserviceService,private petService:PetsService) { }
@@ -130,6 +136,12 @@ export class NewAppointmentFormComponent implements OnInit {
       this.isReceptionist = true;
       console.log("logged in as " + this.What_Flow);
     }
+
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // getMonth() is zero-based
+    let dd = today.getDate();
+    this.minDate = `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}`;
 
     // modal popup code 
     this.formModal = new window.bootstrap.Modal(document.getElementById("myModalPopup"));
@@ -285,8 +297,8 @@ export class NewAppointmentFormComponent implements OnInit {
     });
   }
 
+  
   onDateChange() {
-    //alert("scheduled date"+this.selectedScheduleDate);
     this.appointmentDetail.ScheduleDate = this.selectedScheduleDate;
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {

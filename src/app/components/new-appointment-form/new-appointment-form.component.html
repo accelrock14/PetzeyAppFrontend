@@ -6,6 +6,7 @@
         <button class="btn" (click)="GoBackSimply()">Back to Appointments</button>
     </div>
     <h1>New Appointment</h1>
+    <small [hidden]="isFormValid()" class="text-danger"> *all fields are mandatory </small>
     <hr>
     <!-- {{ "time slot is "+appointmentDetail.ScheduleTimeSlot}} -->
     <div class="vet" *ngIf="!isDoctor">
@@ -31,11 +32,11 @@
     
     <div class="cal-slots-displayer" *ngIf="vetDateAndSlotPicker && inputForSelectingVet?.value?.length || isDoctor">
         <div>
-            <p class="text-secondary font-weight-bold">Select appointment schedule date</p>
+            <p class="text-secondary font-weight-bold">Select date for your appointment</p>
         </div>
 
         <div class="mydate-picker">
-            <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()">
+            <input type="date" class="date-inp" [(ngModel)]="selectedScheduleDate" (ngModelChange)="onDateChange()"[min]="minDate">
         </div>
         <div class="myslots">
             <div class="time-slots">
@@ -120,7 +121,7 @@
         <button class="btn btn-secondary cancel" (click)="openCancelModal()">Cancel</button>
         <!-- (click)="onBook(reasonforvisit.value)" -->
         <!-- [disabled]="isSubmitDisabled" -->
-        <button class="btn btn-primary bookappointment" (click)="openModal()">Book Appointment</button>
+        <button class="btn btn-primary bookappointment" (click)="openModal()"  [disabled]="!isFormValid()">Book Appointment</button>
     </div>
 </div>
 <hr>
