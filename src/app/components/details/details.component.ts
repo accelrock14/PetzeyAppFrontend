@@ -1,9 +1,11 @@
+import { PetsService } from './../../services/PetsServices/pets.service';
 import {
   Component,
   ElementRef,
   OnInit,
   QueryList,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import { AppointmentDetailsService } from '../../services/appointment-details.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
@@ -16,9 +18,15 @@ import { Status } from '../../models/Status';
 import { VetProfileApptComponent } from '../Vet/vet-profile-appt/vet-profile-appt.component';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { PetsService } from '../../services/PetsServices/pets.service';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
 import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
+import { ReportService } from '../../services/appointment/report.service';
+import { IReport } from '../../models/appoitment-models/Report';
+import { error } from 'jquery';
+import { ToastrService } from 'ngx-toastr';
+import { IPet } from '../../models/Pets/IPet';
+import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
+import { IVetProfileDTO } from '../../models/Vets/IVetProfileDto';
 
 declare var window: any;
 @Component({
@@ -98,32 +106,32 @@ export class DetailsComponent implements OnInit {
       .GetAppointmentDetail(parseInt(ID))
       .subscribe((appointment: any) => {
         this.appointment = appointment;
-        // if any other id entered other than patients appointment id, redirect to home 
+        // if any other id entered other than patients appointment id, redirect to home
         if (
           this.appointment.OwnerID != this.authService.getUIDFromToken() &&
           this.isPatient()
         ) {
           this.router.navigate(['/home']);
         }
-                
+
         if (appointment.DoctorID !== undefined || appointment.DoctorID !== '') {
           this.vetService
             .getVetById(parseInt(appointment.DoctorID))
-            .subscribe(
-              (doc) => {this.DoctorName = doc.FName + ' ' + doc.LName
-              console.log( doc.NPINumber +" ids  "+ this.authService.getVPIFromToken())
+            .subscribe((doc) => {
+              this.DoctorName = doc.FName + ' ' + doc.LName;
+              console.log(
+                doc.NPINumber + ' ids  ' + this.authService.getVPIFromToken()
+              );
               // currently logged in doctor can see only his/her appointment details
-              if( doc.NPINumber != this.authService.getVPIFromToken() &&
-              this.isDoctor()){
+              if (
+                doc.NPINumber != this.authService.getVPIFromToken() &&
+                this.isDoctor()
+              ) {
                 this.router.navigate(['/home']);
               }
-              }
-            );
+            });
           console.log(this.DoctorName + ' DOC');
-          
         }
-
-        
       });
 
     this.formModal = new window.bootstrap.Modal(
@@ -155,7 +163,7 @@ export class DetailsComponent implements OnInit {
   closeModal3() {
     this.formModal3.hide();
   }
-   /**
+  /**
    * Close the appointment by setting status to 'Closed'
    */
   closeAppointment() {
@@ -174,7 +182,7 @@ export class DetailsComponent implements OnInit {
             });
         },
         (error) => {
-          console.log("error while closing modal")
+          console.log('error while closing modal');
         }
       );
     this.prtSetvice.AddLastAppointmentDate(
@@ -190,7 +198,7 @@ export class DetailsComponent implements OnInit {
       .PatchAppointmentStatus(this.appointment.AppointmentID, 2)
       .subscribe(
         (response) => {
-          // Handle successful closing of appointment 
+          // Handle successful closing of appointment
           this.closeModal2();
 
           // this.confirmed=true;
@@ -202,7 +210,7 @@ export class DetailsComponent implements OnInit {
             );
         },
         (error) => {
-          console.log("error while closing modal")
+          console.log('error while closing modal');
         }
       );
   }
@@ -226,44 +234,55 @@ export class DetailsComponent implements OnInit {
             );
         },
         (error) => {
-          console.log("error while closing modal")
+          console.log('error while closing modal');
         }
       );
   }
-// Method to generate & download the pdf 
-  receivedMessage: string = '';
+  // Method to generate & download the pdf
 
-  async exportToPDF($event: string) {
-    const element = document.getElementById('all-appointment');
+  async exportToPDF() {
+    let doc = new jsPDF();
+    let report!: IReport;
+    let pet!: IPet;
+    let vet!: IVetProfileDTO;
 
-    if (!element) {
-      console.error(`Element with ID ${1} not found.`);
-      return;
-    }
+    const reportService = inject(ReportService);
+    const petService = inject(PetsService);
+    const vetService = inject(VetsserviceService);
+    const toastr = inject(ToastrService);
 
-    const appointmentTitleElement = document.querySelector(
-      '.appointment-heading'
-    ) as HTMLElement;
-    if (appointmentTitleElement) {
-      appointmentTitleElement.style.display = 'none'; // Hide the element
-    }
-    const canvas = await html2canvas(element);
-
-    const imgData = canvas.toDataURL('image/png');
-
-    const pdf = new jsPDF();
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    let position = 0;
-    console.log();
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-    pdf.addImage($event, 'PNG', 0, imgHeight + 2, pdfWidth, 150);
-
-    // Save PDF
-    pdf.save(
-      'report(appointmentID-' + this.appointment.AppointmentID + ')' + '.pdf'
+    petService.GetPetDetailsByID(this.appointment.PetID).subscribe(
+      (p) => {
+        pet = p;
+      },
+      (err) => {
+        toastr.error('Unbale to fetch the data. Pease try after sometime');
+      }
     );
+
+    vetService
+      .getVetById(parseInt(this.appointment.DoctorID) as number)
+      .subscribe(
+        (v) => {
+          vet = v;
+        },
+        (err) => {
+          toastr.error('Unbale to fetch the data. Pease try after sometime');
+        }
+      );
+
+    if (this.appointment.Report?.ReportID) {
+      reportService.getReport(this.appointment.Report?.ReportID).subscribe(
+        (d) => {
+          report = d;
+        },
+        (err) => {
+          toastr.error('Unbale to fetch the data. Pease try after sometime');
+        }
+      );
+    }
+
+    doc.text('sfsad', 10, 10);
+    doc.save(`report(appointmentID:${this.appointment.AppointmentID})`);
   }
 }

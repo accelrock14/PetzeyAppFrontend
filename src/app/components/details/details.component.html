@@ -41,7 +41,7 @@
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
 
             </span>
-          </div> 
+          </div>
         </div>
 
         <div class="pet-issues d-flex flex-wrap">
@@ -129,7 +129,7 @@
 
 
 @if(appointment.Report!=null){
-  <app-report [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF($event)"></app-report>
+  <app-report [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF()"></app-report>
 
 }
 
