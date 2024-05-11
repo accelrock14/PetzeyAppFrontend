@@ -529,7 +529,7 @@ export class ReportComponent implements OnInit {
   }
 
   // emit event to download the page as pdf
-  @Output() messageEvent = new EventEmitter<string>();
+  @Output() messageEvent = new EventEmitter();
 
   captureElementAsCanvas(element: any, index: number) {
     return html2canvas(element, {
@@ -552,79 +552,7 @@ export class ReportComponent implements OnInit {
   callToastThenExport() {
     this.toastr.info('Your PDF will be downloaded in sometime. Please wait !');
 
-    setTimeout(() => {
-      this.exportToPDF();
-    }, 30);
-  }
-
-  async exportToPDF() {
-    //  this.callInfoToast();
-    // const page = document.getElementById('elementToExport') as HTMLElement;
-
-    // Function to capture a specific element (e.g., a div) as a canvas
-    const doc = new jsPDF();
-    // Array to hold promises for each section capture
-    const sectionPromises: any = [];
-
-    // Define the div elements you want to capture (adjust as needed)
-    const divsToCapture = await document.querySelectorAll('.capture-section'); // Example: select divs with class "capture-section"
-
-    // Loop through each div to capture
-    for (var i = 0; i < 3; i++) {
-      const promise = await this.captureElementAsCanvas(divsToCapture[i], i);
-      sectionPromises.push(promise);
-    }
-
-    // divsToCapture.forEach((div) => {
-    //   const promise = this.captureElementAsCanvas(div);
-    //   sectionPromises.push(promise);
-    // });
-
-    // When all section captures are complete
-    await Promise.all(sectionPromises).then((sectionCanvases) => {
-      // Determine the total height needed for the final composite canvas
-      let totalHeight = 0;
-
-      totalHeight = sectionCanvases[0].height + sectionCanvases[2].height;
-
-      // sectionCanvases.forEach((canvas) => {
-      //   totalHeight += canvas.height;
-      // });
-
-      // Create a final composite canvas with the calculated dimensions
-      const compositeCanvas = document.createElement('canvas');
-      compositeCanvas.width = sectionCanvases[0].width * 2; // Assume all captured sections have the same width
-      compositeCanvas.height = totalHeight;
-
-      // Create a context for drawing on the composite canvas
-      const ctx = compositeCanvas.getContext('2d');
-      let yOffset = 0;
-      let xOffset = 0;
-
-      // Draw each captured section onto the composite canvas
-      for (var i = 0; i < 3; i++) {
-        ctx?.drawImage(sectionCanvases[i], xOffset, yOffset);
-        xOffset += sectionCanvases[i].width;
-
-        if (i == 1) {
-          yOffset += sectionCanvases[i].height;
-          xOffset = 0;
-        }
-      }
-      // sectionCanvases.forEach((canvas) => {
-      //   ctx?.drawImage(canvas, 0, yOffset);
-      //   yOffset += canvas.height;
-      // });
-
-      // Convert the composite canvas to a data URL (or use it as needed)
-      const imgData = compositeCanvas.toDataURL('image/png');
-      // console.log(imgData);
-
-      this.messageEvent.emit(imgData);
-
-      // doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
-      // doc.save('report.pdf');
-    });
+    this.messageEvent.emit();
   }
 
   // configure the multiselect form settings
