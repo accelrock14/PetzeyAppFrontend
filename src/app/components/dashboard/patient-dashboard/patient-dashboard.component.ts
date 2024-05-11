@@ -55,7 +55,7 @@ export class PatientDashboardComponent implements OnInit {
   }
   ids : IDFiltersDto = {
     DoctorID: '',
-    OwnerID: ''
+    OwnerID: '04e93d17-d3ba-4459-9fe9-a49692142617'
   };
   UpcomingappointmentCards: AppointmentCardDto[] = [];
   docids : number[] = [];
@@ -235,6 +235,6 @@ export class PatientDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.appointmentCards.length == 0;
+    return this.page == Math.ceil(this.appointmentStatus.Total/4);
 }
 }

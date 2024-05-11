@@ -57,7 +57,7 @@ export class DoctorDashboardComponent implements OnInit {
   doctorIdFromNPI: string = "";
   loadingAppointments: boolean = false;
   ids : IDFiltersDto = {
-    DoctorID: '',
+    DoctorID: '6',
     OwnerID: ''
   };
   
@@ -79,12 +79,12 @@ export class DoctorDashboardComponent implements OnInit {
     let npi: any = this.authService.getVPIFromToken()
     let doc: IVet;
     this.loadingAppointments = true;
-    this.vetService.getVetsByNPINumber(npi).subscribe(data => {
-      doc = data;
-      this.doctorIdFromNPI = String(doc.VetId);
-      this.ids.DoctorID = this.doctorIdFromNPI;
-      console.log(this.ids.DoctorID);
-      console.log('doc', this.doctorIdFromNPI)
+    // this.vetService.getVetsByNPINumber(npi).subscribe(data => {
+    //   doc = data;
+    //   this.doctorIdFromNPI = String(doc.VetId);
+    //   this.ids.DoctorID = this.doctorIdFromNPI;
+    //   console.log(this.ids.DoctorID);
+    //   console.log('doc', this.doctorIdFromNPI)
       this.getvetappointments();
 
 
@@ -167,10 +167,10 @@ export class DoctorDashboardComponent implements OnInit {
       })
       
       
-    })
+    // })
   }
   getvetappointments() {
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(vet => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "6").subscribe(vet => {
       this.appointmentCards = vet;
       this.loadingAppointments = false;
       this.appointmentCards.forEach(element => {

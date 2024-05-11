@@ -11,7 +11,8 @@ import { IDFiltersDto } from '../../models/Dashboard/IDFiltersDto';
 })
 export class DashboardService {
 
-  apiUrl: string = `https://petzeybackendappointmentapi20240505153736.azurewebsites.net`;
+  // apiUrl: string = `https://petzeybackendappointmentapi20240505153736.azurewebsites.net`;
+  apiUrl: string = `https://localhost:44327`;
 
   constructor(private http: HttpClient) { }
   GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
