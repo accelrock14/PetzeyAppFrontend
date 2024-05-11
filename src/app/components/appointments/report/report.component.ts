@@ -188,7 +188,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   enableEdit(): void {
     this.isEditing = true;
@@ -253,6 +253,7 @@ export class ReportComponent implements OnInit {
     var recommendedDoctor: RecommendedDoctor = {
       DoctorID: newDoctor.VetId.toString(),
       ID: 1,
+      Reason: ''
     };
     // add new doctor recommendation to report object
     this.report.RecommendedDoctors.push(recommendedDoctor);

@@ -29,7 +29,7 @@ export const routes: Routes = [
   { path: 'AdminDashboard/details/:id', component: DetailsComponent },
   { path: 'DoctorDashboard/details/:id', component: DetailsComponent },
   { path: 'PatientDashboard/details/:id', component: DetailsComponent },
-
+  { path: 'reporthistory', component: ReportHistoryComponent },
   {
     path: 'AdminDashboard',
     component: AdminDashboardComponent,
