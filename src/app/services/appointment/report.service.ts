@@ -6,30 +6,34 @@ import { Test } from '../../models/appoitment-models/Test';
 import { Symptom } from '../../models/appoitment-models/Symptom';
 import { PrescribedMedicine } from '../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../models/appoitment-models/Medicine';
-import { ReportHistoryDTO } from '../../models/appoitment-models/ReportHistoryDTO';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
-
+import { PetAppointmentHistoryDTO } from '../../models/appoitment-models/PetAppointmentHistoryDTO';
 
 export interface IReportService {
-  getReport(reportID: number): Observable<IReport>
-  getAllSymptoms(): Observable<Symptom[]>
-  getAllTests(): Observable<Test[]>
-  getAllMedicines(): Observable<Medicine[]>
-  getPetHistory(PetID: number): Observable<ReportHistoryDTO>
-  patchReport(id: number, report: IReport): Observable<any>
-  UpdatePrescription(id: number, PrescribedMedicine: PrescribedMedicine): Observable<any>
-  AddPrescription(prescriptionID: number, prescription: PrescribedMedicine): Observable<any>
-  DeletePrescription(prescribedMedicineID: number): Observable<any>
+  getReport(reportID: number): Observable<IReport>;
+  getAllSymptoms(): Observable<Symptom[]>;
+  getAllTests(): Observable<Test[]>;
+  getAllMedicines(): Observable<Medicine[]>;
+  getPetAppointmentHistory(PetID: number): Observable<PetAppointmentHistoryDTO>;
+  patchReport(id: number, report: IReport): Observable<any>;
+  UpdatePrescription(
+    id: number,
+    PrescribedMedicine: PrescribedMedicine
+  ): Observable<any>;
+  AddPrescription(
+    prescriptionID: number,
+    prescription: PrescribedMedicine
+  ): Observable<any>;
+  DeletePrescription(prescribedMedicineID: number): Observable<any>;
 }
 
-export let reportToken = new InjectionToken<IReportService>('IReportToken')
-
+export let reportToken = new InjectionToken<IReportService>('IReportToken');
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService implements IReportService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   reportURL: string = appointmentServiceUrl + 'api/appointment/';
 
@@ -47,9 +51,11 @@ export class ReportService implements IReportService {
     return this.http.get<Medicine[]>(this.reportURL + 'medicines');
   }
 
-  getPetHistory(PetID: number): Observable<ReportHistoryDTO> {
-    return this.http.get<ReportHistoryDTO>(
-      this.reportURL + 'reporthistory/' + PetID
+  getPetAppointmentHistory(
+    PetID: number
+  ): Observable<PetAppointmentHistoryDTO> {
+    return this.http.get<PetAppointmentHistoryDTO>(
+      this.reportURL + 'appointmenthistory/' + PetID
     );
   }
 
