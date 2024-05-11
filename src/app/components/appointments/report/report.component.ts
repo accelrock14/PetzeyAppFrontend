@@ -144,6 +144,11 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
+  recommendation: RecommendedDoctor = {
+    ID: 0,
+    DoctorID: '',
+    Reason: ''
+  }
   myForm!: FormGroup;
   ShowFilter = true;
   limitSelection = false;
@@ -159,6 +164,7 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
+  deleteRecommendationID: number = 0;
   isDoctor: boolean = true;
   isEditing = false;
   doctor!: IVetCardDTO;
@@ -248,24 +254,7 @@ export class ReportComponent implements OnInit {
     this.report.Tests.splice(index, 1);
   }
 
-  onSelectDoctor(doctor: ListItem) {
-    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
-    var recommendedDoctor: RecommendedDoctor = {
-      DoctorID: newDoctor.VetId.toString(),
-      ID: 1,
-      Reason: ''
-    };
-    // add new doctor recommendation to report object
-    this.report.RecommendedDoctors.push(recommendedDoctor);
-  }
-  onDeselectDoctor(doctor: ListItem) {
-    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
-    let index: number = this.report.RecommendedDoctors.findIndex(
-      (d) => d.DoctorID == newDoctor.VetId.toString()
-    );
-    // remove doctor recommendation from report object
-    this.report.RecommendedDoctors.splice(index, 1);
-  }
+
 
   getSymptomById(id: number): Symptom | undefined {
     return this.symptoms.find((s) => {
@@ -317,6 +306,10 @@ export class ReportComponent implements OnInit {
     this.deletePrescribedMedicineID = prescribedMedicineID;
   }
 
+  setDeleteRecommendation(recommendationID: number) {
+    this.deleteRecommendationID = recommendationID
+  }
+
   // delete the selected prescribed medicine
   confirmDeleteMedicine() {
     this.reportService
@@ -325,6 +318,17 @@ export class ReportComponent implements OnInit {
         this.reportService.getReport(this.reportId).subscribe((r) => {
           this.report = r;
           this.toastr.success('Medicine removed successfully');
+        });
+      });
+  }
+
+  confirmDeleteRecommendation() {
+    // api service to delete recommendation
+    this.reportService.DeleteRecommendation(this.deleteRecommendationID)
+      .subscribe((d) => {
+        this.reportService.getReport(this.reportId).subscribe((r) => {
+          this.report = r;
+          this.toastr.success('Recommendation removed successfully');
         });
       });
   }
@@ -392,6 +396,33 @@ export class ReportComponent implements OnInit {
       }
     }
   }
+
+  activateRecommendationModal(id: number) {
+    this.myForm.get('doctor')?.reset();
+    // reset the form if new medicine button was clicked
+    if (id == 0) {
+      this.recommendation.DoctorID = '0';
+      this.recommendation.ID = 0;
+      this.recommendation.Reason = ''
+    }
+    else {
+      // get the details of prescribed medicine selected
+      let recommendedDoctor: RecommendedDoctor | undefined =
+        this.report.RecommendedDoctors.find(
+          (d) => d.ID == id
+        );
+      //update the form values
+      if (recommendedDoctor != undefined) {
+        this.recommendation.Reason = recommendedDoctor.Reason
+        this.recommendation.DoctorID = recommendedDoctor.DoctorID
+        this.recommendation.ID = recommendedDoctor.ID
+        this.myForm
+          .get('doctor')
+          ?.setValue([this.getDoctorById(recommendedDoctor.DoctorID)]);
+      }
+    }
+  }
+
   updatePrescription() {
     let prescribedMedicine: PrescribedMedicine = {
       PrescribedMedicineID: 0,
@@ -470,9 +501,31 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  updateRecommendation() {
+    this.reportService.UpdateRecommendation(this.report.ReportID, this.recommendation)
+      .subscribe((d) => {
+        this.toastr.success('Recommendation updated successfully');
+        this.reportService.getReport(this.reportId).subscribe(
+          (r) => {
+            this.report = r;
+          },
+          (error) => {
+            this.toastr.error(
+              'Recommendation could not be updated, Please try after sometime'
+            );
+          }
+        );
+      });
+  }
+
   selectMedicine(medicine: ListItem) {
     let selectMed: Medicine = medicine as unknown as Medicine;
     this.prescriptionForm.medicine = selectMed.MedicineID;
+  }
+
+  onSelectDoctor(doctor: ListItem) {
+    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
+    this.recommendation.DoctorID = newDoctor.VetId.toString()
   }
 
   // emit event to download the page as pdf
