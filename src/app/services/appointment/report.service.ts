@@ -7,6 +7,7 @@ import { Symptom } from '../../models/appoitment-models/Symptom';
 import { PrescribedMedicine } from '../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../models/appoitment-models/Medicine';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
+import { RecommendedDoctor } from '../../models/appoitment-models/RecommendedDoctor';
 import { PetAppointmentHistoryDTO } from '../../models/appoitment-models/PetAppointmentHistoryDTO';
 
 export interface IReportService {
@@ -78,5 +79,20 @@ export class ReportService implements IReportService {
     return this.http.delete(
       this.reportURL + 'prescription/' + prescribedMedicineID
     );
+  }
+
+  DeleteRecommendation(recommendedDoctorID: number) {
+    return this.http.delete(this.reportURL + 'doctor/' + recommendedDoctorID);
+  }
+
+  AddRecommendation(reportID: number, recommendation: RecommendedDoctor) {
+    return this.http.post(
+      this.reportURL + 'doctor/' + reportID,
+      recommendation
+    );
+  }
+
+  UpdateRecommendation(id: number, recommendation: RecommendedDoctor) {
+    return this.http.put(this.reportURL + 'doctor', recommendation);
   }
 }
