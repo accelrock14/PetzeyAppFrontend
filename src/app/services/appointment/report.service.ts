@@ -15,7 +15,9 @@ export interface IReportService {
   getAllSymptoms(): Observable<Symptom[]>;
   getAllTests(): Observable<Test[]>;
   getAllMedicines(): Observable<Medicine[]>;
-  getPetAppointmentHistory(PetID: number): Observable<PetAppointmentHistoryDTO>;
+  getPetAppointmentHistory(
+    PetID: string
+  ): Observable<PetAppointmentHistoryDTO[]>;
   patchReport(id: number, report: IReport): Observable<any>;
   UpdatePrescription(
     id: number,
@@ -53,9 +55,9 @@ export class ReportService implements IReportService {
   }
 
   getPetAppointmentHistory(
-    PetID: number
-  ): Observable<PetAppointmentHistoryDTO> {
-    return this.http.get<PetAppointmentHistoryDTO>(
+    PetID: string
+  ): Observable<PetAppointmentHistoryDTO[]> {
+    return this.http.get<PetAppointmentHistoryDTO[]>(
       this.reportURL + 'appointmenthistory/' + PetID
     );
   }

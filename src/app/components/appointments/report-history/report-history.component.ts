@@ -7,8 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PetAppointmentHistoryDTO } from '../../../models/appoitment-models/PetAppointmentHistoryDTO';
+import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
+import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
+import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
 
 @Component({
   selector: 'app-report-history',
@@ -26,29 +29,34 @@ import { PetAppointmentHistoryDTO } from '../../../models/appoitment-models/PetA
   styleUrl: './report-history.component.css',
 })
 export class ReportHistoryComponent implements OnInit {
-  // pass the petID to get the pet's report history
-  @Input() petId: number = 1;
-
   selectedDate: Date | undefined;
-
-  petAppointmentHistory: PetAppointmentHistoryDTO = {
-    AppointmentID: 0,
-    DoctorID: '',
-    ReasonOfAppointment: '',
-    ScheduleDate: new Date(),
-  };
-  existingPrescriptions: any[] = [];
+  petAppointmentHistory: PetAppointmentHistoryDTO[] = [];
+  filteredAppointmentHistory: PetAppointmentHistoryDTO[] = [];
+  doctors: IVetProfileDTO[] = [];
+  petId!: string;
 
   constructor(
     private reportService: ReportService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private vetService: VetsserviceService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.petId);
+    this.petId = this.route.snapshot.paramMap.get('id')!;
+
     this.reportService.getPetAppointmentHistory(this.petId).subscribe(
       (h) => {
         this.petAppointmentHistory = h;
+        this.filteredAppointmentHistory = h;
+
+        for (let appointment of this.petAppointmentHistory) {
+          this.vetService
+            .getVetById(parseInt(appointment.DoctorID))
+            .subscribe((d) => {
+              this.doctors.push(d);
+            });
+        }
       },
       (error) => {
         this.toastr.error('Could not fetch data. Plese come after sometime');
@@ -57,5 +65,20 @@ export class ReportHistoryComponent implements OnInit {
   }
 
   // filter the report history based on selected date
-  onDateChange() {}
+  onDateChange() {
+    this.filteredAppointmentHistory = [];
+    for (let index = 0; index < this.petAppointmentHistory.length; index++) {
+      let curDate: Date = new Date(
+        this.petAppointmentHistory[index].ScheduleDate
+      );
+      if (curDate.toDateString() == this.selectedDate?.toDateString()) {
+        this.filteredAppointmentHistory.push(this.petAppointmentHistory[index]);
+      }
+    }
+  }
+
+  clearDate() {
+    this.selectedDate = undefined;
+    this.filteredAppointmentHistory = this.petAppointmentHistory;
+  }
 }
