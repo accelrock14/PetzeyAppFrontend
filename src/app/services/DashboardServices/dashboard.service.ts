@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FilterParamsDto } from '../../models/Dashboard/FilterParamsDto';
-import { Observable } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { AppointmentCardDto } from '../../models/Appointment/AppointmentCardDto';
 import { AppointmentStatusCountsDto } from '../../models/Dashboard/AppointmentStatusCountsDto';
 import { IDFiltersDto } from '../../models/Dashboard/IDFiltersDto';
