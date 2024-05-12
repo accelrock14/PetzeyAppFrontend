@@ -9,6 +9,8 @@ import { defaultEquals } from '@angular/core/primitives/signals';
 import { DYNAMIC_TYPE } from '@angular/compiler';
 import { IPetCardDto } from '../../models/Pets/IPetCardDto';
 import { IPetsFiltered } from '../../models/Pets/IPetsFiltered';
+import { Allergy } from '../../models/Pets/IAllergy';
+import { IPetAllergy } from '../../models/Pets/IPetAllergy';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
@@ -91,4 +93,27 @@ export class PetsService implements IPetsService{
     const apiUrl = `${petsServiceUrl}/getPetsByIDs`;
     return this.apiService.post<IPetCardDto[]>(apiUrl, petIds)
   }
+
+  GetAllAllergiesWithFilter (allergy:string): Observable<Allergy[]>{
+    const apiUrl = `${petsServiceUrl}/Allergies`;
+    return this.apiService.post<Allergy[]>(apiUrl, allergy);
+  }
+
+  GetPetAllergiesByPetID(PetID:number) : Observable<IPetAllergy[]>{
+    const apiUrl = `${petsServiceUrl}/PetAllergies/${PetID}`;
+    return this.apiService.get<IPetAllergy[]>(apiUrl);
+  }
+  
+  AddPetAllergy(PetAllergy:IPetAllergy):void {
+    const apiUrl = `${petsServiceUrl}/addPetAllergy`;
+    this.apiService.post(apiUrl, PetAllergy);
+  }
+
+  DeletePetAllergy(PetID:number):void{
+    const apiUrl = `${petsServiceUrl}/deletePetAllergy/${PetID}`;
+    this.apiService.delete(apiUrl);
+  }
+
+
+
 }
