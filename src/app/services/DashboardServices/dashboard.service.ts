@@ -15,8 +15,8 @@ export class DashboardService {
   apiUrl: string = `https://localhost:44327`;
 
   constructor(private http: HttpClient) { }
-  GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number): Observable<AppointmentCardDto[]> {
-    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/appointments/filter/${offset}`, filters);
+  GetAllAppointmentsWithFilters(filters: FilterParamsDto, offset: number, take: number): Observable<AppointmentCardDto[]> {
+    return this.http.post<AppointmentCardDto[]>(`${this.apiUrl}/api/dashboard/appointments/filter/${offset}/${take}`, filters);
   }
   GetStatusCounts(ids: IDFiltersDto): Observable<AppointmentStatusCountsDto> {
     return this.http.post<AppointmentStatusCountsDto>(`${this.apiUrl}/api/dashboard/statuscounts/`,ids);

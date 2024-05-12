@@ -22,6 +22,7 @@ export class AdminDashboardComponent implements OnInit {
   user:string = "Admin";
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
+  entriesPerPage: number = 5;
   selectedStatus: string = "";
   selectedDate: Date | null = null;
   selectedDoctor: string | null = null;
@@ -49,7 +50,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     //initial loading of appointments with empty filters
     this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset, this.entriesPerPage).subscribe(data => {
       this.appointmentCards = data;
       this.loadingAppointments = false;
     })
@@ -67,12 +68,11 @@ export class AdminDashboardComponent implements OnInit {
     //re setting the filters on filter changes
     this.page = 1;
     this.pageClick(this.page);
-    
   }
 
   pageClick(pageInput:number) {
     //set offset for pagination
-    this.offset = (pageInput-1)*4;
+    this.offset = (pageInput-1)*this.entriesPerPage;
     if(pageInput == this.page - 1){
       this.page--;
     }
@@ -84,7 +84,7 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
     this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset, this.entriesPerPage).subscribe(data => {
       this.appointmentCards = data;
       console.log(this.appointmentCards);
       this.loadingAppointments = false;
@@ -94,11 +94,6 @@ export class AdminDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.page == Math.ceil(this.appointmentCards[0].All/4);    
+    return this.page == Math.ceil(this.appointmentCards[0].All/this.entriesPerPage);    
 }
-
-
-
-
-
 }
