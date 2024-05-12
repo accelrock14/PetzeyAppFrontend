@@ -64,10 +64,10 @@ export class PetsListGridComponent implements OnInit {
         this.ReceptionistFlow();
       //}
 
-      // // Get All User Objects - Required To display the Pet Owner Details
-      // this.authService.getAllUserIDsandNames().subscribe(users => {
-      //   this.users = users
-      // })
+      // Get All User Objects - Required To display the Pet Owner Details
+      this.authService.getAllUserIDsandNames().subscribe(users => {
+        this.users = users
+      })
     }
 
   }
