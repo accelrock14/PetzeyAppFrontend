@@ -99,7 +99,7 @@
     @if(auth.isLoggedIn() && auth.getRoleFromToken() != "Owner") {
       <li class="sidebar-item">
         <a
-          routerLink="pets-list/1"
+          routerLink="petslist"
           class="sidebar-link"
           [class.selected]="isSelected('pets')"
         >

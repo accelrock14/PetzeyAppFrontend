@@ -69,7 +69,7 @@ describe('PetsListGridComponent', () => {
 
     component.itemsPerPage = itemsPerPage;
 
-    component.calculateTotalPages();
+    // component.calculateTotalPages();
     expect(component.totalPages).toEqual(expectedTotalPages);
 
     expect(getPetsCountSpy).toHaveBeenCalled();

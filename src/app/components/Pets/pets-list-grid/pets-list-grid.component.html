@@ -9,7 +9,7 @@
         class="form-control ms-2"
         id="filterBySpecies"
         [(ngModel)]="petsFilter.Species"
-        (ngModelChange)="filterPetsPerPage(currentPage)"
+        (ngModelChange)="onSelectFilters()"
       >
         <option value=""><i class="bi bi-filter"></i> All Species</option>
         <option *ngFor="let species of speciesOptions" [value]="species">
@@ -38,12 +38,14 @@
         id="title"
         [(ngModel)]="petsFilter.PetName"
         placeholder="Search Pets"
-        (ngModelChange)="filterPetsPerPage(currentPage)"
+        
+        (ngModelChange)="onSelectFilters()"
       />
     </div>
   </div>
 </div>
 <hr />
+
 <br />
 
 <div clas="row">
@@ -69,17 +71,29 @@
   <h5 class="text-muted">All Pets</h5>
 </div>
 <hr />
-
-
-  <div *ngIf="errorMessage == ''">
+<mat-paginator [length]="totalCount"
+              [showFirstLastButtons]="true"
+              [pageSize]="itemsPerPage"
+              [pageIndex]="'{{currentPage - 1}}'"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="handlePageEvent($event)"
+              aria-label="Select page">
+</mat-paginator>
+  <div *ngIf="errorMessage == ''" class="mt-3">
     <div class="row">
       @for(pet of pets; track $index){
       <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
+        <app-pet-card  [pet]="pet" [petOwner]="pet.PetParentID"></app-pet-card>
       </div>
       }
     </div>
-
+    <!-- <div class="row">
+      
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let pet of pets">
+        <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
+      </div>
+      
+    </div> -->
 
   <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
     {{ errorMessage }}
@@ -87,24 +101,24 @@
 </div>
 <br />
 <!-- Pagination -->
-<nav aria-label="Page navigation" *ngIf="totalPages > 0">
+<!-- <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     <li class="page-item" [class.disabled]="currentPage === 1">
-      <a class="page-link" (click)="prevPage()">Previous</a>
+      <a class="page-link" (click)="goToPreviousPage()">Previous</a>
     </li>
     <li
       class="page-item"
-      *ngFor="let page of pages"
+      *ngFor="let page of pageNumbers"
       [class.active]="currentPage === page"
     >
-      <a class="page-link" (click)="updateRoute(page)">{{ page }}</a>
+      <a class="page-link" (click)="goToPage('{{page}}')">{{ page }}</a>
     </li>
     <li
       class="page-item"
       [class.disabled]="currentPage >= pages[pages.length - 1]"
     >
-      <a class="page-link" (click)="nextPage()">Next</a>
+      <a class="page-link" (click)="goToNextPage()">Next</a>
     </li>
   </ul>
-</nav>
+</nav> -->
 <!-- End of Pagination -->
