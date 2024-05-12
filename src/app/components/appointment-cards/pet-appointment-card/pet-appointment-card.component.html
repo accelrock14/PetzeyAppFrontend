@@ -22,10 +22,10 @@
             <h6 class="card-text card-content" style="font-size: 0.9rem;">{{ appointmentcard.ScheduleDate| date: 'mediumDate' }}</h6>
             <h6 class="card-text card-content" style="font-size: 0.9rem;">{{ appointmentcard.ScheduleDate | date: 'hh:mm:a'}}</h6>
         </div>
-        <div class=" container-box col-md-7 col-12 d-flex align-items-center justify-content-between card-content">
-                <button class="btn" (click)="openPopup('Chat')"><i class="far fa-comment" style="color: orange;"></i></button>
-                <button class="btn" (click)="openPopup('Phone')"><i class="fas fa-phone" style="color: orange;"></i></button>
-                <button class="btn" (click)="openPopup('Video')"><i class="fas fa-video" style="color: orange;"></i></button>
+        <div class=" container-box col-md-7 flex-wrap col-12 d-flex align-items-center justify-content-between card-content">
+                <button class="btn p-0" (click)="openPopup('Chat')"><i class="far fa-comment" style="color: orange;"></i></button>
+                <button class="btn p-0" (click)="openPopup('Phone')"><i class="fas fa-phone" style="color: orange;"></i></button>
+                <button class="btn p-0" (click)="openPopup('Video')"><i class="fas fa-video" style="color: orange;"></i></button>
     </div>
     </div>                
     <div class="card-body">
