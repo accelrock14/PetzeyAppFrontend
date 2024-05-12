@@ -164,7 +164,7 @@
                 <td>{{ appointment.OwnerName }}</td>
                 <td>{{ appointment.Status }}</td>
                 <td>{{ appointment.ScheduleDate | date: 'mediumDate'}} at {{ appointment.ScheduleDate | date: 'hh:mm:a'}}</td>
-                <td> <a [routerLink]="'/' + user + 'Dashboard/details/' + appointment.AppointmentID" class="btn">Details</a></td>
+                <td> <a [routerLink]="'/' + user + 'Dashboard/details/' + appointment.AppointmentID" class="btn btn-orange">Details</a></td>
             </tr>
         </tbody>
     </table>
