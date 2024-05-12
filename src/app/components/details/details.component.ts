@@ -256,7 +256,7 @@ export class DetailsComponent implements OnInit {
         pet = p;
       },
       (err) => {
-        toastr.error('Unbale to fetch the data. Pease try after sometime');
+        toastr.error('Unbale to fetch the data. Please try after sometime');
       }
     );
 
@@ -267,7 +267,7 @@ export class DetailsComponent implements OnInit {
           vet = v;
         },
         (err) => {
-          toastr.error('Unbale to fetch the data. Pease try after sometime');
+          toastr.error('Unbale to fetch the data. Please try after sometime');
         }
       );
 
@@ -277,12 +277,124 @@ export class DetailsComponent implements OnInit {
           report = d;
         },
         (err) => {
-          toastr.error('Unbale to fetch the data. Pease try after sometime');
+          toastr.error('Unbale to fetch the data. Please try after sometime');
         }
       );
     }
 
-    doc.text('sfsad', 10, 10);
+    doc.text('Report', 100, 10);
+    doc.line(100, 12, 118, 12);
+
+    doc.setFontSize(10);
+
+    // appointment details
+    doc.text(`AppointmentID:- #${this.appointment.AppointmentID}`, 10, 20);
+    doc.text(
+      `Date and Time:- ${this.appointment.ScheduleDate.toDateString()}, ${this.appointment.ScheduleDate.toLocaleTimeString()}`,
+      138,
+      20
+    );
+    doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
+    doc.line(10, 26, 203, 26);
+
+    // pet details
+    doc.setFontSize(14);
+    doc.text('Pet details:-', 10, 34);
+    doc.setFontSize(10);
+    doc.text(`Name: ${pet.PetName}`, 15, 40);
+    doc.text(`Gender: ${pet.Gender}`, 15, 44);
+    doc.text(`Species & Breed: ${pet.Species}, ${pet.Breed}`, 15, 48);
+    doc.text(`Blood group: ${pet.BloodGroup}`, 15, 52);
+
+    // vet details
+    doc.setFontSize(14);
+    doc.text('Vet details:-', 110, 34);
+    doc.setFontSize(10);
+    doc.text(`Name: ${vet.FName + ' ' + vet.LName}`, 115, 40);
+    doc.text(`Specility: ${vet.Speciality}`, 115, 44);
+    doc.text(`Email: ${vet.Email}`, 115, 48);
+    doc.text(`Ph no.: ${vet.Phone}`, 115, 52);
+
+    let y = 52;
+    // Prescribed Medicine
+    doc.setFontSize(14);
+    y += 14;
+    doc.text('Prescribed Medicines:-', 10, y);
+    doc.setFontSize(10);
+    y += 6;
+    let PrescribedMedicines = report.Prescription.PrescribedMedicines;
+    for (let i = 0; i < PrescribedMedicines.length; i++) {
+      doc.text(
+        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
+          PrescribedMedicines[i].NumberOfDays
+        } \t Consume: ${
+          PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
+        } \t Dosage: ${getDosage(PrescribedMedicines[i].Dosages)}`,
+        15,
+        y
+      );
+      y += 4;
+      doc.text(`Comment: ${PrescribedMedicines[i].Comment}`, 19, y);
+      y += 8;
+    }
+
+    //Tests
+    doc.setFontSize(14);
+    y += 6;
+    doc.text('Tests:-', 10, y);
+    let tests = report.Tests.map((t) => t.Test?.TestName);
+
+    doc.setFontSize(10);
+    let testLine = tests.join(', ');
+    y += 6;
+    doc.text(testLine, 15, y);
+
+    // Symptoms
+    doc.setFontSize(14);
+    y += 14;
+    doc.text('Symptoms:-', 10, y);
+    let symptoms = report.Symptoms.map((s) => s.Symptom?.SymptomName);
+
+    doc.setFontSize(10);
+    let symptomsLine = symptoms.join(', ');
+    y += 6;
+    doc.text(symptomsLine, 15, y);
+
+    // Recommended doctors
+    doc.setFontSize(14);
+    y += 14;
+    doc.text('Recommended doctors:-', 10, y);
+    doc.setFontSize(10);
+    y += 6;
+
+    for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+      doc.text(
+        `1. Dr. Pal Manikuk (diet) \t Doctor@gmail.com \t 9113808136`,
+        15,
+        y
+      );
+      y += 4;
+      doc.text('Reason: Consult for Heart', 19, y);
+      y += 8;
+    }
+
     doc.save(`report(appointmentID:${this.appointment.AppointmentID})`);
   }
+}
+function getDosage(Dosages: number) {
+  const timePeriods = ['Morning', 'Afternoon', 'Night'];
+
+  const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
+
+  const selectedPeriods = [];
+
+  for (let i = 0; i < binaryString.length; i++) {
+    if (binaryString[i] === '1') {
+      selectedPeriods.push(timePeriods[i]);
+    }
+  }
+
+  const result = selectedPeriods.join(', ');
+
+  return result;
 }
