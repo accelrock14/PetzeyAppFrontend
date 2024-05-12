@@ -91,17 +91,23 @@
     </div>
 </div>
 <br>
-<h3 class="heading ms-3">Upcoming appointments</h3>
-<div class="container mt-4">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
-        <div class="col mb-4" *ngFor="let appointment of UpcomingappointmentCards">
-            <app-doctor-appointment-card [appointmentcard]="appointment" [user]="user"></app-doctor-appointment-card>
-        </div>
-    </div><hr>
-</div>
 <div class="container">
+    <h3 class="heading ms-3">Upcoming appointments</h3>
+    <div class="container">
+        <hr>
+        <div class="scrolling-wrapper row flex-row flex-nowrap pb-4">
+            <div class="col mb-4" *ngFor="let appointment of UpcomingappointmentCards">
+                <div class="card1 appointment-card">
+                    <!-- Add your appointment card content here -->
+                    <app-doctor-appointment-card [appointmentcard]="appointment" [user]="user"></app-doctor-appointment-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-3 mt-4 col-sm-12">
             <h3 class="heading">All appointments</h3>
         </div>
         <div class=" container-box col-md-3 col-sm-6 d-flex align-items-center justify-content-center"> 
