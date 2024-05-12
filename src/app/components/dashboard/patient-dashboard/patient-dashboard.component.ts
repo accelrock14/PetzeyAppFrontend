@@ -204,14 +204,8 @@ export class PatientDashboardComponent implements OnInit {
   }
 
   onDateStatusChange() {
-    //re setting the filters on filter changes
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.loadingAppointments = true;
-    this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
-      this.appointmentCards = data;
-      this.loadingAppointments = false;
-    })
+    this.page = 1;
+    this.pageClick(this.page);
   }
   pageClick(pageInput:number) {
     //set offset for pagination
@@ -235,6 +229,6 @@ export class PatientDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.page == Math.ceil(this.appointmentStatus.Total/4);
+    return this.page == Math.ceil(this.appointmentCards[0].All/4);    
 }
 }

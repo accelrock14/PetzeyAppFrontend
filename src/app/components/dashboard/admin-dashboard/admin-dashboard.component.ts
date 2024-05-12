@@ -65,16 +65,8 @@ export class AdminDashboardComponent implements OnInit {
 
   onDateStatusDoctorChange() {
     //re setting the filters on filter changes
-    this.filters.DoctorID = this.selectedDoctor;
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    console.log(this.filters);
-    this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
-      this.appointmentCards = data;
-      console.log(this.appointmentCards);
-      this.loadingAppointments = false;
-    })
+    this.page = 1;
+    this.pageClick(this.page);
     
   }
 
@@ -102,7 +94,7 @@ export class AdminDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.appointmentCards.length == 0;
+    return this.page == Math.ceil(this.appointmentCards[0].All/4);    
 }
 
 

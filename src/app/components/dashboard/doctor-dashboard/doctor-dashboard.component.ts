@@ -233,16 +233,8 @@ export class DoctorDashboardComponent implements OnInit {
   }
 
   onDateStatusChange() {
-    //re setting the filters on filter changes
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    this.loadingAppointments = true;
-    // this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(data => {
-    //   this.appointmentCards = data;
-    //   this.loadingAppointments = false;
-    //   console.log("filters" + this.appointmentStatus.Total);
-    // })
-    this.getvetappointments();
+    this.page = 1;
+    this.pageClick(this.page);
   }
 
   pageClick(pageInput: number) {
@@ -268,6 +260,6 @@ export class DoctorDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.page == Math.ceil(this.appointmentStatus.Total/4);
+    return this.page == Math.ceil(this.appointmentCards[0].All/4);    
   }
 }

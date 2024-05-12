@@ -14,4 +14,6 @@ export interface AppointmentCardDto {
     ScheduleDate: Date;
     //added status for filtering in UI rather than backend
     Status: string;
+    //total number of appointments
+    All: number;
 }
