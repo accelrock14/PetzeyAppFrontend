@@ -5,9 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedbackService } from '../../../services/feedback.service';
-import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
+import { DoctorRating, Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { ToastrService } from 'ngx-toastr';
+import { AppointmentDetail } from '../../../models/AppointmentDetail';
+import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
 
 @Component({
   selector: 'app-doctor-appointment-card',
@@ -42,11 +44,30 @@ openPopup(arg0: string) {
   @Input()
   user!:string;
 
-  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private toastservice:ToastrService){}
+  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private toastservice:ToastrService,private appservice:AppointmentFormService){}
 
 selectedappointmentid:number=0;
 showmodal:boolean=false;
 feedbacklist:Feedback[]=[];
+appointment:AppointmentDetail={
+  AppointmentID: 0,
+  DoctorID: '',
+  PetID: 0,
+  OwnerID: '',
+  ScheduleDate: new Date(),
+  ScheduleTimeSlot: 0,
+  BookingDate: new Date(),
+  ReasonForVisit: '',
+  Status: 0,
+  Report: null,
+  PetIssues: []
+}
+doctorRating:DoctorRating={
+  DoctorRatingId: 0,
+  DoctorId: "",
+  AppointmentId: 0,
+  AvgRating: 0
+}
   clicked(obj: number) {
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
@@ -81,11 +102,7 @@ feedbacklist:Feedback[]=[];
            Rating: 0
          }));
        })
-      //  this.feedback.Questions = this.feedbackquestions.map(question => ({
-      //        QuestionId:0,
-      //        FeedbackQuestionId: question.FeedbackQuestionId,
-      //        Rating: 0
-      //      }));
+      
 
       this.service.getAllFeedback().subscribe((f)=>{
         this.feedbacklist=f;
@@ -125,6 +142,20 @@ feedbacklist:Feedback[]=[];
        this.service.getAllFeedback().subscribe((f)=>{
               this.feedbacklist=f;
              })
+
+      this.appservice.getAppointmentById(this.service.selectedid).subscribe((app)=>{
+        this.appointment=app;
+      })
+      this.doctorRating.AppointmentId=this.service.selectedid;
+      this.doctorRating.DoctorId=this.appointment.DoctorID;
+      feedbackToSubmit.Questions.forEach(element => {
+        this.doctorRating.AvgRating+=element.Rating;
+      });
+      this.doctorRating.AvgRating=this.doctorRating.AvgRating/feedbackToSubmit.Questions.length;
+      this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
+
+      })
+      
          
          }
          
