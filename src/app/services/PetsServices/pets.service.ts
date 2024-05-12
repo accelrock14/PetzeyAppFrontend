@@ -8,10 +8,12 @@ import { petsServiceUrl } from '../../Shared/apiUrls';
 import { defaultEquals } from '@angular/core/primitives/signals';
 import { DYNAMIC_TYPE } from '@angular/compiler';
 import { IPetCardDto } from '../../models/Pets/IPetCardDto';
+import { IPetsFiltered } from '../../models/Pets/IPetsFiltered';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
   FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
+  FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>;
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
   AddPet(petToBeAdded:IPet):Observable<IPet>;
@@ -41,6 +43,11 @@ export class PetsService implements IPetsService{
   FilterPets(petfilters: IPetFilterParams): Observable<IPet[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filter`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
+  }
+
+  FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>{
+    const apiUrlFilterPets = `${petsServiceUrl}/filter/1?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.apiService.post<IPetsFiltered>(apiUrlFilterPets, petfilters);
   }
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
