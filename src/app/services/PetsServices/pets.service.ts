@@ -14,7 +14,7 @@ import { IPetAllergy } from '../../models/Pets/IPetAllergy';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
-  FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
+  FilterPets(petfilters:IPetFilterParams):Observable<number[]>;
   FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>;
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
@@ -42,9 +42,9 @@ export class PetsService implements IPetsService{
     const apiUrlGetAllPets = `${petsServiceUrl}`;
     return this.apiService.get<IPet[]>(apiUrlGetAllPets);
   }
-  FilterPets(petfilters: IPetFilterParams): Observable<IPet[]> {
+  FilterPets(petfilters: IPetFilterParams): Observable<number[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filter`;
-    return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
+    return this.apiService.post<number[]>(apiUrlFilterPets, petfilters);
   }
 
   FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>{
