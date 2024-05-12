@@ -46,7 +46,7 @@ export class PetsService implements IPetsService{
   }
 
   FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>{
-    const apiUrlFilterPets = `${petsServiceUrl}/filter/1?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const apiUrlFilterPets = `${petsServiceUrl}/filter/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPetsFiltered>(apiUrlFilterPets, petfilters);
   }
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]> {

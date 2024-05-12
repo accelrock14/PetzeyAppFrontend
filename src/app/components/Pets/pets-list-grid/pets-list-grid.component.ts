@@ -65,9 +65,9 @@ export class PetsListGridComponent implements OnInit {
       //}
 
       // Get All User Objects - Required To display the Pet Owner Details
-      this.authService.getAllUserIDsandNames().subscribe(users => {
-        this.users = users
-      })
+      // this.authService.getAllUserIDsandNames().subscribe(users => {
+      //   this.users = users
+      // })
     }
 
   }
