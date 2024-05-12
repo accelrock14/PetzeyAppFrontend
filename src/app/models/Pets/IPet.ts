@@ -9,6 +9,7 @@ export interface IPet {
     Gender:string,
     Neutered : boolean,
     DateOfBirth:Date,
-    Allergies:string,
-    LastAppointmentDate:Date
+    // Allergies:string,
+    // LastAppointmentDate:Date
+    IsDeleted:boolean
 }

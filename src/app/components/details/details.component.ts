@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  NgModule,
   OnInit,
   QueryList,
   ViewChildren,
@@ -19,7 +20,9 @@ import html2canvas from 'html2canvas';
 import { PetsService } from '../../services/PetsServices/pets.service';
 import { AuthService } from '../../services/UserAuthServices/auth.service';
 import { VetsserviceService } from '../../services/VetsServices/vetsservice.service';
-
+import { Cancellation } from '../../models/Cancellation';
+import { NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 declare var window: any;
 @Component({
   selector: 'app-details',
@@ -32,11 +35,18 @@ declare var window: any;
     ReportComponent,
     AppointmentPetProfileComponent, //pet
     VetProfileApptComponent, //vet
+    FormsModule
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
 })
+
 export class DetailsComponent implements OnInit {
+GenerateReport() {
+this.isTobeGenerated=!this.isTobeGenerated
+console.log("hii")
+}
+isTobeGenerated:boolean=false;
   // parseToInt(arg0: string): number {
   //   return parseInt(arg0);
   // }
@@ -54,6 +64,11 @@ export class DetailsComponent implements OnInit {
     Report: null,
     PetIssues: [],
   };
+  cancellation:Cancellation={
+    CancellationId: 0,
+    AppointmentID: 0,
+    Reason_for_cancellation: ''
+  }
   //Modal 1 for close appointment
   formModal: any;
   //Modal 2 for cancel appointment
@@ -91,7 +106,27 @@ export class DetailsComponent implements OnInit {
     return role === 'Receptionist';
   }
   DoctorName: string = '';
+
+  // What_Flow: string = '';
+  // is_Receptionist: boolean = false;
+  // is_Doctor: boolean = false;
+  // is_Owner: boolean = false;
+ 
+  Reason_for_Cancellation_By_Doc:string='';
   ngOnInit(): void {
+
+    // this.What_Flow = this.authService.getRoleFromToken() as string;
+    // console.log(" current user is " + this.What_Flow);
+    // if (this.What_Flow == 'Owner') {
+    //   this.is_Owner = true;
+    // }
+    // else if(this.What_Flow == 'Doctor'){
+    //   this.is_Doctor = true;
+    // }
+    // else{
+    //   this.is_Receptionist=true;
+    // }
+
     const ID: string = this.route.snapshot.paramMap.get('id')!;
 
     this.appointmentDetailsService
@@ -122,8 +157,13 @@ export class DetailsComponent implements OnInit {
           console.log(this.DoctorName + ' DOC');
           
         }
-
-        
+        if(this.appointment.Status==2 ){
+        this.appointmentDetailsService.GetCancellationReason(parseInt(ID))
+        .subscribe((cancel: any) => {
+          this.cancellation = cancel;
+      });
+      console.log("cancelling "+this.cancellation.Reason_for_cancellation)
+    }
       });
 
     this.formModal = new window.bootstrap.Modal(
@@ -200,6 +240,13 @@ export class DetailsComponent implements OnInit {
             .subscribe(
               (updatedAppointment) => (this.appointment = updatedAppointment)
             );
+            // reason for cancellation
+            if(!this.isPatient()){
+            this.cancellation.Reason_for_cancellation=this.Reason_for_Cancellation_By_Doc;
+            this.cancellation.AppointmentID=this.appointment.AppointmentID
+            this.appointmentDetailsService
+            .PostCancellationReason(this.cancellation).subscribe()
+            }
         },
         (error) => {
           console.log("error while closing modal")

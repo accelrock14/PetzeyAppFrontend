@@ -8,6 +8,8 @@ import { DashboardService } from '../../../services/DashboardServices/dashboard.
 import { RouterLink } from '@angular/router';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { VetDTO } from '../../../models/Vets/IVetDTO';
+import { AppointmentStatusCountsDto } from '../../../models/Dashboard/AppointmentStatusCountsDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -28,6 +30,17 @@ export class AdminDashboardComponent implements OnInit {
     Status: "",
     DoctorID: null
   };
+  appointmentStatus: AppointmentStatusCountsDto = {
+    Pending: 0,
+    Confirmed: 0,
+    Cancelled: 0,
+    Total: 0,
+    Closed: 0
+  }
+  ids : IDFiltersDto = {
+    DoctorID: '',
+    OwnerID: ''
+  };
   page:number = 1;
   doctorsList: VetDTO[] = [];
   loadingAppointments: boolean = false;
@@ -44,6 +57,10 @@ export class AdminDashboardComponent implements OnInit {
       this.doctorsList = data;
       console.log(this.doctorsList);
     })
+    this.service.GetStatusCounts(this.ids).subscribe(count => {
+      this.appointmentStatus = count;
+    })
+    
   }
 
   onDateStatusDoctorChange() {
