@@ -11,6 +11,7 @@ import { IPetCardDto } from '../../models/Pets/IPetCardDto';
 import { IPetsFiltered } from '../../models/Pets/IPetsFiltered';
 import { Allergy } from '../../models/Pets/IAllergy';
 import { IPetAllergy } from '../../models/Pets/IPetAllergy';
+import { IPetAndAllergy } from '../../models/Pets/IPetAndAllergy';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
@@ -18,7 +19,7 @@ export interface IPetsService{
   FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>;
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
-  AddPet(petToBeAdded:IPet):Observable<IPet>;
+  AddPet(petToBeAdded:IPetAndAllergy):Observable<IPet>;
   EditPet(petToBeEdited:IPet):Observable<IPet>;
   GetPetsByParentID(petParentID:string):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
@@ -61,7 +62,7 @@ export class PetsService implements IPetsService{
     return this.apiService.get<IPet>(apiUrlGetPetDetailsByID);
   }
  
-  AddPet(petToBeAdded: IPet): Observable<IPet> {
+  AddPet(petToBeAdded: IPetAndAllergy): Observable<IPet> {
     const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
   }
@@ -94,9 +95,9 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPetCardDto[]>(apiUrl, petIds)
   }
 
-  GetAllAllergiesWithFilter (allergy:string): Observable<Allergy[]>{
-    const apiUrl = `${petsServiceUrl}/Allergies`;
-    return this.apiService.post<Allergy[]>(apiUrl, allergy);
+  GetAllAllergies(): Observable<Allergy[]>{
+    const apiUrl = `https://localhost:44374/api/pets/Allergies`;
+    return this.apiService.get<Allergy[]>(apiUrl);
   }
 
   GetPetAllergiesByPetID(PetID:number) : Observable<IPetAllergy[]>{
@@ -104,16 +105,5 @@ export class PetsService implements IPetsService{
     return this.apiService.get<IPetAllergy[]>(apiUrl);
   }
   
-  AddPetAllergy(PetAllergy:IPetAllergy):void {
-    const apiUrl = `${petsServiceUrl}/addPetAllergy`;
-    this.apiService.post(apiUrl, PetAllergy);
-  }
-
-  DeletePetAllergy(PetID:number):void{
-    const apiUrl = `${petsServiceUrl}/deletePetAllergy/${PetID}`;
-    this.apiService.delete(apiUrl);
-  }
-
-
 
 }
