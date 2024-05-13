@@ -374,11 +374,23 @@ export class DetailsComponent implements OnInit {
     // appointment details
     doc.text(`AppointmentID:- #${this.appointment.AppointmentID}`, 10, 20);
     doc.text(
-      `Date and Time:- ${this.appointment.ScheduleDate.toDateString}, ${this.appointment.ScheduleDate.toLocaleTimeString}`,
+      `Date:- ${new Date(this.appointment.ScheduleDate).toDateString()}`,
       138,
       20
     );
-    doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
+    if (
+      this.appointment.ReasonForVisit == null ||
+      this.appointment.ReasonForVisit == ''
+    ) {
+      doc.text(`Reason:- (not mentioned)`, 10, 24);
+    } else {
+      doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
+    }
+    doc.text(
+      `Time:- ${new Date(this.appointment.ScheduleDate).toLocaleTimeString()}`,
+      138,
+      24
+    );
     doc.line(10, 26, 203, 26);
 
     // pet details
@@ -421,6 +433,10 @@ export class DetailsComponent implements OnInit {
       doc.text(`Comment: ${PrescribedMedicines[i].Comment}`, 19, y);
       y += 8;
     }
+    if (PrescribedMedicines.length == 0) {
+      doc.text('-- No Medicines Prescribed --', 15, y);
+      y += 8;
+    }
 
     //Tests
     doc.setFontSize(14);
@@ -431,7 +447,11 @@ export class DetailsComponent implements OnInit {
     doc.setFontSize(10);
     let testLine = tests.join(', ');
     y += 6;
-    doc.text(testLine, 15, y);
+    if (report.Tests.length == 0) {
+      doc.text('-- No Tests --', 15, y);
+    } else {
+      doc.text(testLine, 15, y);
+    }
 
     // Symptoms
     doc.setFontSize(14);
@@ -442,7 +462,11 @@ export class DetailsComponent implements OnInit {
     doc.setFontSize(10);
     let symptomsLine = symptoms.join(', ');
     y += 6;
-    doc.text(symptomsLine, 15, y);
+    if (report.Symptoms.length == 0) {
+      doc.text('-- No Symptoms --', 15, y);
+    } else {
+      doc.text(symptomsLine, 15, y);
+    }
 
     // Recommended doctors
     doc.setFontSize(14);
@@ -460,6 +484,22 @@ export class DetailsComponent implements OnInit {
       y += 4;
       doc.text('Reason: Consult for Heart', 19, y);
       y += 8;
+    }
+    if (report.RecommendedDoctors.length == 0) {
+      doc.text('-- No Doctors Recommended  --', 15, y);
+      y += 8;
+    }
+
+    // Comment
+    doc.setFontSize(14);
+    y += 6;
+    doc.text('Other Comments:-', 10, y);
+    doc.setFontSize(10);
+    y += 6;
+    if (report.Comment == '' || report.Comment == null) {
+      doc.text('-- No Comments Given --', 15, y);
+    } else {
+      doc.text(report.Comment, 15, y);
     }
 
     doc.save(`report(appointmentID:${this.appointment.AppointmentID})`);
