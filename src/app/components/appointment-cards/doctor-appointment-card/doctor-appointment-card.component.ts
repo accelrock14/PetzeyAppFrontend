@@ -10,6 +10,7 @@ import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { AppointmentDetail } from '../../../models/AppointmentDetail';
 import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
+import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 
 @Component({
   selector: 'app-doctor-appointment-card',
@@ -44,7 +45,7 @@ openPopup(arg0: string) {
   @Input()
   user!:string;
 
-  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private toastservice:ToastrService,private appservice:AppointmentFormService){}
+  constructor(private snackBar: MatSnackBar,  private service:FeedbackService,private toastservice:ToastrService,private appservice:AppointmentDetailsService){}
 
 selectedappointmentid:number=0;
 showmodal:boolean=false;
@@ -146,7 +147,8 @@ doctorRating:DoctorRating={
              })
 
       alert("feedback submit");
-             this.appservice.getAppointmentById(this.service.selectedid).subscribe(
+      console.log(this.service.selectedid);
+             this.appservice.GetAppointmentDetail(this.service.selectedid).subscribe(
             {
         next:(data)=>{
           this.appointment=data;

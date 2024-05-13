@@ -10,7 +10,7 @@ export class AppointmentDetailsService {
   
   private localhost='https://localhost:44327/';
   private remote='https://localhost:44327/';
-  private apiUrl = 'https://localhost:44327/';
+  private apiUrl = 'https://localhost:44327';
   private apiUrl2= 'https://localhost:44327/';
   private apiUrl3= 'https://localhost:44327/';
   private apiUrl4= 'https://localhost:44327/';
