@@ -144,8 +144,8 @@ export class ReportComponent implements OnInit {
   recommendation: RecommendedDoctor = {
     ID: 0,
     DoctorID: '',
-    Reason: ''
-  }
+    Reason: '',
+  };
   myForm!: FormGroup;
   ShowFilter = true;
   limitSelection = false;
@@ -191,7 +191,7 @@ export class ReportComponent implements OnInit {
     private vetService: VetsserviceService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   enableEdit(): void {
     this.isEditing = true;
@@ -251,8 +251,6 @@ export class ReportComponent implements OnInit {
     this.report.Tests.splice(index, 1);
   }
 
-
-
   getSymptomById(id: number): Symptom | undefined {
     return this.symptoms.find((s) => {
       if (s.SymptomID != null && s.SymptomID == id) {
@@ -304,7 +302,7 @@ export class ReportComponent implements OnInit {
   }
 
   setDeleteRecommendation(recommendationID: number) {
-    this.deleteRecommendationID = recommendationID
+    this.deleteRecommendationID = recommendationID;
   }
 
   // delete the selected prescribed medicine
@@ -321,7 +319,8 @@ export class ReportComponent implements OnInit {
 
   confirmDeleteRecommendation() {
     // api service to delete recommendation
-    this.reportService.DeleteRecommendation(this.deleteRecommendationID)
+    this.reportService
+      .DeleteRecommendation(this.deleteRecommendationID)
       .subscribe((d) => {
         this.reportService.getReport(this.reportId).subscribe((r) => {
           this.report = r;
@@ -400,19 +399,16 @@ export class ReportComponent implements OnInit {
     if (id == 0) {
       this.recommendation.DoctorID = '0';
       this.recommendation.ID = 0;
-      this.recommendation.Reason = ''
-    }
-    else {
+      this.recommendation.Reason = '';
+    } else {
       // get the details of prescribed medicine selected
       let recommendedDoctor: RecommendedDoctor | undefined =
-        this.report.RecommendedDoctors.find(
-          (d) => d.ID == id
-        );
+        this.report.RecommendedDoctors.find((d) => d.ID == id);
       //update the form values
       if (recommendedDoctor != undefined) {
-        this.recommendation.Reason = recommendedDoctor.Reason
-        this.recommendation.DoctorID = recommendedDoctor.DoctorID
-        this.recommendation.ID = recommendedDoctor.ID
+        this.recommendation.Reason = recommendedDoctor.Reason;
+        this.recommendation.DoctorID = recommendedDoctor.DoctorID;
+        this.recommendation.ID = recommendedDoctor.ID;
         this.myForm
           .get('doctor')
           ?.setValue([this.getDoctorById(recommendedDoctor.DoctorID)]);
@@ -499,7 +495,8 @@ export class ReportComponent implements OnInit {
   }
 
   updateRecommendation() {
-    this.reportService.UpdateRecommendation(this.report.ReportID, this.recommendation)
+    this.reportService
+      .UpdateRecommendation(this.report.ReportID, this.recommendation)
       .subscribe((d) => {
         this.toastr.success('Recommendation updated successfully');
         this.reportService.getReport(this.reportId).subscribe(
@@ -522,7 +519,7 @@ export class ReportComponent implements OnInit {
 
   onSelectDoctor(doctor: ListItem) {
     let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
-    this.recommendation.DoctorID = newDoctor.VetId.toString()
+    this.recommendation.DoctorID = newDoctor.VetId.toString();
   }
 
   // emit event to download the page as pdf
@@ -636,6 +633,8 @@ export class ReportComponent implements OnInit {
             PhoneNumber: doc.PhoneNumber,
             Speciality: doc.Speciality,
             Photo: doc.Photo,
+            Rating: doc.Rating,
+            Counter: doc.Counter,
           });
         });
         this.report.RecommendedDoctors.forEach((doctor) => {
