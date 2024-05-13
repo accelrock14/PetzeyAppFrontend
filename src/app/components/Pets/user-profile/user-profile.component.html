@@ -14,11 +14,10 @@
           <span class="user-name">{{ user.name }} {{ user.family_name }}</span>
           <br />
           <span class="user-info">
-            <button class="btn btn-danger" (click)="OnLogout()">SignOut</button>
+            <button class="btn orange-color-bg" (click)="OnLogout()">SignOut</button>
           </span>
         </div>
         <div class="col-auto">
-          <!-- <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="User Profile Image" class="img-fluid rounded-circle user-image"> -->
         </div>
       </div>
     </header>
@@ -29,15 +28,11 @@
           <div class="col-9">
             <h2>{{auth.getRoleFromToken()}} Details</h2>
           </div>
-          <!-- <div class="col-3 text-right">
-          <a href="#" class="btn btn-primary edit-btn">Edit</a>
-        </div> -->
+          
         </div>
         <div class="details">
           <div class="row">
-            <!-- <div class="col-4 ">
-            <img src="https://www.shutterstock.com/image-photo/happy-millennial-business-woman-glasses-260nw-2103373409.jpg" alt="Profile Image" class="img-fluid rounded-circle">
-          </div> -->
+          
             <div class="col-14">
               <ul>
                 <li>
@@ -81,10 +76,9 @@
           <div class="col-2">
             <button
               type="button"
-              class="btn btn-danger"
+              class="btn orange-color-bg"
               data-bs-toggle="modal"
               data-bs-target="#exampleModalCenterCreate"
-
             >
               + Add Pet
             </button>
@@ -208,7 +202,7 @@
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger col-5"
+                      class="btn orange-color-bg col-5"
                       data-bs-dismiss="modal"
                       (click)="deleteConfirmedPet($event)"
                     >
@@ -421,44 +415,7 @@
                           <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
                         }
                       </div>
-                      <div class="row mt-3 ms-2">
-                        <h6 class="text-muted" style="font-size: small">
-                          Gender
-                        </h6>
-                      </div>
                       <div class="row ms-4">
-                        <div class="col-2 form-check form-check-inline">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="Gender"
-                            id="radiomaleedit"
-                            formControlName="Gender"
-                            value="Male"
-                          />
-                          <label
-                            class="form-check-label"
-                            style="font-size: small"
-                            for="radiomaleedit"
-                            >Male</label
-                          >
-                        </div>
-                        <div class="col-2 form-check form-check-inline">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="Gender"
-                            formControlName="Gender"
-                            id="radiofemaleedit"
-                            value="Female"
-                          />
-                          <label
-                            class="form-check-label"
-                            style="font-size: small"
-                            for="radiofemaleedit"
-                            >Female</label
-                          >
-                        </div>
                         <div class="col-2 form-check form-check-inline ms-5">
                           <input
                             type="checkbox"
@@ -480,24 +437,6 @@
                           @if (petDetailsForm.get('Gender')?.invalid && petDetailsForm.get('Gender')?.touched) {
                             <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
                           }
-                        </div>
-                      </div>
-                      <div class="row mt-3 ms-2">
-                        <div class="col-5">
-                          <h6 class="text-muted" style="font-size: small">
-                            Date of Birth
-                          </h6>
-                        </div>
-
-                      </div>
-                      <div class="row ms-2 mt-0">
-                        <div class="col-5">
-                          <input
-                            type="date"
-                            id="DateOfBirth"
-                            formControlName="DateOfBirth"
-                            class="text-box"
-                          />
                         </div>
                       </div>
                       <div class="row mt-3 ms-2">

@@ -29,7 +29,6 @@ export const routes: Routes = [
   { path: 'AdminDashboard/details/:id', component: DetailsComponent },
   { path: 'DoctorDashboard/details/:id', component: DetailsComponent },
   { path: 'PatientDashboard/details/:id', component: DetailsComponent },
-
   {
     path: 'AdminDashboard',
     component: AdminDashboardComponent,
@@ -47,11 +46,11 @@ export const routes: Routes = [
   },
 
   {
-    path: 'pets-list/:page',
+    path: 'petslist',
     component: PetsListGridComponent,
   },
   {
-    path: 'pets-list/:page/pets-profile/:id',
+    path: 'petslist/pets-profile/:id',
     component: PetProfileComponent,
   },
   {
@@ -96,5 +95,9 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'pethistory/:id',
+    component: ReportHistoryComponent,
   },
 ];

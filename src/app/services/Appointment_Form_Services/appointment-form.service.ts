@@ -10,6 +10,7 @@ import { IVetCardDTO } from '../../models/Vets/IVetCardDto';
 import { IVet } from '../../models/Vets/IVet';
 import { catchError, map } from 'rxjs/operators';
 import { appointmentServiceUrl } from '../../Shared/apiUrls';
+import { Status } from '../../models/Status';
 
 
 @Injectable({
@@ -78,5 +79,35 @@ export class AppointmentFormService {
     // console.log("put url here"+this.editAppointmentUrl+AppointmentID);
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
+
+  getAllAppointments():Observable<AppointmentDetail[]>{
+    return this.backendClient.get<AppointmentDetail[]>(appointmentServiceUrl+"/api/Appointment");
+  }
+
+  // getNoOfOpenAppointmentsOfVet(vetID:string):number{
+  //   let appointments:AppointmentDetail[] = [];
+  //     this.getAllAppointments().subscribe({
+  //     next:(data)=>{
+  //       appointments=data;
+  //     },
+  //     error:(err)=>{
+  //       console.log(err);
+  //     }
+  //   });
+  //   return appointments.filter(a=>a.DoctorID==vetID && a.Status== Status.Confirmed).length;
+  // }
+
+  async getNoOfOpenAppointmentsOfVet(vetID: string): Promise<number> {
+    let appointments: AppointmentDetail[] = [];
+    try {
+        const fetchedAppointments = await this.getAllAppointments().toPromise();
+        if (fetchedAppointments) {
+            appointments = fetchedAppointments;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    return appointments.filter(a => a.DoctorID == vetID && a.Status == Status.Confirmed).length;
+}
 
 }
