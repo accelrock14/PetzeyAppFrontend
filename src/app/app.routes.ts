@@ -97,7 +97,11 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'pethistory/:id',
+    path: 'petslist/pets-profile/:petid/pethistory/:id',
+    component: ReportHistoryComponent,
+  },
+  {
+    path: 'profile/pets-profile/:petid/pethistory/:id',
     component: ReportHistoryComponent,
   },
 ];

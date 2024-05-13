@@ -1,5 +1,7 @@
 <div class="appointment-history-page m-4">
-
+  <div class="appointment-history-back d-flex justify-content-between align-items-center">
+    <button routerLink="../.."><i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+</div>
   <div class="appointment-history-heading d-flex justify-content-between align-items-center">
     <h4>Appointment History</h4>
 
@@ -45,11 +47,11 @@
 
        <div>
         <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate | date}}</p>
-        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate.toLocaleTimeString() }}</p>
+        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate | date:'shortTime' }}</p>
        </div>
 
        <div class="view-details">
-          <button routerLink="/DoctorDashboard/details/{{petId}}" class="btn capsule">View Details<i class="fa-solid fa-up-right-from-square ms-2"></i></button>
+          <button routerLink="pethistory/{{petId}}" class="btn capsule">View Details<i class="fa-solid fa-up-right-from-square ms-2"></i></button>
 
         </div>
 
