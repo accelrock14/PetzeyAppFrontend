@@ -12,4 +12,5 @@ export interface IPet {
     // Allergies:string,
     // LastAppointmentDate:Date
     IsDeleted:boolean
+    
 }

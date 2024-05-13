@@ -6,23 +6,24 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 import { AgePipe } from '../../../pipes/Age/age.pipe';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Allergy } from '../../../models/Pets/IAllergy';
+import { IPetAndAllergy } from '../../../models/Pets/IPetAndAllergy';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule,FormsModule],
 })
 export class UserProfileComponent implements OnInit {
-
-
 
   petParentID:any;
 
   NewPet: IPet = {} as IPet;
+  NewPetAndAllergy : IPetAndAllergy = {} as IPetAndAllergy
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
   ToBeUpdatedPet: IPet = {} as IPet;
@@ -30,6 +31,10 @@ export class UserProfileComponent implements OnInit {
   pets: IPet[] = [];
   petToDelete!: IPet;
   user!: any;
+  allergies: Allergy[] = [];
+  filteredAllergies : Allergy[] =[]
+  allergiesForPet : number[] = []
+  filter:string ='';
 
   constructor(
     private petsService: PetsService,
@@ -47,7 +52,7 @@ export class UserProfileComponent implements OnInit {
       Gender: ([this.NewPet?.Gender, Validators.required]),
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: ([this.NewPet?.Neutered, Validators.required]),
-      // Allergies: ([this.NewPet?.Allergies, Validators.required]),
+      Allergies: (['']),
     });
 
     this.petDetailsForm = this.fb.group({
@@ -59,21 +64,14 @@ export class UserProfileComponent implements OnInit {
       Gender: ([this.ToBeUpdatedPet?.Gender, Validators.required]),
       DateOfBirth: ([this.ToBeUpdatedPet?.DateOfBirth]),
       Neutered: [this.ToBeUpdatedPet?.Neutered, Validators.required],
-      // Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
+      Allergies: [''],
     });
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit() is called');
-
     if (this.auth.isLoggedIn()) {
       this.user = this.auth.getLoggedInUserObject();
     }
-
-    // this.petsService.getUser().subscribe((data) => {
-    //   this.user = data;
-    // })
-
     this.petParentID = this.auth.getUIDFromToken();
     console.log(this.petParentID);
     this.petsService
@@ -81,6 +79,8 @@ export class UserProfileComponent implements OnInit {
       .subscribe((data) => {
         this.pets = data;
       });
+    console.log(this.allergies)
+    
   }
 
   // Sets pet to be deleted
@@ -268,8 +268,9 @@ export class UserProfileComponent implements OnInit {
   SavePetDetails() {
     // Gets the userID and assigns it to petParentID
     this.NewPet!.PetParentID = this.auth.getUIDFromToken();
-    console.log(this.NewPet);
-    this.petsService.AddPet(this.NewPet!).subscribe({
+    this.NewPetAndAllergy!.Pet = this.NewPet;
+    this.NewPetAndAllergy!.allergies = this.allergiesForPet;
+    this.petsService.AddPet(this.NewPetAndAllergy!).subscribe({
       next: (updatedPet) => {
         // Handle success, if needed
         console.log('Pet updated successfully:', updatedPet);
@@ -308,5 +309,28 @@ export class UserProfileComponent implements OnInit {
       .subscribe((data) => {
         this.pets = data;
       });
+  }
+
+
+  filterPetAllergies() {
+    console.log(this.filter)
+    if (!this.newPetForm.get('Allergies')?.value.length) {
+      this.filteredAllergies= this.allergies;
+    }
+    else {
+      this.filteredAllergies = this.allergies.filter(c => c.AllergyName.toLowerCase().includes(this.newPetForm.get('Allergies')?.value.toLowerCase()));
+    }
+    }
+
+  selectPetAllergy(allID:number) {
+      this.newPetForm.get('Allergies')?.setValue('');
+        this.allergiesForPet.push(allID);
+      }
+      onRemoveAllergy(allID: number) {
+        this.allergiesForPet = this.allergiesForPet.filter(n => n !== allID);
+        }
+  OnAddClick(){
+    this.petsService.GetAllAllergies().subscribe(petAllergies => this.allergies = petAllergies)
+    console.log(this.allergies)
   }
 }
