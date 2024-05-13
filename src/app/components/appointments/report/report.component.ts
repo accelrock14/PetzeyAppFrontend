@@ -634,7 +634,7 @@ export class ReportComponent implements OnInit {
             Speciality: doc.Speciality,
             Photo: doc.Photo,
             Rating: doc.Rating,
-            Counter: doc.Counter,
+            Counter: doc.Counter
           });
         });
         this.report.RecommendedDoctors.forEach((doctor) => {

@@ -57,7 +57,7 @@ export class DoctorDashboardComponent implements OnInit {
   doctorIdFromNPI: string = "";
   loadingAppointments: boolean = false;
   ids : IDFiltersDto = {
-    DoctorID: '6',
+    DoctorID: '',
     OwnerID: ''
   };
   
@@ -79,12 +79,12 @@ export class DoctorDashboardComponent implements OnInit {
     let npi: any = this.authService.getVPIFromToken()
     let doc: IVet;
     this.loadingAppointments = true;
-    // this.vetService.getVetsByNPINumber(npi).subscribe(data => {
-    //   doc = data;
-    //   this.doctorIdFromNPI = String(doc.VetId);
-    //   this.ids.DoctorID = this.doctorIdFromNPI;
-    //   console.log(this.ids.DoctorID);
-    //   console.log('doc', this.doctorIdFromNPI)
+    this.vetService.getVetsByNPINumber(npi).subscribe(data => {
+      doc = data;
+      this.doctorIdFromNPI = String(doc.VetId);
+      this.ids.DoctorID = this.doctorIdFromNPI;
+      console.log(this.ids.DoctorID);
+      console.log('doc', this.doctorIdFromNPI)
       this.getvetappointments();
 
 
@@ -139,19 +139,19 @@ export class DoctorDashboardComponent implements OnInit {
             }
           });
         });
-        // this.authService.getAllUserIDsandNames().subscribe(
-        //   (ownerData: { [userID: string]: string }) => {
-        //     // Iterate through UpcomingappointmentCards and assign owner names
-        //     this.UpcomingappointmentCards.forEach((appointment) => {
-        //       if (appointment.OwnerID && ownerData.hasOwnProperty(appointment.OwnerID)) {
-        //         appointment.OwnerName = ownerData[appointment.OwnerID];
-        //         console.log("ownerdata" + ownerData)
-        //       } else {
-        //         appointment.OwnerName = 'Unknown Owner';
-        //       }
-        //     });
-        //   }
-        // );
+        this.authService.getAllUserIDsandNames().subscribe(
+          (ownerData: { [userID: string]: string }) => {
+            // Iterate through UpcomingappointmentCards and assign owner names
+            this.UpcomingappointmentCards.forEach((appointment) => {
+              if (appointment.OwnerID && ownerData.hasOwnProperty(appointment.OwnerID)) {
+                appointment.OwnerName = ownerData[appointment.OwnerID];
+                console.log("ownerdata" + ownerData)
+              } else {
+                appointment.OwnerName = 'Unknown Owner';
+              }
+            });
+          }
+        );
         this.authService.getAllUserIDsandNames().subscribe(
           (ownerData: { [userID: string]: string }) => {
             // Assigning owner names to appointments
@@ -167,10 +167,10 @@ export class DoctorDashboardComponent implements OnInit {
       })
       
       
-    // })
+    })
   }
   getvetappointments() {
-    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, "6").subscribe(vet => {
+    this.service.GetVetAppointmentsWithFilters(this.filters, this.offset, this.doctorIdFromNPI).subscribe(vet => {
       this.appointmentCards = vet;
       this.loadingAppointments = false;
       this.appointmentCards.forEach(element => {
