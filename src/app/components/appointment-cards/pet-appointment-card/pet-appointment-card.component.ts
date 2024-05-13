@@ -71,11 +71,14 @@ doctorRating:DoctorRating={
   AvgRating: 0
 }
   role:string="";
-  clicked(obj: number) {
+  clicked(obj: number,status:string) {
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
     this.showmodal=false;
-    if(!this.feedbacklist.find(f=>f.AppointmentId==obj)){
+    if(status=="Cancelled"){
+      this.toastservice.info("feedback can be submitted only if appointment is confirmed")
+    }
+    else if(!this.feedbacklist.find(f=>f.AppointmentId==obj)&& status=="Closed"){
       this.showmodal=true;
    
     }
