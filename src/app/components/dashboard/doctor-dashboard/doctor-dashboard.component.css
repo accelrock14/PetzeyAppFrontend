@@ -86,3 +86,21 @@ select[name="Status"]::-ms-expand {
     width: 2rem;
     height: 2rem;
 }
+
+
+
+
+.scrolling-wrapper {
+    overflow-x: auto;
+}
+
+.card1 {
+    height: 250px;
+    width: 250px;
+    background-position: center;
+    background-size: cover;
+    transition: all 0.2s ease-in-out !important;
+    border-radius: 24px;
+}
+
+
