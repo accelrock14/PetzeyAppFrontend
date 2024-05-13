@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ToastrService } from 'ngx-toastr';
 import { Allergy } from '../../../models/Pets/IAllergy';
 import { IPetAndAllergy } from '../../../models/Pets/IPetAndAllergy';
+import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -44,6 +45,7 @@ export class UserProfileComponent implements OnInit {
     public auth: AuthService,
     private router: Router,
     private fb: FormBuilder,
+    private appointmentFormService:AppointmentFormService,
     private toaster: ToastrService
   ) {
     this.newPetForm = this.fb.group({
@@ -104,8 +106,8 @@ export class UserProfileComponent implements OnInit {
         .subscribe(() => {
           // delete Appointments by pet id
           // Todo
-
-
+          
+          this.appointmentFormService.DeletedPetHandler(this.petToDelete.PetID).subscribe()
           // To auto-update the pets without refreshing the page
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe(
             (data) => {

@@ -4,6 +4,8 @@ export interface IVetCardDTO {
     PhoneNumber: string;
     Speciality: string;
     Photo: string;
-    Rating:number;
-    Counter:number;
+    City:String;
+    Status:boolean;
+    // Rating:number;
+    // Counter:number;
 }

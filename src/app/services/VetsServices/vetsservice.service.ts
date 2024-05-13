@@ -40,9 +40,11 @@ export class VetsserviceService {
     return this.http.delete<IVet>(url);
   }
 
-  editStatus(id: number, status: boolean): Observable<IVet> {
-    const url = `${this.apiUrl}/${id}`;
+  SetActive(id: number, status: boolean): Observable<IVet> {
+    const url = `${this.apiUrl}/status/${id}`;
+    console.log("service called");
     return this.http.patch<IVet>(url, status);
+    
   }
 
   getVetsByListOfIds(doctorIds: number[]): Observable<IVetIdNameDTO[]> {
