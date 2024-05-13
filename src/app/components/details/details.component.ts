@@ -350,7 +350,7 @@ export class DetailsComponent implements OnInit {
     // appointment details
     doc.text(`AppointmentID:- #${this.appointment.AppointmentID}`, 10, 20);
     doc.text(
-      `Date and Time:- ${this.appointment.ScheduleDate.toDateString()}, ${this.appointment.ScheduleDate.toLocaleTimeString()}`,
+      `Date and Time:- ${this.appointment.ScheduleDate.toDateString}, ${this.appointment.ScheduleDate.toLocaleTimeString}`,
       138,
       20
     );
