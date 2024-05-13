@@ -130,9 +130,6 @@ export class ReportComponent implements OnInit {
         TestID: 2,
       },
     ],
-    HeartRate: 79,
-    Temperature: 37,
-    OxygenLevel: 14,
     RecommendedDoctors: [],
     Comment: 'Patient has IBS. Food intake needs to me monitored',
   };
