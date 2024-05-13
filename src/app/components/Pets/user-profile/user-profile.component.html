@@ -75,7 +75,7 @@
             <button
               type="button"
               class="btn orange-color-bg"
-              (click)="OnAddClick()"
+              (click)="OnAddorEditClick()"
               data-bs-toggle="modal"
               data-bs-target="#exampleModalCenterCreate"
             >
@@ -428,8 +428,8 @@
                         >
                         }
                       </div>
-                      <div class="row ms-4">
-                        <div class="col-2 form-check form-check-inline ms-5">
+                      <div class="row mt-3">
+                        <div class="col-2 form-check form-check-inline ms-4">
                           <input
                             type="checkbox"
                             class="form-check-input"
@@ -445,19 +445,8 @@
                           >
                         </div>
                       </div>
-                      <div class="row mt-3 ms-2">
-                        <div class="col4">
-                          @if (petDetailsForm.get('Gender')?.invalid &&
-                          petDetailsForm.get('Gender')?.touched) {
-                          <small
-                            class="text-danger ms-1"
-                            style="font-size: x-small"
-                            >Breed of the pet is Mandatory!</small
-                          >
-                          }
-                        </div>
-                      </div>
-                      <div class="row mt-3 ms-2">
+                      
+                      <div class="row mt-3 ms-1">
                         <h6 class="text-muted" style="font-size: small">
                           Blood Group
                         </h6>
@@ -474,22 +463,29 @@
                           "
                         />
                       </div>
-                      <div class="row ms-2 mt-3">
-                        <h6 class="text-muted" style="font-size: small">
-                          Allergies
-                        </h6>
+                      <div class="search-box">
+                        <div class="input-wrapper">
+                          <label for="filter" class=" ms-3 mt-2 " style="font-size: small">Pet Issues</label>
+                          <input
+                            type="text"
+                            class="text-box-end ms-3"
+                            (input)="filterEditPetAllergies()"
+                            formControlName="Allergies"
+                            placeholder="Allergies related to the pet"
+                          />
+                        </div>
+                        <div class="dropdown-container" *ngIf="this.petDetailsForm.get('Allergies')?.value">
+                          <div *ngFor="let allergy of filteredAllergies" (click)="selectEditPetAllergy(allergy.AllergyId)" class="petissuediv">
+                            {{ allergy.AllergyName }}
+                          </div>
+                        </div>
                       </div>
-                      <input
-                        type="text"
-                        class="text-box-end ms-3 mb-2"
-                        formControlName="Allergies"
-                        placeholder="Allergies related to the pet"
-                        [class.custom-invalid]="
-                          petDetailsForm.get('Allergies')?.invalid &&
-                          petDetailsForm.get('Allergies')?.touched
-                        "
-                      />
-
+                      <div class="dycapsules mb-3">
+                        <div *ngFor="let i of allergiesForPetToBeEdited" class="capsule">
+                          {{ allergies[i - 1].AllergyName }}
+                          <i class="fas fa-times" (click)="onRemoveEditPetAllergy(i)"></i>
+                        </div>
+                      </div>
                       <div class="modal-footer justify-content-center">
                         <button
                           type="button"

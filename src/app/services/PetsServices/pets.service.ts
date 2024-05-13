@@ -20,7 +20,7 @@ export interface IPetsService{
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
   AddPet(petToBeAdded:IPetAndAllergy):Observable<IPet>;
-  EditPet(petToBeEdited:IPet):Observable<IPet>;
+  EditPet(petToBeEdited:IPetAndAllergy):Observable<IPet>;
   GetPetsByParentID(petParentID:string):Observable<IPet[]>;
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):void;
@@ -66,7 +66,7 @@ export class PetsService implements IPetsService{
     const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
   }
-  EditPet(petToBeEdited: IPet): Observable<IPet> {
+  EditPet(petToBeEdited: IPetAndAllergy): Observable<IPet> {
     const apiUrlPetToBeEdited = `${petsServiceUrl}`;
     return this.apiService.put<IPet>(apiUrlPetToBeEdited,petToBeEdited);
   }
@@ -100,9 +100,9 @@ export class PetsService implements IPetsService{
     return this.apiService.get<Allergy[]>(apiUrl);
   }
 
-  GetPetAllergiesByPetID(PetID:number) : Observable<IPetAllergy[]>{
+  GetPetAllergiesByPetID(PetID:number) : Observable<number[]>{
     const apiUrl = `${petsServiceUrl}/PetAllergies/${PetID}`;
-    return this.apiService.get<IPetAllergy[]>(apiUrl);
+    return this.apiService.get<number[]>(apiUrl);
   }
   
 
