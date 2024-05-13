@@ -11,20 +11,21 @@ export class FeedbackService {
   selectedid:number=0;
   selectedviewid:number=0;
 constructor(private http:HttpClient){}
+appointmentServiceUrl:string="https://localhost:44327/"
 getData(id:number): Observable<Feedback> {
   
-  return this.http.get<Feedback>(appointmentServiceUrl+"api/Feedback/${id}");
+  return this.http.get<Feedback>(this.appointmentServiceUrl+"api/Feedback/${id}");
 }
 postData(obj:Feedback):Observable<Feedback>{
   console.log("Done");
-  return this.http.post<Feedback>(appointmentServiceUrl+"api/Feedback",obj);
+  return this.http.post<Feedback>(this.appointmentServiceUrl+"api/Feedback",obj);
   
 }
 getQuestions():Observable<FeedbackQuestion[]>{
-  return this.http.get<FeedbackQuestion[]>(appointmentServiceUrl+"api/FeedbackQuestions");
+  return this.http.get<FeedbackQuestion[]>(this.appointmentServiceUrl+"api/FeedbackQuestions");
 }
 getAllFeedback():Observable<Feedback[]>{
-  return this.http.get<Feedback[]>(appointmentServiceUrl+"api/Feedback");
+  return this.http.get<Feedback[]>(this.appointmentServiceUrl+"api/Feedback");
 }
 
 

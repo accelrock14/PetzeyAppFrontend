@@ -8,9 +8,6 @@ export interface IReport {
     Prescription: Prescription
     Symptoms: ReportSymptom[]
     Tests: ReportTest[]
-    HeartRate: number
-    Temperature: number
-    OxygenLevel: number
     RecommendedDoctors: RecommendedDoctor[]
     Comment: string
 }

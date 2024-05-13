@@ -32,3 +32,16 @@
     width: 2rem;
     height: 2rem;
 }
+
+.btn-orange {
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+}
+
+.btn-orange:hover {
+    background-color: darkorange; /* Change color on hover if needed */
+}
