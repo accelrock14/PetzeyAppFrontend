@@ -85,10 +85,9 @@ export class DetailsComponent implements OnInit {
   formModal2: any;
   //Modlal 3 for accept appointment
   formModal3: any;
-// For testing the get recent pet id endpoint 
+  // For testing the get recent pet id endpoint
   petIds: number[] = [1, 3, 2];
   recentPetIds: number[] = [];
-
 
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
@@ -100,7 +99,7 @@ export class DetailsComponent implements OnInit {
     private reportService: ReportService,
     private petService: PetsService,
     private toastr: ToastrService
-  ) { }
+  ) {}
   /**
    * Check if user role is 'Owner' based on auth token
    */
@@ -126,7 +125,6 @@ export class DetailsComponent implements OnInit {
 
   Reason_for_Cancellation_By_Doc: string = '';
   ngOnInit(): void {
-
     const ID: string = this.route.snapshot.paramMap.get('id')!;
 
     this.appointmentDetailsService
@@ -176,7 +174,6 @@ export class DetailsComponent implements OnInit {
         //   this.recentPetIds = data;
         //   console.log(this.recentPetIds)
         // });
-
       });
 
     this.formModal = new window.bootstrap.Modal(
@@ -326,8 +323,9 @@ export class DetailsComponent implements OnInit {
                           .getVetById(
                             parseInt(report.RecommendedDoctors[i].DoctorID)
                           )
-                          .subscribe((d) => { allVets.push(d); });
-
+                          .subscribe((d) => {
+                            allVets.push(d);
+                          });
                       }
                       // console.log("outside subscribe", allVets)
                       this.cretePDFdata(pet, vet, report, allVets);
@@ -356,21 +354,23 @@ export class DetailsComponent implements OnInit {
   }
 
   getDosage(Dosages: number) {
-    const timePeriods = ['Morning', 'Afternoon', 'Night'];
-
-    const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
-
-    const selectedPeriods = [];
-
-    for (let i = 0; i < binaryString.length; i++) {
-      if (binaryString[i] === '1') {
-        selectedPeriods.push(timePeriods[i]);
-      }
+    if (Dosages === 0) {
+      return 'Morning';
+    } else if (Dosages === 1) {
+      return 'Afternoon';
+    } else if (Dosages === 2) {
+      return 'Night';
+    } else if (Dosages === 3) {
+      return 'Morning, Afternoon';
+    } else if (Dosages === 4) {
+      return 'Morning, Night';
+    } else if (Dosages === 5) {
+      return 'Afternoon, Night';
+    } else if (Dosages === 6) {
+      return 'Morning, Afternoon, Night';
+    } else {
+      return 'Invalid dosage number'; // Handle invalid dosage numbers
     }
-
-    const result = selectedPeriods.join(', ');
-
-    return result;
   }
 
   cretePDFdata(
@@ -379,7 +379,7 @@ export class DetailsComponent implements OnInit {
     report: IReport,
     allVets: IVetProfileDTO[]
   ) {
-    console.log("outside subscribe", allVets)
+    console.log('outside subscribe', allVets);
     let doc = new jsPDF();
     doc.text('Report', 100, 10);
     doc.line(100, 12, 118, 12);
@@ -436,8 +436,10 @@ export class DetailsComponent implements OnInit {
     let PrescribedMedicines = report.Prescription.PrescribedMedicines;
     for (let i = 0; i < PrescribedMedicines.length; i++) {
       doc.text(
-        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${PrescribedMedicines[i].NumberOfDays
-        } \t Consume: ${PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
+        `${i + 1}. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
+          PrescribedMedicines[i].NumberOfDays
+        } \t Consume: ${
+          PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
         } \t Dosage: ${this.getDosage(PrescribedMedicines[i].Dosages)}`,
         15,
         y
@@ -490,12 +492,13 @@ export class DetailsComponent implements OnInit {
 
     for (let i = 0; i < allVets.length; i++) {
       doc.text(
-        `${i + 1}. ${allVets[i]?.FName +
-        ' ' +
-        allVets[i]?.LName +
-        ' (' +
-        allVets[i]?.Speciality +
-        ')'
+        `${i + 1}. ${
+          allVets[i]?.FName +
+          ' ' +
+          allVets[i]?.LName +
+          ' (' +
+          allVets[i]?.Speciality +
+          ')'
         } \t ${allVets[i]?.Email} \t ${allVets[i]?.Phone}`,
         15,
         y
