@@ -104,7 +104,7 @@ feedbacklist:Feedback[]=[];
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
-            this.toastservice.info("feedback can be submitted successfully");
+            this.toastservice.success("feedback submitted successfully");
              console.log('Response:', response);
              
            },
