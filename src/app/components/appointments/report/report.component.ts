@@ -539,24 +539,6 @@ export class ReportComponent implements OnInit {
   // emit event to download the page as pdf
   @Output() messageEvent = new EventEmitter();
 
-  captureElementAsCanvas(element: any, index: number) {
-    return html2canvas(element, {
-      scale: window.devicePixelRatio, // Scale for high-density displays
-      onclone: function (clonedDoc) {
-        // Modify cloned document if needed (e.g., removing scrollbars)
-        const clonedElement = clonedDoc.querySelector(
-          '.capture-section'
-        ) as HTMLElement; // Example: select element by class name
-        if (clonedElement && index == 2) {
-          // Increase the size (scale) of the cloned element
-
-          clonedElement.style.width = `${clonedElement.offsetWidth * 2}px`; // Adjust width after scaling
-          clonedElement.style.height = `${clonedElement.offsetHeight * 1}px`; // Adjust height after scaling
-        }
-      },
-    });
-  }
-
   callToastThenExport() {
     this.toastr.info('Your PDF will be downloaded in sometime. Please wait !');
 
