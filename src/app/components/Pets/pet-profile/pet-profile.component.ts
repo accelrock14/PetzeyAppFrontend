@@ -4,11 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AgePipe } from '../../../pipes/Age/age.pipe';
 import { PetsService } from '../../../services/PetsServices/pets.service';
 import { ReportHistoryComponent } from '../../appointments/report-history/report-history.component';
-import { DatePipe, NgIf, formatDate } from '@angular/common';
+import { CommonModule, DatePipe, NgIf, formatDate } from '@angular/common';
 import { FormatDatePipe } from '../../../pipes/Date/format-date.pipe';
 import { PetAppointmentsListComponent } from '../pet-appointments-list/pet-appointments-list.component';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { User } from '../../../models/User-Authentication/User';
+import { Allergy } from '../../../models/Pets/IAllergy';
 
 @Component({
   selector: 'app-pet-profile',
@@ -24,12 +25,15 @@ import { User } from '../../../models/User-Authentication/User';
     RouterLink,
     ReportHistoryComponent,
     PetAppointmentsListComponent,
+    CommonModule
   ],
 })
 export class PetProfileComponent implements OnInit {
 
 
   petOwner:User | any={} as User ;
+  allergies: Allergy[] = [];
+  petAllergies : number[] =[] ;
 
   allUsers: User[]=[]
   constructor(
@@ -50,6 +54,13 @@ export class PetProfileComponent implements OnInit {
       console.log(this.Pet.PetID);
     });
 
+    // Fetch All Allergies
+    this.petsService.GetAllAllergies().subscribe(petAllergies => this.allergies = petAllergies)
+    console.log(this.allergies)
+    // Fetch Pet Allergy
+    this.petsService.GetPetAllergiesByPetID(this.Pet.PetID).subscribe(allergies => this.petAllergies = allergies);
+    console.log(this.petAllergies)
+
      if (this.auth.isLoggedIn() ){
       // Fetch details of all users
       this.auth.getAllUsers().subscribe(
@@ -62,9 +73,7 @@ export class PetProfileComponent implements OnInit {
             console.log("else "+this.petOwner);
           }
       )
-
-
-   }
+      }
 
   }
 

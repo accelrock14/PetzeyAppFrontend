@@ -69,9 +69,12 @@
 
             }}</small
             ><br />
-            <!-- <small class="text-muted" style="font-weight: bold">{{
-              Pet.Allergies
-            }}</small> -->
+            <small class="text-muted" style="font-weight: bold">
+              <div *ngFor="let i of petAllergies">
+                {{ allergies[i - 1].AllergyName }}
+
+              </div>
+            </small>
 
           </div>
         </div>

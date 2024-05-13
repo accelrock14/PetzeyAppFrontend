@@ -12,6 +12,7 @@ import { IPetsFiltered } from '../../models/Pets/IPetsFiltered';
 import { Allergy } from '../../models/Pets/IAllergy';
 import { IPetAllergy } from '../../models/Pets/IPetAllergy';
 import { IPetAndAllergy } from '../../models/Pets/IPetAndAllergy';
+import { IPetGridDto } from '../../models/Pets/IPetGridDto';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
@@ -48,6 +49,12 @@ export class PetsService implements IPetsService{
     return this.apiService.post<number[]>(apiUrlFilterPets, petfilters);
   }
 
+  FilterPetIds(petfilters: IPetFilterParams): Observable<number[]> {
+    const apiUrlFilterPets = `${petsServiceUrl}/filter/petIds`;
+    return this.apiService.post<number[]>(apiUrlFilterPets, petfilters);
+  }
+
+
   FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>{
     const apiUrlFilterPets = `${petsServiceUrl}/filter/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPetsFiltered>(apiUrlFilterPets, petfilters);
@@ -56,12 +63,12 @@ export class PetsService implements IPetsService{
     const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
   }
-  
+
   GetPetDetailsByID(petID: number): Observable<IPet> {
     const apiUrlGetPetDetailsByID =`${petsServiceUrl}/details/${petID}`;
     return this.apiService.get<IPet>(apiUrlGetPetDetailsByID);
   }
- 
+
   AddPet(petToBeAdded: IPetAndAllergy): Observable<IPet> {
     const apiUrlAddPet=`${petsServiceUrl}/addnewpet`;
     return this.apiService.post<IPet>(apiUrlAddPet, petToBeAdded);
@@ -74,7 +81,7 @@ export class PetsService implements IPetsService{
     const apiUrlGetPetsbyParentId = `${petsServiceUrl}/parentid/${petParentID}`;
     return this.apiService.get<IPet[]>(apiUrlGetPetsbyParentId)
   }
- 
+
   DeletePetByPetID(petID: number): Observable<object> {
     const apiUrlDeletePetbyID=`${petsServiceUrl}/${petID}`;
     return this.apiService.delete(apiUrlDeletePetbyID)
@@ -95,6 +102,11 @@ export class PetsService implements IPetsService{
     return this.apiService.post<IPetCardDto[]>(apiUrl, petIds)
   }
 
+  GetPetsGridByPetIDs(petIds:number[]): Observable<IPetGridDto[]> {
+    const apiUrl = `${petsServiceUrl}/getPetsGridDetailsByIDs`;
+    return this.apiService.post<IPetGridDto[]>(apiUrl, petIds)
+  }
+
   GetAllAllergies(): Observable<Allergy[]>{
     const apiUrl = `https://localhost:44374/api/pets/Allergies`;
     return this.apiService.get<Allergy[]>(apiUrl);
@@ -104,6 +116,6 @@ export class PetsService implements IPetsService{
     const apiUrl = `${petsServiceUrl}/PetAllergies/${PetID}`;
     return this.apiService.get<number[]>(apiUrl);
   }
-  
+
 
 }

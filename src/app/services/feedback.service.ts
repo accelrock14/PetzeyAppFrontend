@@ -17,7 +17,7 @@ getData(id:number): Observable<Feedback> {
   return this.http.get<Feedback>(this.appointmentServiceUrl+"api/Feedback/${id}");
 }
 postData(obj:Feedback):Observable<Feedback>{
-  console.log("Done");
+
   return this.http.post<Feedback>(this.appointmentServiceUrl+"api/Feedback",obj);
   
 }

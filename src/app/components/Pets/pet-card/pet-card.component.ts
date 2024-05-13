@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { User } from '../../../models/User-Authentication/User';
 import {  FormatName } from "../../../pipes/Name/format-name.pipe";
+import { IPetGridDto } from '../../../models/Pets/IPetGridDto';
+import { PetsService } from '../../../services/PetsServices/pets.service';
+import { Allergy } from '../../../models/Pets/IAllergy';
 
 @Component({
     selector: 'app-pet-card',
@@ -19,14 +22,14 @@ import {  FormatName } from "../../../pipes/Name/format-name.pipe";
 // Child Component of Pet-list-grid
 // To display each Pet
 
-export class PetCardComponent  {
+export class PetCardComponent {
+
 
   @Input()
-  pet:IPet = {} as IPet;  // Get the Pet Object to be displayed from Parent Component
+  pet:IPet | IPetGridDto = {} as IPet;  // Get the Pet Object to be displayed from Parent Component
 
   @Input()
   petOwner:string = "";   // Get the Owner Name for the pet
-
 
 }
 

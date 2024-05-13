@@ -38,7 +38,7 @@
         id="title"
         [(ngModel)]="petsFilter.PetName"
         placeholder="Search Pets"
-        
+
         (ngModelChange)="onSelectFilters()"
       />
     </div>
@@ -57,7 +57,8 @@
     @for(pet of recentlyConsultedPets; track $index){
 
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
+      <!-- <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card> -->
+       <app-pet-card  [pet]="pet" [petOwner]="pet.PetParentID"></app-pet-card>
     </div>
     }
   </div>
@@ -88,11 +89,11 @@
       }
     </div>
     <!-- <div class="row">
-      
+
       <div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let pet of pets">
         <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
       </div>
-      
+
     </div> -->
 
   <div class="alert alert-danger" role="alert" *ngIf="errorMessage">

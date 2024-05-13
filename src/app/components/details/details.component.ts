@@ -374,11 +374,7 @@ export class DetailsComponent implements OnInit {
     // appointment details
     doc.text(`AppointmentID:- #${this.appointment.AppointmentID}`, 10, 20);
     doc.text(
-      `Date and Time:- ${new Date(
-        this.appointment.ScheduleDate
-      ).toDateString()}, ${new Date(
-        this.appointment.ScheduleDate
-      ).toLocaleTimeString()}`,
+      `Date:- ${new Date(this.appointment.ScheduleDate).toDateString()}`,
       138,
       20
     );
@@ -390,6 +386,11 @@ export class DetailsComponent implements OnInit {
     } else {
       doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
     }
+    doc.text(
+      `Time:- ${new Date(this.appointment.ScheduleDate).toLocaleTimeString()}`,
+      138,
+      24
+    );
     doc.line(10, 26, 203, 26);
 
     // pet details
@@ -434,6 +435,7 @@ export class DetailsComponent implements OnInit {
     }
     if (PrescribedMedicines.length == 0) {
       doc.text('-- No Medicines Prescribed --', 15, y);
+      y += 8;
     }
 
     //Tests
@@ -485,6 +487,7 @@ export class DetailsComponent implements OnInit {
     }
     if (report.RecommendedDoctors.length == 0) {
       doc.text('-- No Doctors Recommended  --', 15, y);
+      y += 8;
     }
 
     // Comment
