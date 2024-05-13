@@ -1,4 +1,4 @@
 export interface Allergy {
-    AllergyID : number,
+    AllergyId : number,
     AllergyName: string
 }

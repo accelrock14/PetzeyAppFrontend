@@ -55,7 +55,7 @@ export class PatientDashboardComponent implements OnInit {
   }
   ids : IDFiltersDto = {
     DoctorID: '',
-    OwnerID: '04e93d17-d3ba-4459-9fe9-a49692142617'
+    OwnerID: ''
   };
   UpcomingappointmentCards: AppointmentCardDto[] = [];
   docids : number[] = [];

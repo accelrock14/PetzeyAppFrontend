@@ -14,11 +14,12 @@
           <span class="user-name">{{ user.name }} {{ user.family_name }}</span>
           <br />
           <span class="user-info">
-            <button class="btn orange-color-bg" (click)="OnLogout()">SignOut</button>
+            <button class="btn orange-color-bg" (click)="OnLogout()">
+              SignOut
+            </button>
           </span>
         </div>
-        <div class="col-auto">
-        </div>
+        <div class="col-auto"></div>
       </div>
     </header>
 
@@ -26,13 +27,11 @@
       <section class="user-info">
         <div class="row heading-and-button">
           <div class="col-9">
-            <h2>{{auth.getRoleFromToken()}} Details</h2>
+            <h2>{{ auth.getRoleFromToken() }} Details</h2>
           </div>
-          
         </div>
         <div class="details">
           <div class="row">
-          
             <div class="col-14">
               <ul>
                 <li>
@@ -66,8 +65,7 @@
         </div>
       </section>
 
-      @if(auth.getRoleFromToken() === "Owner")
-      {
+      @if(auth.getRoleFromToken() === "Owner") {
       <section class="user-info">
         <div class="row heading-and-button">
           <div class="col-10">
@@ -77,6 +75,7 @@
             <button
               type="button"
               class="btn orange-color-bg"
+              (click)="OnAddorEditClick()"
               data-bs-toggle="modal"
               data-bs-target="#exampleModalCenterCreate"
             >
@@ -84,8 +83,6 @@
             </button>
           </div>
         </div>
-
-
 
         <div class="pet-cards p-1">
           <ng-container *ngFor="let pet of pets; let i = index">
@@ -146,10 +143,7 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="details"
-
-              >
+              <div class="details">
                 <div>
                   <img
                     src="{{ pet.PetImage }}"
@@ -229,9 +223,7 @@
               >
                 <div class="modal-content">
                   <div class="modal-body">
-                    <form
-                      [formGroup]="petDetailsForm"
-                    >
+                    <form [formGroup]="petDetailsForm">
                       <div class="row">
                         <h5 class="modal-title" id="exampleModalLongTitle">
                           Edit Pet Profile
@@ -316,10 +308,18 @@
                               class="text-box"
                               formControlName="PetName"
                               placeholder="Enter Name"
-                              [class.custom-invalid]="petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched"
+                              [class.custom-invalid]="
+                                petDetailsForm.get('PetName')?.invalid &&
+                                petDetailsForm.get('PetName')?.touched
+                              "
                             />
-                            @if (petDetailsForm.get('PetName')?.invalid && petDetailsForm.get('PetName')?.touched) {
-                              <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+                            @if (petDetailsForm.get('PetName')?.invalid &&
+                            petDetailsForm.get('PetName')?.touched) {
+                            <small
+                              class="text-danger ms-1"
+                              style="font-size: x-small"
+                              >Name of the pet is Mandatory!</small
+                            >
                             }
                           </div>
                         </div>
@@ -394,8 +394,13 @@
                             >Other</label
                           >
                         </div>
-                        @if (petDetailsForm.get('Species')?.invalid && petDetailsForm.get('Species')?.touched) {
-                          <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+                        @if (petDetailsForm.get('Species')?.invalid &&
+                        petDetailsForm.get('Species')?.touched) {
+                        <small
+                          class="text-danger ms-1"
+                          style="font-size: x-small"
+                          >Species of the pet is Mandatory!</small
+                        >
                         }
                       </div>
                       <div class="row ms-2 mt-3">
@@ -409,14 +414,22 @@
                           class="text-box-end"
                           formControlName="Breed"
                           placeholder="Enter Breed of Pet"
-                          [class.custom-invalid]="petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched"
+                          [class.custom-invalid]="
+                            petDetailsForm.get('Breed')?.invalid &&
+                            petDetailsForm.get('Breed')?.touched
+                          "
                         />
-                        @if (petDetailsForm.get('Breed')?.invalid && petDetailsForm.get('Breed')?.touched) {
-                          <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+                        @if (petDetailsForm.get('Breed')?.invalid &&
+                        petDetailsForm.get('Breed')?.touched) {
+                        <small
+                          class="text-danger ms-1"
+                          style="font-size: x-small"
+                          >Breed of the pet is Mandatory!</small
+                        >
                         }
                       </div>
-                      <div class="row ms-4">
-                        <div class="col-2 form-check form-check-inline ms-5">
+                      <div class="row mt-3">
+                        <div class="col-2 form-check form-check-inline ms-4">
                           <input
                             type="checkbox"
                             class="form-check-input"
@@ -432,14 +445,8 @@
                           >
                         </div>
                       </div>
-                      <div class="row mt-3 ms-2">
-                        <div class="col4">
-                          @if (petDetailsForm.get('Gender')?.invalid && petDetailsForm.get('Gender')?.touched) {
-                            <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
-                          }
-                        </div>
-                      </div>
-                      <div class="row mt-3 ms-2">
+                      
+                      <div class="row mt-3 ms-1">
                         <h6 class="text-muted" style="font-size: small">
                           Blood Group
                         </h6>
@@ -450,34 +457,49 @@
                           class="text-box"
                           formControlName="BloodGroup"
                           placeholder="Blood Group of the Pet"
-                          [class.custom-invalid]="petDetailsForm.get('BloodGroup')?.invalid && petDetailsForm.get('BloodGroup')?.touched"
+                          [class.custom-invalid]="
+                            petDetailsForm.get('BloodGroup')?.invalid &&
+                            petDetailsForm.get('BloodGroup')?.touched
+                          "
                         />
                       </div>
-                      <div class="row ms-2 mt-3">
-                        <h6 class="text-muted" style="font-size: small">
-                          Allergies
-                        </h6>
+                      <div class="search-box">
+                        <div class="input-wrapper">
+                          <label for="filter" class=" ms-3 mt-2 " style="font-size: small">Pet Issues</label>
+                          <input
+                            type="text"
+                            class="text-box-end ms-3"
+                            (input)="filterEditPetAllergies()"
+                            formControlName="Allergies"
+                            placeholder="Allergies related to the pet"
+                          />
+                        </div>
+                        <div class="dropdown-container" *ngIf="this.petDetailsForm.get('Allergies')?.value">
+                          <div *ngFor="let allergy of filteredAllergies" (click)="selectEditPetAllergy(allergy.AllergyId)" class="petissuediv">
+                            {{ allergy.AllergyName }}
+                          </div>
+                        </div>
                       </div>
-                      <input
-                        type="text"
-                        class="text-box-end ms-3 mb-2"
-                        formControlName="Allergies"
-                        placeholder="Allergies related to the pet"
-                        [class.custom-invalid]="petDetailsForm.get('Allergies')?.invalid && petDetailsForm.get('Allergies')?.touched"
-                      />
-
+                      <div class="dycapsules mb-3">
+                        <div *ngFor="let i of allergiesForPetToBeEdited" class="capsule">
+                          {{ allergies[i - 1].AllergyName }}
+                          <i class="fas fa-times" (click)="onRemoveEditPetAllergy(i)"></i>
+                        </div>
+                      </div>
                       <div class="modal-footer justify-content-center">
                         <button
                           type="button"
                           class="btn btn-outline-secondary col-5"
-                          data-bs-dismiss="modal" (click)="clickedCancelEditButton()"
+                          data-bs-dismiss="modal"
+                          (click)="clickedCancelEditButton()"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           class="btn orange-color-bg col-5"
-                          data-bs-dismiss="modal" (click)="onSubmitEdit()"
+                          data-bs-dismiss="modal"
+                          (click)="onSubmitEdit()"
                         >
                           Confirm
                         </button>
@@ -490,14 +512,10 @@
           </ng-container>
         </div>
       </section>
-    }
+      }
     </main>
   </body>
 </html>
-
-
-
-
 
 <!--Create pet Modal-->
 <div
@@ -551,7 +569,7 @@
                       border-radius: 50%;
                       position: absolute;
                       bottom: 0;
-                      right:0;
+                      right: 0;
                     "
                     onclick="document.getElementById('inputGroupFileadd').click()"
                   >
@@ -584,11 +602,17 @@
                   class="text-box"
                   formControlName="PetName"
                   placeholder="Enter Name"
-                  [class.custom-invalid]="newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched"
+                  [class.custom-invalid]="
+                    newPetForm.get('PetName')?.invalid &&
+                    newPetForm.get('PetName')?.touched
+                  "
                 />
               </div>
-              @if (newPetForm.get('PetName')?.invalid && newPetForm.get('PetName')?.touched) {
-                <small class="text-danger ms-1" style="font-size:x-small">Name of the pet is Mandatory!</small>
+              @if (newPetForm.get('PetName')?.invalid &&
+              newPetForm.get('PetName')?.touched) {
+              <small class="text-danger ms-1" style="font-size: x-small"
+                >Name of the pet is Mandatory!</small
+              >
               }
             </div>
           </div>
@@ -661,8 +685,11 @@
               >
             </div>
           </div>
-          @if (newPetForm.get('Species')?.invalid && newPetForm.get('Species')?.touched) {
-            <small class="text-danger ms-1" style="font-size:x-small">Species of the pet is Mandatory!</small>
+          @if (newPetForm.get('Species')?.invalid &&
+          newPetForm.get('Species')?.touched) {
+          <small class="text-danger ms-1" style="font-size: x-small"
+            >Species of the pet is Mandatory!</small
+          >
           }
           <div class="row ms-2 mt-3">
             <h6 class="text-muted" style="font-size: small">Breed</h6>
@@ -673,13 +700,18 @@
               class="text-box-end"
               formControlName="Breed"
               placeholder="Enter Breed of Pet"
-              [class.custom-invalid]="newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched"
-              />
-
+              [class.custom-invalid]="
+                newPetForm.get('Breed')?.invalid &&
+                newPetForm.get('Breed')?.touched
+              "
+            />
           </div>
           <div class="ms-3">
-            @if (newPetForm.get('Breed')?.invalid && newPetForm.get('Breed')?.touched) {
-              <small class="text-danger ms-1" style="font-size:x-small">Breed of the pet is Mandatory!</small>
+            @if (newPetForm.get('Breed')?.invalid &&
+            newPetForm.get('Breed')?.touched) {
+            <small class="text-danger ms-1" style="font-size: x-small"
+              >Breed of the pet is Mandatory!</small
+            >
             }
           </div>
           <div class="row mt-3 ms-2">
@@ -733,8 +765,11 @@
               >
             </div>
             <div class="col-4">
-              @if (newPetForm.get('Gender')?.invalid && newPetForm.get('Gender')?.touched) {
-                <small class="text-danger ms-1" style="font-size:x-small">Gender of the pet is Mandatory!</small>
+              @if (newPetForm.get('Gender')?.invalid &&
+              newPetForm.get('Gender')?.touched) {
+              <small class="text-danger ms-1" style="font-size: x-small"
+                >Gender of the pet is Mandatory!</small
+              >
               }
             </div>
           </div>
@@ -742,7 +777,6 @@
             <div class="col-5">
               <h6 class="text-muted" style="font-size: small">Date of Birth</h6>
             </div>
-
           </div>
           <div class="row ms-2 mt-0">
             <div class="col-5">
@@ -762,25 +796,43 @@
               class="text-box"
               formControlName="BloodGroup"
               placeholder="Blood Group of the Pet"
-              [class.custom-invalid]="newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched"
+              [class.custom-invalid]="
+                newPetForm.get('BloodGroup')?.invalid &&
+                newPetForm.get('BloodGroup')?.touched
+              "
             />
-            @if (newPetForm.get('BloodGroup')?.invalid && newPetForm.get('BloodGroup')?.touched) {
-              <small class="text-danger ms-1" style="font-size:x-small">BloodGroup of the pet is Mandatory!</small>
+            @if (newPetForm.get('BloodGroup')?.invalid &&
+            newPetForm.get('BloodGroup')?.touched) {
+            <small class="text-danger ms-1" style="font-size: x-small"
+              >BloodGroup of the pet is Mandatory!</small
+            >
             }
           </div>
-          <div class="row ms-2 mt-3">
-            <h6 class="text-muted" style="font-size: small">Allergies</h6>
+          
+          <div class="search-box">
+            <div class="input-wrapper">
+              <label for="filter" class=" ms-3 mt-1 " style="font-size: small">Pet Issues</label>
+              <input
+                type="text"
+                class="text-box-end ms-3"
+                (input)="filterPetAllergies()"
+                formControlName="Allergies"
+                placeholder="Allergies related to the pet"
+              />
+            </div>
+            <div class="dropdown-container" *ngIf="this.newPetForm.get('Allergies')?.value">
+              <div *ngFor="let allergy of filteredAllergies" (click)="selectPetAllergy(allergy.AllergyId)" class="petissuediv">
+                {{ allergy.AllergyName }}
+              </div>
+            </div>
           </div>
-          <input
-            type="text"
-            class="text-box-end ms-3 mb-2"
-            formControlName="Allergies"
-            placeholder="Allergies related to the pet"
-            [class.custom-invalid]="newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched"
-          />
-          @if (newPetForm.get('Allergies')?.invalid && newPetForm.get('Allergies')?.touched) {
-            <small class="text-danger ms-1" style="font-size:x-small">Allergies of the pet is Mandatory!</small>
-          }
+          <div class="dycapsules mb-3">
+            <div *ngFor="let i of allergiesForPet" class="capsule">
+              {{ allergies[i - 1].AllergyName }}
+              <i class="fas fa-times" (click)="onRemoveAllergy(i)"></i>
+            </div>
+          </div>
+
           <div class="modal-footer justify-content-center">
             <button
               type="button"
