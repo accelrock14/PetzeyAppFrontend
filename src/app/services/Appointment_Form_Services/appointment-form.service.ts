@@ -110,7 +110,4 @@ export class AppointmentFormService {
     return appointments.filter(a => a.DoctorID == vetID && a.Status == Status.Confirmed).length;
 }
 
-
-
-
 }
