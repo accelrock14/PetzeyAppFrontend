@@ -77,6 +77,7 @@ throw new Error('Method not implemented.');
   role:any;
   // 
   ngOnInit(): void {
+    this.decideDestiny()
     // Get the vet ID from the route parameter
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam !== null) {
@@ -173,6 +174,38 @@ throw new Error('Method not implemented.');
       }
     });
   }
+
+  validDoctor:boolean=false
+  errorMessage:string=""
+  decideDestiny():void{
+    if(this.auth.isLoggedIn()){
+      if(this.auth.getRoleFromToken()=="Doctor"){
+
+        this.vetService.checkNpi(this.auth.getVPIFromToken()).subscribe({
+          next:(res)=>{
+
+            console.log(res);
+            this.validDoctor=res
+            this.toastr.success("Welcome")
+
+
+          },
+          error:(err)=>{
+
+            console.log(err.error.Message);
+            this.errorMessage=err
+            this.auth.logOut()
+            this.router.navigate(['/signin'])
+            this.toastr.error(err.error.Message)
+
+          }
+
+
+          })       
+        
+      }
+    }
+  }
   
   private sendProfileUpdate(vetId: number, fullVet: IVet) {
     this.vetService.updateVet(vetId, fullVet).subscribe({
@@ -221,6 +254,8 @@ throw new Error('Method not implemented.');
         // Optionally, handle the error specific to profile update
       }
     });
+
+    
     
 
   }
