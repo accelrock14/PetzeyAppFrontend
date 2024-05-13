@@ -110,7 +110,8 @@
         </a>
       </li>
     }
-    @if(auth.isLoggedIn() && (auth.getRoleFromToken()=="Owner" || auth.getRoleFromToken() =="Receptionist")){
+    <!-- @if(auth.isLoggedIn() && (auth.getRoleFromToken()=="Owner" || auth.getRoleFromToken() =="Receptionist")){ -->
+      @if(auth.isLoggedIn() && (auth.getRoleFromToken()!="Doctor")){
       <li class="sidebar-item">
         <a
           routerLink="/vet"

@@ -21,6 +21,7 @@ export class VetComponent implements OnInit{
 
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
+  activeVets:IVetCardDTO[]=[];
   searchQuery: string = '';
   topRatedVets:IVetCardDTO[]=[];
   specialties: string[] = [];
@@ -30,6 +31,8 @@ export class VetComponent implements OnInit{
   currentPage: number = 1;
   pageSize: number = 4; 
   totalPages: number = 1; 
+  totalActivePages: number=0;
+  
  
   constructor(private vetService: VetsserviceService,private router: Router,  public auth : AuthService) { 
     this.dropdownSettings = {
@@ -73,12 +76,21 @@ export class VetComponent implements OnInit{
           this.filteredVets = [...this.vets];
           this.totalPages = Math.ceil(this.vets.length / this.pageSize);
           console.log(this.vets);
+          for(const v of this.filteredVets){
+            if(v.Status){
+              this.activeVets.push(v);
+            }
+          }
+          this.totalActivePages=Math.ceil(this.activeVets.length/this.pageSize)
+          console.log("Active vets",this.activeVets)
           this.updateFilteredVets();
+          
         },
         error => {
           console.error('Error fetching all vets:', error);
         }
       );
+      
   }
   openVetProfile(id: number): void {
     
@@ -178,12 +190,21 @@ export class VetComponent implements OnInit{
       const endIndex = startIndex + this.pageSize;
       this.filteredVets = this.vets.filter(vet =>
         vet.Name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        vet.Speciality.toLowerCase().includes(this.searchQuery.toLowerCase())
+        vet.Speciality.toLowerCase().includes(this.searchQuery.toLowerCase())||vet.City.toLowerCase().includes(this.searchQuery.toLowerCase())
+      ).slice(startIndex, endIndex);
+      this.activeVets = this.vets.filter(vet =>
+        vet.Status&&(
+        vet.Name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        vet.Speciality.toLowerCase().includes(this.searchQuery.toLowerCase())||vet.City.toLowerCase().includes(this.searchQuery.toLowerCase()))
       ).slice(startIndex, endIndex);
     }
 
     get totalPagesArray(): number[] {
       return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    }
+
+    get totalActivePagesArray(): number[] {
+      return Array(this.totalActivePages).fill(0).map((x, i) => i + 1);
     }
 
     onPageChange(page: number): void {
