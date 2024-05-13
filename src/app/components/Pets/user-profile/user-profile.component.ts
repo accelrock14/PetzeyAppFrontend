@@ -96,9 +96,9 @@ export class UserProfileComponent implements OnInit {
   deleteConfirmedPet(event: MouseEvent) {
     event.stopPropagation();
 
-    // Check if the petToDelete is notNull 
+    // Check if the petToDelete is notNull
     if (this.petToDelete) {
-      // Call the method in the service to delete the pet 
+      // Call the method in the service to delete the pet
       this.petsService
         .DeletePetByPetID(this.petToDelete.PetID)
         .subscribe(() => {
