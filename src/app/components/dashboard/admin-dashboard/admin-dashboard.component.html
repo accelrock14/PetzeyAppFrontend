@@ -137,19 +137,53 @@
     </div>
 </div>
 
-@if(appointmentCards.length == 0){
-    <div class="container">
-        <div class="message">Oops! Looks like you have reached the end of appointments.</div>
-    </div>
-}@else {
-<div class="container mt-4">
+<!-- <div class="container mt-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
         <div class="col mb-4" *ngFor="let appointment of appointmentCards">
             <app-pet-appointment-card [appointmentcard]="appointment" [user]="user"></app-pet-appointment-card>
         </div>
     </div>
+</div> -->
+
+<div class="container mt-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Doctor</th>
+                <th scope="col">Pet</th>
+                <th scope="col">Owner</th>
+                <th scope="col">Status</th>
+                <th scope="col">Schedule Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of appointmentCards">
+                <td>{{ appointment.DoctorName }}</td>
+                <td>{{ appointment.PetName }}</td>
+                <td>{{ appointment.OwnerName }}</td>
+                <td>{{ appointment.Status }}</td>
+                <td>{{ appointment.ScheduleDate | date: 'mediumDate'}} at {{ appointment.ScheduleDate | date: 'hh:mm:a'}}</td>
+                <td> <a [routerLink]="'/' + user + 'Dashboard/details/' + appointment.AppointmentID" class="btn btn-orange">Details</a></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-}
+
+<div class="container mt-4">
+    <div class="row justify-content-end">
+        <div class="col-md-3 col-sm-12">
+            <label for="entriesPerPage">Entries per page:</label>
+            <select class="form-select" id="entriesPerPage" [(ngModel)]="entriesPerPage" (change)="onDateStatusDoctorChange()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+    </div>
+</div>
+
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item">

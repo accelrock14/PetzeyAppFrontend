@@ -146,22 +146,19 @@ export class VetComponent implements OnInit{
           next: (vets) => {
             this.fVets = vets;
             this.currentPage = 1;
-            console.log(this.fVets)
-            //  this.totalPages = Math.ceil(this.fVets.length / this.pageSize);
-             this.totalPages=1
+            this.totalPages = Math.ceil(this.fVets.length / this.pageSize); 
             this.updateFilteredVets(); 
           },
-          
           error: (err) => console.error(err)
         });
       } else {
         this.fVets = [...this.vets];
         this.currentPage = 1;
-        this.totalPages=1;
-        // this.totalPages = Math.ceil(this.fVets.length / this.pageSize); 
+        this.totalPages = Math.ceil(this.fVets.length / this.pageSize); 
         this.updateFilteredVets();
       }
     }
+    
 
     selectall(){
       console.log("select all selected");

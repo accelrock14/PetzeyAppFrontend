@@ -62,6 +62,7 @@ throw new Error('Method not implemented.');
   role:any;
   // 
   ngOnInit(): void {
+    this.decideDestiny()
     // Get the vet ID from the route parameter
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam !== null) {
@@ -70,7 +71,7 @@ throw new Error('Method not implemented.');
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
         console.log(this.vetProfile)
-      });
+      }); 
     } else {
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
@@ -109,7 +110,7 @@ throw new Error('Method not implemented.');
       next: (fullVet: IVet) => {
         // Update the matching attributes with values from vetPro
         Object.keys(vetPro).forEach(key => {
-          if (fullVet.hasOwnProperty(key)) {
+          if (key !== 'Photo'&& fullVet.hasOwnProperty(key)) {
             (fullVet as any)[key] = vetPro[key];  // Type assertion to inform TypeScript
           }
         });
@@ -127,6 +128,7 @@ throw new Error('Method not implemented.');
               // After successful photo upload, update the other profile details
               this.sendProfileUpdate(vetId, fullVet);
               this.selectedFile= null;
+              
             },
             error: (error) => {
               console.error('Error uploading file:', error);
@@ -135,6 +137,7 @@ throw new Error('Method not implemented.');
           });
         } else {
           // If no file is selected, directly update the profile
+         
           this.sendProfileUpdate(vetId, fullVet);
           console.log('In update',fullVet);
         }
@@ -145,12 +148,48 @@ throw new Error('Method not implemented.');
       }
     });
   }
+
+  validDoctor:boolean=false
+  errorMessage:string=""
+  decideDestiny():void{
+    if(this.auth.isLoggedIn()){
+      if(this.auth.getRoleFromToken()=="Doctor"){
+
+        this.vetService.checkNpi(this.auth.getVPIFromToken()).subscribe({
+          next:(res)=>{
+
+            console.log(res);
+            this.validDoctor=res
+            this.toastr.success("Welcome")
+
+
+          },
+          error:(err)=>{
+
+            console.log(err.error.Message);
+            this.errorMessage=err
+            this.auth.logOut()
+            this.router.navigate(['/signin'])
+            this.toastr.error(err.error.Message)
+
+          }
+
+
+          })       
+        
+      }
+    }
+  }
   
-  private sendProfileUpdate(vetId: number, fullVet: IVet) {
+  sendProfileUpdate(vetId: number, fullVet: IVet) {
     this.vetService.updateVet(vetId, fullVet).subscribe({
       next: () => {
         alert("Successfully Saved the Changes");
         console.log('sendprofile',fullVet)
+        this.vetService.getVetById(vetId).subscribe(profile => {
+          this.vetProfile!.Photo = profile.Photo;
+        }); 
+
         // Optionally, perform any other post-update actions here
       },
       error: (error) => {
@@ -194,6 +233,8 @@ throw new Error('Method not implemented.');
         // Optionally, handle the error specific to profile update
       }
     });
+
+    
     
 
   }

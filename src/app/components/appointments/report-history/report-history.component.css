@@ -12,7 +12,7 @@
   color: white;
 }
 
-.vitals{
+/* .vitals{
   height: 190px;
 }
 
@@ -42,9 +42,18 @@ font-size: 40px;
 
 .fa-thermometer,.fa-lungs{
   color: rgb(29, 58, 91);
+} */
+
+
+
+.appointment-row{
+  height: 100px;
 }
 
+
+
 .all-item-list{
+  height: 455px;
   overflow-y: auto; /* Enable vertical scrolling */
   scrollbar-width: thin; /* "thin" or "auto" */
   scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0); /* thumb color and track color */
@@ -72,7 +81,7 @@ font-size: 40px;
     color: #ff1100;
 }
 
-.medandid p
+/* .medandid p
 {
   margin: 0;
 }
@@ -80,4 +89,8 @@ font-size: 40px;
 .mat-mdc-form-field {
  height: 70px;
  width: 200px;
-}
+} */
+
+
+/* new report page */
+

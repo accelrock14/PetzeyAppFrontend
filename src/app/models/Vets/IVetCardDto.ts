@@ -6,4 +6,6 @@ export interface IVetCardDTO {
     Photo: string;
     City:String;
     Status:boolean;
+    // Rating:number;
+    // Counter:number;
 }
