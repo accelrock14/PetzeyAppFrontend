@@ -146,8 +146,7 @@ doctorRating:DoctorRating={
               this.feedbacklist=f;
              })
 
-      alert("feedback submit");
-      console.log(this.service.selectedid);
+      
              this.appservice.GetAppointmentDetail(this.service.selectedid).subscribe(
             {
         next:(data)=>{
