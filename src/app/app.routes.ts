@@ -96,12 +96,4 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
-  {
-    path: 'petslist/pets-profile/:petid/pethistory/:id',
-    component: ReportHistoryComponent,
-  },
-  {
-    path: 'profile/pets-profile/:petid/pethistory/:id',
-    component: ReportHistoryComponent,
-  },
 ];
