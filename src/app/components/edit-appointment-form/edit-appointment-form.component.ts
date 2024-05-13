@@ -25,6 +25,10 @@ declare var window:any;
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
+  isFormValid():boolean {
+    return this.appointmentDetail.DoctorID!==''&&this.appointmentDetail.PetID!==0&&this.appointmentDetail.OwnerID!==''&&this.appointmentDetail.ScheduleTimeSlot!==0&&this.appointmentDetail.ReasonForVisit!=='';
+  }
+  
 GoBackSimply() {
   this.formModal.hide();
   this.cancelAptModal.hide();
@@ -61,6 +65,7 @@ this.location.back();
   };
   slotStatuses: boolean[] = [];
   selectedScheduleDate: Date = new Date();
+  minDate:string='';
   selectedSlotIndex: number | null = null;
 
   constructor(private aptService: AppointmentFormService,private route:Router,private routeTo:ActivatedRoute,private location:Location,private snackBar: MatSnackBar,private authService:AuthService,private petService:PetsService,private vetService:VetsserviceService) { }
@@ -90,7 +95,7 @@ this.location.back();
   isReceptionist:boolean=false;
   isDoctor:boolean=false;
   isOwner:boolean=false;
-
+ 
   ngOnInit(): void {
     
     if(!this.authService.isLoggedIn()){
@@ -102,6 +107,7 @@ this.location.back();
       this.isOwner = true;
     }
     else if(this.What_Flow=='Doctor'){
+      this.route.navigate(['/home']);
       this.isDoctor = true;
       
         this.vetService.getVetsByNPINumber(this.authService.getVPIFromToken()).subscribe({
@@ -116,8 +122,16 @@ this.location.back();
       
     }
     else{
+      this.route.navigate(['/home']);
       this.isReceptionist=true;
     }
+
+    
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // getMonth() is zero-based
+    let dd = today.getDate();
+    this.minDate = `${yyyy}-${mm < 10 ? '0' + mm : mm}-${dd < 10 ? '0' + dd : dd}`;
 
     this.AppointmentID=parseInt(this.routeTo.snapshot.paramMap.get('AppointmentID')!) as number;
     this.aptService.getAppointmentById(this.AppointmentID).subscribe({

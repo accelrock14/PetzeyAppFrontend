@@ -6,5 +6,6 @@ export const petsServiceUrl =
 export const appointmentServiceUrl =
   'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/';
 
-export const vetServiceUrl = 'https://localhost:44304/';
-  // 'https://petzyvetapi20240505160604.azurewebsites.net/';
+export const vetServiceUrl =
+  //'https://petzyvetapi20240505160604.azurewebsites.net/';
+  'https://localhost:44304/'

@@ -57,8 +57,9 @@ export class AppointmentPetProfileComponent implements OnInit {
     Gender: '',
     Neutered: false,
     DateOfBirth: new Date(),
-    Allergies: '',
-    LastAppointmentDate: new Date()
+    IsDeleted: false
+    // Allergies: '',
+    // LastAppointmentDate: new Date()
   }
 
 }
