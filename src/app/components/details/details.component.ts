@@ -303,6 +303,7 @@ export class DetailsComponent implements OnInit {
     let report!: IReport;
     let pet!: IPet;
     let vet!: IVetProfileDTO;
+    let allVets: IVetProfileDTO[] = [];
 
     this.petService.GetPetDetailsByID(this.appointment.PetID).subscribe(
       (p) => {
@@ -321,7 +322,19 @@ export class DetailsComponent implements OnInit {
                     (d) => {
                       report = d;
 
-                      this.cretePDFdata(pet, vet, report);
+                      for (
+                        let i = 0;
+                        i < report.RecommendedDoctors.length;
+                        i++
+                      ) {
+                        this.vetService
+                          .getVetById(
+                            parseInt(report.RecommendedDoctors[i].DoctorID)
+                          )
+                          .subscribe((d) => allVets.push(d));
+                      }
+
+                      this.cretePDFdata(pet, vet, report, allVets);
                     },
                     (err) => {
                       this.toastr.error(
@@ -364,7 +377,12 @@ export class DetailsComponent implements OnInit {
     return result;
   }
 
-  cretePDFdata(pet: IPet, vet: IVetProfileDTO, report: IReport) {
+  cretePDFdata(
+    pet: IPet,
+    vet: IVetProfileDTO,
+    report: IReport,
+    allVets: IVetProfileDTO[]
+  ) {
     let doc = new jsPDF();
     doc.text('Report', 100, 10);
     doc.line(100, 12, 118, 12);
@@ -477,12 +495,19 @@ export class DetailsComponent implements OnInit {
 
     for (let i = 0; i < report.RecommendedDoctors.length; i++) {
       doc.text(
-        `1. Dr. Pal Manikuk (diet) \t Doctor@gmail.com \t 9113808136`,
+        `${i + 1}. ${
+          allVets[i].FName +
+          ' ' +
+          allVets[i].LName +
+          ' (' +
+          allVets[i].Speciality +
+          ')'
+        } \t ${allVets[i].Email} \t ${allVets[i].Phone}`,
         15,
         y
       );
       y += 4;
-      doc.text('Reason: Consult for Heart', 19, y);
+      doc.text(`Reason: ${report.RecommendedDoctors[i].Reason}`, 19, y);
       y += 8;
     }
     if (report.RecommendedDoctors.length == 0) {
