@@ -30,6 +30,14 @@ bootstrapApplication(Component, {
     imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
+setActive(id:number|undefined)
+{
+  this.vetService.SetActive(id!,true).subscribe(p=>{
+    console.log("Activated")
+    alert("Vet Status Activated")
+    this.router.navigate(['/vet'])
+  });
+}
 
   @ViewChild('successMessage') successMessage!: ElementRef;
 
@@ -37,29 +45,6 @@ export class VetProfileComponent implements OnInit {
   VetNPI:any;
   selectedFile: File | null = null;
 
-// updateVet(vetid: number,vetPro: IVetProfileDTO) {
-//   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
-//   fullVet.subscribe(vet=>{this.actualVet=fullVet});
-//   this.vetService.updateVet(vetid,fullVet).subscribe();
-// }
-// updateVet(vetid: number, vetPro: IVetProfileDTO) {
-//   // Fetch the full vet profile
-//   this.vetService.getFullVetById(vetid).subscribe((fullVet: IVet) => {
-//     // Update the matching attributes with values from vetPro
-//     Object.keys(vetPro).forEach(key => {
-//       if (fullVet.hasOwnProperty(key)) {
-//         // Type assertion to inform TypeScript about the types
-//         (fullVet as any)[key] = vetPro[key];
-//       }
-//     });
-// console.log(fullVet);
-//     // Pass the updated vet profile to the updateVet function
-//     this.vetService.updateVet(vetid, fullVet).subscribe(() => {
-//       // Optionally, you can perform any post-update actions here
-//       alert("Successfully Saved the Changes");
-//     });
-//   });
-// }
 constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,) { }
 
 
@@ -103,20 +88,7 @@ throw new Error('Method not implemented.');
   }
 
     }
-  // openEditModal(): void {
-  //   const modalRef = this.modalService.open(EditModalComponent, { size: 'lg' });
-  //   // You can pass data to the modal using modalRef.componentInstance
-  //   // For example:
-  //   // modalRef.componentInstance.vetProfile = this.vetProfile;
     
-  //   modalRef.result.then((result) => {
-  //     // Handle modal close (e.g., save changes)
-  //     console.log('Modal closed with result:', result);
-  //   }, (reason) => {
-  //     // Handle modal dismiss (e.g., cancel editing)
-  //     console.log('Modal dismissed with reason:', reason);
-  //   });
-  // }
   imageSrc: string | ArrayBuffer | null = null;
   onImageSelected(event: any): void {
     console.log('File selected');
@@ -254,6 +226,7 @@ throw new Error('Method not implemented.');
     this.vetService.deleteVet(vetId).subscribe({
       next: () => {
         alert('Vet deleted');
+        this.router.navigate(['/vet']);
       },
       error: (error) => {
         console.error('Error updating vet profile:', error);

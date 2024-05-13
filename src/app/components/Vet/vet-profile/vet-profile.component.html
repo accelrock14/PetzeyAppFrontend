@@ -17,8 +17,13 @@
           </div>
           <h5 class="col-8 mx-2 p-0">Account Details</h5>
         @if(role=="Doctor"||role=="Receptionist"){
+          @if(vetProfile?.status){
           <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
           <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          }
+          @else {
+            <button class="btn btn-outline-success  ms-2 col-1" (click)="setActive(vetProfile?.VetId)">Set Active</button>
+          }
         }
         <!-- <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button> -->
         <!-- <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button> -->
@@ -72,14 +77,14 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="fname" class="form-label">FName</label>
+            <label for="fname" class="form-label">First Name</label>
             <input type="text" class="form-control" id="fname" [(ngModel)]="vetProfile!.FName" name="fname" required #fname="ngModel">
             <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="text-danger">
               First Name is required.
             </div>
           </div>
           <div class="mb-3">
-            <label for="lname" class="form-label">LName</label>
+            <label for="lname" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="lname" [(ngModel)]="vetProfile!.LName" name="lname" required #lname="ngModel">
             <div *ngIf="lname.invalid && (lname.dirty || lname.touched)" class="text-danger">
               Last Name is required.
@@ -92,13 +97,13 @@
               Speciality is required.
             </div>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" [(ngModel)]="vetProfile!.Email" name="email" required email #email="ngModel">
             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
               <div *ngIf="email.errors?.['email']">Invalid email format.</div>
             </div>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label for="phone" class="form-label">Phone Number</label>
             <input type="tel" class="form-control" id="phone" [(ngModel)]="vetProfile!.Phone" name="phone" required minlength="10" maxlength="10" pattern="[0-9]*" #phone="ngModel">
@@ -143,16 +148,17 @@
         Are you sure you want to delete?
         <div class="row mx-5 px-5 gap-5">
           <div class="col-2 p-2 mx-2 ">
-            <button class="btn btn-light mx-2">Cancel</button>
+            <button class="btn btn-light mx-2" data-bs-dismiss="modal">Cancel</button>
           </div>
           <div class="col-2 p-2 mx-2 ">
-            <button type="submit" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)">Delete</button>
+            <button type="submit" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)" data-bs-dismiss="modal">Delete</button>
           </div>
         </div>
       </div>      
     </div>
   </div>
 </div>
+
 
 <app-vet-appointment-list [VetID]="vetProfile!.VetId"></app-vet-appointment-list>
 
