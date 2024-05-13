@@ -47,7 +47,7 @@ export class UserProfileComponent implements OnInit {
       Gender: ([this.NewPet?.Gender, Validators.required]),
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: ([this.NewPet?.Neutered, Validators.required]),
-      Allergies: ([this.NewPet?.Allergies, Validators.required]),
+      // Allergies: ([this.NewPet?.Allergies, Validators.required]),
     });
 
     this.petDetailsForm = this.fb.group({
@@ -59,7 +59,7 @@ export class UserProfileComponent implements OnInit {
       Gender: ([this.ToBeUpdatedPet?.Gender, Validators.required]),
       DateOfBirth: ([this.ToBeUpdatedPet?.DateOfBirth]),
       Neutered: [this.ToBeUpdatedPet?.Neutered, Validators.required],
-      Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
+      // Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
     });
   }
 

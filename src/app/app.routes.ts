@@ -46,11 +46,11 @@ export const routes: Routes = [
   },
 
   {
-    path: 'pets-list/:page',
+    path: 'petslist',
     component: PetsListGridComponent,
   },
   {
-    path: 'pets-list/:page/pets-profile/:id',
+    path: 'petslist/pets-profile/:id',
     component: PetProfileComponent,
   },
   {

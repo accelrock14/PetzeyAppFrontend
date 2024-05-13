@@ -35,11 +35,11 @@
           <div class="col-sm-6">
             <span class="appointment-buttons d-flex justify-content-end" *ngIf="appointment.Status==0 || appointment.Status==1">
               <button *ngIf="isDoctor() && appointment.Status==0" type="button" class="btn btn-sm btn-outline-secondary me-2" (click)="openModal3()">Accept</button>
-              <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()">Cancel</button>
-              <!-- <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" >Edit</button> -->
+              <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()" >Cancel</button>
+              <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" *ngIf="isPatient()">Edit</button>
 
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
-
+ 
             </span>
           </div>
         </div>
@@ -53,11 +53,14 @@
     <div class="reasons-for-visit d-flex flex-wrap">
       <h6>Reasons for visit:</h6>
       <p>{{ appointment.ReasonForVisit }}</p>
+      <button class="btn btn-outline-secondary" style="background-color: orangered;" *ngIf="appointment.Status==1 && isDoctor() && !isTobeGenerated" (click)="GenerateReport()">Generate Report</button>
     </div>
     <div class="confirmed-by">
 
-      <p style="color:gray;" *ngIf="appointment.Status!=0">Confirmed by {{DoctorName}}</p>
+      <p style="color:gray;" *ngIf="appointment.Status!=0 && appointment.Status!=2">Confirmed by {{DoctorName}}</p>
+      <p style="color:maroon;" *ngIf="appointment.Status==2 && cancellation.AppointmentID!=0">Reason for cancellation: {{cancellation.Reason_for_cancellation}}</p>
     </div>
+
   </div>
 
 
@@ -104,6 +107,10 @@
           </div>
           <h4>Cancel Appointment</h4>
           <p>Are you sure you want to cancel this appointment?</p>
+          <div *ngIf="!isPatient()" class="form-group">
+            <label for="cancellationReason">Reason for Cancellation</label>
+            <textarea class="form-control" id="cancellationReason" rows="3" [(ngModel)]="Reason_for_Cancellation_By_Doc"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal2()" style="background-color: white; color: black;">Cancel</button>
@@ -127,9 +134,10 @@
 </div>
 </div>
 
-
 @if(appointment.Report!=null){
+
   <app-report [reportId]="appointment.Report.ReportID" [doctorId]="appointment.DoctorID" (messageEvent)="exportToPDF()"></app-report>
+
 
 }
 

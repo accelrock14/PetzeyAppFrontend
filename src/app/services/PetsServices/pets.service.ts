@@ -7,10 +7,15 @@ import { NumberSymbol } from '@angular/common';
 import { petsServiceUrl } from '../../Shared/apiUrls';
 import { defaultEquals } from '@angular/core/primitives/signals';
 import { DYNAMIC_TYPE } from '@angular/compiler';
+import { IPetCardDto } from '../../models/Pets/IPetCardDto';
+import { IPetsFiltered } from '../../models/Pets/IPetsFiltered';
+import { Allergy } from '../../models/Pets/IAllergy';
+import { IPetAllergy } from '../../models/Pets/IPetAllergy';
 
 export interface IPetsService{
   GetAllPets():Observable<IPet[]>;
-  FilterPets(petfilters:IPetFilterParams):Observable<IPet[]>;
+  FilterPets(petfilters:IPetFilterParams):Observable<number[]>;
+  FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>;
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]>;
   GetPetDetailsByID(petID:number):Observable<IPet>;
   AddPet(petToBeAdded:IPet):Observable<IPet>;
@@ -19,6 +24,7 @@ export interface IPetsService{
   DeletePetByPetID(petID:number):Observable<object>;
   AddLastAppointmentDate(ID:number,date:Date):void;
   GetPetsCount(petsFilter: IPetFilterParams): Observable<number>;
+  GetPetsByPetIDs(petIds:number[]): Observable<IPetCardDto[]>;
 }
 export let petToken = new InjectionToken<IPetsService>('IPetsToken')
 
@@ -36,9 +42,14 @@ export class PetsService implements IPetsService{
     const apiUrlGetAllPets = `${petsServiceUrl}`;
     return this.apiService.get<IPet[]>(apiUrlGetAllPets);
   }
-  FilterPets(petfilters: IPetFilterParams): Observable<IPet[]> {
+  FilterPets(petfilters: IPetFilterParams): Observable<number[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filter`;
-    return this.apiService.post<IPet[]>(apiUrlFilterPets, petfilters);
+    return this.apiService.post<number[]>(apiUrlFilterPets, petfilters);
+  }
+
+  FilterPetsPaged(petfilters:IPetFilterParams, pageNumber:number, pageSize:number):Observable<IPetsFiltered>{
+    const apiUrlFilterPets = `${petsServiceUrl}/filter/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.apiService.post<IPetsFiltered>(apiUrlFilterPets, petfilters);
   }
   FilterPetsPerPage(petfilters: IPetFilterParams, pageNumber:number, pageSize:number): Observable<IPet[]> {
     const apiUrlFilterPets = `${petsServiceUrl}/filters?pageNumber=${pageNumber}&pageSize=${pageSize}`;
@@ -77,4 +88,32 @@ export class PetsService implements IPetsService{
     const apiUrl = `${petsServiceUrl}/filters/count`;
     return this.apiService.post<number>(apiUrl,petsFilter)
   }
+
+  GetPetsByPetIDs(petIds:number[]): Observable<IPetCardDto[]> {
+    const apiUrl = `${petsServiceUrl}/getPetsByIDs`;
+    return this.apiService.post<IPetCardDto[]>(apiUrl, petIds)
+  }
+
+  GetAllAllergiesWithFilter (allergy:string): Observable<Allergy[]>{
+    const apiUrl = `${petsServiceUrl}/Allergies`;
+    return this.apiService.post<Allergy[]>(apiUrl, allergy);
+  }
+
+  GetPetAllergiesByPetID(PetID:number) : Observable<IPetAllergy[]>{
+    const apiUrl = `${petsServiceUrl}/PetAllergies/${PetID}`;
+    return this.apiService.get<IPetAllergy[]>(apiUrl);
+  }
+  
+  AddPetAllergy(PetAllergy:IPetAllergy):void {
+    const apiUrl = `${petsServiceUrl}/addPetAllergy`;
+    this.apiService.post(apiUrl, PetAllergy);
+  }
+
+  DeletePetAllergy(PetID:number):void{
+    const apiUrl = `${petsServiceUrl}/deletePetAllergy/${PetID}`;
+    this.apiService.delete(apiUrl);
+  }
+
+
+
 }

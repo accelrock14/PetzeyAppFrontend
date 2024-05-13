@@ -5,7 +5,7 @@
 
 <div class="container mt-4">
     <div class="container-fluid">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -74,13 +74,56 @@
                     </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="fa-solid fa-circle-exclamation" style="color: orange;"></i>
+                            </div>
+                            <div class="col p-0">
+                                <h5 class="card-title">Pending</h5>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h5 class="card-title">{{ appointmentStatus.Pending }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <br>
-
+<!-- <div class="container">
+<h3 class="heading ms-3">Upcoming appointments</h3>
+<div class="container mt-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
+        <div class="col mb-4" *ngFor="let appointment of UpcomingappointmentCards">
+            <app-pet-appointment-card [appointmentcard]="appointment" [user]="user"></app-pet-appointment-card>
+        </div>
+    </div><hr>
+</div>
+</div> -->
 <div class="container">
+    <h3 class="heading ms-3">Upcoming appointments</h3>
+    <div class="container">
+        <hr>
+        <div class="scrolling-wrapper pb-4" style="overflow-x: auto;">
+            <div class="d-flex flex-nowrap">
+                <div *ngFor="let appointment of UpcomingappointmentCards" style="margin-right: 10px;">
+                    <div class="card1 appointment-card">
+                        <!-- Add your appointment card content here -->
+                        <app-pet-appointment-card [appointmentcard]="appointment" [user]="user"></app-pet-appointment-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-3 col-sm-12">
             <h3 class="heading">All appointments</h3>
@@ -94,13 +137,13 @@
             <select name="Status" class="form-select" (change)="onDateStatusChange()" [(ngModel)]="selectedStatus">
 
                 <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Closed">Closed</option>
                 <option value="Cancelled">Cancelled</option>
             </select>
         </div>
         <div class="col-md-3 col-sm-12 d-flex align-items-center justify-content-center"> 
-            <button class="btn" style="background-color: orange; color: white;" [routerLink]="'/addAppointment'">+ New Appointment</button>
         </div>
     </div>
     <hr>
@@ -113,11 +156,7 @@
     </div>
 </div>
 
-@if(appointmentCards.length == 0){
-    <div class="container">
-        <div class="message">Oops! Looks like you have reached the end of appointments.</div>
-    </div>
-}@else {
+
 <div class="container mt-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4 g-4">
         <div class="col mb-4" *ngFor="let appointment of appointmentCards">
@@ -125,7 +164,6 @@
         </div>
     </div>
 </div>
-}
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">

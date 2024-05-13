@@ -8,6 +8,8 @@ import { DashboardService } from '../../../services/DashboardServices/dashboard.
 import { RouterLink } from '@angular/router';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { VetDTO } from '../../../models/Vets/IVetDTO';
+import { AppointmentStatusCountsDto } from '../../../models/Dashboard/AppointmentStatusCountsDto';
+import { IDFiltersDto } from '../../../models/Dashboard/IDFiltersDto';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -20,6 +22,7 @@ export class AdminDashboardComponent implements OnInit {
   user:string = "Admin";
   appointmentCards: AppointmentCardDto[] = [];
   offset : number = 0;
+  entriesPerPage: number = 5;
   selectedStatus: string = "";
   selectedDate: Date | null = null;
   selectedDoctor: string | null = null;
@@ -27,6 +30,17 @@ export class AdminDashboardComponent implements OnInit {
     ScheduleDate: null,
     Status: "",
     DoctorID: null
+  };
+  appointmentStatus: AppointmentStatusCountsDto = {
+    Pending: 0,
+    Confirmed: 0,
+    Cancelled: 0,
+    Total: 0,
+    Closed: 0
+  }
+  ids : IDFiltersDto = {
+    DoctorID: '',
+    OwnerID: ''
   };
   page:number = 1;
   doctorsList: VetDTO[] = [];
@@ -36,7 +50,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     //initial loading of appointments with empty filters
     this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset, this.entriesPerPage).subscribe(data => {
       this.appointmentCards = data;
       this.loadingAppointments = false;
     })
@@ -44,26 +58,21 @@ export class AdminDashboardComponent implements OnInit {
       this.doctorsList = data;
       console.log(this.doctorsList);
     })
-  }
-
-  onDateStatusDoctorChange() {
-    //re setting the filters on filter changes
-    this.filters.DoctorID = this.selectedDoctor;
-    this.filters.ScheduleDate = this.selectedDate;
-    this.filters.Status = this.selectedStatus;
-    console.log(this.filters);
-    this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
-      this.appointmentCards = data;
-      console.log(this.appointmentCards);
-      this.loadingAppointments = false;
+    this.service.GetStatusCounts(this.ids).subscribe(count => {
+      this.appointmentStatus = count;
     })
     
   }
 
+  onDateStatusDoctorChange() {
+    //re setting the filters on filter changes
+    this.page = 1;
+    this.pageClick(this.page);
+  }
+
   pageClick(pageInput:number) {
     //set offset for pagination
-    this.offset = (pageInput-1)*4;
+    this.offset = (pageInput-1)*this.entriesPerPage;
     if(pageInput == this.page - 1){
       this.page--;
     }
@@ -75,7 +84,7 @@ export class AdminDashboardComponent implements OnInit {
     this.filters.ScheduleDate = this.selectedDate;
     this.filters.Status = this.selectedStatus;
     this.loadingAppointments = true;
-    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset).subscribe(data => {
+    this.service.GetAllAppointmentsWithFilters(this.filters, this.offset, this.entriesPerPage).subscribe(data => {
       this.appointmentCards = data;
       console.log(this.appointmentCards);
       this.loadingAppointments = false;
@@ -85,11 +94,6 @@ export class AdminDashboardComponent implements OnInit {
     return this.page === 1;
   }
   isNextPageDisabled() {
-    return this.appointmentCards.length == 0;
+    return this.page == Math.ceil(this.appointmentCards[0].All/this.entriesPerPage);    
 }
-
-
-
-
-
 }
