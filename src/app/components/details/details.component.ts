@@ -300,7 +300,6 @@ export class DetailsComponent implements OnInit {
   // Method to generate & download the pdf
 
   async exportToPDF() {
-    let doc = new jsPDF();
     let report!: IReport;
     let pet!: IPet;
     let vet!: IVetProfileDTO;
@@ -308,6 +307,36 @@ export class DetailsComponent implements OnInit {
     this.petService.GetPetDetailsByID(this.appointment.PetID).subscribe(
       (p) => {
         pet = p;
+
+        this.vetService
+          .getVetById(parseInt(this.appointment.DoctorID) as number)
+          .subscribe(
+            (v) => {
+              vet = v;
+
+              if (this.appointment.Report?.ReportID) {
+                this.reportService
+                  .getReport(this.appointment.Report?.ReportID)
+                  .subscribe(
+                    (d) => {
+                      report = d;
+
+                      this.cretePDFdata(pet, vet, report);
+                    },
+                    (err) => {
+                      this.toastr.error(
+                        'Unbale to fetch the data. Please try after sometime'
+                      );
+                    }
+                  );
+              }
+            },
+            (err) => {
+              this.toastr.error(
+                'Unbale to fetch the data. Please try after sometime'
+              );
+            }
+          );
       },
       (err) => {
         this.toastr.error(
@@ -315,33 +344,28 @@ export class DetailsComponent implements OnInit {
         );
       }
     );
+  }
 
-    this.vetService
-      .getVetById(parseInt(this.appointment.DoctorID) as number)
-      .subscribe(
-        (v) => {
-          vet = v;
-        },
-        (err) => {
-          this.toastr.error(
-            'Unbale to fetch the data. Please try after sometime'
-          );
-        }
-      );
+  getDosage(Dosages: number) {
+    const timePeriods = ['Morning', 'Afternoon', 'Night'];
 
-    if (this.appointment.Report?.ReportID) {
-      this.reportService.getReport(this.appointment.Report?.ReportID).subscribe(
-        (d) => {
-          report = d;
-        },
-        (err) => {
-          this.toastr.error(
-            'Unbale to fetch the data. Please try after sometime'
-          );
-        }
-      );
+    const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
+
+    const selectedPeriods = [];
+
+    for (let i = 0; i < binaryString.length; i++) {
+      if (binaryString[i] === '1') {
+        selectedPeriods.push(timePeriods[i]);
+      }
     }
 
+    const result = selectedPeriods.join(', ');
+
+    return result;
+  }
+
+  cretePDFdata(pet: IPet, vet: IVetProfileDTO, report: IReport) {
+    let doc = new jsPDF();
     doc.text('Report', 100, 10);
     doc.line(100, 12, 118, 12);
 
@@ -389,7 +413,7 @@ export class DetailsComponent implements OnInit {
           PrescribedMedicines[i].NumberOfDays
         } \t Consume: ${
           PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
-        } \t Dosage: ${getDosage(PrescribedMedicines[i].Dosages)}`,
+        } \t Dosage: ${this.getDosage(PrescribedMedicines[i].Dosages)}`,
         15,
         y
       );
@@ -440,21 +464,4 @@ export class DetailsComponent implements OnInit {
 
     doc.save(`report(appointmentID:${this.appointment.AppointmentID})`);
   }
-}
-function getDosage(Dosages: number) {
-  const timePeriods = ['Morning', 'Afternoon', 'Night'];
-
-  const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
-
-  const selectedPeriods = [];
-
-  for (let i = 0; i < binaryString.length; i++) {
-    if (binaryString[i] === '1') {
-      selectedPeriods.push(timePeriods[i]);
-    }
-  }
-
-  const result = selectedPeriods.join(', ');
-
-  return result;
 }
