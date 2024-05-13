@@ -174,7 +174,7 @@ throw new Error('Method not implemented.');
     });
   }
   
-  private sendProfileUpdate(vetId: number, fullVet: IVet) {
+  sendProfileUpdate(vetId: number, fullVet: IVet) {
     this.vetService.updateVet(vetId, fullVet).subscribe({
       next: () => {
         alert("Successfully Saved the Changes");
