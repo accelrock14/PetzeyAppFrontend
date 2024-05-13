@@ -85,7 +85,7 @@ throw new Error('Method not implemented.');
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
         console.log(this.vetProfile)
-      });
+      }); 
     } else {
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
@@ -137,7 +137,7 @@ throw new Error('Method not implemented.');
       next: (fullVet: IVet) => {
         // Update the matching attributes with values from vetPro
         Object.keys(vetPro).forEach(key => {
-          if (fullVet.hasOwnProperty(key)) {
+          if (key !== 'Photo'&& fullVet.hasOwnProperty(key)) {
             (fullVet as any)[key] = vetPro[key];  // Type assertion to inform TypeScript
           }
         });
@@ -155,6 +155,7 @@ throw new Error('Method not implemented.');
               // After successful photo upload, update the other profile details
               this.sendProfileUpdate(vetId, fullVet);
               this.selectedFile= null;
+              
             },
             error: (error) => {
               console.error('Error uploading file:', error);
@@ -163,6 +164,7 @@ throw new Error('Method not implemented.');
           });
         } else {
           // If no file is selected, directly update the profile
+         
           this.sendProfileUpdate(vetId, fullVet);
           console.log('In update',fullVet);
         }
@@ -179,6 +181,10 @@ throw new Error('Method not implemented.');
       next: () => {
         alert("Successfully Saved the Changes");
         console.log('sendprofile',fullVet)
+        this.vetService.getVetById(vetId).subscribe(profile => {
+          this.vetProfile!.Photo = profile.Photo;
+        }); 
+
         // Optionally, perform any other post-update actions here
       },
       error: (error) => {
