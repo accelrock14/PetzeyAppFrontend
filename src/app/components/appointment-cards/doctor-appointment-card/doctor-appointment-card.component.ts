@@ -107,6 +107,7 @@ doctorRating:DoctorRating={
       this.service.getAllFeedback().subscribe((f)=>{
         this.feedbacklist=f;
        })
+       
 
        }
      
