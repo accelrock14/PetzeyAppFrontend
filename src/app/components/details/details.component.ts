@@ -96,7 +96,7 @@ export class DetailsComponent implements OnInit {
     private reportService: ReportService,
     private petService: PetsService,
     private toastr: ToastrService
-  ) {}
+  ) { }
   /**
    * Check if user role is 'Owner' based on auth token
    */
@@ -331,9 +331,10 @@ export class DetailsComponent implements OnInit {
                           .getVetById(
                             parseInt(report.RecommendedDoctors[i].DoctorID)
                           )
-                          .subscribe((d) => allVets.push(d));
-                      }
+                          .subscribe((d) => { allVets.push(d); });
 
+                      }
+                      // console.log("outside subscribe", allVets)
                       this.cretePDFdata(pet, vet, report, allVets);
                     },
                     (err) => {
@@ -383,6 +384,7 @@ export class DetailsComponent implements OnInit {
     report: IReport,
     allVets: IVetProfileDTO[]
   ) {
+    console.log("outside subscribe", allVets)
     let doc = new jsPDF();
     doc.text('Report', 100, 10);
     doc.line(100, 12, 118, 12);
@@ -439,10 +441,8 @@ export class DetailsComponent implements OnInit {
     let PrescribedMedicines = report.Prescription.PrescribedMedicines;
     for (let i = 0; i < PrescribedMedicines.length; i++) {
       doc.text(
-        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
-          PrescribedMedicines[i].NumberOfDays
-        } \t Consume: ${
-          PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
+        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${PrescribedMedicines[i].NumberOfDays
+        } \t Consume: ${PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
         } \t Dosage: ${this.getDosage(PrescribedMedicines[i].Dosages)}`,
         15,
         y
@@ -492,17 +492,19 @@ export class DetailsComponent implements OnInit {
     doc.text('Recommended doctors:-', 10, y);
     doc.setFontSize(10);
     y += 6;
-
-    for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+    
+    console.log("allvets length", allVets.length)
+    console.log("tyoe: ", typeof(allVets))
+    for (let i = 0; i < allVets?.length; i++) {
+      console.log("for loop all vet:", i, ":", allVets)
       doc.text(
-        `${i + 1}. ${
-          allVets[i].FName +
-          ' ' +
-          allVets[i].LName +
-          ' (' +
-          allVets[i].Speciality +
-          ')'
-        } \t ${allVets[i].Email} \t ${allVets[i].Phone}`,
+        `${i + 1}. ${allVets[i]?.FName +
+        ' ' +
+        allVets[i]?.LName +
+        ' (' +
+        allVets[i]?.Speciality +
+        ')'
+        } \t ${allVets[i]?.Email} \t ${allVets[i]?.Phone}`,
         15,
         y
       );
