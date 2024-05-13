@@ -37,3 +37,9 @@ export interface DoctorRating {
     AppointmentId: number;
     AvgRating: number;
   }
+  export interface DoctorAVgRating {
+  
+    DoctorId: string;
+    AvgRating: number;
+    NumberOfRatings:number;
+  }

@@ -5,11 +5,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { FeedbackService } from '../../../services/feedback.service';
-import { Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
+import { DoctorRating, Feedback, FeedbackQuestion, Question } from '../../../models/appoitment-models/IFeedback';
 import { EllipsisPipe } from '../../../pipes/Ellipsis/ellipsis.pipe';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { FirstNamePipe } from '../../../pipes/FirstName/first-name.pipe';
+import { AppointmentDetail } from '../../../models/AppointmentDetail';
 
 @Component({
   selector: 'app-pet-appointment-card',
@@ -50,6 +51,25 @@ export class PetAppointmentCardComponent {
   selectedappointmentid:number=0;
   showmodal:boolean=false;
 feedbacklist:Feedback[]=[];
+appointment:AppointmentDetail={
+  AppointmentID: 0,
+  DoctorID: '',
+  PetID: 0,
+  OwnerID: '',
+  ScheduleDate: new Date(),
+  ScheduleTimeSlot: 0,
+  BookingDate: new Date(),
+  ReasonForVisit: '',
+  Status: 0,
+  Report: null,
+  PetIssues: []
+}
+doctorRating:DoctorRating={
+  DoctorRatingId: 0,
+  DoctorId: "",
+  AppointmentId: 0,
+  AvgRating: 0
+}
   role:string="";
   clicked(obj: number) {
     this.service.selectedid=obj;
@@ -130,7 +150,16 @@ feedbacklist:Feedback[]=[];
        this.service.getAllFeedback().subscribe((f)=>{
               this.feedbacklist=f;
              })
-
+             this.doctorRating.DoctorId=this.appointmentcard.DoctorID;
+             this.doctorRating.AppointmentId=this.service.selectedid;
+             feedbackToSubmit.Questions.forEach(element => {
+               this.doctorRating.AvgRating+=element.Rating;
+             });
+             this.doctorRating.AvgRating=this.doctorRating.AvgRating/feedbackToSubmit.Questions.length;
+            
+                 this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
+       
+                 })
          
          }
          
