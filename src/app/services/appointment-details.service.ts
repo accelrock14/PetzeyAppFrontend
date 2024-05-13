@@ -7,14 +7,13 @@ import { Cancellation } from '../models/Cancellation';
   providedIn: 'root'
 })
 export class AppointmentDetailsService {
-  
-  private localhost='https://localhost:44327/';
-  private remote='https://localhost:44327/';
-  private apiUrl = 'https://localhost:44327/';
-  private apiUrl2= 'https://localhost:44327/';
-  private apiUrl3= 'https://localhost:44327/';
-  private apiUrl4= 'https://localhost:44327/';
-  private apiUrl5= 'https://localhost:44327/';
+  private localhost='https://localhost:44327/'
+  private remote='https://localhost:44327/'
+  private apiUrl = 'https://localhost:44327/api/Appointment';
+  private apiUrl2= 'https://localhost:44327/api/AppointmentDetails';
+  private apiUrl3= 'https://localhost:44327/api/PetIdByDocId';
+  private apiUrl4= 'https://localhost:44327/api/AppointmentCancellationReason';
+  private apiUrl5= 'https://localhost:44327/api/GetAppointmentCancellationReason';
 
   constructor(private http: HttpClient) { }
   GetAppointmentDetail(AppointmentID: number):Observable<any> {
