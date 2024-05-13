@@ -29,7 +29,6 @@ export const routes: Routes = [
   { path: 'AdminDashboard/details/:id', component: DetailsComponent },
   { path: 'DoctorDashboard/details/:id', component: DetailsComponent },
   { path: 'PatientDashboard/details/:id', component: DetailsComponent },
-
   {
     path: 'AdminDashboard',
     component: AdminDashboardComponent,
@@ -96,5 +95,9 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'pethistory/:id',
+    component: ReportHistoryComponent,
   },
 ];

@@ -1,4 +1,5 @@
-<!-- Modal -->
+<!-- Modal for adding the medicine -->
+
 <div
   class="modal fade"
   id="exampleModalCenter"
@@ -123,6 +124,7 @@
     </div>
   </div>
 </div>
+<!-- END|| Modal for adding the medicine  || END-->
 
 <!-- modal for deleting the medicine -->
 <div
@@ -165,6 +167,124 @@
     </div>
   </div>
 </div>
+
+<!-- END || modal for deleting the medicine || END-->
+
+<!-- modal for adding the recommendd doctors -->
+<div
+  class="modal fade"
+  id="addDoctorModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+    <div class="modal-content rounded-4 p-2">
+      <div class="ms-2 medicinebox">
+        <i class="fa-solid fa-user-nurse"></i>
+      </div>
+      <div class="modal-body ms-2 pt-0">
+        <!-- add doctor heading -->
+        <div class="heading mb-2">
+          <h4 class="mb-0 pb-2">Doctor</h4>
+        </div>
+
+        <div class="doctorName">
+          <label class="fw-bold">Doctor</label>
+          <div *ngIf="isEditing" class="search-box">
+            <form *ngIf="isEditing" [formGroup]="myForm">
+              <ng-multiselect-dropdown
+                name="doctor"
+                [settings]="doctorSettings"
+                [placeholder]="'Select Doctors'"
+                [data]="doctors"
+                formControlName="doctor"
+                (onSelect)="onSelectDoctor($event)"
+              >
+              </ng-multiselect-dropdown>
+            </form>
+          </div>
+        </div>
+
+        <div class="reason mt-2">
+          <p class="fw-bold m-0 p-0">Reason</p>
+          <textarea
+            class="commenttextarea"
+            [(ngModel)]="recommendation.Reason"
+            name=""
+            id=""
+            cols="35"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- modal footer -->
+        <div class="d-flex justify-content-around mt-3">
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+            data-bs-dismiss="modal"
+            (click)="updateRecommendation()"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END || modal for adding the recommendd doctors || END-->
+
+<!-- modal for deleting the doctor from recommded list -->
+<div
+  class="modal fade"
+  id="deleteDoctor"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+    <div class="modal-content rounded-4 p-2">
+      <div class="ms-2 medicinebox">
+        <i class="fa-solid fa-user-nurse"></i>
+      </div>
+      <div class="modal-body ms-2 pt-0">
+        <div class="heading mb-2">
+          <h4 class="mb-0 pb-2">
+            Are you sure you want to Remove this Doctor ?
+          </h4>
+        </div>
+        <!-- modal footer -->
+        <div class="d-flex justify-content-around">
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-light border p-2 ps-3 pe-3 orange-color-bg"
+            id="delPres"
+            data-bs-dismiss="modal"
+            (click)="confirmDeleteRecommendation()"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END || modal for deleting the doctor from recommded list || END-->
 
 <div
   class="appointmentDetailspage ps-3 p-5"
@@ -211,7 +331,9 @@
 
     <div class="report-body">
       <div class="row">
+        <!-- Left Part of report -->
         <div class="col-lg-6 col-md-12 mx-auto left-part capture-section">
+          <!-- precription -->
           <div class="precription border shadow p-3 rounded-3">
             <div
               class="precription-heading d-flex justify-content-between"
@@ -325,103 +447,13 @@
               }
             </div>
           </div>
-
-          <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
-            <h4>Recommended Doctors</h4>
-            <div *ngIf="isEditing" class="search-box ps-3 mt-4">
-              <form *ngIf="isEditing" [formGroup]="myForm">
-                <ng-multiselect-dropdown
-                  name="doctor"
-                  [settings]="doctorSettings"
-                  [placeholder]="'Select Doctors'"
-                  [data]="doctors"
-                  formControlName="doctor"
-                  (onSelect)="onSelectDoctor($event)"
-                  (onDeSelect)="onDeselectDoctor($event)"
-                >
-                </ng-multiselect-dropdown>
-              </form>
-            </div>
-            <div *ngIf="!isEditing" class="all-item-list mt-4 ps-3">
-              @if(report.RecommendedDoctors.length > 0){ @for (doctors of
-              report.RecommendedDoctors; track $index) {
-              <div class="capsule">
-                {{ getDoctorById(doctors.DoctorID)?.Name }}
-              </div>
-              }} @else {
-              <div class="text-center text-danger mt-1">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <p>No Recommendations</p>
-              </div>
-              }
-            </div>
-          </div>
         </div>
 
+        <!-- right part of report -->
         <div class="col-lg-6 col-md-12 mx-auto right-part capture-section">
-          <div class="vitals border shadow mb-4 p-3 pe-2 rounded-3">
-            <h4>Vitals</h4>
-            <div class="icons mt-4 ps-3">
-              <div class="icon-container me-5 d-inline-block">
-                <div class="mb-2"><i class="fa-regular fa-heart icon"></i></div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="heartRate">{{
-                    report.HeartRate
-                  }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.HeartRate"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-                  HR</span
-                >
-              </div>
-
-              <div class="icon-container me-5 d-inline-block">
-                <div class="mb-2">
-                  <i class="fa-solid fa-thermometer icon"></i>
-                </div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="temperature">{{
-                    report.Temperature
-                  }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.Temperature"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-
-                  &deg;C</span
-                >
-              </div>
-
-              <div class="icon-container d-inline-block">
-                <div class="mb-2"><i class="fa-solid fa-lungs icon"></i></div>
-                <span class="icon-text">
-                  <b *ngIf="!isEditing" id="oxygen">{{ report.OxygenLevel }}</b>
-                  <input
-                    *ngIf="isEditing"
-                    type="text"
-                    [(ngModel)]="report.OxygenLevel"
-                    (keypress)="validateNumber($event)"
-                    class="underline-input"
-                    required
-                  />
-
-                  BPM</span
-                >
-              </div>
-            </div>
-          </div>
-
+          <!-- Observation (symptoms) -->
           <div class="symptoms border shadow mb-4 p-3 pe-2 rounded-3">
-            <h4>Symptoms</h4>
+            <h4>Observations</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
               <form *ngIf="isEditing" [formGroup]="myForm">
                 <ng-multiselect-dropdown
@@ -451,6 +483,7 @@
             </div>
           </div>
 
+          <!-- Tests -->
           <div class="tests border shadow mb-4 p-3 pe-2 rounded-3">
             <h4>Tests</h4>
             <div *ngIf="isEditing" class="search-box ps-3 mt-2">
@@ -481,8 +514,77 @@
               }
             </div>
           </div>
+
+          <!-- Recommended doctors -->
+          <div class="recommendeddr border shadow mt-4 mb-4 p-3 pe-2 rounded-3">
+            <div class="d-flex justify-content-between me-2">
+              <h4>Recommended Doctors</h4>
+              <button
+                *ngIf="isEditing"
+                class="btn rounded-2 border shadow-sm mb-1 orange-color-bg fw-bold"
+                data-bs-toggle="modal"
+                data-bs-target="#addDoctorModal"
+                (click)="activateRecommendationModal(0)"
+              >
+                <i class="fa-solid fa-plus me-2"></i>Add
+              </button>
+            </div>
+
+            <div class="all-item-list mt-4 ps-3">
+              @if(report.RecommendedDoctors.length > 0){ @for (doctors of
+              report.RecommendedDoctors; track $index) {
+              <div
+                class="doctor-card-item border rounded-3 shadow-sm mt-2 p-3 me-2"
+              >
+                <div class="d-flex justify-content-between">
+                  <div class="doctor-info">
+                    <p class="fw-bold mb-0">
+                      {{ getDoctorById(doctors.DoctorID)?.Name }}
+                    </p>
+                    <small>{{ doctors.Reason }}</small>
+                  </div>
+                  <button
+                    *ngIf="!isEditing"
+                    routerLink="/vet-profile/{{ doctors.DoctorID }}"
+                    class="btn capsule"
+                  >
+                    Visit Profile<i
+                      class="fa-solid fa-up-right-from-square ms-2"
+                    ></i>
+                  </button>
+
+                  <div *ngIf="isEditing">
+                    <button
+                      class="btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addDoctorModal"
+                      (click)="activateRecommendationModal(doctors.ID)"
+                    >
+                      <i class="fa-solid fa-pencil fw-bold orange-color"></i>
+                    </button>
+                    <button
+                      class="btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteDoctor"
+                      (click)="setDeleteRecommendation(doctors.ID)"
+                    >
+                      <i class="fa-solid fa-x fw-bold orange-color"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              }} @else {
+              <div class="text-center text-danger mt-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>No Recommendations</p>
+              </div>
+              }
+            </div>
+          </div>
         </div>
 
+        <!-- Bottom horizontal part - comment   -->
         <div class="mx-auto bottom-part">
           <div
             class="commentsbydoctor border shadow p-3 rounded-3 capture-section"
@@ -493,13 +595,10 @@
               *ngIf="!isEditing"
               class="comment-body mt-3 ms-2 d-flex all-item-list"
             >
-              <img src="{{ getDoctorById(doctorId)?.Photo }}" alt="" />
+              <img src="{{ doctor.Photo }}" alt="" />
               <div class="comment-info ms-3">
                 <p class="m-0 d-inline-block fw-bolder">
-                  {{ getDoctorById(doctorId)?.Name }}
-                  <small class="fw-lighter"
-                    >({{ getDoctorById(doctorId)?.Speciality }})</small
-                  >
+                  {{ doctor.Name }}
                 </p>
                 @if (report.Comment!=null && report.Comment!='') {
                 <p id="comment">{{ report.Comment }}</p>
