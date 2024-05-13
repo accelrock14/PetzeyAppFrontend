@@ -31,3 +31,9 @@ export interface FeedbackQuestion{
     FeedbackQuestionId:number;
     FeedbackQuestionName:string;
 }
+export interface DoctorRating {
+    DoctorRatingId: number;
+    DoctorId: string;
+    AppointmentId: number;
+    AvgRating: number;
+  }

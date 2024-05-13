@@ -12,6 +12,7 @@ import { PetAppointmentHistoryDTO } from '../../../models/appoitment-models/PetA
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
 import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { IVetProfileDTO } from '../../../models/Vets/IVetProfileDto';
+import { AuthService } from '../../../services/UserAuthServices/auth.service';
 
 @Component({
   selector: 'app-report-history',
@@ -34,12 +35,14 @@ export class ReportHistoryComponent implements OnInit {
   filteredAppointmentHistory: PetAppointmentHistoryDTO[] = [];
   doctors: IVetProfileDTO[] = [];
   petId!: string;
+  role!: string;
 
   constructor(
     private reportService: ReportService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private vetService: VetsserviceService
+    private vetService: VetsserviceService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +65,15 @@ export class ReportHistoryComponent implements OnInit {
         this.toastr.error('Could not fetch data. Plese come after sometime');
       }
     );
+
+    let loggedinrole = this.authService.getRoleFromToken();
+    if (loggedinrole == 'Doctor') {
+      this.role = 'Doctor';
+    } else if (loggedinrole == 'Receptionist') {
+      this.role = 'Admin';
+    } else {
+      this.role = 'Patient';
+    }
   }
 
   // filter the report history based on selected date
