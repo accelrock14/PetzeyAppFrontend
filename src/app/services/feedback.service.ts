@@ -28,7 +28,7 @@ getAllFeedback():Observable<Feedback[]>{
   return this.http.get<Feedback[]>(this.appointmentServiceUrl+"api/Feedback");
 }
 PostAvgRating(obj:DoctorRating):Observable<DoctorRating>{
-  return this.http.post<DoctorRating>("",obj);
+  return this.http.post<DoctorRating>(this.appointmentServiceUrl+"api/DoctorRatings",obj);
 }
 getAvgRating():Observable<DoctorRating[]>{
   return this.http.get<DoctorRating[]>("");

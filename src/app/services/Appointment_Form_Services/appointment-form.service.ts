@@ -29,11 +29,11 @@ export class AppointmentFormService {
       this.authService = inject(AuthService);
    }
 
-
+   appointmentServiceUrl:string="https://localhost:44327";
   private generalPetIssuesUrl = appointmentServiceUrl+"api/AppointmentDetails/GeneralPetIssues";
   private postAppointmentUrl=appointmentServiceUrl+"api/Appointment";
   private getScheduleSlotsUrl=appointmentServiceUrl+"api/AppointmentDetails/schedules/";
-  private getAppointmentByIdUrl=appointmentServiceUrl+"api/Appointment/";
+  private getAppointmentByIdUrl=this.appointmentServiceUrl+"api/Appointment/";
   private editAppointmentUrl = appointmentServiceUrl+"api/Appointment/";
 
   getGeneralPetIssues():Observable<GeneralPetIssue[]>{

@@ -75,6 +75,7 @@ doctorRating:DoctorRating={
     this.showmodal=false;
     if(!this.feedbacklist.find(f=>f.AppointmentId==obj)){
       this.showmodal=true;
+      
    
     }
     else{
@@ -144,18 +145,32 @@ doctorRating:DoctorRating={
               this.feedbacklist=f;
              })
 
-      this.appservice.getAppointmentById(this.service.selectedid).subscribe((app)=>{
-        this.appointment=app;
-      })
-      this.doctorRating.AppointmentId=this.service.selectedid;
+      alert("feedback submit");
+             this.appservice.getAppointmentById(this.service.selectedid).subscribe(
+            {
+        next:(data)=>{
+          this.appointment=data;
+          console.log("this is my appdata"+data);
+           },
+           error:(err) =>{
+            console.log("this is the error"+err)
+           }
+          }
+            )
+
+      
       this.doctorRating.DoctorId=this.appointment.DoctorID;
+      this.doctorRating.AppointmentId=this.service.selectedid;
       feedbackToSubmit.Questions.forEach(element => {
         this.doctorRating.AvgRating+=element.Rating;
       });
       this.doctorRating.AvgRating=this.doctorRating.AvgRating/feedbackToSubmit.Questions.length;
-      this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
+     
+          this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
 
-      })
+          })
+        
+     
       
          
          }

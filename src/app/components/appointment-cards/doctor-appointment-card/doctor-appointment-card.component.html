@@ -29,7 +29,7 @@
     <div class="card-body">
         <a [routerLink]="'/' + user + 'Dashboard/details/' + appointmentcard.AppointmentID" class="btn col-md-6 col-12">Details</a>
         <a class="btn col-md-6 col-12" data-bs-toggle="modal" data-bs-target="#feedbackModal" (click)="clicked(appointmentcard.AppointmentID)">Feedback</a>
-        
+       <p>{{doctorRating.DoctorId}}</p>
     </div>
 </div> 
 
