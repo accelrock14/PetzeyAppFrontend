@@ -11,7 +11,7 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { AppointmentDetailsService } from '../../../services/appointment-details.service';
 import { User } from '../../../models/User-Authentication/User';
 import { VetsserviceService } from '../../../services/VetsServices/vetsservice.service';
-import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PetsPaginatorIntlService } from '../../../services/PetsServices/pets-paginator-intl.service';
 import { IPetGridDto } from '../../../models/Pets/IPetGridDto';
 
@@ -21,7 +21,7 @@ import { IPetGridDto } from '../../../models/Pets/IPetGridDto';
   templateUrl: './pets-list-grid.component.html',
   styleUrl: './pets-list-grid.component.css',
   imports: [FormsModule, CommonModule, AgePipe, PetCardComponent, MatPaginatorModule],
-  providers: [{ provide: MatPaginatorIntl, useClass: PetsPaginatorIntlService}]
+  providers: [{ provide: MatPaginatorIntl, useClass: PetsPaginatorIntlService }]
 })
 export class PetsListGridComponent implements OnInit {
 
@@ -56,7 +56,7 @@ export class PetsListGridComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       console.log("logged in");
 
-       let role: string = this.authService.getRoleFromToken()
+      let role: string = this.authService.getRoleFromToken()
       if (role == 'Doctor') {
         this.DoctorsFlow();
       }
@@ -123,18 +123,18 @@ export class PetsListGridComponent implements OnInit {
 
         console.log('Filter Pet Ids:', petIds);
 
-         // get top 4 recently consulted
-         // TODO
+        // get top 4 recently consulted
+        // TODO
 
 
 
-         // get pet details by pet Ids
-          this.petsService.GetPetsGridByPetIDs(petIds.slice(0,4))
-          .subscribe(data =>
-            {
-              this.recentlyConsultedPets = data;
-              console.log("recently consulted pet details : "+this.recentlyConsultedPets[0].PetName)
-            }
+        // get pet details by pet Ids
+        this.petsService.GetPetsGridByPetIDs(petIds.slice(0, 4))
+          .subscribe(data => {
+            console.log("inside getpetsgridbypetids")
+            this.recentlyConsultedPets = data;
+            console.log("recently consulted pet details : " + this.recentlyConsultedPets[0].PetName)
+          }
           )
 
         // this.recentlyConsultedPets = pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
@@ -153,15 +153,17 @@ export class PetsListGridComponent implements OnInit {
 
   fetchPets(): void {
 
-    console.log('filter', this.petsFilter.PetIDs)
+    console.log('filter', this.petsFilter)
     this.petsService.FilterPetsPaged(this.petsFilter, this.currentPage, this.itemsPerPage)
       .subscribe(data => {
         this.pets = data.Pets;
         this.totalCount = data.Count
         console.log('Original pets:', this.pets);
-        this.totalPages = Math.ceil( this.totalCount / this.itemsPerPage)
+        this.totalPages = Math.ceil(this.totalCount / this.itemsPerPage)
         this.errorMessage = ''; // Clear error message on successful retrieval
-
+        if(data.Pets.length <= 0){
+          this.errorMessage = 'No pets found matching your search criteria.'
+        }
       },
         error => {
           if (error.status === 404) {
