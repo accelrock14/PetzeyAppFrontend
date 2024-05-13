@@ -102,6 +102,10 @@ export class UserProfileComponent implements OnInit {
       this.petsService
         .DeletePetByPetID(this.petToDelete.PetID)
         .subscribe(() => {
+          // delete Appointments by pet id
+          // Todo
+
+
           // To auto-update the pets without refreshing the page
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe(
             (data) => {
