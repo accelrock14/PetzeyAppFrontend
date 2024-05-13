@@ -29,21 +29,23 @@ describe('VetAppointmentListComponent', () => {
   it('should call GetAllClosedAppointmentByVetID method with correct VetID on initialization', () => {
     const vetId = 1;
     const appointmentcard: AppointmentCardDto[] = [
-      {AppointmentID: 1,
-      DoctorID: 'doc123',
-      PetID: 1,
-      PetName: 'Buddy',
-      PetAge: 5,
-      PetGender: 'Male',
-      OwnerName: 'John Doe',
-      OwnerID: 'owner456',
-      DoctorName: 'Dr. Smith',
-      PetPhoto: 'buddy.jpg', 
-      VetSpecialization: 'General Practitioner',
-      DoctorPhoto: 'doctor.jpg', 
-      ScheduleDate: new Date('2024-05-12'),
-      Status: 'Closed'
-  }];
+      {
+        AppointmentID: 1,
+        DoctorID: 'doc123',
+        PetID: 1,
+        PetName: 'Buddy',
+        PetAge: 5,
+        PetGender: 'Male',
+        OwnerName: 'John Doe',
+        OwnerID: 'owner456',
+        DoctorName: 'Dr. Smith',
+        PetPhoto: 'buddy.jpg',
+        VetSpecialization: 'General Practitioner',
+        DoctorPhoto: 'doctor.jpg',
+        ScheduleDate: new Date('2024-05-12'),
+        Status: 'Closed',
+        All: 5
+      }];
     spyOn(mockDashboardService,'GetAllClosedAppointmentByVetID').and.returnValue(of(appointmentcard));
     component.VetID = vetId;
 
