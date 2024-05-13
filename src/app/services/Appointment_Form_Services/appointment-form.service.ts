@@ -79,4 +79,8 @@ export class AppointmentFormService {
     return this.backendClient.put<AppointmentDetail>(this.editAppointmentUrl+AppointmentID,AppointmentDetailObj);
   }
 
+  getAllAppointments():Observable<AppointmentDetail[]>{
+    return this.backendClient.get<AppointmentDetail[]>(appointmentServiceUrl+"/api/Appointment");
+  }
+
 }
