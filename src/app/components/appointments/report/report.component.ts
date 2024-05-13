@@ -162,7 +162,7 @@ export class ReportComponent implements OnInit {
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
   deleteRecommendationID: number = 0;
-  isDoctor: boolean = true;
+  isDoctor: boolean = false;
   isEditing = false;
   doctor!: IVetCardDTO;
 
@@ -174,10 +174,6 @@ export class ReportComponent implements OnInit {
       this.configureForms();
 
       this.getAllMasterDataForForms();
-
-      // get list of existing symptoms, tests and doctors in the report
-      this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
-      this.selectedTests = this.report.Tests.map((r) => r.Test);
 
       // check if the user is a doctor
       this.isDoctor = this.authService.getRoleFromToken() == 'Doctor';
@@ -499,20 +495,37 @@ export class ReportComponent implements OnInit {
   }
 
   updateRecommendation() {
-    this.reportService.UpdateRecommendation(this.report.ReportID, this.recommendation)
-      .subscribe((d) => {
-        this.toastr.success('Recommendation updated successfully');
+    if (this.recommendation.ID == 0) {
+      this.reportService.AddRecommendation(this.report.ReportID, this.recommendation).subscribe((d) => {
+        this.toastr.success('Recommendation added successfully');
         this.reportService.getReport(this.reportId).subscribe(
           (r) => {
             this.report = r;
           },
           (error) => {
             this.toastr.error(
-              'Recommendation could not be updated, Please try after sometime'
+              'Recommendation could not be added, Please try after sometime'
             );
           }
         );
-      });
+      })
+    }
+    else {
+      this.reportService.UpdateRecommendation(this.recommendation)
+        .subscribe((d) => {
+          this.toastr.success('Recommendation updated successfully');
+          this.reportService.getReport(this.reportId).subscribe(
+            (r) => {
+              this.report = r;
+            },
+            (error) => {
+              this.toastr.error(
+                'Recommendation could not be updated, Please try after sometime'
+              );
+            }
+          );
+        });
+    }
   }
 
   selectMedicine(medicine: ListItem) {
@@ -613,18 +626,6 @@ export class ReportComponent implements OnInit {
       }
     );
 
-    // get all medicines from service
-    this.reportService.getAllMedicines().subscribe(
-      (m) => {
-        this.medicines = m;
-      },
-      (error) => {
-        this.toastr.error(
-          'Could not load the Medicines. Plese visit after some time'
-        );
-      }
-    );
-
     // get all vets from vet service
     this.vetService.getAllVets().subscribe(
       (v) => {
@@ -650,7 +651,25 @@ export class ReportComponent implements OnInit {
         this.doctors.splice(index, 1);
         console.log(this.doctors);
 
-        // set the default selected values of the forms
+
+      },
+      (error) => {
+        this.toastr.error(
+          'Could not load the Vets. Plese visit after some time'
+        );
+      }
+    );
+
+    // get all medicines from service
+    this.reportService.getAllMedicines().subscribe(
+      (m) => {
+        this.medicines = m;
+
+        // get list of existing symptoms, tests and doctors in the report
+        this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
+        this.selectedTests = this.report.Tests.map((r) => r.Test);
+
+        //set the default selected values of the forms
         this.myForm = this.fb.group({
           symptom: [this.selectedSymptoms],
           test: [this.selectedTests],
@@ -660,7 +679,7 @@ export class ReportComponent implements OnInit {
       },
       (error) => {
         this.toastr.error(
-          'Could not load the Vets. Plese visit after some time'
+          'Could not load the Medicines. Plese visit after some time'
         );
       }
     );
