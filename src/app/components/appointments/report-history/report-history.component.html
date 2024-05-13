@@ -1,4 +1,4 @@
-<div class="appointmentDetailspage ps-3 p-5">
+<!-- <div class="appointmentDetailspage ps-3 p-5">
   <div class="report mt-3 mb-0">
     <hr class="mt-0" />
 
@@ -125,4 +125,76 @@
       </div>
     </div>
   </div>
+</div> -->
+
+<div class="appointment-history-page m-4">
+
+  <div class="appointment-history-heading d-flex justify-content-between align-items-center">
+    <h4>Appointment History</h4>
+
+    <div>
+    <mat-form-field appearance="fill">
+      <input
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Select Date"
+        [(ngModel)]="selectedDate"
+        (ngModelChange)="onDateChange()"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <button class="btn ms-3 orange-color-bg" (click)="clearDate()">Clear</button>
+  </div>
+
+  </div>
+    <hr>
+
+    <div class="appointment-history-body border rounded-3 shadow all-item-list">
+
+
+      @if(filteredAppointmentHistory.length!=0)
+      {
+
+     @for(appointment of filteredAppointmentHistory; track $index){
+
+
+      <div class="appointment-row border rounded-3 shadow-sm m-2 mt-3 pt-2 pb-2 ps-3 pe-3 d-flex justify-content-between align-items-center">
+
+       <div>
+         <h6 class="fw-bold">#ID {{appointment.AppointmentID}}</h6>
+         <p class="fw-medium m-0 p-0">{{doctors[$index].FName+" "+doctors[$index].LName}}</p>
+         <p class="m-0 p-0"><span class="fw-medium">Reason:</span>{{appointment.ReasonOfAppointment}}</p>
+       </div>
+
+
+       <div>
+        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate | date}}</p>
+        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate.toTimeString() }}</p>
+       </div>
+
+       <div class="view-details">
+          <button routerLink="/DoctorDashboard/details/{{petId}}" class="btn capsule">View Details<i class="fa-solid fa-up-right-from-square ms-2"></i></button>
+
+        </div>
+
+
+      </div>
+    }
+    }
+    @else {
+      <div class="text-center text-danger position-relative top-50">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <p>No Appointment History</p>
+      </div>
+    }
+
+
+    </div>
+
+
 </div>

@@ -13,7 +13,10 @@ import { Test } from '../../../models/appoitment-models/Test';
 import { ReportSymptom } from '../../../models/appoitment-models/ReportSymptom';
 import { Symptom } from '../../../models/appoitment-models/Symptom';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ReportService, reportToken } from '../../../services/appointment/report.service';
+import {
+  ReportService,
+  reportToken,
+} from '../../../services/appointment/report.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { PrescribedMedicine } from '../../../models/appoitment-models/PrescribedMedicine';
 import { Medicine } from '../../../models/appoitment-models/Medicine';
@@ -35,6 +38,7 @@ import { IVetCardDTO } from '../../../models/Vets/IVetCardDto';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'jquery';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report',
@@ -47,6 +51,7 @@ import { error } from 'jquery';
     NgMultiSelectDropDownModule,
     NgClass,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './report.component.html',
   styleUrl: './report.component.css',
@@ -139,7 +144,12 @@ export class ReportComponent implements OnInit {
     dosage: [false, false, false],
     comment: '',
   };
-  myForm!: FormGroup
+  recommendation: RecommendedDoctor = {
+    ID: 0,
+    DoctorID: '',
+    Reason: ''
+  }
+  myForm!: FormGroup;
   ShowFilter = true;
   limitSelection = false;
   symptoms: Symptom[] = [];
@@ -154,32 +164,24 @@ export class ReportComponent implements OnInit {
   medicineSettings: any = {};
   doctorSettings: any = {};
   deletePrescribedMedicineID: number = 0;
+  deleteRecommendationID: number = 0;
   isDoctor: boolean = true;
   isEditing = false;
+  doctor!: IVetCardDTO;
 
   ngOnInit(): void {
     // get report details from report service and set the data in variable
     this.reportService.getReport(this.reportId).subscribe((r) => {
       this.report = r;
 
-      this.configureForms()
+      this.configureForms();
 
-      this.getAllMasterDataForForms()
+      this.getAllMasterDataForForms();
 
       // get list of existing symptoms, tests and doctors in the report
       this.selectedSymptoms = this.report.Symptoms.map((s) => s.Symptom);
       this.selectedTests = this.report.Tests.map((r) => r.Test);
-      this.selectedDoctors = this.report.RecommendedDoctors.map(
-        (d) => d.DoctorID
-      );
 
-      // set the default selected values of the forms
-      this.myForm = this.fb.group({
-        symptom: [this.selectedSymptoms],
-        test: [this.selectedTests],
-        medicine: [[]],
-        doctor: [this.selectedDoctors],
-      });
       // check if the user is a doctor
       this.isDoctor = this.authService.getRoleFromToken() == 'Doctor';
     });
@@ -193,7 +195,6 @@ export class ReportComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService
   ) { }
-
 
   enableEdit(): void {
     this.isEditing = true;
@@ -253,23 +254,7 @@ export class ReportComponent implements OnInit {
     this.report.Tests.splice(index, 1);
   }
 
-  onSelectDoctor(doctor: ListItem) {
-    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
-    var recommendedDoctor: RecommendedDoctor = {
-      DoctorID: newDoctor.VetId.toString(),
-      ID: 1,
-    };
-    // add new doctor recommendation to report object
-    this.report.RecommendedDoctors.push(recommendedDoctor);
-  }
-  onDeselectDoctor(doctor: ListItem) {
-    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
-    let index: number = this.report.RecommendedDoctors.findIndex(
-      (d) => d.DoctorID == newDoctor.VetId.toString()
-    );
-    // remove doctor recommendation from report object
-    this.report.RecommendedDoctors.splice(index, 1);
-  }
+
 
   getSymptomById(id: number): Symptom | undefined {
     return this.symptoms.find((s) => {
@@ -321,6 +306,10 @@ export class ReportComponent implements OnInit {
     this.deletePrescribedMedicineID = prescribedMedicineID;
   }
 
+  setDeleteRecommendation(recommendationID: number) {
+    this.deleteRecommendationID = recommendationID
+  }
+
   // delete the selected prescribed medicine
   confirmDeleteMedicine() {
     this.reportService
@@ -333,8 +322,19 @@ export class ReportComponent implements OnInit {
       });
   }
 
+  confirmDeleteRecommendation() {
+    // api service to delete recommendation
+    this.reportService.DeleteRecommendation(this.deleteRecommendationID)
+      .subscribe((d) => {
+        this.reportService.getReport(this.reportId).subscribe((r) => {
+          this.report = r;
+          this.toastr.success('Recommendation removed successfully');
+        });
+      });
+  }
+
   activatePrescriptionModal(id: number) {
-    this.myForm.get('medicine')?.reset()
+    this.myForm.get('medicine')?.reset();
     // reset the form if new medicine button was clicked
     if (id == 0) {
       this.prescriptionForm.prescribedMedicineID = 0;
@@ -356,7 +356,9 @@ export class ReportComponent implements OnInit {
         this.prescriptionForm.medicine = prescribedMedicine.MedicineID;
         this.prescriptionForm.days = prescribedMedicine.NumberOfDays;
         this.prescriptionForm.dosage = [false, false, false];
-        this.myForm.get('medicine')?.setValue([this.getMedicineById(prescribedMedicine.MedicineID)])
+        this.myForm
+          .get('medicine')
+          ?.setValue([this.getMedicineById(prescribedMedicine.MedicineID)]);
         //morning
         if (
           prescribedMedicine.Dosages == 0 ||
@@ -394,6 +396,33 @@ export class ReportComponent implements OnInit {
       }
     }
   }
+
+  activateRecommendationModal(id: number) {
+    this.myForm.get('doctor')?.reset();
+    // reset the form if new medicine button was clicked
+    if (id == 0) {
+      this.recommendation.DoctorID = '0';
+      this.recommendation.ID = 0;
+      this.recommendation.Reason = ''
+    }
+    else {
+      // get the details of prescribed medicine selected
+      let recommendedDoctor: RecommendedDoctor | undefined =
+        this.report.RecommendedDoctors.find(
+          (d) => d.ID == id
+        );
+      //update the form values
+      if (recommendedDoctor != undefined) {
+        this.recommendation.Reason = recommendedDoctor.Reason
+        this.recommendation.DoctorID = recommendedDoctor.DoctorID
+        this.recommendation.ID = recommendedDoctor.ID
+        this.myForm
+          .get('doctor')
+          ?.setValue([this.getDoctorById(recommendedDoctor.DoctorID)]);
+      }
+    }
+  }
+
   updatePrescription() {
     let prescribedMedicine: PrescribedMedicine = {
       PrescribedMedicineID: 0,
@@ -472,13 +501,35 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  updateRecommendation() {
+    this.reportService.UpdateRecommendation(this.report.ReportID, this.recommendation)
+      .subscribe((d) => {
+        this.toastr.success('Recommendation updated successfully');
+        this.reportService.getReport(this.reportId).subscribe(
+          (r) => {
+            this.report = r;
+          },
+          (error) => {
+            this.toastr.error(
+              'Recommendation could not be updated, Please try after sometime'
+            );
+          }
+        );
+      });
+  }
+
   selectMedicine(medicine: ListItem) {
     let selectMed: Medicine = medicine as unknown as Medicine;
     this.prescriptionForm.medicine = selectMed.MedicineID;
   }
 
+  onSelectDoctor(doctor: ListItem) {
+    let newDoctor: IVetCardDTO = doctor as unknown as IVetCardDTO;
+    this.recommendation.DoctorID = newDoctor.VetId.toString()
+  }
+
   // emit event to download the page as pdf
-  @Output() messageEvent = new EventEmitter<string>();
+  @Output() messageEvent = new EventEmitter();
 
   captureElementAsCanvas(element: any, index: number) {
     return html2canvas(element, {
@@ -501,79 +552,7 @@ export class ReportComponent implements OnInit {
   callToastThenExport() {
     this.toastr.info('Your PDF will be downloaded in sometime. Please wait !');
 
-    setTimeout(() => {
-      this.exportToPDF();
-    }, 30);
-  }
-
-  async exportToPDF() {
-    //  this.callInfoToast();
-    // const page = document.getElementById('elementToExport') as HTMLElement;
-
-    // Function to capture a specific element (e.g., a div) as a canvas
-    const doc = new jsPDF();
-    // Array to hold promises for each section capture
-    const sectionPromises: any = [];
-
-    // Define the div elements you want to capture (adjust as needed)
-    const divsToCapture = await document.querySelectorAll('.capture-section'); // Example: select divs with class "capture-section"
-
-    // Loop through each div to capture
-    for (var i = 0; i < 3; i++) {
-      const promise = await this.captureElementAsCanvas(divsToCapture[i], i);
-      sectionPromises.push(promise);
-    }
-
-    // divsToCapture.forEach((div) => {
-    //   const promise = this.captureElementAsCanvas(div);
-    //   sectionPromises.push(promise);
-    // });
-
-    // When all section captures are complete
-    await Promise.all(sectionPromises).then((sectionCanvases) => {
-      // Determine the total height needed for the final composite canvas
-      let totalHeight = 0;
-
-      totalHeight = sectionCanvases[0].height + sectionCanvases[2].height;
-
-      // sectionCanvases.forEach((canvas) => {
-      //   totalHeight += canvas.height;
-      // });
-
-      // Create a final composite canvas with the calculated dimensions
-      const compositeCanvas = document.createElement('canvas');
-      compositeCanvas.width = sectionCanvases[0].width * 2; // Assume all captured sections have the same width
-      compositeCanvas.height = totalHeight;
-
-      // Create a context for drawing on the composite canvas
-      const ctx = compositeCanvas.getContext('2d');
-      let yOffset = 0;
-      let xOffset = 0;
-
-      // Draw each captured section onto the composite canvas
-      for (var i = 0; i < 3; i++) {
-        ctx?.drawImage(sectionCanvases[i], xOffset, yOffset);
-        xOffset += sectionCanvases[i].width;
-
-        if (i == 1) {
-          yOffset += sectionCanvases[i].height;
-          xOffset = 0;
-        }
-      }
-      // sectionCanvases.forEach((canvas) => {
-      //   ctx?.drawImage(canvas, 0, yOffset);
-      //   yOffset += canvas.height;
-      // });
-
-      // Convert the composite canvas to a data URL (or use it as needed)
-      const imgData = compositeCanvas.toDataURL('image/png');
-      // console.log(imgData);
-
-      this.messageEvent.emit(imgData);
-
-      // doc.addImage(imgData, 'PNG', 10, 10, 200, 150);
-      // doc.save('report.pdf');
-    });
+    this.messageEvent.emit();
   }
 
   // configure the multiselect form settings
@@ -603,7 +582,7 @@ export class ReportComponent implements OnInit {
       allowSearchFilter: this.ShowFilter,
     };
     this.doctorSettings = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'VetId',
       textField: 'Name',
       enableCheckAll: false,
@@ -613,7 +592,6 @@ export class ReportComponent implements OnInit {
   }
 
   getAllMasterDataForForms() {
-
     // get allsymptoms from service
     this.reportService.getAllSymptoms().subscribe(
       (s) => {
@@ -653,7 +631,35 @@ export class ReportComponent implements OnInit {
     // get all vets from vet service
     this.vetService.getAllVets().subscribe(
       (v) => {
-        this.doctors = v;
+        //this.doctors = v;
+        v.forEach((doc) => {
+          this.doctors.push({
+            VetId: doc.VetId,
+            Name: doc.Name + ' - ' + doc.Speciality,
+            PhoneNumber: doc.PhoneNumber,
+            Speciality: doc.Speciality,
+            Photo: doc.Photo,
+          });
+        });
+        this.report.RecommendedDoctors.forEach((doctor) => {
+          this.selectedDoctors.push(this.getDoctorById(doctor.DoctorID));
+        });
+
+        let index: number = this.doctors.findIndex(
+          (d) => d.VetId == parseInt(this.doctorId)
+        );
+        // remove doctor recommendation from report object
+        this.doctor = this.doctors[index];
+        this.doctors.splice(index, 1);
+        console.log(this.doctors);
+
+        // set the default selected values of the forms
+        this.myForm = this.fb.group({
+          symptom: [this.selectedSymptoms],
+          test: [this.selectedTests],
+          medicine: [[]],
+          doctor: [this.selectedDoctors],
+        });
       },
       (error) => {
         this.toastr.error(

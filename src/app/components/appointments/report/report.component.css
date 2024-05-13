@@ -16,11 +16,22 @@
   color: white;
 }
 
-.vitals{
-  height: 213px;
+
+.symptoms,.tests{
+  height: 170px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.symptoms,.tests,.recommendeddr,.commentsbydoctor{
+.recommendeddr{
+  height: 230px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.commentsbydoctor{
   height: 190px;
   overflow: hidden;
   display: flex;
@@ -31,9 +42,7 @@
     flex: 1;
     word-break: break-word;
   }
-.fa-heart{
-  color: rgb(255, 0, 0);
-}
+
 
 .symptoms, .tests, .recommendeddr{
   overflow: visible;
@@ -41,26 +50,14 @@
 
 .precription
 {
-  height: 427px;
+  height: 618px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.vitals .icons .icon-container i{
-font-size: 40px;
-}
 
-.vitals .icons .icon-container .icon-text{
-  font-size: 20px;
-  }
-.fa-heart{
-  color: rgb(255, 0, 0);
-}
 
-.fa-thermometer,.fa-lungs{
-  color: rgb(29, 58, 91);
-}
 
 .all-item-list{
   overflow-y: auto; /* Enable vertical scrolling */
@@ -235,6 +232,13 @@ left: 2px;
 }
 
 
+/* doctor icon */
+.fa-user-nurse{
+  color: #ff5500;
+  font-size: 30px;
+  padding: 20px;
+}
+
 input[type="checkbox"]:checked{
   background-color: #ff1100;
   color: black;
@@ -255,7 +259,6 @@ border-bottom: 1px black solid;
 outline: none;
 
 }
-
 
 
 
