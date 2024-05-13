@@ -83,7 +83,7 @@
     <div class="row">
       @for(pet of pets; track $index){
       <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <app-pet-card  [pet]="pet" [petOwner]="pet.PetParentID"></app-pet-card>
+        <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
       </div>
       }
     </div>

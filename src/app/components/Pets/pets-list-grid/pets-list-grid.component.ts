@@ -55,19 +55,18 @@ export class PetsListGridComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       console.log("logged in");
 
-      // let role: string = this.authService.getRoleFromToken()
-
-      //if (role == 'Doctor') {
-      //  this.DoctorsFlow();
-      //}
-      //else if (role == 'Receptionist') {
+       let role: string = this.authService.getRoleFromToken()
+      if (role == 'Doctor') {
+        this.DoctorsFlow();
+      }
+      else if (role == 'Receptionist') {
         this.ReceptionistFlow();
-      //}
+      }
 
       // Get All User Objects - Required To display the Pet Owner Details
-      // this.authService.getAllUserIDsandNames().subscribe(users => {
-      //   this.users = users
-      // })
+      this.authService.getAllUserIDsandNames().subscribe(users => {
+        this.users = users
+      })
     }
 
   }
