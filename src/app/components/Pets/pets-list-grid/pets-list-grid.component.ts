@@ -49,6 +49,7 @@ export class PetsListGridComponent implements OnInit {
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
   users!: any;
   errorMessage: string = '';
+  recentPetIds: number[] = []
 
   ngOnInit(): void {
 
@@ -126,16 +127,19 @@ export class PetsListGridComponent implements OnInit {
         // get top 4 recently consulted
         // TODO
 
-
-
-        // get pet details by pet Ids
-        this.petsService.GetPetsGridByPetIDs(petIds.slice(0, 4))
+        this.appointmentDetailsService.PostRecentPetIds(petIds)
           .subscribe(data => {
-            console.log("inside getpetsgridbypetids")
-            this.recentlyConsultedPets = data;
-            console.log("recently consulted pet details : " + this.recentlyConsultedPets[0].PetName)
-          }
-          )
+            this.recentPetIds = data;
+            console.log("recent petids: ", this.recentPetIds)
+            // get pet details by pet Ids
+            this.petsService.GetPetsGridByPetIDs(this.recentPetIds)
+              .subscribe(data => {
+                console.log("inside getpetsgridbypetids")
+                this.recentlyConsultedPets = data;
+                console.log("recently consulted pet details : " + this.recentlyConsultedPets[0].PetName)
+              }
+              )
+          });
 
         // this.recentlyConsultedPets = pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
@@ -161,7 +165,7 @@ export class PetsListGridComponent implements OnInit {
         console.log('Original pets:', this.pets);
         this.totalPages = Math.ceil(this.totalCount / this.itemsPerPage)
         this.errorMessage = ''; // Clear error message on successful retrieval
-        if(data.Pets.length <= 0){
+        if (data.Pets.length <= 0) {
           this.errorMessage = 'No pets found matching your search criteria.'
         }
       },
