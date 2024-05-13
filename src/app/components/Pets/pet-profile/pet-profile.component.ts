@@ -55,11 +55,14 @@ export class PetProfileComponent implements OnInit {
     });
 
     // Fetch All Allergies
-    this.petsService.GetAllAllergies().subscribe(petAllergies => this.allergies = petAllergies)
-    console.log(this.allergies)
+    this.petsService.GetAllAllergies().subscribe(petAllergies => {
+      this.allergies = petAllergies
+      console.log(this.allergies)
+
+    })
     // Fetch Pet Allergy
-    this.petsService.GetPetAllergiesByPetID(this.Pet.PetID).subscribe(allergies => this.petAllergies = allergies);
-    console.log(this.petAllergies)
+    this.petsService.GetPetAllergiesByPetID(Number(id)).subscribe(allergies => this.petAllergies = allergies);
+    
 
      if (this.auth.isLoggedIn() ){
       // Fetch details of all users

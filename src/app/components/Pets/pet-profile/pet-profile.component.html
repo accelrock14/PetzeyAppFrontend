@@ -70,10 +70,9 @@
             }}</small
             ><br />
             <small class="text-muted" style="font-weight: bold">
-              <div *ngFor="let i of petAllergies">
-                {{ allergies[i - 1].AllergyName }}
-
-              </div>
+              <span *ngFor="let i of petAllergies">
+                {{ allergies[i - 1].AllergyName }},
+              </span>
             </small>
 
           </div>
