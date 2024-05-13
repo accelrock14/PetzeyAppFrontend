@@ -492,22 +492,24 @@ export class ReportComponent implements OnInit {
 
   updateRecommendation() {
     if (this.recommendation.ID == 0) {
-      this.reportService.AddRecommendation(this.report.ReportID, this.recommendation).subscribe((d) => {
-        this.toastr.success('Recommendation added successfully');
-        this.reportService.getReport(this.reportId).subscribe(
-          (r) => {
-            this.report = r;
-          },
-          (error) => {
-            this.toastr.error(
-              'Recommendation could not be added, Please try after sometime'
-            );
-          }
-        );
-      })
-    }
-    else {
-      this.reportService.UpdateRecommendation(this.recommendation)
+      this.reportService
+        .AddRecommendation(this.report.ReportID, this.recommendation)
+        .subscribe((d) => {
+          this.toastr.success('Recommendation added successfully');
+          this.reportService.getReport(this.reportId).subscribe(
+            (r) => {
+              this.report = r;
+            },
+            (error) => {
+              this.toastr.error(
+                'Recommendation could not be added, Please try after sometime'
+              );
+            }
+          );
+        });
+    } else {
+      this.reportService
+        .UpdateRecommendation(this.recommendation)
         .subscribe((d) => {
           this.toastr.success('Recommendation updated successfully');
           this.reportService.getReport(this.reportId).subscribe(
@@ -633,8 +635,8 @@ export class ReportComponent implements OnInit {
             PhoneNumber: doc.PhoneNumber,
             Speciality: doc.Speciality,
             Photo: doc.Photo,
-            Rating: doc.Rating,
-            Counter: doc.Counter
+            City: '',
+            Status: false,
           });
         });
         this.report.RecommendedDoctors.forEach((doctor) => {
@@ -648,8 +650,6 @@ export class ReportComponent implements OnInit {
         this.doctor = this.doctors[index];
         this.doctors.splice(index, 1);
         console.log(this.doctors);
-
-
       },
       (error) => {
         this.toastr.error(

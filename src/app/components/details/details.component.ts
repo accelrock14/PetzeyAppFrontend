@@ -488,7 +488,7 @@ export class DetailsComponent implements OnInit {
     doc.setFontSize(10);
     y += 6;
 
-    for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+    for (let i = 0; i < allVets.length; i++) {
       doc.text(
         `${i + 1}. ${
           allVets[i].FName +
