@@ -75,8 +75,8 @@ doctorRating:DoctorRating={
     this.service.selectedid=obj;
     this.selectedappointmentid=obj;
     this.showmodal=false;
-    if(status=="Cancelled"){
-      this.toastservice.info("feedback can be submitted only if appointment is confirmed")
+    if(status=="Cancelled"||status=="Pending"||status=="Confirmed"){
+      this.toastservice.info("feedback can be submitted only if appointment is closed")
     }
     else if(!this.feedbacklist.find(f=>f.AppointmentId==obj)&& status=="Closed"){
       this.showmodal=true;
