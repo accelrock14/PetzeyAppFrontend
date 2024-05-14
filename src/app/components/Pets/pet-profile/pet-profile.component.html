@@ -69,10 +69,19 @@
 
             }}</small
             ><br />
-            <small class="text-muted" style="font-weight: bold">
+            <!-- <small class="text-muted" style="font-weight: bold">
               <span *ngFor="let i of petAllergies">
                 {{ allergies[i - 1].AllergyName }},
               </span>
+            </small> -->
+            <small class="text-muted" style="font-weight: bold">
+              <span *ngIf="petAllergies.length > 0">
+                <span *ngFor = "let i of petAllergies; let last = last">
+                  {{ allergies[i-1].AllergyName }}
+                  <span *ngIf="!last">, </span>
+                </span>
+              </span>
+              <span *ngIf="!petAllergies?.length">No allergies</span>
             </small>
 
           </div>
