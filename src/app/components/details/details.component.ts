@@ -52,11 +52,8 @@ declare var window: any;
   styleUrl: './details.component.css',
 })
 export class DetailsComponent implements OnInit {
-  GenerateReport() {
-    this.isTobeGenerated = !this.isTobeGenerated;
-    console.log('hii');
-  }
-  isTobeGenerated: boolean = false;
+
+  
   // parseToInt(arg0: string): number {
   //   return parseInt(arg0);
   // }
@@ -213,7 +210,7 @@ export class DetailsComponent implements OnInit {
    */
   closeAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
+      .PatchAppointmentStatus(this.appointment.AppointmentID,false, 3)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment
@@ -240,7 +237,7 @@ export class DetailsComponent implements OnInit {
    */
   cancelAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 2)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, false,2)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment
@@ -273,7 +270,7 @@ export class DetailsComponent implements OnInit {
    */
   acceptAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 1)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, false,1)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
@@ -292,6 +289,48 @@ export class DetailsComponent implements OnInit {
         }
       );
   }
+  // GenerateNewReport() {
+  //   this.appointmentDetailsService
+  //   .PatchAppointmentStatus(this.appointment.AppointmentID, true,1)
+  //   .subscribe(
+  //     (response) => {
+  //       this.appointmentDetailsService
+  //           .GetAppointmentDetail(this.appointment.AppointmentID)
+  //           .subscribe(
+  //             (updatedAppointment) => (this.appointment = updatedAppointment)
+  //           );
+  //     },
+  //     (error) => {
+  //       console.log('error while generating report');
+  //     }
+  //   );
+  // }
+  GenerateNewReport() {
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, true, 1)
+      .subscribe(
+        () => {
+          // Introduce a short delay to ensure backend processing is complete
+          
+            this.appointmentDetailsService
+              .GetAppointmentDetail(this.appointment.AppointmentID)
+              .subscribe(
+                (updatedAppointment) => {
+                  this.appointment = updatedAppointment;
+                },
+                (error) => {
+                  console.log('Error while fetching updated appointment details:', error);
+                }
+              );
+             window.location.reload();
+        },
+        (error) => {
+          console.log('Error while generating report:', error);
+        }
+      );
+  }
+
+
   // Method to generate & download the pdf
 
   async exportToPDF() {
