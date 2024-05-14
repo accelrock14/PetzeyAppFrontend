@@ -158,6 +158,11 @@
             </tr>
         </thead>
         <tbody>
+            <div class="container mt-4" *ngIf="!loadingAppointments && appointmentCards.length === 0">
+                <div class="alert alert-danger" role="alert">
+                    No appointments found.
+                </div>
+            </div>
             <tr *ngFor="let appointment of appointmentCards">
                 <td>{{ appointment.DoctorName }}</td>
                 <td>{{ appointment.PetName }}</td>

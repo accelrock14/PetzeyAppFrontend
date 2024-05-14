@@ -64,7 +64,8 @@ describe('DoctorDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     },
     {
       AppointmentID: 2, 
@@ -80,7 +81,8 @@ describe('DoctorDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     }];
     const selectedDate = new Date();
     const selectedStatus = 'Scheduled';
@@ -143,7 +145,8 @@ describe('DoctorDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     },
     {
       AppointmentID: 2, 
@@ -159,7 +162,8 @@ describe('DoctorDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     }]
 
     // Set component properties
