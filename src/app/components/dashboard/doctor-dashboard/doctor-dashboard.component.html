@@ -110,6 +110,12 @@
     <h3 class="heading ms-3">Upcoming appointments</h3>
     <div class="container">
         <hr>
+        <div class="container mt-4" *ngIf="!loadingAppointments && UpcomingappointmentCards.length === 0">
+            <div class="alert alert-danger" role="alert">
+                No upcoming appointments found.
+            </div>
+        </div>
+        
         <div class="scrolling-wrapper pb-4" style="overflow-x: auto;">
             <div class="d-flex flex-nowrap">
                 <div *ngFor="let appointment of UpcomingappointmentCards" style="margin-right: 10px;">
@@ -127,6 +133,11 @@
     <div class="row justify-content-center">
         <div class="col-md-3 col-sm-12">
             <h3 class="heading">All appointments</h3>
+        </div>
+        <div class="container mt-4" *ngIf="!loadingAppointments && appointmentCards.length === 0">
+            <div class="alert alert-danger" role="alert">
+                No appointments found.
+            </div>
         </div>
         <div class=" container-box col-md-3 col-sm-6 d-flex align-items-center justify-content-center"> 
             <form action="post" method="post">
