@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
   reloadOnce(): void {
     console.log("Reload called");
     const flag=localStorage.getItem("reloadOnce")
-
+ 
   
     if(!flag){
       console.log("flag set to true");
