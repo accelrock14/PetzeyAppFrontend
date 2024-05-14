@@ -327,6 +327,11 @@ this.location.back();
   }
   onDisSelectPetIssue(Pi:PetIssue) {
     this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
+
+    this.generalPetIssues.push({
+      GeneralPetIssueID: 0,
+      IssueName: Pi.IssueName
+    });
   }
 
   // veternarian methods 
