@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AuthService } from '../../../services/UserAuthServices/auth.service';
+import { FeedbackService } from '../../../services/feedback.service';
+import { DoctorAVgRating } from '../../../models/appoitment-models/IFeedback';
 
 
 @Component({
@@ -17,13 +19,16 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
   styleUrl: './vet.component.css'
 })
 export class VetComponent implements OnInit{
+parseInt(docId: string):number {
+  return this.parseInt(docId);
+}
 
 
   vets: IVetCardDTO[] = [];
   filteredVets: IVetCardDTO[]=[];
   activeVets:IVetCardDTO[]=[];
   searchQuery: string = '';
-  topRatedVets:IVetCardDTO[]=[];
+  topRatedVets:DoctorAVgRating[]=[];
   specialties: string[] = [];
   selectedSpecialties: string[] = [];
   fVets: any[] = [];
@@ -32,9 +37,11 @@ export class VetComponent implements OnInit{
   pageSize: number = 8; 
   totalPages: number = 1; 
   totalActivePages: number=0;
+  counter:number=0;
+  highRated:IVetProfileDTO[]=[];
   
  
-  constructor(private vetService: VetsserviceService,private router: Router,  public auth : AuthService) { 
+  constructor(private vetService: VetsserviceService,private router: Router,  public auth : AuthService,private feedback:FeedbackService) { 
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -55,11 +62,35 @@ export class VetComponent implements OnInit{
   }
 
   getTopRated(): void {
-    this.vetService.getTopRatedVets()
+    this.feedback.getAvgRating()
       .subscribe(
-        (vets: IVetCardDTO[]) => {
+        (vets: DoctorAVgRating[]) => {
           this.topRatedVets = vets;
           console.log(this.topRatedVets)
+          
+          this.topRatedVets.sort((a,b)=>b.AvgRating-a.AvgRating)
+          while(this.counter<4){
+            this.vetService.getVetById(parseInt(this.topRatedVets[0].DoctorId)).subscribe(res=>
+              {
+                if(res.Status){
+                  this.counter++;
+                  const vetWithRating = {
+                    ...res,
+                    avgRating: this.topRatedVets[0].AvgRating,
+                    numberOfReviews: this.topRatedVets[0].NumberOfRatings
+                  };
+                  this.highRated.push(vetWithRating);
+                  
+                  this.topRatedVets.pop();
+
+                }
+                
+              }
+            )
+
+          }
+
+          
         },
         error => {
           console.error('Error fetching vets:', error);
