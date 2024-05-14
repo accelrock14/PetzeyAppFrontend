@@ -76,7 +76,7 @@ doctorRating:DoctorRating={
     this.selectedappointmentid=obj;
     this.showmodal=false;
     if(status=="Cancelled"||status=="Pending"||status=="Confirmed"){
-      this.toastservice.info("feedback can be submitted only if appointment is closed")
+      this.toastservice.info("Feedback can be submitted only if appointment is closed")
     }
     else if(!this.feedbacklist.find(f=>f.AppointmentId==obj)&& status=="Closed"){
       this.showmodal=true;
@@ -84,7 +84,7 @@ doctorRating:DoctorRating={
     }
     else{
       this.showmodal=false;
-      this.toastservice.info("feedback can be submitted only once")
+      this.toastservice.info("Feedback can be submitted only once")
     }
    
  }
@@ -131,7 +131,7 @@ doctorRating:DoctorRating={
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
-            this.toastservice.success("feedback  submitted successfully")
+            this.toastservice.success("Feedback  submitted successfully")
              console.log('Response:', response);
              
            },
@@ -163,6 +163,7 @@ doctorRating:DoctorRating={
                  this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
        
                  })
+                 window.location.reload();
          
          }
          
