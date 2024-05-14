@@ -309,4 +309,5 @@ export class UserProfileComponent implements OnInit {
         this.pets = data;
       });
   }
+  
 }

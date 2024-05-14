@@ -55,6 +55,7 @@ export class AddVetComponent {
     },
   };
   selectedFile: File | null = null;
+  maxDate?:string
   constructor(
     private vetService: VetsserviceService,
     private toastr: ToastrService,
