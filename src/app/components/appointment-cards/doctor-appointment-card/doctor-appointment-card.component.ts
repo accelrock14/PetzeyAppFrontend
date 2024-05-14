@@ -172,8 +172,12 @@ export class DoctorAppointmentCardComponent {
 
     })
 
-window.location.reload();
-this.toastservice.success("Feedback  submitted successfully");
+    this.toastservice.success("Feedback  submitted successfully");
+    setTimeout(() => {
+     
+     window.location.reload();
+   }, 2000);
+    
 
 
   }
