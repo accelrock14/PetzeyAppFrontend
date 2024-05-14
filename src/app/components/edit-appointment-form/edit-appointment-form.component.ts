@@ -286,7 +286,7 @@ this.location.back();
         }
       });
     }
-    window.location.reload();
+    
   }// end of oninit
 
   // modal popup code for submission
