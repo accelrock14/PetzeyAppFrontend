@@ -53,7 +53,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       },
       {
         AppointmentID: 2, 
@@ -69,7 +70,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       }
     ];
     const mockDoctors = [{ VetId: 1, Name: "Dr. Smith" },{ VetId: 2, Name: "Dr. Johnson" }];
@@ -100,7 +102,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       },
       {
         AppointmentID: 2, 
@@ -116,7 +119,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       }
     ];
     const selectedDate = new Date();
@@ -176,7 +180,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       },
       {
         AppointmentID: 2, 
@@ -192,7 +197,8 @@ describe('AdminDashboardComponent', () => {
         PetPhoto: '',
         VetSpecialization: 'Vaccination',
         DoctorPhoto: '',
-        Status: ''
+        Status: '',
+        All: 5
       }
     ];
 

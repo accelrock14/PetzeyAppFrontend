@@ -544,7 +544,7 @@
                     <small>{{ doctors.Reason }}</small>
                   </div>
                   <button
-                    *ngIf="!isEditing"
+                    *ngIf="!isEditing && !isDoctor"
                     routerLink="/vet-profile/{{ doctors.DoctorID }}"
                     class="btn capsule"
                   >

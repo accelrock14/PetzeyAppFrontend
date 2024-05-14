@@ -82,10 +82,9 @@ export class DetailsComponent implements OnInit {
   formModal2: any;
   //Modlal 3 for accept appointment
   formModal3: any;
-// For testing the get recent pet id endpoint 
+  // For testing the get recent pet id endpoint
   petIds: number[] = [1, 3, 2];
   recentPetIds: number[] = [];
-
 
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
@@ -123,7 +122,6 @@ export class DetailsComponent implements OnInit {
 
   Reason_for_Cancellation_By_Doc: string = '';
   ngOnInit(): void {
-
     const ID: string = this.route.snapshot.paramMap.get('id')!;
 
     this.appointmentDetailsService
@@ -173,7 +171,6 @@ export class DetailsComponent implements OnInit {
         //   this.recentPetIds = data;
         //   console.log(this.recentPetIds)
         // });
-
       });
 
     this.formModal = new window.bootstrap.Modal(
@@ -343,31 +340,26 @@ export class DetailsComponent implements OnInit {
       (p) => {
         pet = p;
 
-        this.vetService
-          .getVetById(parseInt(this.appointment.DoctorID) as number)
-          .subscribe(
-            (v) => {
-              vet = v;
+        if (this.appointment.Report?.ReportID) {
+          this.reportService
+            .getReport(this.appointment.Report?.ReportID)
+            .subscribe(
+              (d) => {
+                report = d;
 
-              if (this.appointment.Report?.ReportID) {
-                this.reportService
-                  .getReport(this.appointment.Report?.ReportID)
+                for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+                  this.vetService
+                    .getVetById(parseInt(report.RecommendedDoctors[i].DoctorID))
+                    .subscribe((d) => {
+                      allVets.push(d);
+                    });
+                }
+
+                this.vetService
+                  .getVetById(parseInt(this.appointment.DoctorID) as number)
                   .subscribe(
-                    (d) => {
-                      report = d;
-
-                      for (
-                        let i = 0;
-                        i < report.RecommendedDoctors.length;
-                        i++
-                      ) {
-                        this.vetService
-                          .getVetById(
-                            parseInt(report.RecommendedDoctors[i].DoctorID)
-                          )
-                          .subscribe((d) => allVets.push(d));
-                      }
-
+                    (v) => {
+                      vet = v;
                       this.cretePDFdata(pet, vet, report, allVets);
                     },
                     (err) => {
@@ -376,14 +368,14 @@ export class DetailsComponent implements OnInit {
                       );
                     }
                   );
+              },
+              (err) => {
+                this.toastr.error(
+                  'Unbale to fetch the data. Please try after sometime'
+                );
               }
-            },
-            (err) => {
-              this.toastr.error(
-                'Unbale to fetch the data. Please try after sometime'
-              );
-            }
-          );
+            );
+        }
       },
       (err) => {
         this.toastr.error(
@@ -394,21 +386,23 @@ export class DetailsComponent implements OnInit {
   }
 
   getDosage(Dosages: number) {
-    const timePeriods = ['Morning', 'Afternoon', 'Night'];
-
-    const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
-
-    const selectedPeriods = [];
-
-    for (let i = 0; i < binaryString.length; i++) {
-      if (binaryString[i] === '1') {
-        selectedPeriods.push(timePeriods[i]);
-      }
+    if (Dosages === 0) {
+      return 'Morning';
+    } else if (Dosages === 1) {
+      return 'Afternoon';
+    } else if (Dosages === 2) {
+      return 'Night';
+    } else if (Dosages === 3) {
+      return 'Morning, Afternoon';
+    } else if (Dosages === 4) {
+      return 'Morning, Night';
+    } else if (Dosages === 5) {
+      return 'Afternoon, Night';
+    } else if (Dosages === 6) {
+      return 'Morning, Afternoon, Night';
+    } else {
+      return 'Invalid dosage number'; // Handle invalid dosage numbers
     }
-
-    const result = selectedPeriods.join(', ');
-
-    return result;
   }
 
   cretePDFdata(
@@ -473,7 +467,7 @@ export class DetailsComponent implements OnInit {
     let PrescribedMedicines = report.Prescription.PrescribedMedicines;
     for (let i = 0; i < PrescribedMedicines.length; i++) {
       doc.text(
-        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
+        `${i + 1}. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
           PrescribedMedicines[i].NumberOfDays
         } \t Consume: ${
           PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
@@ -530,13 +524,13 @@ export class DetailsComponent implements OnInit {
     for (let i = 0; i < allVets.length; i++) {
       doc.text(
         `${i + 1}. ${
-          allVets[i].FName +
+          allVets[i]?.FName +
           ' ' +
-          allVets[i].LName +
+          allVets[i]?.LName +
           ' (' +
-          allVets[i].Speciality +
+          allVets[i]?.Speciality +
           ')'
-        } \t ${allVets[i].Email} \t ${allVets[i].Phone}`,
+        } \t ${allVets[i]?.Email} \t ${allVets[i]?.Phone}`,
         15,
         y
       );
