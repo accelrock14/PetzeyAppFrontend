@@ -37,7 +37,7 @@
               <button *ngIf="isDoctor() && appointment.Status==0" type="button" class="btn btn-sm btn-outline-secondary me-2" (click)="openModal3()">Accept</button>
               <button class="btn btn-sm btn-outline-secondary me-1" (click)="openModal2()" >Cancel</button>
               <button class="btn btn-sm btn-outline-secondary me-1" [routerLink]="'/editAppointment/'+appointment.AppointmentID" *ngIf="isPatient()">Edit</button>
-
+ 
               <button *ngIf="!isPatient() && appointment.Status==1" type="button" class="btn btn-sm btn-outline" style="background-color: rgb(255, 111, 0); color: #fff;" (click)="openModal()">Close Appointment</button>
  
             </span>
@@ -50,10 +50,17 @@
             <li class="capsule" *ngFor="let issue of appointment.PetIssues">{{ issue.IssueName }}</li>
           </ul>
         </div>
-    <div class="reasons-for-visit d-flex flex-wrap">
+    <!-- <div class="reasons-for-visit d-flex flex-wrap">
       <h6>Reasons for visit:</h6>
       <p>{{ appointment.ReasonForVisit }}</p>
-      <button class="btn btn-outline-secondary" style="background-color: orangered;" *ngIf="appointment.Status==1 && isDoctor() && !isTobeGenerated" (click)="GenerateReport()">Generate Report</button>
+      <button class="btn btn-outline-secondary" style="background-color: orangered;" *ngIf="appointment.Status==1 && isDoctor()&& appointment.Report==null" (click)="GenerateNewReport()">Generate Report</button>
+    </div> -->
+    <div class="reasons-for-visit d-flex flex-wrap align-items-center justify-content-between">
+      <div>
+        <h6 class="mb-0">Reasons for visit:</h6>
+        <p class="mb-0">{{ appointment.ReasonForVisit }}</p>
+      </div>
+      <button class="btn btn-sm btn-outline" style="background-color:rgb(255, 111, 0);color: #fff;" *ngIf="appointment.Status==1 && isDoctor() && appointment.Report==null" (click)="GenerateNewReport()">Generate Report</button>
     </div>
     <div class="confirmed-by">
 

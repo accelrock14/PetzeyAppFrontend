@@ -29,7 +29,7 @@ export class VetComponent implements OnInit{
   fVets: any[] = [];
   dropdownSettings = {};
   currentPage: number = 1;
-  pageSize: number = 4; 
+  pageSize: number = 8; 
   totalPages: number = 1; 
   totalActivePages: number=0;
   

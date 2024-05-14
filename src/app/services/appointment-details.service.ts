@@ -21,8 +21,8 @@ export class AppointmentDetailsService {
     const url = `${this.apiUrl}/${AppointmentID}`;
     return this.http.get<any>(url);
   }
-  PatchAppointmentStatus(AppointmentID: number,StatusNo:number):Observable<any>{
-    const url = `${this.apiUrl2}/${AppointmentID}/status`;
+  PatchAppointmentStatus(AppointmentID: number,generateReport: boolean,StatusNo:number):Observable<any>{
+    const url = `${this.apiUrl2}/${AppointmentID}/status/${generateReport}`;
     return this.http.patch(url, StatusNo);
   }
   GetAllPetIDByVetId(VetID:number):Observable<number[]>{

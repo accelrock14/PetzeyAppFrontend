@@ -17,7 +17,7 @@
           </div>
           <h5 class="col-8 mx-2 p-0">Account Details</h5>
         @if(role=="Doctor"||role=="Receptionist"){
-          @if(vetProfile?.status){
+          @if(vetProfile?.Status){
           <button class="btn btn-edit col-1 mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
           <button class="btn btn-outline-danger ms-2 col-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
           }

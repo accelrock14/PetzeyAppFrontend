@@ -8,5 +8,5 @@ export interface IVetProfileDTO {
     Email: string;
     Phone: string;
     Photo: string;
-    status:boolean
+    Status:boolean
   }

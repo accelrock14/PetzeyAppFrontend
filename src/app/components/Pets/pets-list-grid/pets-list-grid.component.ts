@@ -49,6 +49,7 @@ export class PetsListGridComponent implements OnInit {
   speciesOptions = ['Dog', 'Cat', 'Reptile', 'Other'];
   users!: any;
   errorMessage: string = '';
+  errorMessage2: string = '';
   recentPetIds: number[] = []
 
   ngOnInit(): void {
@@ -119,6 +120,7 @@ export class PetsListGridComponent implements OnInit {
   }
 
   recentlyConsulted() {
+    this.recentlyConsultedPets = []
     this.petsService.FilterPetIds(this.petsFilter)
       .subscribe(petIds => {
 
@@ -130,12 +132,17 @@ export class PetsListGridComponent implements OnInit {
         this.appointmentDetailsService.PostRecentPetIds(petIds)
           .subscribe(data => {
             this.recentPetIds = data;
-            console.log("recent petids: ", this.recentPetIds)
+            console.log("recent petids: ", data)
             // get pet details by pet Ids
-            this.petsService.GetPetsGridByPetIDs(this.recentPetIds)
+            this.petsService.GetPetsGridByPetIDs(data)
               .subscribe(data => {
-                console.log("inside getpetsgridbypetids")
+                console.log("inside getpetsgridbypetids", data)
                 this.recentlyConsultedPets = data;
+                if(this.recentlyConsultedPets.length <= 0){
+                  this.errorMessage2 = 'No pets found matching your search criteria.'
+                } else {
+                  this.errorMessage2 = ''; // Clear error message on successful retrieval
+                }
                 console.log("recently consulted pet details : " + this.recentlyConsultedPets[0].PetName)
               }
               )
@@ -144,13 +151,13 @@ export class PetsListGridComponent implements OnInit {
         // this.recentlyConsultedPets = pets.filter(p => p.LastAppointmentDate != null).slice().sort((a, b) => new Date(b.LastAppointmentDate).getTime() - new Date(a.LastAppointmentDate).getTime()).slice(0, 4);
         console.log('Top 4 recently consulted pets:', this.recentlyConsultedPets);
 
-        this.errorMessage = ''; // Clear error message on successful retrieval
+        
       },
         error => {
           if (error.status === 404) {
-            this.errorMessage = 'No pets found matching your search criteria.'; // Set error message for 404
+            this.errorMessage2 = 'No pets found matching your search criteria.'; // Set error message for 404
           } else {
-            this.errorMessage = 'An error occurred while fetching pets.';
+            this.errorMessage2 = 'An error occurred while fetching pets.';
           }
         });
   }
