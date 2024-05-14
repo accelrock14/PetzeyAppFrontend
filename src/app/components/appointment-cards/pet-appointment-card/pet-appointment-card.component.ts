@@ -131,7 +131,7 @@ doctorRating:DoctorRating={
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
-            this.toastservice.success("Feedback  submitted successfully")
+          
              console.log('Response:', response);
              
            },
@@ -164,6 +164,7 @@ doctorRating:DoctorRating={
        
                  })
                  window.location.reload();
+                 this.toastservice.success("Feedback  submitted successfully");
          
          }
          

@@ -173,6 +173,7 @@ export class DoctorAppointmentCardComponent {
     })
 
 window.location.reload();
+this.toastservice.success("Feedback  submitted successfully");
 
 
   }
