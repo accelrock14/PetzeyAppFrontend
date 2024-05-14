@@ -14,16 +14,15 @@ import { errorInterceptorInterceptor } from './interceptors/error-interceptor.in
 import { GlobalErrorHandler } from './GlobalErrorHandler';
 import { cachingInterceptor } from './interceptors/caching.interceptor';
 import { ErrorLoggingService } from './services/ErrorLogging/error-logging.service';
-import { ReportService, reportToken } from './services/appointment/report.service';
+import {
+  ReportService,
+  reportToken,
+} from './services/appointment/report.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([
-        tokenInterceptor,
-        cachingInterceptor,
-        errorInterceptorInterceptor,
-      ])
+      withInterceptors([tokenInterceptor, errorInterceptorInterceptor])
     ),
     provideAnimationsAsync('noop'),
     DashboardService,
@@ -34,6 +33,6 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
-    [{ provide: reportToken, useClass: ReportService }]
+    [{ provide: reportToken, useClass: ReportService }],
   ],
 };
