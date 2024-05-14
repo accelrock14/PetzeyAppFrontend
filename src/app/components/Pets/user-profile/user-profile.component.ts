@@ -207,13 +207,23 @@ export class UserProfileComponent implements OnInit {
       this.SavePetDetails()
       // Provide a toastr notification to the user
       this.toaster.success("Pet Successfully Added!")
-      this.NewPet = {} as IPet
+      this.newPetForm.reset();
+      this.allergiesForPet = [];
+      console.log('on submit add to reset')
+  
+
+
     }
     else {
       // Incase of any error provide the necessary message to the user
       this.toaster.error("Pet Failed To Be Added!")
     }
   }
+  onSubmitCancel() {
+    this.newPetForm.reset();
+    console.log('on submit cancel')
+  }
+  
   onSubmitEdit(): void {
     if (this.petDetailsForm.valid) {
       // Update ToBeUpdatedPet with form values
@@ -226,6 +236,7 @@ export class UserProfileComponent implements OnInit {
       this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
         this.pets = data;
       });
+      
 
     }
     else {

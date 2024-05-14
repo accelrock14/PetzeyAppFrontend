@@ -25,9 +25,9 @@ declare var window:any;
   styleUrl: './edit-appointment-form.component.css'
 })
 export class EditAppointmentFormComponent implements OnInit {
-  isFormValid():boolean {
-    return this.appointmentDetail.DoctorID!==''&&this.appointmentDetail.PetID!==0&&this.appointmentDetail.OwnerID!==''&&this.appointmentDetail.ScheduleTimeSlot!==0&&this.appointmentDetail.ReasonForVisit!=='';
-  }
+  // isFormValid():boolean {
+  //   return this.appointmentDetail.DoctorID!==''&&this.appointmentDetail.PetID!==0&&this.appointmentDetail.OwnerID!==''&&this.appointmentDetail.ScheduleTimeSlot!==0&&this.appointmentDetail.ReasonForVisit!=='';
+  // }
   
 GoBackSimply() {
   this.formModal.hide();
@@ -128,6 +128,7 @@ this.location.back();
 
     
     const today = new Date();
+    today.setDate(today.getDate() + 1);  ///////////////////////////////////////////////
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // getMonth() is zero-based
     let dd = today.getDate();
@@ -327,6 +328,11 @@ this.location.back();
   }
   onDisSelectPetIssue(Pi:PetIssue) {
     this.appointmentDetail.PetIssues = this.appointmentDetail.PetIssues.filter(pi=>pi.IssueName!==Pi.IssueName);
+
+    this.generalPetIssues.push({
+      GeneralPetIssueID: 0,
+      IssueName: Pi.IssueName
+    });
   }
 
   // veternarian methods 
