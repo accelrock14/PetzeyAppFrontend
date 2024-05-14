@@ -1,7 +1,7 @@
 import { IAddress } from "./IAddress";
 
-export interface IVetProfileDTO {
-  [key: string]: any;
+export interface IVetCardRatingDTO {
+  
     VetId:number,
     LName: string;
     FName:string;

@@ -43,7 +43,7 @@ describe('AddVetComponent', () => {
     addressId: 0,
     address: {
       AddressId: 0,
-      city: '',
+      City: '',
       street: '',
       zipcode: '',
       state: ''

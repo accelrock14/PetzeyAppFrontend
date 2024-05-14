@@ -31,11 +31,16 @@
       </div>
       <div class="col">        
         <label for="npiNumber" class="form-label">NPI Number*</label>
-        <input type="text" class="form-control" id="npiNumber" name="npiNumber" [(ngModel)]="vet.npiNumber" #npinumber="ngModel" required> 
-        <div *ngIf="npinumber.invalid && (npinumber.dirty || npinumber.touched)" class="text-danger ">
-          NPI number is required
+        <input type="text" class="form-control" id="npiNumber" name="npiNumber" [(ngModel)]="vet.npiNumber" #npinumber="ngModel" required minlength="10" maxlength="10" pattern="[0-9]*"> 
+        
+        <div *ngIf="npinumber.invalid " class="text-danger">
+          <div *ngIf="npinumber.errors?.['minlength'] || npinumber.errors?.['maxlength'] || npinumber.errors?.['pattern']">
+            NPI Number must be 10 digits.
+          </div>
+          <div *ngIf="(npinumber.dirty || npinumber.touched) && !npinumber.errors?.['minlength']">
+            NPI number is required
+          </div>
         </div>
-
     </div>
 
       </div>
@@ -107,7 +112,7 @@
     </div>
     <div class="col">        
       <label for="city" class="form-label">City</label>
-      <input type="text" class="form-control" id="city" name="city"  [(ngModel)]="vet.address.city" #city="ngModel" > 
+      <input type="text" class="form-control" id="city" name="city"  [(ngModel)]="vet.address.City" #city="ngModel" > 
               
     </div>    
     <div class="col">        
@@ -123,7 +128,9 @@
   <div class="row ">
     <div class="col">        
       <label for="phone" class="form-label">Phone</label>
-        <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="vet.Phone" #phone="ngModel" > 
+        <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="vet.Phone" #phone="ngModel" minlength="10" maxlength="10" pattern="[0-9]*" > 
+        <div *ngIf="phone.errors?.['minlength'] || phone.errors?.['maxlength'] || phone.errors?.['pattern']" class="text-danger">Phone Number must be 10 digits.</div>
+
   </div>
   <div class="col">        
     <label for="photo" class="form-label">Photo</label>

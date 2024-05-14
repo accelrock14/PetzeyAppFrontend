@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService, provideToastr } from 'ngx-toastr';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
 
 bootstrapApplication(Component, {
   providers: [
@@ -30,6 +31,7 @@ bootstrapApplication(Component, {
     imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
+  hasOpenAppointments: boolean=false;
 setActive(id:number|undefined)
 {
   this.vetService.SetActive(id!,true).subscribe(p=>{
@@ -45,12 +47,22 @@ setActive(id:number|undefined)
   VetNPI:any;
   selectedFile: File | null = null;
 
-constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,) { }
+constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,private appo:AppointmentFormService) { }
 
 
   
-
-  
+// async checkDelete() {
+//   try {
+//     const vetID = this.vetProfile?.VetId; // Assuming vetProfile is available in your component
+//     if (vetID) {
+//       const openAppointmentsCount = await this.appo.getNoOfOpenAppointmentsOfVet(vetID.toString());
+//       this.hasOpenAppointments = openAppointmentsCount > 0;
+//     }
+//   } catch (error) {
+//     console.error("Error occurred while fetching open appointments:", error);
+//     this.hasOpenAppointments = false;
+//   }
+// }
 
 
 
@@ -62,7 +74,7 @@ throw new Error('Method not implemented.');
   role:any;
   // 
   ngOnInit(): void {
-    this.decideDestiny()
+    // this.decideDestiny()
     // Get the vet ID from the route parameter
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam !== null) {
@@ -149,37 +161,40 @@ throw new Error('Method not implemented.');
     });
   }
 
-  validDoctor:boolean=false
-  errorMessage:string=""
-  decideDestiny():void{
-    if(this.auth.isLoggedIn()){
-      if(this.auth.getRoleFromToken()=="Doctor"){
+  // validDoctor:boolean=false
+  // errorMessage:string=""
+  // decideDestiny():void{
+  //   console.log("decide destiny called");
+  //   if(this.auth.isLoggedIn()){
+  //     if(this.auth.getRoleFromToken()=="Doctor"){
 
-        this.vetService.checkNpi(this.auth.getVPIFromToken()).subscribe({
-          next:(res)=>{
+  //       this.vetService.checkNpi(this.auth.getVPIFromToken()).subscribe({
+  //         next:(res)=>{
 
-            console.log(res);
-            this.validDoctor=res
-            this.toastr.success("Welcome")
-
-
-          },
-          error:(err)=>{
-
-            console.log(err.error.Message);
-            this.errorMessage=err
-            this.auth.logOut()
-            this.router.navigate(['/signin'])
-            this.toastr.error(err.error.Message)
-
-          }
+  //           console.log(res);
+           
+            
+  //           this.validDoctor=res
+  //           this.toastr.success("Welcome")
 
 
-          })       
+  //         },
+  //         error:(err)=>{
+
+  //           console.log(err.error.Message);
+  //           this.errorMessage=err
+  //           this.auth.logOut()
+  //           this.router.navigate(['/signin'])
+  //           this.toastr.error(err.error.Message)
+
+  //         }
+
+
+  //         })       
         
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
   
   sendProfileUpdate(vetId: number, fullVet: IVet) {
     this.vetService.updateVet(vetId, fullVet).subscribe({

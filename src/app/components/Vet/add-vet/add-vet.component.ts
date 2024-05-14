@@ -48,13 +48,14 @@ export class AddVetComponent {
     addressId: 0,
     address: {
       AddressId: 0,
-      city: '',
+      City: '',
       street: '',
       zipcode: '',
       state: '',
     },
   };
   selectedFile: File | null = null;
+  maxDate?:string
   constructor(
     private vetService: VetsserviceService,
     private toastr: ToastrService,

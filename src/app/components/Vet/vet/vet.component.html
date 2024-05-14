@@ -63,7 +63,7 @@
       <h6 class="text-muted my-2 mt-5 p-0">High Rated Vets</h6>
       <hr class="mt-0" />
       <div class="row">
-        <div *ngFor="let vet of topRatedVets" class="col-md-3 col-sm-6">
+        <div *ngFor="let vet of highRated " class="col-md-3 col-sm-6">
           @if(vet.Status){
           <a
             href="javascript:void(0);"
@@ -83,19 +83,30 @@
                     />
                   </div>
                   <div class="col-8 p-0">
-                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <h6 class="card-title">{{ vet.FName }} {{vet.LName}}</h6>
                     <p class="text-muted pb-1">{{ vet.Speciality }}</p>
                     <p class="card-text">
                       <span class="text-muted">Mobile :</span>
-                      {{ vet.PhoneNumber }}
+                      {{ vet.Phone }}
                     </p>
-                    <p>City: {{vet.City}}</p>
+
+                    <p class="card-text">
+                      <span class="text-muted">Rating :</span>
+                      {{ vet.avgRating }}
+                    </p>
+                    <p class="card-text">
+                      <span class="text-muted">Number of Ratings :</span>
+                      {{ vet.numberOfReviews }}
+                    </p>
+                    <p>City: {{vet.address.City}}</p>
                     @if(auth.isLoggedIn() && auth.getRoleFromToken() == "Receptionist"){
                       <p>Status : @if(vet.Status){<span class="text-success">Active</span>}
                         @else {<span class="text-danger">Inactive</span>}
                       </p>
                     }
                   </div>
+
+                
                 </div>
               </div>
             </div>
@@ -135,14 +146,27 @@
                     />
                   </div>
                   <div class="col-8 p-0">
-                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <h6 class="card-title">{{ vet.Name }} </h6>
                     <p class="text-muted pb-1">{{ vet.Speciality }}</p>
                     <p class="card-text">
                       <span class="text-muted">Mobile :</span>
-                      {{ vet.PhoneNumber }}
+                      {{ vet.PhoneNumber}}
                     </p>
                     <p>City: {{vet.City}}</p>
                   </div>
+                  <div *ngFor="let topVet of topRatedVets " class="col-md-3 col-sm-6">
+                    @if(parseInt(topVet.DoctorId)==vet.VetId){
+                    <p class="card-text">
+                      <span class="text-muted">Rating :</span>
+                      {{ topVet.AvgRating}}
+                    </p>
+                    <p class="card-text">
+                      <span class="text-muted">Number of Reviews :</span>
+                      {{ topVet.NumberOfRatings}}
+                    </p>
+                  }
+                  </div>
+
                 </div>
               </div>
             </div>
