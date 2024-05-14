@@ -131,7 +131,8 @@ doctorRating:DoctorRating={
        console.log(this.selectedappointmentid)
          this.service.postData(feedbackToSubmit).subscribe(
            (response) => {
-          
+            this.toastservice.success("Feedback  submitted successfully");
+
              console.log('Response:', response);
              
            },
@@ -163,7 +164,6 @@ doctorRating:DoctorRating={
                  this.service.PostAvgRating(this.doctorRating).subscribe((p)=>{
        
                  })
-                 this.toastservice.success("Feedback  submitted successfully");
                  setTimeout(() => {
                   
                   window.location.reload();

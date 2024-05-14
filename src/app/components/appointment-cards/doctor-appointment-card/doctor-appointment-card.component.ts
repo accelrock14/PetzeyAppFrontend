@@ -172,7 +172,7 @@ export class DoctorAppointmentCardComponent {
 
     })
 
-    this.toastservice.success("Feedback  submitted successfully");
+    
     setTimeout(() => {
      
      window.location.reload();
