@@ -138,12 +138,19 @@ export class PetsListGridComponent implements OnInit {
               .subscribe(data => {
                 console.log("inside getpetsgridbypetids", data)
                 this.recentlyConsultedPets = data;
-                if(this.recentlyConsultedPets.length <= 0){
+                if(data.length <= 0){
                   this.errorMessage2 = 'No pets found matching your search criteria.'
                 } else {
                   this.errorMessage2 = ''; // Clear error message on successful retrieval
                 }
                 console.log("recently consulted pet details : " + this.recentlyConsultedPets[0].PetName)
+              },
+              error => {
+                if (error.status === 404) {
+                  this.errorMessage2 = 'No pets found matching your search criteria.'; // Set error message for 404
+                } else {
+                  this.errorMessage2 = 'No pets found matching your search criteria.';
+                }
               }
               )
           });
