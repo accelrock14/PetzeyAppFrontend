@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Feedback, Question, FeedbackQuestion } from '../models/appoitment-models/IFeedback';
+import { Feedback, Question, FeedbackQuestion, DoctorRating, DoctorAVgRating } from '../models/appoitment-models/IFeedback';
 import { appointmentServiceUrl } from '../Shared/apiUrls';
 
 @Injectable({
@@ -17,7 +17,7 @@ getData(id:number): Observable<Feedback> {
   return this.http.get<Feedback>(this.appointmentServiceUrl+"api/Feedback/${id}");
 }
 postData(obj:Feedback):Observable<Feedback>{
-  console.log("Done");
+
   return this.http.post<Feedback>(this.appointmentServiceUrl+"api/Feedback",obj);
   
 }
@@ -27,8 +27,12 @@ getQuestions():Observable<FeedbackQuestion[]>{
 getAllFeedback():Observable<Feedback[]>{
   return this.http.get<Feedback[]>(this.appointmentServiceUrl+"api/Feedback");
 }
-
-
+PostAvgRating(obj:DoctorRating):Observable<DoctorRating>{
+  return this.http.post<DoctorRating>(this.appointmentServiceUrl+"api/DoctorRatings",obj)
+}
+getAvgRating():Observable<DoctorAVgRating[]>{
+  return this.http.get<DoctorAVgRating[]>(this.appointmentServiceUrl+"api/DoctorRatings/DoctorAverageRating")
+}
 // getQuestionsRating(obj:FeedbackQuestion[]):Question[]{
   
 //   const questions: Question[] = [

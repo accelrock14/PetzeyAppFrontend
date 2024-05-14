@@ -110,4 +110,7 @@ export class AppointmentFormService {
     return appointments.filter(a => a.DoctorID == vetID && a.Status == Status.Confirmed).length;
 }
 
+DeletedPetHandler(petid:number):Observable<boolean>{
+return this.backendClient.patch<boolean>(appointmentServiceUrl+"api/AppointmentDetails/DeletedPetHandler/"+petid,petid);
+}
 }

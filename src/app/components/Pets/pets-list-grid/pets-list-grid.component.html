@@ -5,12 +5,8 @@
   </div>
   <div class="col-2">
     <div class="dropdown">
-      <select
-        class="form-control ms-2"
-        id="filterBySpecies"
-        [(ngModel)]="petsFilter.Species"
-        (ngModelChange)="onSelectFilters()"
-      >
+      <select class="form-control ms-2" id="filterBySpecies" [(ngModel)]="petsFilter.Species"
+        (ngModelChange)="onSelectFilters()">
         <option value=""><i class="bi bi-filter"></i> All Species</option>
         <option *ngFor="let species of speciesOptions" [value]="species">
           {{ species }}
@@ -20,27 +16,13 @@
   </div>
   <div class="col-3">
     <div class="input-container">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-search search-icon"
-        viewBox="0 0 16 16"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+        class="bi bi-search search-icon" viewBox="0 0 16 16">
         <path
-          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-        />
+          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
       </svg>
-      <input
-        type="text"
-        class="form-control"
-        id="title"
-        [(ngModel)]="petsFilter.PetName"
-        placeholder="Search Pets"
-        
-        (ngModelChange)="onSelectFilters()"
-      />
+      <input type="text" class="form-control" id="title" [(ngModel)]="petsFilter.PetName" placeholder="Search Pets"
+        (ngModelChange)="onSelectFilters()" />
     </div>
   </div>
 </div>
@@ -57,7 +39,8 @@
     @for(pet of recentlyConsultedPets; track $index){
 
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
+      <!-- <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card> -->
+      <app-pet-card [pet]="pet" [petOwner]="pet.PetParentID"></app-pet-card>
     </div>
     }
   </div>
@@ -71,33 +54,29 @@
   <h5 class="text-muted">All Pets</h5>
 </div>
 <hr />
-<mat-paginator [length]="totalCount"
-              [showFirstLastButtons]="true"
-              [pageSize]="itemsPerPage"
-              [pageIndex]="'{{currentPage - 1}}'"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              (page)="handlePageEvent($event)"
-              aria-label="Select page">
+<mat-paginator [length]="totalCount" [showFirstLastButtons]="true" [pageSize]="itemsPerPage"
+  [pageIndex]="'{{currentPage - 1}}'" [pageSizeOptions]="[5, 10, 25, 100]" (page)="handlePageEvent($event)"
+  aria-label="Select page">
 </mat-paginator>
-  <div *ngIf="errorMessage == ''" class="mt-3">
-    <div class="row">
-      @for(pet of pets; track $index){
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <app-pet-card  [pet]="pet" [petOwner]="pet.PetParentID"></app-pet-card>
-      </div>
-      }
+<div *ngIf="errorMessage == ''" class="mt-3">
+  <div class="row">
+    @for(pet of pets; track $index){
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
     </div>
-    <!-- <div class="row">
-      
+    }
+  </div>
+  <!-- <div class="row">
+
       <div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let pet of pets">
         <app-pet-card *ngIf="users != undefined" [pet]="pet" [petOwner]="users[pet.PetParentID]"></app-pet-card>
       </div>
-      
+
     </div> -->
 
-  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
+</div>
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+  {{ errorMessage }}
 </div>
 <br />
 <!-- Pagination -->

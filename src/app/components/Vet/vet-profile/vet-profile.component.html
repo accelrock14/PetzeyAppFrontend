@@ -98,6 +98,24 @@
               Speciality is required.
             </div>
           </div>
+          <!-- <div>Address
+            <div class="mb-3">
+              <label for="street" class="form-label">Street</label>
+              <input type="text" class="form-control" id="street" [(ngModel)]="vetProfile!.address.street" name="street" required #street="ngModel">
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" [(ngModel)]="vetProfile!.address.city" name="city" required #city="ngModel">
+            </div>
+            <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" [(ngModel)]="vetProfile!.address.state" name="state" required #state="ngModel">
+            </div>
+            <div class="mb-3">
+              <label for="zipcode" class="form-label">Zipcode</label>
+              <input type="text" class="form-control" id="zipcode" [(ngModel)]="vetProfile!.address.zipcode" name="zipcode" required #zipcode="ngModel">
+            </div>
+          </div> -->
           <!-- <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" [(ngModel)]="vetProfile!.Email" name="email" required email #email="ngModel">
@@ -145,7 +163,7 @@
         <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Account</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body text-center">
+      <div  class="modal-body text-center">
         Are you sure you want to delete?
         <div class="row mx-5 px-5 gap-5">
           <div class="col-2 p-2 mx-2 ">
@@ -155,7 +173,8 @@
             <button type="submit" class="btn btn-edit mx-2" (click)="deleteVet(vetProfile!.VetId)" data-bs-dismiss="modal">Delete</button>
           </div>
         </div>
-      </div>      
+      </div>
+           
     </div>
   </div>
 </div>

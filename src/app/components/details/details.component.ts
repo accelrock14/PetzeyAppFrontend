@@ -46,18 +46,14 @@ declare var window: any;
     ReportComponent,
     AppointmentPetProfileComponent, //pet
     VetProfileApptComponent, //vet
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
 })
-
 export class DetailsComponent implements OnInit {
-GenerateReport() {
-this.isTobeGenerated=!this.isTobeGenerated
-console.log("hii")
-}
-isTobeGenerated:boolean=false;
+
+  
   // parseToInt(arg0: string): number {
   //   return parseInt(arg0);
   // }
@@ -75,17 +71,20 @@ isTobeGenerated:boolean=false;
     Report: null,
     PetIssues: [],
   };
-  cancellation:Cancellation={
+  cancellation: Cancellation = {
     CancellationId: 0,
     AppointmentID: 0,
-    Reason_for_cancellation: ''
-  }
+    Reason_for_cancellation: '',
+  };
   //Modal 1 for close appointment
   formModal: any;
   //Modal 2 for cancel appointment
   formModal2: any;
   //Modlal 3 for accept appointment
   formModal3: any;
+  // For testing the get recent pet id endpoint
+  petIds: number[] = [1, 3, 2];
+  recentPetIds: number[] = [];
 
   constructor(
     private appointmentDetailsService: AppointmentDetailsService,
@@ -93,7 +92,10 @@ isTobeGenerated:boolean=false;
     private prtSetvice: PetsService,
     private authService: AuthService,
     private vetService: VetsserviceService,
-    private router: Router
+    private router: Router,
+    private reportService: ReportService,
+    private petService: PetsService,
+    private toastr: ToastrService
   ) {}
   /**
    * Check if user role is 'Owner' based on auth token
@@ -118,26 +120,8 @@ isTobeGenerated:boolean=false;
   }
   DoctorName: string = '';
 
-  // What_Flow: string = '';
-  // is_Receptionist: boolean = false;
-  // is_Doctor: boolean = false;
-  // is_Owner: boolean = false;
- 
-  Reason_for_Cancellation_By_Doc:string='';
+  Reason_for_Cancellation_By_Doc: string = '';
   ngOnInit(): void {
-
-    // this.What_Flow = this.authService.getRoleFromToken() as string;
-    // console.log(" current user is " + this.What_Flow);
-    // if (this.What_Flow == 'Owner') {
-    //   this.is_Owner = true;
-    // }
-    // else if(this.What_Flow == 'Doctor'){
-    //   this.is_Doctor = true;
-    // }
-    // else{
-    //   this.is_Receptionist=true;
-    // }
-
     const ID: string = this.route.snapshot.paramMap.get('id')!;
 
     this.appointmentDetailsService
@@ -171,14 +155,22 @@ isTobeGenerated:boolean=false;
           console.log(this.DoctorName + ' DOC');
         }
 
-        if(this.appointment.Status==2 ){
-        this.appointmentDetailsService.GetCancellationReason(parseInt(ID))
-        .subscribe((cancel: any) => {
-          this.cancellation = cancel;
-      });
-      console.log("cancelling "+this.cancellation.Reason_for_cancellation)
-    }
+        if (this.appointment.Status == 2) {
+          this.appointmentDetailsService
+            .GetCancellationReason(parseInt(ID))
+            .subscribe((cancel: any) => {
+              this.cancellation = cancel;
+            });
+          console.log(
+            'cancelling ' + this.cancellation.Reason_for_cancellation
+          );
+        }
 
+        // this.appointmentDetailsService.PostRecentPetIds(this.petIds)
+        // .subscribe(data => {
+        //   this.recentPetIds = data;
+        //   console.log(this.recentPetIds)
+        // });
       });
 
     this.formModal = new window.bootstrap.Modal(
@@ -215,7 +207,7 @@ isTobeGenerated:boolean=false;
    */
   closeAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 3)
+      .PatchAppointmentStatus(this.appointment.AppointmentID,false, 3)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment
@@ -242,7 +234,7 @@ isTobeGenerated:boolean=false;
    */
   cancelAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 2)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, false,2)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment
@@ -255,13 +247,15 @@ isTobeGenerated:boolean=false;
             .subscribe(
               (updatedAppointment) => (this.appointment = updatedAppointment)
             );
-            // reason for cancellation
-            if(!this.isPatient()){
-            this.cancellation.Reason_for_cancellation=this.Reason_for_Cancellation_By_Doc;
-            this.cancellation.AppointmentID=this.appointment.AppointmentID
+          // reason for cancellation
+          if (!this.isPatient()) {
+            this.cancellation.Reason_for_cancellation =
+              this.Reason_for_Cancellation_By_Doc;
+            this.cancellation.AppointmentID = this.appointment.AppointmentID;
             this.appointmentDetailsService
-            .PostCancellationReason(this.cancellation).subscribe()
-            }
+              .PostCancellationReason(this.cancellation)
+              .subscribe();
+          }
         },
         (error) => {
           console.log('error while closing modal');
@@ -273,7 +267,7 @@ isTobeGenerated:boolean=false;
    */
   acceptAppointment() {
     this.appointmentDetailsService
-      .PatchAppointmentStatus(this.appointment.AppointmentID, 1)
+      .PatchAppointmentStatus(this.appointment.AppointmentID, false,1)
       .subscribe(
         (response) => {
           // Handle successful closing of appointment (e.g., show success message)
@@ -292,50 +286,132 @@ isTobeGenerated:boolean=false;
         }
       );
   }
+  // GenerateNewReport() {
+  //   this.appointmentDetailsService
+  //   .PatchAppointmentStatus(this.appointment.AppointmentID, true,1)
+  //   .subscribe(
+  //     (response) => {
+  //       this.appointmentDetailsService
+  //           .GetAppointmentDetail(this.appointment.AppointmentID)
+  //           .subscribe(
+  //             (updatedAppointment) => (this.appointment = updatedAppointment)
+  //           );
+  //     },
+  //     (error) => {
+  //       console.log('error while generating report');
+  //     }
+  //   );
+  // }
+  GenerateNewReport() {
+    this.appointmentDetailsService
+      .PatchAppointmentStatus(this.appointment.AppointmentID, true, 1)
+      .subscribe(
+        () => {
+          // Introduce a short delay to ensure backend processing is complete
+          
+            this.appointmentDetailsService
+              .GetAppointmentDetail(this.appointment.AppointmentID)
+              .subscribe(
+                (updatedAppointment) => {
+                  this.appointment = updatedAppointment;
+                },
+                (error) => {
+                  console.log('Error while fetching updated appointment details:', error);
+                }
+              );
+             window.location.reload();
+        },
+        (error) => {
+          console.log('Error while generating report:', error);
+        }
+      );
+  }
+
+
   // Method to generate & download the pdf
 
   async exportToPDF() {
-    let doc = new jsPDF();
     let report!: IReport;
     let pet!: IPet;
     let vet!: IVetProfileDTO;
+    let allVets: IVetProfileDTO[] = [];
 
-    const reportService = inject(ReportService);
-    const petService = inject(PetsService);
-    const vetService = inject(VetsserviceService);
-    const toastr = inject(ToastrService);
-
-    petService.GetPetDetailsByID(this.appointment.PetID).subscribe(
+    this.petService.GetPetDetailsByID(this.appointment.PetID).subscribe(
       (p) => {
         pet = p;
+
+        if (this.appointment.Report?.ReportID) {
+          this.reportService
+            .getReport(this.appointment.Report?.ReportID)
+            .subscribe(
+              (d) => {
+                report = d;
+
+                for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+                  this.vetService
+                    .getVetById(parseInt(report.RecommendedDoctors[i].DoctorID))
+                    .subscribe((d) => {
+                      allVets.push(d);
+                    });
+                }
+
+                this.vetService
+                  .getVetById(parseInt(this.appointment.DoctorID) as number)
+                  .subscribe(
+                    (v) => {
+                      vet = v;
+                      this.cretePDFdata(pet, vet, report, allVets);
+                    },
+                    (err) => {
+                      this.toastr.error(
+                        'Unbale to fetch the data. Please try after sometime'
+                      );
+                    }
+                  );
+              },
+              (err) => {
+                this.toastr.error(
+                  'Unbale to fetch the data. Please try after sometime'
+                );
+              }
+            );
+        }
       },
       (err) => {
-        toastr.error('Unbale to fetch the data. Please try after sometime');
+        this.toastr.error(
+          'Unbale to fetch the data. Please try after sometime'
+        );
       }
     );
+  }
 
-    vetService
-      .getVetById(parseInt(this.appointment.DoctorID) as number)
-      .subscribe(
-        (v) => {
-          vet = v;
-        },
-        (err) => {
-          toastr.error('Unbale to fetch the data. Please try after sometime');
-        }
-      );
-
-    if (this.appointment.Report?.ReportID) {
-      reportService.getReport(this.appointment.Report?.ReportID).subscribe(
-        (d) => {
-          report = d;
-        },
-        (err) => {
-          toastr.error('Unbale to fetch the data. Please try after sometime');
-        }
-      );
+  getDosage(Dosages: number) {
+    if (Dosages === 0) {
+      return 'Morning';
+    } else if (Dosages === 1) {
+      return 'Afternoon';
+    } else if (Dosages === 2) {
+      return 'Night';
+    } else if (Dosages === 3) {
+      return 'Morning, Afternoon';
+    } else if (Dosages === 4) {
+      return 'Morning, Night';
+    } else if (Dosages === 5) {
+      return 'Afternoon, Night';
+    } else if (Dosages === 6) {
+      return 'Morning, Afternoon, Night';
+    } else {
+      return 'Invalid dosage number'; // Handle invalid dosage numbers
     }
+  }
 
+  cretePDFdata(
+    pet: IPet,
+    vet: IVetProfileDTO,
+    report: IReport,
+    allVets: IVetProfileDTO[]
+  ) {
+    let doc = new jsPDF();
     doc.text('Report', 100, 10);
     doc.line(100, 12, 118, 12);
 
@@ -344,11 +420,23 @@ isTobeGenerated:boolean=false;
     // appointment details
     doc.text(`AppointmentID:- #${this.appointment.AppointmentID}`, 10, 20);
     doc.text(
-      `Date and Time:- ${this.appointment.ScheduleDate.toDateString()}, ${this.appointment.ScheduleDate.toLocaleTimeString()}`,
+      `Date:- ${new Date(this.appointment.ScheduleDate).toDateString()}`,
       138,
       20
     );
-    doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
+    if (
+      this.appointment.ReasonForVisit == null ||
+      this.appointment.ReasonForVisit == ''
+    ) {
+      doc.text(`Reason:- (not mentioned)`, 10, 24);
+    } else {
+      doc.text(`Reason:- ${this.appointment.ReasonForVisit}`, 10, 24);
+    }
+    doc.text(
+      `Time:- ${new Date(this.appointment.ScheduleDate).toLocaleTimeString()}`,
+      138,
+      24
+    );
     doc.line(10, 26, 203, 26);
 
     // pet details
@@ -379,16 +467,20 @@ isTobeGenerated:boolean=false;
     let PrescribedMedicines = report.Prescription.PrescribedMedicines;
     for (let i = 0; i < PrescribedMedicines.length; i++) {
       doc.text(
-        `1. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
+        `${i + 1}. ${PrescribedMedicines[i].Medicine?.MedicineName} \t Days: ${
           PrescribedMedicines[i].NumberOfDays
         } \t Consume: ${
           PrescribedMedicines[i].Consume == true ? 'Before food' : 'After food'
-        } \t Dosage: ${getDosage(PrescribedMedicines[i].Dosages)}`,
+        } \t Dosage: ${this.getDosage(PrescribedMedicines[i].Dosages)}`,
         15,
         y
       );
       y += 4;
       doc.text(`Comment: ${PrescribedMedicines[i].Comment}`, 19, y);
+      y += 8;
+    }
+    if (PrescribedMedicines.length == 0) {
+      doc.text('-- No Medicines Prescribed --', 15, y);
       y += 8;
     }
 
@@ -401,7 +493,11 @@ isTobeGenerated:boolean=false;
     doc.setFontSize(10);
     let testLine = tests.join(', ');
     y += 6;
-    doc.text(testLine, 15, y);
+    if (report.Tests.length == 0) {
+      doc.text('-- No Tests --', 15, y);
+    } else {
+      doc.text(testLine, 15, y);
+    }
 
     // Symptoms
     doc.setFontSize(14);
@@ -412,7 +508,11 @@ isTobeGenerated:boolean=false;
     doc.setFontSize(10);
     let symptomsLine = symptoms.join(', ');
     y += 6;
-    doc.text(symptomsLine, 15, y);
+    if (report.Symptoms.length == 0) {
+      doc.text('-- No Symptoms --', 15, y);
+    } else {
+      doc.text(symptomsLine, 15, y);
+    }
 
     // Recommended doctors
     doc.setFontSize(14);
@@ -421,34 +521,40 @@ isTobeGenerated:boolean=false;
     doc.setFontSize(10);
     y += 6;
 
-    for (let i = 0; i < report.RecommendedDoctors.length; i++) {
+    for (let i = 0; i < allVets.length; i++) {
       doc.text(
-        `1. Dr. Pal Manikuk (diet) \t Doctor@gmail.com \t 9113808136`,
+        `${i + 1}. ${
+          allVets[i]?.FName +
+          ' ' +
+          allVets[i]?.LName +
+          ' (' +
+          allVets[i]?.Speciality +
+          ')'
+        } \t ${allVets[i]?.Email} \t ${allVets[i]?.Phone}`,
         15,
         y
       );
       y += 4;
-      doc.text('Reason: Consult for Heart', 19, y);
+      doc.text(`Reason: ${report.RecommendedDoctors[i].Reason}`, 19, y);
       y += 8;
+    }
+    if (report.RecommendedDoctors.length == 0) {
+      doc.text('-- No Doctors Recommended  --', 15, y);
+      y += 8;
+    }
+
+    // Comment
+    doc.setFontSize(14);
+    y += 6;
+    doc.text('Other Comments:-', 10, y);
+    doc.setFontSize(10);
+    y += 6;
+    if (report.Comment == '' || report.Comment == null) {
+      doc.text('-- No Comments Given --', 15, y);
+    } else {
+      doc.text(report.Comment, 15, y);
     }
 
     doc.save(`report(appointmentID:${this.appointment.AppointmentID})`);
   }
-}
-function getDosage(Dosages: number) {
-  const timePeriods = ['Morning', 'Afternoon', 'Night'];
-
-  const binaryString = Dosages.toString(2).padStart(timePeriods.length, '0');
-
-  const selectedPeriods = [];
-
-  for (let i = 0; i < binaryString.length; i++) {
-    if (binaryString[i] === '1') {
-      selectedPeriods.push(timePeriods[i]);
-    }
-  }
-
-  const result = selectedPeriods.join(', ');
-
-  return result;
 }

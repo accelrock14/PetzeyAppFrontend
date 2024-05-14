@@ -55,7 +55,8 @@ describe('PatientDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     }];
     const mockUID = 'mock-user-id';
 
@@ -89,7 +90,8 @@ describe('PatientDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     }];
     const selectedDate = new Date();
     const selectedStatus = 'Scheduled';
@@ -152,7 +154,8 @@ describe('PatientDashboardComponent', () => {
       PetPhoto: '',
       VetSpecialization: 'Vaccination',
       DoctorPhoto: '',
-      Status: ''
+      Status: '',
+      All: 5
     }];
 
     // Set component properties

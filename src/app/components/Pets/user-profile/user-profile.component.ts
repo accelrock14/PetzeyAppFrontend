@@ -6,74 +6,77 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 import { AgePipe } from '../../../pipes/Age/age.pipe';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Allergy } from '../../../models/Pets/IAllergy';
+import { IPetAndAllergy } from '../../../models/Pets/IPetAndAllergy';
+import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css',
-  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, AgePipe, ReactiveFormsModule, FormsModule],
 })
 export class UserProfileComponent implements OnInit {
 
 
-
-  petParentID:any;
+  petParentID: any;
 
   NewPet: IPet = {} as IPet;
+  NewPetAndAllergy: IPetAndAllergy = {} as IPetAndAllergy
   newPetForm: FormGroup;
   petDetailsForm: FormGroup;
   ToBeUpdatedPet: IPet = {} as IPet;
+  ToBeUpdatedPetAndAllergy: IPetAndAllergy = {} as IPetAndAllergy
   // user!: User ;
   pets: IPet[] = [];
   petToDelete!: IPet;
   user!: any;
+  allergies: Allergy[] = [];
+  filteredAllergies: Allergy[] = []
+  allergiesForPet: number[] = []
+  allergiesForPetToBeEdited: number[] = []
+  filter: string = '';
 
   constructor(
     private petsService: PetsService,
     public auth: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private toaster:ToastrService
+    private appointmentFormService:AppointmentFormService,
+    private toaster: ToastrService
   ) {
     this.newPetForm = this.fb.group({
       PetImage: [this.NewPet?.PetImage],
       PetName: ([this.NewPet?.PetName, Validators.required]),
       Species: ([this.NewPet?.Species, Validators.required]),
       Breed: ([this.NewPet?.Breed, Validators.required]),
-      BloodGroup: ([this.NewPet?.BloodGroup,Validators.required]),
+      BloodGroup: ([this.NewPet?.BloodGroup, Validators.required]),
       Gender: ([this.NewPet?.Gender, Validators.required]),
       DateOfBirth: [this.NewPet?.DateOfBirth],
       Neutered: ([this.NewPet?.Neutered, Validators.required]),
-      // Allergies: ([this.NewPet?.Allergies, Validators.required]),
+      Allergies: (['']),
     });
 
     this.petDetailsForm = this.fb.group({
       PetImage: [this.ToBeUpdatedPet?.PetImage],
-      PetName: ([this.ToBeUpdatedPet?.PetName,Validators.required]),
-      Species: ([this.ToBeUpdatedPet?.Species,Validators.required]),
+      PetName: ([this.ToBeUpdatedPet?.PetName, Validators.required]),
+      Species: ([this.ToBeUpdatedPet?.Species, Validators.required]),
       Breed: ([this.ToBeUpdatedPet?.Breed, Validators.required]),
-      BloodGroup: ([this.ToBeUpdatedPet?.BloodGroup,Validators.required]),
+      BloodGroup: ([this.ToBeUpdatedPet?.BloodGroup, Validators.required]),
       Gender: ([this.ToBeUpdatedPet?.Gender, Validators.required]),
       DateOfBirth: ([this.ToBeUpdatedPet?.DateOfBirth]),
       Neutered: [this.ToBeUpdatedPet?.Neutered, Validators.required],
-      // Allergies: [this.ToBeUpdatedPet?.Allergies, Validators.required],
+      Allergies: (['']),
     });
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit() is called');
-
     if (this.auth.isLoggedIn()) {
       this.user = this.auth.getLoggedInUserObject();
     }
-
-    // this.petsService.getUser().subscribe((data) => {
-    //   this.user = data;
-    // })
-
     this.petParentID = this.auth.getUIDFromToken();
     console.log(this.petParentID);
     this.petsService
@@ -81,6 +84,8 @@ export class UserProfileComponent implements OnInit {
       .subscribe((data) => {
         this.pets = data;
       });
+    console.log(this.allergies)
+
   }
 
   // Sets pet to be deleted
@@ -93,12 +98,16 @@ export class UserProfileComponent implements OnInit {
   deleteConfirmedPet(event: MouseEvent) {
     event.stopPropagation();
 
-    // Check if the petToDelete is notNull 
+    // Check if the petToDelete is notNull
     if (this.petToDelete) {
-      // Call the method in the service to delete the pet 
+      // Call the method in the service to delete the pet
       this.petsService
         .DeletePetByPetID(this.petToDelete.PetID)
         .subscribe(() => {
+          // delete Appointments by pet id
+          // Todo
+          
+          this.appointmentFormService.DeletedPetHandler(this.petToDelete.PetID).subscribe()
           // To auto-update the pets without refreshing the page
           this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe(
             (data) => {
@@ -112,15 +121,15 @@ export class UserProfileComponent implements OnInit {
           );
         });
 
-        // Provide a toast notification service for the user
-        this.toaster.success("Pet Deleted Successfully!")
+      // Provide a toast notification service for the user
+      this.toaster.success("Pet Deleted Successfully!")
     }
-    
+
     this.closeDeleteModal(event);
   }
 
   toggleDropdown(event: MouseEvent) {
-    event.stopPropagation(); 
+    event.stopPropagation();
     // closest method traverse up the DOM tree untill it element with specifed class (.dropdown)
     const dropdown = (event.target as HTMLElement).closest('.dropdown');
     if (dropdown) {
@@ -172,7 +181,10 @@ export class UserProfileComponent implements OnInit {
         console.log(error);
       }
     );
-
+    this.petsService.GetAllAllergies().subscribe(petAllergies => this.allergies = petAllergies)
+    console.log(this.allergies)
+    this.petsService.GetPetAllergiesByPetID(this.ToBeUpdatedPet?.PetID).subscribe(allergies => this.allergiesForPetToBeEdited = allergies);
+    console.log(this.allergiesForPetToBeEdited)
     if (this.ToBeUpdatedPet)
       this.petDetailsForm.patchValue(this.ToBeUpdatedPet);
     console.log(this.petDetailsForm.value);
@@ -213,7 +225,7 @@ export class UserProfileComponent implements OnInit {
       this.toaster.success("Pet Successfully Edited")
       this.petsService.GetPetsByParentID(`${this.petParentID}`).subscribe((data) => {
         this.pets = data;
-    });
+      });
 
     }
     else {
@@ -268,8 +280,9 @@ export class UserProfileComponent implements OnInit {
   SavePetDetails() {
     // Gets the userID and assigns it to petParentID
     this.NewPet!.PetParentID = this.auth.getUIDFromToken();
-    console.log(this.NewPet);
-    this.petsService.AddPet(this.NewPet!).subscribe({
+    this.NewPetAndAllergy!.Pet = this.NewPet;
+    this.NewPetAndAllergy!.allergies = this.allergiesForPet;
+    this.petsService.AddPet(this.NewPetAndAllergy!).subscribe({
       next: (updatedPet) => {
         // Handle success, if needed
         console.log('Pet updated successfully:', updatedPet);
@@ -289,7 +302,9 @@ export class UserProfileComponent implements OnInit {
 
   SaveUpdatedPetDetails() {
     console.log(this.ToBeUpdatedPet);
-    this.petsService.EditPet(this.ToBeUpdatedPet!).subscribe({
+    this.ToBeUpdatedPetAndAllergy!.Pet = this.ToBeUpdatedPet;
+    this.ToBeUpdatedPetAndAllergy!.allergies = this.allergiesForPetToBeEdited;
+    this.petsService.EditPet(this.ToBeUpdatedPetAndAllergy).subscribe({
       next: (updatedPet) => {
         // Handle success, if needed
         console.log('Pet updated successfully:', updatedPet);
@@ -309,5 +324,41 @@ export class UserProfileComponent implements OnInit {
         this.pets = data;
       });
   }
-  
+
+
+  filterPetAllergies() {
+    console.log(this.filter)
+    if (!this.newPetForm.get('Allergies')?.value.length) {
+      this.filteredAllergies = this.allergies;
+    }
+    else {
+      this.filteredAllergies = this.allergies.filter(c => c.AllergyName.toLowerCase().includes(this.newPetForm.get('Allergies')?.value.toLowerCase()));
+    }
+  }
+
+  selectPetAllergy(allID: number) {
+    this.newPetForm.get('Allergies')?.setValue('');
+    this.allergiesForPet.push(allID);
+  }
+  onRemoveAllergy(allID: number) {
+    this.allergiesForPet = this.allergiesForPet.filter(n => n !== allID);
+  }
+  OnAddorEditClick() {
+    this.petsService.GetAllAllergies().subscribe(petAllergies => this.allergies = petAllergies)
+    console.log(this.allergies)
+  }
+  filterEditPetAllergies() {
+    if (!this.petDetailsForm.get('Allergies')?.value.length) {
+      this.filteredAllergies = this.allergies;
+    }
+    else {
+      this.filteredAllergies = this.allergies.filter(c => c.AllergyName.toLowerCase().includes(this.petDetailsForm.get('Allergies')?.value.toLowerCase()));
+    }  }
+  onRemoveEditPetAllergy(allID: number) {
+    this.allergiesForPetToBeEdited = this.allergiesForPetToBeEdited.filter(n => n !== allID);
+  }
+  selectEditPetAllergy(allID: number) {
+    this.petDetailsForm.get('Allergies')?.setValue('');
+    this.allergiesForPetToBeEdited.push(allID);
+  }
 }

@@ -14,8 +14,16 @@ describe('VetComponent', () => {
   let authService: AuthService;
 
   const mockVets: IVetCardDTO[] = [
-    { VetId: 1, Name: 'Dr. Smith', Speciality: 'Cardiology', PhoneNumber: '1234567890', Photo: 'photo1.jpg' },
-    { VetId: 2, Name: 'Dr. Johnson', Speciality: 'Dermatology', PhoneNumber: '0987654321', Photo: 'photo2.jpg' },
+    {
+      VetId: 1, Name: 'Dr. Smith', Speciality: 'Cardiology', PhoneNumber: '1234567890', Photo: 'photo1.jpg',
+      City: 'Seattle',
+      Status: false
+    },
+    {
+      VetId: 2, Name: 'Dr. Johnson', Speciality: 'Dermatology', PhoneNumber: '0987654321', Photo: 'photo2.jpg',
+      City: 'Chicago',
+      Status: false
+    },
   ];
 
   const mockSpecialties = ['Cardiology', 'Dermatology', 'Neurology'];
