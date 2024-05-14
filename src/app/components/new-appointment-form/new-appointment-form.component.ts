@@ -138,6 +138,7 @@ isFormValid():boolean {
     }
 
     const today = new Date();
+    today.setDate(today.getDate() + 1); ///////////////////////////////////////////////
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // getMonth() is zero-based
     let dd = today.getDate();
@@ -299,6 +300,23 @@ isFormValid():boolean {
 
   
   onDateChange() {
+   
+    console.log("1) "+this.selectedScheduleDate + "  2)  "+new Date());
+
+    // Convert this.selectedScheduleDate to a Date object
+    const selectedDate = new Date(this.selectedScheduleDate);
+
+    // Get the date portion of the current date in the same format
+    const currentDate = new Date().toDateString();
+
+    // Get the date portion of the selected date in the same format
+    const selectedDateString = selectedDate.toDateString();
+
+    // Compare the date strings
+    if (selectedDateString === currentDate){
+      
+    }
+
     this.appointmentDetail.ScheduleDate = this.selectedScheduleDate;
     this.aptService.getScheduleSlotStatuses(this.appointmentDetail.DoctorID, new Date(this.selectedScheduleDate)).subscribe({
       next: (data) => {
