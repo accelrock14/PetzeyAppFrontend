@@ -75,7 +75,7 @@ export class DoctorAppointmentCardComponent {
     console.log(this.selectedappointmentid);
     this.showmodal = false;
     if(status=="Cancelled"||status=="Pending"||status=="Confirmed"){
-      this.toastservice.info("feedback can be submitted only if appointment is closed")
+      this.toastservice.info("Feedback can be submitted only if appointment is closed")
     }
    else  if (!this.feedbacklist.find(f => f.AppointmentId == obj)&& status=="Closed") {
       this.showmodal = true;
@@ -83,7 +83,7 @@ export class DoctorAppointmentCardComponent {
     }
     else {
       this.showmodal = false;
-      this.toastservice.info("feedback can be submitted only once");
+      this.toastservice.error("Feedback can be submitted only once");
     }
 
   }
@@ -126,7 +126,7 @@ export class DoctorAppointmentCardComponent {
     console.log(this.selectedappointmentid)
     this.service.postData(feedbackToSubmit).subscribe(
       (response) => {
-        this.toastservice.success("feedback submitted successfully");
+        this.toastservice.success("Feedback submitted successfully");
         console.log('Response:', response);
 
       },
@@ -172,7 +172,12 @@ export class DoctorAppointmentCardComponent {
 
     })
 
-
+    
+    setTimeout(() => {
+     
+     window.location.reload();
+   }, 2000);
+    
 
 
   }
