@@ -16,5 +16,6 @@ export class SigninComponent implements OnInit {
   constructor(private route: ActivatedRoute,private auth: AuthService,private router: Router,) { }
 
   ngOnInit(): void {
+    localStorage.clear()
   }
 }
