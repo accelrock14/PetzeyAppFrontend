@@ -83,125 +83,18 @@ export class PatientDashboardComponent implements OnInit {
   private getUpcomingappointments() {
     this.service.GetUpcomingAppointments(this.ids).subscribe(data => {
       this.UpcomingappointmentCards = data;
-      console.log(data)
-      this.UpcomingappointmentCards.forEach(element => {
-        this.docids.push(parseInt(element.DoctorID));
-        this.petids.push(element.PetID);
+      console.log(data);
       });
-      this.vetService.getVetsByListOfIds(this.docids).subscribe(data => {
-        this.docdetails = data;
-        // Loop through upcoming appointment cards to assign doctor details
-        this.UpcomingappointmentCards.forEach((element) => {
-          const matchingVet = this.docdetails.find(vet => vet.VetId === parseInt(element.DoctorID));
-          if (matchingVet) {
-            element.DoctorName = matchingVet.Name;
-            element.VetSpecialization = matchingVet.Specialization;
-            element.DoctorPhoto = matchingVet.Photo;
-          }
-          else {
-            element.DoctorName = "unknown";
-            element.VetSpecialization = "unknown";
-            element.DoctorPhoto = "unknown";
-          }
-        });
-      });
-      this.petService.GetPetsByPetIDs(this.petids).subscribe(data => {
-        this.petdetails = data;
-        // Loop through upcoming appointment cards to assign pet details
-        this.UpcomingappointmentCards.forEach((element) => {
-          const matchingPet = this.petdetails.find(pet => pet.PetID === element.PetID);
-          if (matchingPet) {
-            element.PetName = matchingPet.PetName;
-            element.OwnerID = matchingPet.OwnerID;
-            // element.PetAge = matchingPet.DateOfBirth
-            element.PetGender = matchingPet.PetGender;
-            element.PetPhoto = matchingPet.petImage;
-
-          }
-          else {
-            element.PetName = "unknown";
-            element.OwnerID = "unknown";
-            // element.PetAge = matchingPet.DateOfBirth
-            element.PetGender = "unknown";
-          }
-        });
-      });
-      this.authService.getAllUserIDsandNames().subscribe(
-        (ownerData: { [userID: string]: string; }) => {
-          // Iterate through UpcomingappointmentCards and assign owner names
-          this.UpcomingappointmentCards.forEach((appointment) => {
-            if (appointment.OwnerID && ownerData.hasOwnProperty(appointment.OwnerID)) {
-              appointment.OwnerName = ownerData[appointment.OwnerID];
-            } else {
-              appointment.OwnerName = 'Unknown Owner';
-            }
-          });
-        }
-      );
-    });
-  }
+    };
+  
 
   private getpatientappointments() {
     this.service.GetPatientAppointmentsWithFilters(this.filters, this.offset, this.authService.getUIDFromToken()).subscribe(data => {
       this.appointmentCards = data;
       this.loadingAppointments = false;
-      this.appointmentCards.forEach(element => {
-        this.appdocids.push(parseInt(element.DoctorID));
-        this.apppetids.push(element.PetID);
       });
-      this.vetService.getVetsByListOfIds(this.appdocids).subscribe(data => {
-        this.appdocdetails = data;
-        // Loop through upcoming appointment cards to assign doctor details
-        this.appointmentCards.forEach((element) => {
-          const matchingVet = this.appdocdetails.find(vet => vet.VetId === parseInt(element.DoctorID));
-          if (matchingVet) {
-            element.DoctorName = matchingVet.Name;
-            element.VetSpecialization = matchingVet.Specialization;
-            element.DoctorPhoto = matchingVet.Photo;
-          }
-          else{
-            element.DoctorName = "unknown"
-            element.VetSpecialization = "unknown"
-            element.DoctorPhoto = "unknown"
-          }
-        });
-      })
-      this.petService.GetPetsByPetIDs(this.apppetids).subscribe(data =>{
-        this.apppetdetails = data;
-        // Loop through upcoming appointment cards to assign pet details
-        this.appointmentCards.forEach((element) => {
-          const matchingPet = this.apppetdetails.find(pet => pet.PetID === element.PetID);
-          if (matchingPet) {
-            element.PetName = matchingPet.PetName;
-            console.log(matchingPet)
-            element.OwnerID = matchingPet.OwnerID;
-            // element.PetAge = matchingPet.DateOfBirth
-            element.PetGender = matchingPet.PetGender;
-            element.PetPhoto = matchingPet.petImage;
-
-          }
-          else{
-            element.PetName = "unknown"
-            element.OwnerID = "unknown";
-            // element.PetAge = matchingPet.DateOfBirth
-            element.PetGender = "unknown";
-          }
-        });
-      });
-      this.authService.getAllUserIDsandNames().subscribe(
-        (ownerData: { [userID: string]: string }) => {
-          // Iterate through appointmentCards and assign owner names
-          this.appointmentCards.forEach((appointment) => {
-            if (appointment.OwnerID && ownerData.hasOwnProperty(appointment.OwnerID)) {
-              appointment.OwnerName = ownerData[appointment.OwnerID];
-            } else {
-              appointment.OwnerName = 'Unknown Owner';
-            }
-          });
-        }
-      );
-    });
-  }
+    };
+  
 
   onDateStatusChange() {
     this.page = 1;
