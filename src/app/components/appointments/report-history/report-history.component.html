@@ -45,11 +45,11 @@
 
        <div>
         <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate | date}}</p>
-        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate.toLocaleTimeString() }}</p>
+        <p class="fw-medium m-0 p-0">{{appointment.ScheduleDate | date:'shortTime' }}</p>
        </div>
 
        <div class="view-details">
-          <button routerLink="/DoctorDashboard/details/{{petId}}" class="btn capsule">View Details<i class="fa-solid fa-up-right-from-square ms-2"></i></button>
+          <button routerLink="/{{role}}Dashboard/details/{{appointment.AppointmentID}}" class="btn capsule">View Details<i class="fa-solid fa-up-right-from-square ms-2"></i></button>
 
         </div>
 

@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <!-- this above is the cloudflare link for search icon magnifying glass -->
 <div class="new-appointment-form">
-    <div class="back btn">
+    <div class="back btn" (click)="GoBackSimply()" >
         <i class="fas fa-arrow-left"></i>
-        <button class="btn" (click)="GoBackSimply()">Back to Appointments</button>
+        <button class="btn">Back to Appointments</button>
     </div>
     <h1>New Appointment</h1>
     <small [hidden]="isFormValid()" class="text-danger"> *all fields are mandatory </small>

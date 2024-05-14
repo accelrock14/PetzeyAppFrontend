@@ -36,7 +36,7 @@ export let reportToken = new InjectionToken<IReportService>('IReportToken');
   providedIn: 'root',
 })
 export class ReportService implements IReportService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   reportURL: string = appointmentServiceUrl + 'api/appointment/';
 
@@ -94,7 +94,7 @@ export class ReportService implements IReportService {
     );
   }
 
-  UpdateRecommendation(id: number, recommendation: RecommendedDoctor) {
+  UpdateRecommendation(recommendation: RecommendedDoctor) {
     return this.http.put(this.reportURL + 'doctor', recommendation);
   }
 }

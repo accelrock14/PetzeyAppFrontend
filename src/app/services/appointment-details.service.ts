@@ -8,12 +8,12 @@ import { Cancellation } from '../models/Cancellation';
 })
 export class AppointmentDetailsService {
   private localhost='https://localhost:44327/'
-  private remote='https://petzeybackendappointmentapi20240505153736.azurewebsites.net/'
-  private apiUrl = 'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/Appointment';
-  private apiUrl2= 'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/AppointmentDetails';
-  private apiUrl3= 'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/PetIdByDocId';
-  private apiUrl4= 'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/AppointmentCancellationReason';
-  private apiUrl5= 'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/api/GetAppointmentCancellationReason'
+  private apiUrl = 'https://localhost:44327/api/Appointment';
+  private apiUrl2= 'https://localhost:44327/api/AppointmentDetails';
+  private apiUrl3= 'https://localhost:44327/api/PetIdByDocId';
+  private apiUrl4= 'https://localhost:44327/api/AppointmentCancellationReason';
+  private apiUrl5= 'https://localhost:44327/api/GetAppointmentCancellationReason';
+  private apiUrl6='https://localhost:44327/api/AppointmentDetails/getRecentPetIds';
 
   constructor(private http: HttpClient) { }
   GetAppointmentDetail(AppointmentID: number):Observable<any> {
@@ -21,8 +21,8 @@ export class AppointmentDetailsService {
     const url = `${this.apiUrl}/${AppointmentID}`;
     return this.http.get<any>(url);
   }
-  PatchAppointmentStatus(AppointmentID: number,StatusNo:number):Observable<any>{
-    const url = `${this.apiUrl2}/${AppointmentID}/status`;
+  PatchAppointmentStatus(AppointmentID: number,generateReport: boolean,StatusNo:number):Observable<any>{
+    const url = `${this.apiUrl2}/${AppointmentID}/status/${generateReport}`;
     return this.http.patch(url, StatusNo);
   }
   GetAllPetIDByVetId(VetID:number):Observable<number[]>{
@@ -39,7 +39,11 @@ export class AppointmentDetailsService {
     const url = `${this.apiUrl5}/${AppointmentID}`;
     return this.http.get<any>(url);
   }
-
+  //GetRecentPetIds()
+  PostRecentPetIds(petIds: number[]): Observable<number[]> {
+    const url6 = `${this.apiUrl6}`;
+    return this.http.post<number[]>(url6,petIds);
+  }
 
 
 }

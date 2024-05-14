@@ -69,9 +69,11 @@
 
             }}</small
             ><br />
-            <!-- <small class="text-muted" style="font-weight: bold">{{
-              Pet.Allergies
-            }}</small> -->
+            <small class="text-muted" style="font-weight: bold">
+              <span *ngFor="let i of petAllergies">
+                {{ allergies[i - 1].AllergyName }},
+              </span>
+            </small>
 
           </div>
         </div>
@@ -129,5 +131,5 @@
 
 
 <app-report-history *ngIf="Pet.PetID != undefined"></app-report-history>
-<hr />
-<app-pet-appointments-list *ngIf="Pet.PetID != undefined" [PetID]="Pet.PetID"></app-pet-appointments-list>
+<!-- <hr /> -->
+<!-- <app-pet-appointments-list *ngIf="Pet.PetID != undefined" [PetID]="Pet.PetID"></app-pet-appointments-list> -->

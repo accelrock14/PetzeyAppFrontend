@@ -255,5 +255,74 @@ body {
   #inputGroupFile {
     display: none;
 }
-  
+.petissuediv{
+  border: 1px solid rgb(207, 203, 203);
+  border-radius: 4px;
+}
+.dropdown-container {
+  position: absolute;
+  width: 100%; /* Match the width of the input field */
+  top: 100%; /* Position directly below the input field */
+  z-index: 1000; /* Ensure it stacks above other content */
+  background: white; /* Optional: for visibility */
+  border: 0px solid #ccc; /* Optional: to match design */
+  /*box-shadow: 0 2px 5px rgba(232, 225, 225, 0.2);  Optional: for better visibility */
+  max-height: 160px; /* Set a max height for the dropdown */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scroll bar */
+}
+.capsule{
+  display: inline-block;
+  margin: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background-color: rgb(240, 211, 199);
+  color: #ff1100;
+}
+.petissuediv{
+  border: 1px solid rgb(207, 203, 203);
+  border-radius: 4px;
+}
+.search-box {
+  position: relative;
+  /* Allows absolute positioning of the icon inside */
+  width: 300px;
+  /* or any width as per your design */
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 40px 8px 8px;
+  /* Right padding is larger to accommodate the icon */
+  border: none;
+  /* Remove borders */
+  border-bottom: 1px solid black;
+  background-color: #fafbfe;
+  /* Only bottom border */
+  outline: none;
+  /* Removes the highlight around the input on focus */
+  font-size: 16px;
+  /* Adjust as needed */
+}
+
+.search-box .input-wrapper {
+  position: relative; /* Ensure this container is positioned relatively */
+  width: 100%; /* Adjust width as needed */
+}
+
+.search-box .search-icon {
+  position:absolute;
+  right: 10px;
+  /* Distance from right, adjust as needed */
+  top: 50%;
+  /* Center vertically */
+  transform: translateY(20%);
+  /* Precise centering */
+  cursor: pointer;
+  /* Indicates that the icon is interactive */
+  color: black;
+  /* Icon color, change as needed */
+  font-size: 15px;
+  /* Icon size, adjust based on the icon used */
+}
   
