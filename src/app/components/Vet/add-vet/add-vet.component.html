@@ -65,7 +65,7 @@
       <div class="row ">
         <div class="col">        
           <label for="dob" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dob" name="dob" [(ngModel)]="vet.dob" #dob="ngModel"> 
+            <input type="date" [max]="maxDate" class="form-control" id="dob" name="dob" [(ngModel)]="vet.dob" #dob="ngModel"> 
       </div>
       <div class="col">        
         <label for="gender" class="form-label">Gender</label>

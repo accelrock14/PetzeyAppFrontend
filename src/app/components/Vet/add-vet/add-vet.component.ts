@@ -52,11 +52,19 @@ export class AddVetComponent {
     },
   };
   selectedFile: File | null = null;
+  maxDate?:string
   constructor(
     private vetService: VetsserviceService,
     private toastr: ToastrService,
     private router: Router
-  ) {}
+
+    
+
+  ) {
+     
+    const today= new Date()
+   this. maxDate=today.toISOString().split('T')[0]
+  }
 
   onImageSelected(event: any): void {
     console.log('File selected');

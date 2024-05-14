@@ -84,7 +84,18 @@
                       <span class="text-muted">Mobile :</span>
                       {{ vet.PhoneNumber }}
                     </p>
+
+                    <p class="card-text"> 
+                      <span class="text-muted">Rating :</span>
+                      {{vet.Rating}}
+                      <span class="text-muted"> ({{vet.Counter}})Reviews</span>
+                    
+                    </p>
+                  
+                    
                   </div>
+
+                
                 </div>
               </div>
             </div>
@@ -125,12 +136,21 @@
                       <span class="text-muted">Mobile :</span>
                       {{ vet.PhoneNumber }}
                     </p>
+                    @if (vet.Counter!=0) {
                     <p class="card-text"> 
                       <span class="text-muted">Rating :</span>
                       {{vet.Rating}} 
                       <span class="text-muted"> ({{vet.Counter}})Reviews</span>
-                     
+                    
                     </p>
+                  }
+                 @else{
+                  <p class="card-text"> 
+                    <span class="text-muted">Rating : Not Yet Rated</span>                                     
+                  
+                  </p>
+
+                  }
                   </div>
                 </div>  
               </div>
