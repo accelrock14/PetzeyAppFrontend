@@ -27,6 +27,9 @@ bootstrapApplication(Component, {
   styleUrl: './add-vet.component.css',
 })
 export class AddVetComponent {
+  maxDOB: string;
+  minDOB: string;
+
   vet: IVet = {
     VetId: 0,
     LName: '',
@@ -57,13 +60,12 @@ export class AddVetComponent {
     private vetService: VetsserviceService,
     private toastr: ToastrService,
     private router: Router
-
-    
-
   ) {
-     
-    const today= new Date()
-   this. maxDate=today.toISOString().split('T')[0]
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 21, today.getMonth(), today.getDate());
+    const minDate = new Date(today.getFullYear() - 65, today.getMonth(), today.getDate());
+    this.minDOB = minDate.toISOString().split('T')[0];  
+    this.maxDOB = maxDate.toISOString().split('T')[0];
   }
 
   onImageSelected(event: any): void {
@@ -108,6 +110,7 @@ export class AddVetComponent {
 
 
 
+
     
 
   private sendProfileUpdate(vetId: number, fullVet: IVet) {
@@ -124,3 +127,10 @@ export class AddVetComponent {
     });
   }
 }
+
+
+
+
+
+
+

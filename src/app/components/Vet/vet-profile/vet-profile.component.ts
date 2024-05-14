@@ -30,6 +30,14 @@ bootstrapApplication(Component, {
     imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
+setActive(id:number|undefined)
+{
+  this.vetService.SetActive(id!,true).subscribe(p=>{
+    console.log("Activated")
+    alert("Vet Status Activated")
+    this.router.navigate(['/vet'])
+  });
+}
 
   @ViewChild('successMessage') successMessage!: ElementRef;
 
@@ -37,29 +45,6 @@ export class VetProfileComponent implements OnInit {
   VetNPI:any;
   selectedFile: File | null = null;
 
-// updateVet(vetid: number,vetPro: IVetProfileDTO) {
-//   const fullVet:IVet=this.vetService.getFullVetById(vetid).subscribe(v=>this.actualVet=v);
-//   fullVet.subscribe(vet=>{this.actualVet=fullVet});
-//   this.vetService.updateVet(vetid,fullVet).subscribe();
-// }
-// updateVet(vetid: number, vetPro: IVetProfileDTO) {
-//   // Fetch the full vet profile
-//   this.vetService.getFullVetById(vetid).subscribe((fullVet: IVet) => {
-//     // Update the matching attributes with values from vetPro
-//     Object.keys(vetPro).forEach(key => {
-//       if (fullVet.hasOwnProperty(key)) {
-//         // Type assertion to inform TypeScript about the types
-//         (fullVet as any)[key] = vetPro[key];
-//       }
-//     });
-// console.log(fullVet);
-//     // Pass the updated vet profile to the updateVet function
-//     this.vetService.updateVet(vetid, fullVet).subscribe(() => {
-//       // Optionally, you can perform any post-update actions here
-//       alert("Successfully Saved the Changes");
-//     });
-//   });
-// }
 constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,) { }
 
 
@@ -86,7 +71,7 @@ throw new Error('Method not implemented.');
       this.vetService.getVetById(vetId).subscribe(profile => {
         this.vetProfile = profile;
         console.log(this.vetProfile)
-      });
+      }); 
     } else {
       // Handle the case when the route parameter is null
       console.error('Vet ID parameter is null.');
@@ -103,20 +88,7 @@ throw new Error('Method not implemented.');
   }
 
     }
-  // openEditModal(): void {
-  //   const modalRef = this.modalService.open(EditModalComponent, { size: 'lg' });
-  //   // You can pass data to the modal using modalRef.componentInstance
-  //   // For example:
-  //   // modalRef.componentInstance.vetProfile = this.vetProfile;
     
-  //   modalRef.result.then((result) => {
-  //     // Handle modal close (e.g., save changes)
-  //     console.log('Modal closed with result:', result);
-  //   }, (reason) => {
-  //     // Handle modal dismiss (e.g., cancel editing)
-  //     console.log('Modal dismissed with reason:', reason);
-  //   });
-  // }
   imageSrc: string | ArrayBuffer | null = null;
   onImageSelected(event: any): void {
     console.log('File selected');
@@ -138,7 +110,7 @@ throw new Error('Method not implemented.');
       next: (fullVet: IVet) => {
         // Update the matching attributes with values from vetPro
         Object.keys(vetPro).forEach(key => {
-          if (fullVet.hasOwnProperty(key)) {
+          if (key !== 'Photo'&& fullVet.hasOwnProperty(key)) {
             (fullVet as any)[key] = vetPro[key];  // Type assertion to inform TypeScript
           }
         });
@@ -156,6 +128,7 @@ throw new Error('Method not implemented.');
               // After successful photo upload, update the other profile details
               this.sendProfileUpdate(vetId, fullVet);
               this.selectedFile= null;
+              
             },
             error: (error) => {
               console.error('Error uploading file:', error);
@@ -164,6 +137,7 @@ throw new Error('Method not implemented.');
           });
         } else {
           // If no file is selected, directly update the profile
+         
           this.sendProfileUpdate(vetId, fullVet);
           console.log('In update',fullVet);
         }
@@ -210,11 +184,15 @@ throw new Error('Method not implemented.');
   //   }
   // }
   
-  private sendProfileUpdate(vetId: number, fullVet: IVet) {
+  sendProfileUpdate(vetId: number, fullVet: IVet) {
     this.vetService.updateVet(vetId, fullVet).subscribe({
       next: () => {
         alert("Successfully Saved the Changes");
         console.log('sendprofile',fullVet)
+        this.vetService.getVetById(vetId).subscribe(profile => {
+          this.vetProfile!.Photo = profile.Photo;
+        }); 
+
         // Optionally, perform any other post-update actions here
       },
       error: (error) => {
@@ -251,6 +229,7 @@ throw new Error('Method not implemented.');
     this.vetService.deleteVet(vetId).subscribe({
       next: () => {
         alert('Vet deleted');
+        this.router.navigate(['/vet']);
       },
       error: (error) => {
         console.error('Error updating vet profile:', error);

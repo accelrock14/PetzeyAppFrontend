@@ -51,9 +51,12 @@
         <button class="btn btn-edit" (click) = "navigateToAddVet()">Add Vet</button>
       </div>
     }
+
+    
     
   </div>
   <!--Top Rated Vets Display-->
+  @if(auth.isLoggedIn() && auth.getRoleFromToken()=="Owner"){
   <div *ngIf="selectedSpecialties.length === 0 && searchQuery == ''">
     <div class="container">
       <hr class="p-0 my-2" />
@@ -61,11 +64,13 @@
       <hr class="mt-0" />
       <div class="row">
         <div *ngFor="let vet of topRatedVets" class="col-md-3 col-sm-6">
+          @if(vet.Status){
           <a
             href="javascript:void(0);"
             class="card-link"
             (click)="openVetProfile(vet.VetId)"
           >
+          
             <div class="card contact-card">
               <div class="card-body">
                 <div class="row">
@@ -84,26 +89,26 @@
                       <span class="text-muted">Mobile :</span>
                       {{ vet.PhoneNumber }}
                     </p>
-
-                    <p class="card-text"> 
-                      <span class="text-muted">Rating :</span>
-                      {{vet.Rating}}
-                      <span class="text-muted"> ({{vet.Counter}})Reviews</span>
-                    
-                    </p>
-                  
-                    
+                    <p>City: {{vet.City}}</p>
+                    @if(auth.isLoggedIn() && auth.getRoleFromToken() == "Receptionist"){
+                      <p>Status : @if(vet.Status){<span class="text-success">Active</span>}
+                        @else {<span class="text-danger">Inactive</span>}
+                      </p>
+                    }
                   </div>
 
                 
                 </div>
               </div>
             </div>
+          
           </a>
+        }
         </div>
       </div>
     </div>
   </div>
+}
   
   <!--All Vets Display-->
   <div class="container">
@@ -112,12 +117,14 @@
     <div *ngIf="selectedSpecialties.length === 0">
       <div class="row">
         <!-- Original loop for displaying all veterinarians -->
-        <div class="col-md-3 col-sm-6" *ngFor="let vet of filteredVets">
-          <a
-            href="javascript:void(0);"
-            class="card-link"
-            (click)="openVetProfile(vet.VetId)"
-          >
+        
+          @if( auth.isLoggedIn() && auth.getRoleFromToken()=="Owner"){
+            <div class="col-md-3 col-sm-6" *ngFor="let vet of activeVets">
+              <a
+                href="javascript:void(0);"
+                class="card-link"
+                (click)="openVetProfile(vet.VetId)"
+              >
             <div class="card contact-card">
               <div class="card-body">
                 <div class="row">
@@ -136,29 +143,61 @@
                       <span class="text-muted">Mobile :</span>
                       {{ vet.PhoneNumber }}
                     </p>
-                    @if (vet.Counter!=0) {
-                    <p class="card-text"> 
+                    <p>City: {{vet.City}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+            </div>
+          }
+          @else if(auth.isLoggedIn() && auth.getRoleFromToken()=="Receptionist") {
+            <div class="col-md-3 col-sm-6" *ngFor="let vet of filteredVets">
+              <a
+                href="javascript:void(0);"
+                class="card-link"
+                (click)="openVetProfile(vet.VetId)"
+              >
+            <div class="card contact-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <img
+                      src="{{ vet.Photo }}"
+                      alt="Vet Photo"
+                      class="img-fluid rounded-circle"
+                      style="width: 100px; height: 100px"
+                    />
+                  </div>
+                  <div class="col-8 p-0">
+                    <h6 class="card-title">{{ vet.Name }}</h6>
+                    <p class="text-muted pb-1">{{ vet.Speciality }}</p>
+                    <p class="card-text">
+                      <span class="text-muted">Mobile :</span>
+                      {{ vet.PhoneNumber }}
+                    </p>
+                    <p>City: {{vet.City}}</p>
+                      <p>Status : @if(vet.Status){<span class="text-success">Active</span>}
+                        @else {<span class="text-danger">Inactive</span>}
+                      </p>
+                    <!-- <p class="card-text"> 
                       <span class="text-muted">Rating :</span>
                       {{vet.Rating}} 
                       <span class="text-muted"> ({{vet.Counter}})Reviews</span>
-                    
-                    </p>
-                  }
-                 @else{
-                  <p class="card-text"> 
-                    <span class="text-muted">Rating : Not Yet Rated</span>                                     
-                  
-                  </p>
-
-                  }
+                     
+                    </p> -->
                   </div>
                 </div>  
               </div>
             </div>
           </a>
+          </div>
+          }
+          
         </div>
       </div>
     </div>
+
 
     <!-- Display filtered veterinarians -->
     <div *ngIf="selectedSpecialties.length > 0">
@@ -199,8 +238,8 @@
       <p>No veterinarians found for the selected specialties.</p>
     </ng-template>
   </div>
-</div>
 
+  @if(auth.isLoggedIn()&&auth.getRoleFromToken()=="Receptionist"){
 <div *ngIf="totalPages > 1" class="pagination">
   <button
     (click)="onPageChange(currentPage - 1)"
@@ -222,3 +261,27 @@
     &raquo;
   </button>
 </div>
+  }
+  @else if(auth.isLoggedIn()&&auth.getRoleFromToken()=="Owner"){
+    <div *ngIf="totalActivePages > 1" class="pagination">
+      <button
+        (click)="onPageChange(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        &laquo;
+      </button>
+      <button
+        *ngFor="let page of totalActivePagesArray"
+        (click)="onPageChange(page)"
+        [class.active]="currentPage === page"
+      >
+        {{ page }}
+      </button>
+      <button
+        (click)="onPageChange(currentPage + 1)"
+        [disabled]="currentPage === totalActivePages"
+      >
+        &raquo;
+      </button>
+    </div>
+  }

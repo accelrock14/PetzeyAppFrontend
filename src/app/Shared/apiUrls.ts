@@ -1,7 +1,7 @@
 // Add required base urls here for easy access
 
 export const petsServiceUrl =
-  'https://petzeypetwebapi20240505153103.azurewebsites.net/api/pets';
+  'https://localhost:44374/api/pets';
 
 export const appointmentServiceUrl =
   'https://petzeybackendappointmentapi20240505153736.azurewebsites.net/';
