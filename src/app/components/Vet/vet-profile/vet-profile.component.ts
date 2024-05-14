@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/UserAuthServices/auth.service';
 import { ToastrService, provideToastr } from 'ngx-toastr';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { AppointmentFormService } from '../../../services/Appointment_Form_Services/appointment-form.service';
 
 bootstrapApplication(Component, {
   providers: [
@@ -30,6 +31,7 @@ bootstrapApplication(Component, {
     imports: [NgbModule, FormsModule, CommonModule, VetAppointmentListComponent]
 })
 export class VetProfileComponent implements OnInit {
+  hasOpenAppointments: boolean=false;
 setActive(id:number|undefined)
 {
   this.vetService.SetActive(id!,true).subscribe(p=>{
@@ -45,12 +47,22 @@ setActive(id:number|undefined)
   VetNPI:any;
   selectedFile: File | null = null;
 
-constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,) { }
+constructor(private route: ActivatedRoute, private vetService: VetsserviceService, private modalService: NgbModal, private router: Router,public auth: AuthService,private toastr: ToastrService,private appo:AppointmentFormService) { }
 
 
   
-
-  
+// async checkDelete() {
+//   try {
+//     const vetID = this.vetProfile?.VetId; // Assuming vetProfile is available in your component
+//     if (vetID) {
+//       const openAppointmentsCount = await this.appo.getNoOfOpenAppointmentsOfVet(vetID.toString());
+//       this.hasOpenAppointments = openAppointmentsCount > 0;
+//     }
+//   } catch (error) {
+//     console.error("Error occurred while fetching open appointments:", error);
+//     this.hasOpenAppointments = false;
+//   }
+// }
 
 
 

@@ -1,3 +1,5 @@
+import { IAddress } from "./IAddress";
+
 export interface IVetProfileDTO {
   [key: string]: any;
     VetId:number,
@@ -8,5 +10,6 @@ export interface IVetProfileDTO {
     Email: string;
     Phone: string;
     Photo: string;
-    status:boolean
+    status:boolean;
+    address:IAddress;
   }

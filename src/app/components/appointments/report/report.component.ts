@@ -636,6 +636,8 @@ export class ReportComponent implements OnInit {
             PhoneNumber: doc.PhoneNumber,
             Speciality: doc.Speciality,
             Photo: doc.Photo,
+            Status:doc.Status,
+            City:doc.City
           });
         });
         this.report.RecommendedDoctors.forEach((doctor) => {
